@@ -1,0 +1,52 @@
+@tailwind utilities;
+
+:host {
+  display: inline-block;
+  width: var(--spinner-size, 24px);
+  height: var(--spinner-size, 24px);
+}
+
+/* Tailwind layer to define custom animations */
+@layer utilities {
+  @keyframes hex-trace {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes hex-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+  }
+  @keyframes hex-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes hex-move {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -1; }
+  }
+
+  .hex-spinner {
+    --spinner-size: 96px;
+  }
+  .hex-svg {
+    animation: hex-spin 3.2s linear infinite;
+    transform-origin: 50% 50%;
+  }
+  .hexagon {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    /*animation:
+      hex-trace 1.4s linear infinite,
+      hex-pulse 1.6s ease-in-out infinite;*/
+  }
+  .hexagon-head {
+   /* stroke-dasharray: 0.03 0.97;*/
+    stroke-dasharray: 0.3 .7;
+    stroke-dashoffset: 0;
+    animation: hex-move 1.4s linear infinite;
+  }
+}

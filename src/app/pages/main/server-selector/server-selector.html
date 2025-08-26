@@ -1,0 +1,46 @@
+<div class="flex justify-center  items-center h-screen">
+  <div class="p-6 bg-neutral-800 rounded w-xl ">
+    <h3>Connect to a server</h3>
+    <div class="overflow-y-auto max-h-64">
+      @for (s of serverLoaderService.connections; track s.url) {
+        <div class="p-4 my-1 bg-neutral-900 rounded gap-6 grid grid-cols-[auto_1fr_auto] w-full">
+          <div class="w-12 h-12 bg-fuchsia-600 rounded"></div>
+          <div>
+            <p class="w-64 font-bold">{{ s.url }}</p>
+            @let detail = serverDetails.get(s);
+            @if (detail !== undefined) {
+              @if ('error' in detail) {
+                <span class="text-red-400">{{ detail.error }}</span>
+              } @else {
+                <span>URL ___ 0U  ___  42ms </span>
+              }
+            } @else {
+              <span>...</span>
+            }
+          </div>
+          <div class="flex justify-end">
+            <button (click)="selectedServer=s" [disabled]="selectedServer">
+              @if (selectedServer == s) {
+                <app-spinner></app-spinner>
+              } @else {
+                JOIN
+              }
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="p-8"></div>
+
+    <label>Connect to a new server</label>
+    <div class="grid grid-cols-4">
+      <input [(ngModel)]="customUrl" class="col-span-3 !bg-neutral-900 !rounded-r-none" placeholder="example.com"/>
+      <button (click)="addAndConnectToCustomUrl()" class="!rounded-l-none" [disabled]="selectedServer">Connect</button>
+    </div>
+    @if (customUrlError) {
+      <span class="text-red-400 p-1">{{customUrlError}}</span>
+    }
+
+  </div>
+</div>

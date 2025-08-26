@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+@tailwind utilities;
+
+body {
+  @apply bg-neutral-900 text-white;
+}
+
+label {
+  @apply block mb-2 text-sm font-medium text-neutral-200
+}
+
+.text-hint {
+  @apply text-neutral-400
+}
+
+input {
+  @apply bg-neutral-800 border border-neutral-900 text-neutral-100 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
+}
+
+input::placeholder {
+  @apply text-neutral-400
+}
+
+button {
+  @apply text-neutral-200 bg-emerald-600 hover:bg-emerald-300 disabled:bg-neutral-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center
+}
+
+h3 {
+  @apply text-xl
+}
