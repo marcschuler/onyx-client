@@ -1,34 +1,51 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Spinner} from '../../../components/ui/spinner/spinner';
 import {
   ServerConnection,
-  ServerDetail,
+  ServerInfo,
   ServerDetailError,
   ServerLoaderService
 } from '../../../services/server-loader-service';
 import {FormsModule} from '@angular/forms';
+import {ImageIcon, LucideAngularModule, ServerIcon, UserIcon} from 'lucide-angular';
+import {WebSocketService} from '../../../services/websocket/web-socket-service';
+import {IdentityService} from '../../../services/identity-service';
 
 @Component({
   selector: 'app-server-selector',
   imports: [
     Spinner,
-    FormsModule
+    FormsModule,
+    LucideAngularModule
   ],
   templateUrl: './server-selector.html',
   styleUrl: './server-selector.css'
 })
-export class ServerSelector {
+export class ServerSelector implements OnInit,OnDestroy{
+
 
   selectedServer: ServerConnection | undefined;
 
-  serverDetails: Map<ServerConnection, ServerDetail | ServerDetailError> = new Map();
+  serverDetails: Map<ServerConnection, ServerInfo | ServerDetailError> = new Map();
 
   customUrl: string = "";
-  customUrlError: string |undefined;
+  customUrlError: string | undefined;
 
-  constructor(protected serverLoaderService: ServerLoaderService) {
+  private interval!:number;
+
+  constructor(protected serverLoaderService: ServerLoaderService,
+              private webSocketService: WebSocketService,
+              private identityService: IdentityService) {
+
+  }
+
+  ngOnInit() {
     this.updateDetails();
-    setInterval(() => this.updateDetails(), 10000);
+    this.interval = setInterval(() => this.updateDetails(), 8000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
   }
 
   updateDetails() {
@@ -48,6 +65,7 @@ export class ServerSelector {
       url: this.customUrl
     };
     this.serverLoaderService.addServer(server)
+    this.updateDetails();
     this.customUrl = "";
     this.serverLoaderService.serverDetails(server)
       .then(serverDetail => {
@@ -57,14 +75,21 @@ export class ServerSelector {
         console.log("new server not available: " + error);
         //TODO show error to user
         this.customUrlError = error.error;
-    })
-
+      })
   }
 
   connect(server: ServerConnection) {
     this.selectedServer = server;
+    this.webSocketService.connect(server, this.identityService.defaultIdentity());
     setTimeout(() => this.selectedServer = undefined, 5000);
   }
 
 
+  removeServer(s: ServerConnection) {
+    this.serverLoaderService.removeServer(s);
+
+  }
+
+  protected readonly ServerIcon = ServerIcon;
+  protected readonly UserIcon = UserIcon;
 }

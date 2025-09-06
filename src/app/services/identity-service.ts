@@ -6,6 +6,8 @@ import {Router} from '@angular/router';
 })
 export class IdentityService {
 
+  private IDENTITY_STORE_KEY="identities";
+
   identities: Identity[] = [];
 
   constructor(private router: Router) {
@@ -35,17 +37,21 @@ export class IdentityService {
 
   private async loadIdentities() {
     console.log("Loading identities")
-    const storedIdentities = localStorage.getItem('identities');
+    const storedIdentities = localStorage.getItem(this.IDENTITY_STORE_KEY);
     if (!storedIdentities)
       return;
     const stored = (JSON.parse(storedIdentities) as StoredIdentity[]);
     for (const i of stored) {
-      const privateKey = await crypto.subtle.importKey("jwk", i.privateKey, "Ed25519", true, ["sign", "verify"]);
-      const publicKey = await crypto.subtle.importKey("jwk", i.publicKey, "Ed25519", true, ["sign", "verify"]);
-      this.identities.push({
-        username: i.username,
-        keyPair: {privateKey: privateKey, publicKey: publicKey}
-      });
+      try {
+        const privateKey = await crypto.subtle.importKey("jwk", i.privateKey, "Ed25519", true, ["sign"]);
+        const publicKey = await crypto.subtle.importKey("jwk", i.publicKey, "Ed25519", true, ["verify"]);
+        this.identities.push({
+          username: i.username,
+          keyPair: {privateKey: privateKey, publicKey: publicKey}
+        });
+      }catch (e) {
+        console.error("Could not load identity " + JSON.stringify(i)+ "," + e)
+      }
     }
   }
 
@@ -59,7 +65,14 @@ export class IdentityService {
       } as StoredIdentity);
     }
     console.log(stored)
-    localStorage.setItem('identities', JSON.stringify(stored));
+    localStorage.setItem(this.IDENTITY_STORE_KEY, JSON.stringify(stored));
+  }
+
+  defaultIdentity() {
+    const identity = this.identities[0]; //TODO Could be reworked in the future - maybe last used identity?
+    if (identity == undefined)
+      console.warn("No default identity found - but requested");
+    return identity;
   }
 }
 

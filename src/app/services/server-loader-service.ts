@@ -1,4 +1,6 @@
 import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {catchError, firstValueFrom, throwError} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +9,7 @@ export class ServerLoaderService {
 
   public connections: ServerConnection[] = [];
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     this.loadServer();
   }
 
@@ -17,20 +19,30 @@ export class ServerLoaderService {
       this.connections = (JSON.parse(storedConnections) as ServerConnection[]);
   }
 
-  public addServer(server:ServerConnection){
+  public addServer(server: ServerConnection) {
     this.connections.push(server);
     this.saveServer()
+  }
+
+  removeServer(s: ServerConnection) {
+    var index = this.connections.indexOf(s);
+    this.connections.splice(index,1);
+    this.saveServer();
   }
 
   private saveServer() {
     localStorage.setItem("serverConnections", JSON.stringify(this.connections));
   }
 
-  public serverDetails(connection:ServerConnection):Promise<ServerDetail>{
-    return Promise.reject({error:"Connection not implemented"}as ServerDetailError)
+  public serverDetails(connection: ServerConnection): Promise<ServerInfo> {
+    // @ts-ignore
+    return this.httpClient.get<ServerInfo>(connection.url + "/v0/info/server").pipe(
+      catchError(err => {
+        // Wrap into custom error object
+        return throwError(() => new Error(`Custom error: ${err.message || err.statusText}`));
+      })
+    ).toPromise();
   }
-
-
 }
 
 
@@ -38,10 +50,16 @@ export interface ServerConnection {
   url: string;
 }
 
-export interface ServerDetail{
-  userCount: number;
-  pingMs: number;
-  slogan: string;
+export interface ServerInfo {
+  version: string;
+  details: ServerInfoDetail[];
+}
+
+export interface ServerInfoDetail {
+  id: string;
+  name: string;
+  publicKey: string;
+  user: number;
 }
 
 export interface ServerDetailError {

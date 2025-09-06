@@ -23,10 +23,29 @@ input::placeholder {
   @apply text-neutral-400
 }
 
+
 button {
-  @apply text-neutral-200 bg-emerald-600 hover:bg-emerald-300 disabled:bg-neutral-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center
+  @apply text-neutral-200 bg-emerald-600 disabled:bg-neutral-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center
+   border-2 border-transparent hover:border-neutral-200 disabled:border-none transition-all duration-200 ease-in-out
+}
+
+.button-hover-dark{
+  @apply disabled:bg-neutral-900
+}
+
+.button-red{
+  @apply bg-red-600
 }
 
 h3 {
   @apply text-xl
 }
+
+h4 {
+  @apply text-lg
+}
+
+.animate-default{
+  @apply transition-all duration-200 ease-in-out
+}
+
