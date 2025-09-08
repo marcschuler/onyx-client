@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ConnectionState, WebSocketServerConnection} from './WebSocketServerConnection';
+import {Client, ConnectionState, WebSocketServerConnection} from './WebSocketServerConnection';
 import {Identity, IdentityService} from '../identity-service';
 import {ServerConnection} from '../server-loader-service';
 import {CryptoService} from '../crypto-service';
@@ -7,10 +7,13 @@ import {
   AuthChallengeRequest,
   AuthChallengeResponse,
   AuthSuccessEvent,
+  ClientChannelJoinEvent,
+  ClientChannelLeaveEvent,
   EventBody,
   EventType,
   ServerTreeChangeEvent
 } from './WebSocketEvents';
+import {ToastService, ToastType} from '../toast-service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +24,12 @@ export class WebSocketService {
 
   private messageHandlers: Map<EventType, MessageHandler<any>> = new Map();
 
-  constructor(private identityService: IdentityService, private cryptoService: CryptoService) {
+  constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService) {
     this.addHandler(EventType.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
     this.addHandler(EventType.AuthSuccessEvent, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessEvent, c));
     this.addHandler(EventType.ServerTreeChangeEvent, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeEvent, c))
+    this.addHandler(EventType.ClientChannelJoinEvent, (e, c) => this.onClientChannelJoinEvent(e as ClientChannelJoinEvent, c))
+    this.addHandler(EventType.ClientChannelLeaveEvent, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveEvent, c));
   }
 
 
@@ -41,7 +46,8 @@ export class WebSocketService {
       const connection: WebSocketServerConnection = {
         state: ConnectionState.CONNECTING,
         serverConnection: webSocket,
-        identity: identity
+        identity: identity,
+        clients: []
       }
       webSocket.onopen = (_) => {
         console.log("ws: connected to server")
@@ -57,11 +63,18 @@ export class WebSocketService {
         console.log('ws: Disconnected');
         connection.state = ConnectionState.CLOSED;
         reject("Connection closed");
+        setTimeout(() => { this.connect(serverConnection, identity); }, 2000);
       };
       webSocket.onerror = (error) => {
         console.error('ws: Error on connection', error);
         //TODO is connection closed? What is the state?
         connection.state = ConnectionState.ERROR;
+        this.toastService.create({
+          title: "Connection lost",
+          message: "Trying to reconnect...",
+          type: ToastType.Error,
+          duration: 3000
+        })
         reject(error);
       };
     });
@@ -111,6 +124,39 @@ export class WebSocketService {
     connection.data = event;
   }
 
+  private onClientChannelJoinEvent(event: ClientChannelJoinEvent, connection: WebSocketServerConnection) {
+    const clients = connection.clients.filter(c => event.user.id == c.id);
+    let client: Client | undefined;
+    if (clients.length == 0) {
+      client = {
+        id: event.user.id,
+        username: event.user.username,
+        publicKey: event.user.publicKey,
+        channel: event.channelId
+      };
+      connection.clients.push(client);
+    } else {
+      client = clients[0];
+      client.channel = event.channelId;
+    }
+    if (this.isMe(client, connection))
+      connection.currentChannel = client.channel;
+  }
+
+
+  private onClientChannelLeaveEvent(event: ClientChannelLeaveEvent, connection: WebSocketServerConnection) {
+    const clients = connection.clients.filter(c => event.user.id == c.id);
+    if (clients.length == 1) {
+      const index = connection.clients.indexOf(clients[0]);
+      connection.clients.splice(index, 1)
+    } else {
+      console.error("Could not find client " + event.user + " that did leave the channel");
+    }
+  }
+
+  public isMe(client: Client, connection: WebSocketServerConnection): Boolean {
+    return (client.username == connection.identity.username) //TODO check by key id - this is terrible
+  }
 }
 
 export type MessageHandler<T extends EventType> = (event: EventBody<T>, connection: WebSocketServerConnection) => void | any;

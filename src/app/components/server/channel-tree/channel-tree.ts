@@ -4,12 +4,14 @@ import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {Spinner} from '../../ui/spinner/spinner';
 import {Channel} from '../../../services/websocket/WebSocketServerConnection';
 import {ClientChannelChangeRequest, EventType} from '../../../services/websocket/WebSocketEvents';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-channel-tree',
   imports: [
     LucideAngularModule,
-    Spinner
+    Spinner,
+    NgClass
   ],
   templateUrl: './channel-tree.html',
   styleUrl: './channel-tree.css'

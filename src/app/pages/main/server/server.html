@@ -6,7 +6,9 @@
       <app-user-panel ></app-user-panel>
     </div>
   </aside>
-  <main class="flex-1 p-6">
-    <!-- page content -->
+  <main class="flex-1">
+    @if (webSocketService.connection && webSocketService.connection.currentChannel) {
+      <app-channel-view [channelId]="webSocketService.connection.currentChannel"></app-channel-view>
+    }
   </main>
 </div>

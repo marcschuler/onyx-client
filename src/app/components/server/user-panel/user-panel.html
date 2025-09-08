@@ -1,13 +1,18 @@
-<div class="h-full bg-emerald-600 rounded-t-md">
+<div class="h-full  rounded-t-md" [ngClass]="{
+'bg-emerald-600': webSocketService.connection && webSocketService.connection.state == ConnectionState.CONNECTED,
+'bg-red-600': !webSocketService.connection || webSocketService.connection.state == ConnectionState.ERROR || webSocketService.connection.state == ConnectionState.CLOSED,
+'bg-yellow-600': webSocketService.connection && webSocketService.connection.state == ConnectionState.AUTHENTICATING
+}
+">
 
   <div class="p-2 gap-2 grid grid-cols-[1fr_auto] w-full">
 
     <h3 class="p-2">
       Username
     </h3>
-    <button class="!bg-none !p-0 right-0">
+    <!--<button class="!bg-none !bg-transparent !p-0 right-0">
       <lucide-icon [name]="SettingsIcon"></lucide-icon>
-    </button>
+    </button>-->
   </div>
 
 

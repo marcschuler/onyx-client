@@ -12,9 +12,9 @@ export interface EventBody<T extends EventType> {
 type Brand<K, T> = K & { __brand: T };
 
 // The ID all server objects use, may be a UUID
-type ServerObjectId = Brand<string, "ServerObjectId">;
+export type ServerObjectId = Brand<string, "ServerObjectId">;
 // The ID of a key
-type KeyId = Brand<string, "KeyId">;
+export type KeyId = Brand<string, "KeyId">;
 
 export interface AuthChallenge {
   challenge: string;
@@ -27,9 +27,11 @@ export enum EventType {
   AuthSuccessEvent = "AuthSuccessEvent",
 
   ClientChannelChangeRequest = "ClientChannelChangeRequest",
-  ClientChannelChangeEvent = "ClientChannelChangeEvent",
+  ClientChannelJoinEvent = "ClientChannelJoinEvent",
+  ClientChannelLeaveEvent = "ClientChannelLeaveEvent",
 
-  ServerTreeChangeEvent = "ServerTreeChangeEvent"
+  ServerTreeChangeEvent = "ServerTreeChangeEvent",
+  PeerOfferForward="PeerOfferForward",
 }
 
 export interface UserReference {
@@ -67,9 +69,20 @@ export interface ClientChannelChangeRequest extends EventBody<EventType.ClientCh
   channelId: ServerObjectId;
 }
 
-export interface ClientChannelChangeEvent extends EventBody<EventType.ClientChannelChangeEvent> {
-  channelIdFrom: ServerObjectId;
-  channelIdTo: ServerObjectId;
-
+export interface ClientChannelJoinEvent extends EventBody<EventType.ClientChannelJoinEvent> {
   user: UserReference;
+  channelId: ServerObjectId;
+}
+
+export interface ClientChannelLeaveEvent extends EventBody<EventType.ClientChannelLeaveEvent> {
+  user: UserReference;
+}
+
+/**
+ * Peer
+ */
+
+export interface PeerOfferForward extends EventBody<EventType.PeerOfferForward>{
+  client: KeyId;
+  offer: any;
 }

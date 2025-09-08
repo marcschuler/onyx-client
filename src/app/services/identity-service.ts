@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
+import {KeyId} from './websocket/WebSocketEvents';
+import {CryptoService} from './crypto-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class IdentityService {
 
   identities: Identity[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private cryptoService: CryptoService) {
     this.loadIdentities().then(() => {
       console.log("Loaded " + this.identities.length + " identities");
       if (this.identities.length == 0) {
@@ -27,6 +29,7 @@ export class IdentityService {
       ["sign", "verify"]
     );
     const identity: Identity = {
+      id: await this.cryptoService.generateKeyId(keyPair.publicKey),
       username: username,
       keyPair: keyPair
     }
@@ -45,13 +48,16 @@ export class IdentityService {
       try {
         const privateKey = await crypto.subtle.importKey("jwk", i.privateKey, "Ed25519", true, ["sign"]);
         const publicKey = await crypto.subtle.importKey("jwk", i.publicKey, "Ed25519", true, ["verify"]);
-        this.identities.push({
+        const identity = {
+          id: await this.cryptoService.generateKeyId(privateKey),
           username: i.username,
           keyPair: {privateKey: privateKey, publicKey: publicKey}
-        });
+        };
+        this.identities.push(identity);
+        console.log("loaded identity " +identity.username + " ( " + identity.id + ")" )
       }catch (e) {
         console.error("Could not load identity " + JSON.stringify(i)+ "," + e)
-      }
+     }
     }
   }
 
@@ -78,6 +84,7 @@ export class IdentityService {
 
 
 export interface Identity {
+  id: KeyId;
   username: string;
   keyPair: CryptoKeyPair;
 }

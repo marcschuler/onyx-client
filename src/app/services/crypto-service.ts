@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Identity} from './identity-service';
+import {KeyId} from './websocket/WebSocketEvents';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,13 @@ export class CryptoService {
     const result = await window.crypto.subtle.verify("Ed25519", publicKey, encodedSignature, encodedContent);
     return result;
   }
+
+  public async generateKeyId(publicKey:CryptoKey):Promise<KeyId> {
+    const spki = await crypto.subtle.exportKey('spki', publicKey);
+    const digest = await crypto.subtle.digest('SHA-256', spki);
+    return btoa(String.fromCharCode(...new Uint8Array(digest))) as KeyId;
+  }
+
 
   async exportKey(key:CryptoKey) {
     return await crypto.subtle.exportKey("jwk", key);
