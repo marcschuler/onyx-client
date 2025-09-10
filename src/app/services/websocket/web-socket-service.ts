@@ -14,6 +14,7 @@ import {
   ServerTreeChangeEvent
 } from './WebSocketEvents';
 import {ToastService, ToastType} from '../toast-service';
+import {PeerConnectionService} from '../peer/peer-connection-service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,8 @@ export class WebSocketService {
 
   private messageHandlers: Map<EventType, MessageHandler<any>> = new Map();
 
-  constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService) {
+  constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService,
+              private peerConnectionService:PeerConnectionService) {
     this.addHandler(EventType.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
     this.addHandler(EventType.AuthSuccessEvent, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessEvent, c));
     this.addHandler(EventType.ServerTreeChangeEvent, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeEvent, c))
@@ -64,6 +66,7 @@ export class WebSocketService {
         connection.state = ConnectionState.CLOSED;
         reject("Connection closed");
         setTimeout(() => { this.connect(serverConnection, identity); }, 2000);
+        this.peerConnectionService.updatePeerConnections();
       };
       webSocket.onerror = (error) => {
         console.error('ws: Error on connection', error);
@@ -75,6 +78,7 @@ export class WebSocketService {
           type: ToastType.Error,
           duration: 3000
         })
+        this.peerConnectionService.updatePeerConnections();
         reject(error);
       };
     });
@@ -141,6 +145,8 @@ export class WebSocketService {
     }
     if (this.isMe(client, connection))
       connection.currentChannel = client.channel;
+
+    this.peerConnectionService.updatePeerConnections();
   }
 
 
@@ -152,6 +158,8 @@ export class WebSocketService {
     } else {
       console.error("Could not find client " + event.user + " that did leave the channel");
     }
+
+    this.peerConnectionService.updatePeerConnections();
   }
 
   public isMe(client: Client, connection: WebSocketServerConnection): Boolean {

@@ -3,14 +3,15 @@ import {
   HexagonIcon,
   LogInIcon,
   LucideAngularModule,
-  MicIcon,
-  ScreenShareIcon,
+  MicIcon, MicOffIcon,
+  ScreenShareIcon, ScreenShareOffIcon,
   SettingsIcon,
-  VideoIcon
+  VideoIcon, VideoOffIcon
 } from 'lucide-angular';
 import {NgClass} from '@angular/common';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {ConnectionState} from '../../../services/websocket/WebSocketServerConnection';
+import {PeerConnectionService, TrackType} from '../../../services/peer/peer-connection-service';
 
 @Component({
   selector: 'app-user-panel',
@@ -30,8 +31,13 @@ export class UserPanel {
   protected readonly LogInIcon = LogInIcon;
   protected readonly HexagonIcon = HexagonIcon;
 
-  constructor(protected webSocketService:WebSocketService) {
+  constructor(protected webSocketService:WebSocketService,
+              protected peerConnectionService: PeerConnectionService) {
   }
 
   protected readonly ConnectionState = ConnectionState;
+  protected readonly MicOffIcon = MicOffIcon;
+  protected readonly VideoOffIcon = VideoOffIcon;
+  protected readonly ScreenShareOffIcon = ScreenShareOffIcon;
+  protected readonly TrackType = TrackType;
 }

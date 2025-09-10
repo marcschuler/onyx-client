@@ -80,8 +80,9 @@ export class ServerSelector implements OnInit,OnDestroy{
 
   connect(server: ServerConnection) {
     this.selectedServer = server;
-    this.webSocketService.connect(server, this.identityService.defaultIdentity());
-    setTimeout(() => this.selectedServer = undefined, 5000);
+    this.webSocketService.connect(server, this.identityService.defaultIdentity())
+      .then(c => this.selectedServer = undefined)
+      .catch(e => this.selectedServer=undefined);
   }
 
 

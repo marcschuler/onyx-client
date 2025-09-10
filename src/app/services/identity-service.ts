@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {KeyId} from './websocket/WebSocketEvents';
 import {CryptoService} from './crypto-service';
+import {ToastService, ToastType} from './toast-service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class IdentityService {
 
   identities: Identity[] = [];
 
-  constructor(private router: Router, private cryptoService: CryptoService) {
+  constructor(private router: Router, private cryptoService: CryptoService,
+              private toastService: ToastService) {
     this.loadIdentities().then(() => {
       console.log("Loaded " + this.identities.length + " identities");
       if (this.identities.length == 0) {
@@ -46,10 +48,10 @@ export class IdentityService {
     const stored = (JSON.parse(storedIdentities) as StoredIdentity[]);
     for (const i of stored) {
       try {
-        const privateKey = await crypto.subtle.importKey("jwk", i.privateKey, "Ed25519", true, ["sign"]);
         const publicKey = await crypto.subtle.importKey("jwk", i.publicKey, "Ed25519", true, ["verify"]);
+        const privateKey = await crypto.subtle.importKey("jwk", i.privateKey, "Ed25519", true, ["sign"]);
         const identity = {
-          id: await this.cryptoService.generateKeyId(privateKey),
+          id: await this.cryptoService.generateKeyId(publicKey),
           username: i.username,
           keyPair: {privateKey: privateKey, publicKey: publicKey}
         };
@@ -57,7 +59,14 @@ export class IdentityService {
         console.log("loaded identity " +identity.username + " ( " + identity.id + ")" )
       }catch (e) {
         console.error("Could not load identity " + JSON.stringify(i)+ "," + e)
+        this.toastService.create({
+          type: ToastType.Error,
+          title:"Could not load identity " + i.username,
+          message:JSON.stringify(e),
+          duration: 3000
+        })
      }
+
     }
   }
 

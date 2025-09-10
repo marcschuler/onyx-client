@@ -31,7 +31,11 @@ export enum EventType {
   ClientChannelLeaveEvent = "ClientChannelLeaveEvent",
 
   ServerTreeChangeEvent = "ServerTreeChangeEvent",
-  PeerOfferForward="PeerOfferForward",
+
+  PeerOffer = "PeerOffer",
+  PeerOfferForward = "PeerOfferForward",
+  PeerAnswer = "PeerAnswer",
+  PeerAnswerForward = "PeerAnswerForward"
 }
 
 export interface UserReference {
@@ -82,7 +86,23 @@ export interface ClientChannelLeaveEvent extends EventBody<EventType.ClientChann
  * Peer
  */
 
-export interface PeerOfferForward extends EventBody<EventType.PeerOfferForward>{
-  client: KeyId;
+export interface PeerOffer extends EventBody<EventType.PeerOffer> {
+  clientTo: KeyId;
   offer: any;
 }
+
+export interface PeerOfferForward extends EventBody<EventType.PeerOfferForward> {
+  clientFrom: KeyId;
+  offer: any;
+}
+
+export interface PeerAnswer extends EventBody<EventType.PeerAnswer> {
+  clientTo: KeyId;
+  answer: any;
+}
+
+export interface PeerAnswerForward extends EventBody<EventType.PeerAnswerForward> {
+  clientFrom: KeyId;
+  answer: any;
+}
+
