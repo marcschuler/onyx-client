@@ -22,9 +22,8 @@ export class CryptoService {
 
   async verify<T>(signedContent: SignedContent, publicKey: CryptoKey) {
     const encodedContent = new TextEncoder().encode(signedContent.content).buffer;
-    const encodedSignature = new TextEncoder().encode(atob(signedContent.contentSignature)).buffer;
-    const result = await window.crypto.subtle.verify("Ed25519", publicKey, encodedSignature, encodedContent);
-    return result;
+    const encodedSignature = this.base64ToArrayBuffer(signedContent.contentSignature);
+    return await window.crypto.subtle.verify("Ed25519", publicKey, encodedSignature, encodedContent);
   }
 
   public async generateKeyId(publicKey:CryptoKey):Promise<KeyId> {
@@ -52,6 +51,16 @@ export class CryptoService {
     }
 
     return btoa(binary);
+  }
+
+  base64ToArrayBuffer(base64: string): ArrayBuffer {
+    const binaryString = atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
   }
 
 }

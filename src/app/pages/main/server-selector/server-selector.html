@@ -55,7 +55,7 @@
 
     <label>Connect to a new server</label>
     <div class="grid grid-cols-4">
-      <input [(ngModel)]="customUrl" class="col-span-3 !bg-neutral-900 !rounded-r-none" placeholder="example.com"/>
+      <input [(ngModel)]="customUrl" class="col-span-3 !bg-neutral-900 !rounded-r-none" placeholder="For example: example.com or http://localhost:8080"/>
       <button (click)="addAndConnectToCustomUrl()" class="!rounded-l-none button-hover-dark" [disabled]="selectedServer">Connect</button>
     </div>
     @if (customUrlError) {

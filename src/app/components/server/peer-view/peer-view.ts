@@ -1,6 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {PeerConnection, PeerConnectionState} from '../../../services/peer/PeerConnection';
-import {CheckCheckIcon, CheckIcon, LoaderIcon, LucideAngularModule, SignalIcon} from 'lucide-angular';
+import {
+  CircleXIcon,
+  LoaderIcon,
+  LucideAngularModule,
+  PowerOffIcon,
+  SignalIcon
+} from 'lucide-angular';
 
 @Component({
   selector: 'app-peer-view',
@@ -12,11 +18,13 @@ import {CheckCheckIcon, CheckIcon, LoaderIcon, LucideAngularModule, SignalIcon} 
 })
 export class PeerView {
 
-  @Input() peer!: PeerConnection;
+  @Input() peer!: PeerConnection | undefined;
+
+  @Input() localStream: MediaStream | undefined;
 
   protected readonly PeerConnectionState = PeerConnectionState;
   protected readonly LoaderIcon = LoaderIcon;
-  protected readonly CheckIcon = CheckIcon;
-  protected readonly CheckCheckIcon = CheckCheckIcon;
   protected readonly SignalIcon = SignalIcon;
+  protected readonly PowerOffIcon = PowerOffIcon;
+  protected readonly CircleXIcon = CircleXIcon;
 }

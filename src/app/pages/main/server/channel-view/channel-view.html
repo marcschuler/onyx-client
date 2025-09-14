@@ -3,9 +3,12 @@
 </div>
 
 <!-- Talk View -->
-<div class="w-full h-[80vh] grid grid-cols-2 gap-2">
+<div class="grid grid-cols-2 gap-2">
+  @if (peerConnectionService.localStream){
+    <app-peer-view class="h-64" [localStream]="peerConnectionService.localStream"></app-peer-view>
+  }
   @for (peer of peerConnectionService.peers; track peer) {
-    <app-peer-view class="w-full h-full min-w-full min-h-full" [peer]="peer"></app-peer-view>
+    <app-peer-view class="h-64" [peer]="peer"></app-peer-view>
   }
 </div>
 

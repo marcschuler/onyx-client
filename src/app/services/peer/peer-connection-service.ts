@@ -1,5 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
-import {PeerConnection, PeerConnectionState} from './PeerConnection';
+import {MediaConnection, PeerConnection, PeerConnectionState} from './PeerConnection';
 import {Client, ConnectionState, WebSocketServerConnection} from '../websocket/WebSocketServerConnection';
 import {WebSocketService} from '../websocket/web-socket-service';
 import {CryptoService} from '../crypto-service';
@@ -20,6 +20,8 @@ export class PeerConnectionService {
   peers: PeerConnection[] = [];
 
   localStream: MediaStream = new MediaStream();
+
+  localFakePeer:MediaConnection|undefined;
 
   microhponeShared: boolean = false;
   cameraShared: boolean = false;
@@ -44,6 +46,7 @@ export class PeerConnectionService {
       console.warn("peer: Could not find client " + e.clientFrom + ". This is either bad concurrency or we don't know the client. known clients are " + JSON.stringify(c.clients))
       return;
     }
+    otherClient.state = PeerConnectionState.Answered;
     await otherClient.connection.setRemoteDescription(e.offer);
     const answer = await otherClient.connection.createAnswer();
     await otherClient.connection.setLocalDescription(answer);
@@ -53,7 +56,6 @@ export class PeerConnectionService {
       type: EventType.PeerAnswer,
       clientTo: otherClient.client.id
     } as PeerAnswer)
-    otherClient.state = PeerConnectionState.Answered;
   }
 
   private async onPeerAnswerForward(e: PeerAnswerForward, c: WebSocketServerConnection) {
@@ -107,8 +109,8 @@ export class PeerConnectionService {
     const peer: PeerConnection = {
       connection: pc,
       client: client,
-      tracks: [],
-      state: PeerConnectionState.WaitingForOffer
+      state: PeerConnectionState.WaitingForOffer,
+      dataChannel: pc.createDataChannel("data")
     }
     this.setTracks(peer);
     this.peers.push(peer);
@@ -119,30 +121,69 @@ export class PeerConnectionService {
       }
     };
 
+    pc.ondatachannel = (event) => {
+      console.log("peer: data channel is active: " + event.type);
+    }
+
+    pc.onsignalingstatechange=()=>{
+      console.log("peer: signaling state change to " + pc.signalingState);
+      switch (pc.signalingState){
+        case "closed":
+          peer.state = PeerConnectionState.Closed;
+          break;
+        case "have-local-offer":
+          break;
+        case "have-local-pranswer":
+          break;
+        case "have-remote-offer":
+          break;
+        case "have-remote-pranswer":
+          break;
+        case "stable":
+          peer.state = PeerConnectionState.Connected;
+          break;
+
+      }
+    }
+
     pc.ontrack = event => {
+      console.log("peer: got new tracks");
       if (event.streams.length != 1)
-        console.warn("Expected 1 stream, got " + event.streams.length)
-      const [track] = event.streams[0].getTracks();
-      peer.tracks.push(track);
+        console.warn("peer: Expected 1 stream, got " + event.streams.length)
+      if (peer.stream)
+        console.warn("Already have a stream: " + peer.stream);
+      peer.stream = event.streams[0];
     }
     console.log("peer: setup clear, waiting for ice config");
 
     if (this.shouldConnectAsNicePeer(peer)) {
-      console.log("peer: connecting to " + peer.client.id + " (nice mode)")
-      const offer = await pc.createOffer();
-      await pc.setLocalDescription(offer);
-      this.webSocketService.sendToServer(this.webSocketService.connection!,
-        {
-          clientTo: peer.client.id,
-          type: EventType.PeerOffer,
-          offer: offer
-        } as PeerOffer)
-      peer.state = PeerConnectionState.Offered;
+      this.negotiate(peer)
     } else {
       console.log("peer: waiting for " + peer.client.id + " to connect (wait mode)")
     }
     return peer;
 
+  }
+
+  /**
+   * Should be called (1) on start of connection
+   * (2) when a new track is added
+   * @param peer
+   */
+  public async negotiate(peer: PeerConnection) {
+    const pc = peer.connection;
+    if (peer.state = PeerConnectionState.Connected)
+      console.log("peer: renegotiating...");
+    console.log("peer: connecting to " + peer.client.id + " (nice mode)")
+    const offer = await pc.createOffer({iceRestart:true});
+    await pc.setLocalDescription(offer);
+    this.webSocketService.sendToServer(this.webSocketService.connection!,
+      {
+        clientTo: peer.client.id,
+        type: EventType.PeerOffer,
+        offer: offer
+      } as PeerOffer)
+    peer.state = PeerConnectionState.Offered;
   }
 
   public disconnect(peer: PeerConnection) {
@@ -172,15 +213,11 @@ export class PeerConnectionService {
     })
   }
 
-  public addTracks(tracks: MediaStreamTrack[]) {
-    tracks.forEach(track => {
-      this.addTrackToPeers(track)
-    })
-  }
-
   private addTrackToPeers(track: MediaStreamTrack) {
     this.peers.forEach(peer => {
-      peer.connection.addTrack(track);
+      console.log("peer: (" + peer.client.username + ") gets new track")
+      peer.connection.addTrack(track,this.localStream);
+      this.negotiate(peer);
     });
   }
 
@@ -213,7 +250,7 @@ export class PeerConnectionService {
           this.screenShared = true;
           break;
       }
-      console.log("peer: activated track, adding to locals and peers")
+      console.log("peer: activated track, adding to locals and "+this.peers.length+" peers")
       stream.getTracks().forEach(track => {
         this.localStream.addTrack(track);
         this.addTrackToPeers(track);

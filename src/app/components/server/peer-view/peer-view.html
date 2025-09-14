@@ -1,27 +1,48 @@
-<div class="border-2 absolute flex items-center justify-center border-neutral-800 hover:border-neutral-200
+<div class="border-2 flex flex-col items-center justify-between h-full border-neutral-800 hover:border-neutral-200
 bg-neutral-700 rounded">
 
-  <h3 class="font-bold">{{peer.client.username}}</h3>
+  <div class="flex-1 flex">
+    @if (peer) {
+      <h3 class="font-bold pt-16">{{ peer.client.username }}</h3>
+    }
+    @if (localStream || (peer && peer.stream)) {
+      @let stream = localStream ? localStream : peer?.stream;
+      <video class="w-full max-h-64  object-contain" [srcObject]="stream"></video>
+    }
+  </div>
 
-  <div class="bg-neutral-800 absolute bg-opacity-20 text-neutral-200 bottom-0">
-    {{peer.state}}
-    @switch (peer.state){
-      @case (PeerConnectionState.WaitingForOffer){
-        <lucide-icon [name]="LoaderIcon"></lucide-icon>
-        Waiting for connection (1/4)
+  <div class="bg-neutral-800 w-full bg-opacity-20 text-neutral-200 text-right px-2">
+    @if (peer) {
+      <span>
+      @switch (peer.state) {
+        @case (PeerConnectionState.WaitingForOffer) {
+          <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
+          Waiting for connection (1/4)
+        }
+        @case (PeerConnectionState.Offered) {
+          <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
+          Waiting for answer (2/4)
+        }
+        @case (PeerConnectionState.Answered) {
+          <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
+          Waiting for {{ peer.client.username }} (3/4)
+        }
+        @case (PeerConnectionState.Connected) {
+          <lucide-icon class="inline" [name]="SignalIcon"></lucide-icon>
+          Connected
+        }
+        @case (PeerConnectionState.Closed) {
+          <lucide-icon class="inline" [name]="PowerOffIcon"></lucide-icon>
+          Offline
+        }
+        @case (PeerConnectionState.Error) {
+          <lucide-icon class="inline" [name]="CircleXIcon"></lucide-icon>
+          Error
+        }
       }
-      @case (PeerConnectionState.Offered){
-        <lucide-icon [name]="CheckIcon"></lucide-icon>
-        Waiting for answer (2/4)
-      }
-      @case (PeerConnectionState.Answered){
-        <lucide-icon [name]="CheckCheckIcon"></lucide-icon>
-        Waiting for tracks (3/4)
-      }
-      @case (PeerConnectionState.Connected){
-        <lucide-icon [name]="SignalIcon"></lucide-icon>
-        Connected
-      }
+    </span>
+    } @else {
+      <span>(You)</span>
     }
   </div>
 </div>

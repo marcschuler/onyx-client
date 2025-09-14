@@ -1,10 +1,14 @@
 import {Client} from '../websocket/WebSocketServerConnection';
 
-export interface PeerConnection {
-  client:Client;
+export interface PeerConnection extends MediaConnection{
   connection:RTCPeerConnection;
-  tracks:MediaStreamTrack[];
   state: PeerConnectionState;
+  dataChannel: RTCDataChannel;
+}
+
+export interface MediaConnection{
+  client:Client;
+  stream?:MediaStream;
 }
 
 export enum PeerConnectionState {
@@ -12,4 +16,6 @@ export enum PeerConnectionState {
   Offered, //offered the connection
   Answered,
   Connected,
+  Error,
+  Closed
 }
