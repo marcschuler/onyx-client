@@ -35,7 +35,8 @@ export enum EventType {
   PeerOffer = "PeerOffer",
   PeerOfferForward = "PeerOfferForward",
   PeerAnswer = "PeerAnswer",
-  PeerAnswerForward = "PeerAnswerForward"
+  PeerAnswerForward = "PeerAnswerForward",
+  IceServerData = "IceServerData",
 }
 
 export interface UserReference {
@@ -106,3 +107,12 @@ export interface PeerAnswerForward extends EventBody<EventType.PeerAnswerForward
   answer: any;
 }
 
+export interface IceServerData extends EventBody<EventType.IceServerData>{
+  iceServers: IceServer[];
+}
+
+export interface IceServer {
+  urls: string;
+  username: string;
+  credential: string;
+}

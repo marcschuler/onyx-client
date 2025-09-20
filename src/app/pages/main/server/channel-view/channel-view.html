@@ -1,21 +1,27 @@
-<div class="bg-emerald-600 p-4 rounded-b-lg">
-  <h2 class="font-semibold">CHANNEL_NAME</h2>
-</div>
+<div class="h-screen flex flex-col">
 
-<!-- Talk View -->
-<div class="grid grid-cols-2 gap-2">
-  @if (peerConnectionService.localStream){
-    <app-peer-view class="h-64" [localStream]="peerConnectionService.localStream"></app-peer-view>
-  }
-  @for (peer of peerConnectionService.peers; track peer) {
-    <app-peer-view class="h-64" [peer]="peer"></app-peer-view>
-  }
-</div>
-
-<!-- Messages view -->
-<div class="flex items-center justify-center">
-  <div class="flex flex-col items-center text-center">
-    <lucide-icon class="text-neutral-400 mb-2 w-16 h-16" [name]="BrushCleaningIcon"></lucide-icon>
-    <p class="text-neutral-400">Nothing here</p>
+  <div class="bg-emerald-600 p-4 rounded-b-lg">
+    <h2 class="font-semibold">CHANNEL_NAME</h2>
   </div>
+
+    <!-- Talk View -->
+    <div class="flex-grow max-h-[70vh] overflow-auto">
+      <div class="grid grid-cols-2 gap-2" ><!--[style.height.%]="interfaceService.settings.channelSplitSize.peerView"-->
+        @if (peerConnectionService.localStream) {
+          <app-peer-view class="h-64" [localStream]="peerConnectionService.localStream"></app-peer-view>
+        }
+        @for (peer of peerConnectionService.peers; track peer) {
+          <app-peer-view class="h-64" [peer]="peer"></app-peer-view>
+        }
+      </div>
+      <!--<div
+        class="h-2 bg-gray-400 cursor-row-resize"
+        (mousedown)="startResize($event)"
+      ></div>-->
+    </div>
+
+    <!-- Messages view -->
+    <div class="flex flex-col flex-grow min-h-[30vh] " ><!--[style.height.%]="interfaceService.settings.channelSplitSize.peerView"-->
+      <app-message-view class="h-full"></app-message-view>
+    </div>
 </div>

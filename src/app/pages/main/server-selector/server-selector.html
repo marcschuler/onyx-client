@@ -1,40 +1,46 @@
 <div class="flex justify-center  items-center h-screen">
   <div class="p-6 bg-neutral-800 rounded w-xl ">
-    @if (serverLoaderService.connections.length!=0) {
+    @if (serverLoaderService.connections.length != 0) {
       <h3>Connect to a server</h3>
     }
     <div class="overflow-y-auto max-h-64">
 
       @for (s of serverLoaderService.connections; track s.url) {
         <div class="p-4 my-1 bg-neutral-900 rounded gap-6 grid grid-cols-[auto_1fr_auto] w-full">
-          @let detail = serverDetails.get(s);
+          @let detail = serverDetails.get(s) || CONNECTING_STATE;
+
           <div class="w-12 h-12 bg-neutral-800 rounded">
-            @if (detail !== undefined) {
-              <lucide-icon [name]="ServerIcon" class="w-12 h-12"></lucide-icon>
-            }@else{
-              <app-spinner></app-spinner>
-            }
-          </div>
-          <div>
-            @if (detail !== undefined) {
-              @if ('details' in detail) {
-                @let info = detail.details[0];
-                <p class="w-64 font-bold">{{ info.name }}</p>
-                <span class="text-neutral-400">{{s.url}}</span>
-               <!-- <br>
-                <span class="text-neutral-400">
-                    <lucide-icon [name]="UserIcon" class="inline h-4"></lucide-icon>
-                  {{info.user}}
-                </span>-->
-              } @else {
-                <p class="w-64 font-bold">{{ s.url }}</p>
-                <span class="text-red-400">{{ detail.error }}</span>
+            @switch (detail.state) {
+              @case (ServerInfoState.CONNECTING) {
+                <app-spinner></app-spinner>
               }
-            } @else {
-              <p class="w-64 font-bold">...</p>
-              <span class="text-neutral-400">{{s.url}}</span>
+              @case (ServerInfoState.SUCCESS) {
+                <lucide-icon [name]="ServerIcon" class="w-12 h-12"></lucide-icon>
+              }
+              @case (ServerInfoState.ERROR) {
+                <lucide-icon [name]="ServerOffIcon" class="w-12 h-12 text-red-600"></lucide-icon>
+              }
             }
           </div>
+
+          <div>
+            @switch (detail.state) {
+              @case (ServerInfoState.CONNECTING) {
+                <p class="w-64 font-bold"></p>
+                <span class="text-neutral-400">{{ s.url }}</span>
+              }
+              @case (ServerInfoState.SUCCESS) {
+                @let info = detail.success!.details[0];
+                <p class="w-64 font-bold">{{ info.name }}</p>
+                <span class="text-neutral-400">{{ s.url }}</span>
+              }
+              @case (ServerInfoState.ERROR) {
+                <p class="w-64 font-bold">{{ s.url }}</p>
+                <span class="text-red-400 line-clamp-2">{{ detail.error }}</span>
+              }
+            }
+          </div>
+
           <div class="flex justify-end">
             <button (click)="connect(s)" [disabled]="selectedServer">
               @if (selectedServer == s) {
@@ -49,14 +55,17 @@
       }
     </div>
 
-    @if (serverLoaderService.connections.length!=0) {
-    <div class="p-8"></div>
+    @if (serverLoaderService.connections.length != 0) {
+      <div class="p-8"></div>
     }
 
     <label>Connect to a new server</label>
     <div class="grid grid-cols-4">
-      <input [(ngModel)]="customUrl" class="col-span-3 !bg-neutral-900 !rounded-r-none" placeholder="For example: example.com or http://localhost:8080"/>
-      <button (click)="addAndConnectToCustomUrl()" class="!rounded-l-none button-hover-dark" [disabled]="selectedServer">Connect</button>
+      <input [(ngModel)]="customUrl" class="col-span-3 !bg-neutral-900 !rounded-r-none"
+             placeholder="For example: example.com or http://localhost:8080"/>
+      <button (click)="addAndConnectToCustomUrl()" class="!rounded-l-none button-hover-dark"
+              [disabled]="selectedServer">Connect
+      </button>
     </div>
     @if (customUrlError) {
       <span class="text-red-400 p-1">{{ customUrlError }}</span>

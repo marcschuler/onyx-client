@@ -4,6 +4,8 @@ export interface PeerConnection extends MediaConnection{
   connection:RTCPeerConnection;
   state: PeerConnectionState;
   dataChannel: RTCDataChannel;
+
+  tracks: Map<MediaStreamTrack,RTCRtpSender>;
 }
 
 export interface MediaConnection{

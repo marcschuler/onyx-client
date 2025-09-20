@@ -1,5 +1,5 @@
 import {Identity} from '../identity-service';
-import {KeyId, ServerObjectId} from './WebSocketEvents';
+import {IceServer, KeyId, ServerObjectId} from './WebSocketEvents';
 
 export interface WebSocketServerConnection {
   state: ConnectionState;
@@ -8,6 +8,7 @@ export interface WebSocketServerConnection {
   serverConnection: WebSocket;
 
   data?: ServerTree;
+  config: ServerConfig;
   clients: Client[];
   currentChannel?: ServerObjectId | undefined;
 }
@@ -17,6 +18,10 @@ export interface Client{
   publicKey: JsonWebKey;
   username: string;
   channel: ServerObjectId;
+}
+
+export interface ServerConfig{
+  iceServers?: IceServer[];
 }
 
 export interface ServerTree {

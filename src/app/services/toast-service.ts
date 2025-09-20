@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -7,11 +7,11 @@ export class ToastService {
 
   toasts: ToastMessage[] = [];
 
-  create(toast:ToastMessage){
+  create(toast: ToastMessage) {
     this.toasts.push(toast);
-    setTimeout(()=>{
+    setTimeout(() => {
       this.dismiss(toast)
-    },toast.duration)
+    }, toast.duration || 3000)
   }
 
   dismiss(toast: ToastMessage) {
@@ -25,13 +25,13 @@ export class ToastService {
 export interface ToastMessage {
   title?: string;
   message: string;
-  duration: number;
+  duration?: number;
   type: ToastType;
 }
 
 export enum ToastType {
   Success = 'success',
   Error = 'error',
-  Info="info",
+  Info = "info",
   Warning = "warning",
 }

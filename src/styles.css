@@ -23,6 +23,10 @@ input::placeholder {
   @apply text-neutral-400
 }
 
+textarea {
+  @apply bg-neutral-800 border border-neutral-900 text-neutral-100 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
+}
+
 
 button {
   @apply text-neutral-200 bg-emerald-600 disabled:bg-neutral-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center

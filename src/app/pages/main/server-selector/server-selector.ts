@@ -7,7 +7,7 @@ import {
   ServerLoaderService
 } from '../../../services/server-loader-service';
 import {FormsModule} from '@angular/forms';
-import {ImageIcon, LucideAngularModule, ServerIcon, UserIcon} from 'lucide-angular';
+import {ImageIcon, LucideAngularModule, ServerIcon, ServerOffIcon, UserIcon} from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {IdentityService} from '../../../services/identity-service';
 
@@ -21,17 +21,23 @@ import {IdentityService} from '../../../services/identity-service';
   templateUrl: './server-selector.html',
   styleUrl: './server-selector.css'
 })
-export class ServerSelector implements OnInit,OnDestroy{
+export class ServerSelector implements OnInit, OnDestroy {
+
+  CONNECTING_STATE: ServerInfoWithState ={
+    error: undefined,
+    success: undefined,
+    state: ServerInfoState.CONNECTING
+  }
 
 
   selectedServer: ServerConnection | undefined;
 
-  serverDetails: Map<ServerConnection, ServerInfo | ServerDetailError> = new Map();
+  serverDetails: Map<ServerConnection, ServerInfoWithState> = new Map();
 
   customUrl: string = "";
   customUrlError: string | undefined;
 
-  private interval!:number;
+  private interval!: number;
 
   constructor(protected serverLoaderService: ServerLoaderService,
               private webSocketService: WebSocketService,
@@ -52,10 +58,19 @@ export class ServerSelector implements OnInit,OnDestroy{
     this.serverLoaderService.connections.forEach(connection => {
       this.serverLoaderService.serverDetails(connection)
         .then(serverDetail => {
-          this.serverDetails.set(connection, serverDetail);
+          this.serverDetails.set(connection, {
+            state: ServerInfoState.SUCCESS,
+            error: undefined,
+            success: serverDetail
+          });
         })
         .catch(error => {
-          this.serverDetails.set(connection, error as ServerDetailError);
+          console.log("server-selector: error", error);
+          this.serverDetails.set(connection, {
+            state: ServerInfoState.ERROR,
+            success: undefined,
+            error: error
+          });
         })
     })
   }
@@ -82,7 +97,7 @@ export class ServerSelector implements OnInit,OnDestroy{
     this.selectedServer = server;
     this.webSocketService.connect(server, this.identityService.defaultIdentity())
       .then(c => this.selectedServer = undefined)
-      .catch(e => this.selectedServer=undefined);
+      .catch(e => this.selectedServer = undefined);
   }
 
 
@@ -93,4 +108,18 @@ export class ServerSelector implements OnInit,OnDestroy{
 
   protected readonly ServerIcon = ServerIcon;
   protected readonly UserIcon = UserIcon;
+  protected readonly ServerInfoState = ServerInfoState;
+  protected readonly ServerOffIcon = ServerOffIcon;
+}
+
+export interface ServerInfoWithState {
+  state: ServerInfoState;
+  success: ServerInfo | undefined;
+  error: string | undefined;
+}
+
+export enum ServerInfoState {
+  CONNECTING,
+  SUCCESS,
+  ERROR
 }

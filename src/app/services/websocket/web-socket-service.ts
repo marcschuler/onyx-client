@@ -11,6 +11,7 @@ import {
   ClientChannelLeaveEvent,
   EventBody,
   EventType,
+  IceServerData,
   ServerTreeChangeEvent
 } from './WebSocketEvents';
 import {ToastService, ToastType} from '../toast-service';
@@ -21,21 +22,31 @@ import {PeerConnectionService} from '../peer/peer-connection-service';
 })
 export class WebSocketService {
 
+  LOG_MESSAGES: boolean = false;
+
   connection: WebSocketServerConnection | undefined;
 
   private messageHandlers: Map<EventType, MessageHandler<any>> = new Map();
 
   constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService,
-              private peerConnectionService:PeerConnectionService) {
+              private peerConnectionService: PeerConnectionService) {
     this.addHandler(EventType.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
     this.addHandler(EventType.AuthSuccessEvent, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessEvent, c));
     this.addHandler(EventType.ServerTreeChangeEvent, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeEvent, c))
     this.addHandler(EventType.ClientChannelJoinEvent, (e, c) => this.onClientChannelJoinEvent(e as ClientChannelJoinEvent, c))
     this.addHandler(EventType.ClientChannelLeaveEvent, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveEvent, c));
+    this.addHandler(EventType.IceServerData, (e, c) => this.onIceServerData(e as IceServerData, c));
   }
 
 
-  public connect(serverConnection: ServerConnection, identity: Identity): Promise<WebSocketServerConnection> {
+  public connect(serverConnection: ServerConnection, identity: Identity, retries: number = 1): Promise<WebSocketServerConnection> {
+    if (retries < 0) {
+      console.log("ws: no retries, disconnecting");
+      if (this.connection)
+        this.connection.serverConnection.close();
+      this.connection = undefined;
+      return Promise.reject("No more retries");
+    }
     return new Promise((resolve, reject) => {
       var url = serverConnection.url;
       url = url.replace("http://", "ws://")
@@ -49,44 +60,58 @@ export class WebSocketService {
         state: ConnectionState.CONNECTING,
         serverConnection: webSocket,
         identity: identity,
-        clients: []
+        clients: [],
+        config: {}
       }
       webSocket.onopen = (_) => {
         console.log("ws: connected to server")
+        retries = 4;
         resolve(connection);
       };
       webSocket.onmessage = (event) => {
-        console.log('ws: message from server: ', event.data);
+        if (this.LOG_MESSAGES)
+          console.log('ws: message from server: ', event.data);
         const data: EventBody<EventType> = JSON.parse(event.data);
         this.handleEvent(connection, data)
           .catch(e => console.error(e));
       };
+
+      const reconnect = (error: string)=>{
+        console.log("ws: reconnecting");
+        this.peerConnectionService.updatePeerConnections();
+       // setTimeout(() => {
+          this.toastService.create({
+            title: "Server connection failed",
+            message: error,
+            type: ToastType.Error,
+          })
+        this.connection = undefined;
+        reject(error);
+          //TODO does not work, every reconnect doubles the connections
+          // this.connect(serverConnection, identity, retries - 1);
+       // }, 4000);
+      }
+
       webSocket.onclose = () => {
         console.log('ws: Disconnected');
         connection.state = ConnectionState.CLOSED;
-        reject("Connection closed");
-        setTimeout(() => { this.connect(serverConnection, identity); }, 2000);
-        this.peerConnectionService.updatePeerConnections();
+        reconnect("Server closed connection");
+
       };
       webSocket.onerror = (error) => {
         console.error('ws: Error on connection', error);
         //TODO is connection closed? What is the state?
         connection.state = ConnectionState.ERROR;
-        this.toastService.create({
-          title: "Connection lost",
-          message: "Trying to reconnect...",
-          type: ToastType.Error,
-          duration: 3000
-        })
-        this.peerConnectionService.updatePeerConnections();
-        reject(error);
+        reconnect("Connection error " + error.type);
       };
     });
-
   }
 
+
+
   public sendToServer<T extends EventType>(connection: WebSocketServerConnection, event: EventBody<T>) {
-    console.log("ws: sending data: " + JSON.stringify(event))
+    if (this.LOG_MESSAGES)
+      console.log("ws: sending data: " + JSON.stringify(event))
     connection.serverConnection.send(JSON.stringify(event));
   }
 
@@ -128,6 +153,12 @@ export class WebSocketService {
     connection.data = event;
   }
 
+
+  private onIceServerData(event: IceServerData, connection: WebSocketServerConnection) {
+    console.log("ws: added " + event.iceServers.length + " ice servers");
+    connection.config.iceServers = event.iceServers;
+  }
+
   private onClientChannelJoinEvent(event: ClientChannelJoinEvent, connection: WebSocketServerConnection) {
     const clients = connection.clients.filter(c => event.user.id == c.id);
     let client: Client | undefined;
@@ -165,6 +196,7 @@ export class WebSocketService {
   public isMe(client: Client, connection: WebSocketServerConnection): Boolean {
     return (client.username == connection.identity.username) //TODO check by key id - this is terrible
   }
+
 }
 
 export type MessageHandler<T extends EventType> = (event: EventBody<T>, connection: WebSocketServerConnection) => void | any;
