@@ -1,5 +1,5 @@
 import {SignedContent} from "../crypto-service";
-import {ServerTree} from "./WebSocketServerConnection";
+import {Channel, ServerTree} from "./WebSocketServerConnection";
 
 /**
  * GENERAL
@@ -7,6 +7,15 @@ import {ServerTree} from "./WebSocketServerConnection";
 export interface EventBody<T extends EventType> {
   type: T;
 }
+
+export interface EventBodyRequest<T extends EventType,U extends EventBodyResponse<any>> extends EventBody<T> {
+  requestId?: string; //Should be set by the connection and ignored by the normal user
+}
+
+export interface EventBodyResponse<T extends EventType> extends EventBody<T> {
+  respondsTo: string;
+}
+
 
 
 type Brand<K, T> = K & { __brand: T };
@@ -37,6 +46,9 @@ export enum EventType {
   PeerAnswer = "PeerAnswer",
   PeerAnswerForward = "PeerAnswerForward",
   IceServerData = "IceServerData",
+
+  ChannelDetailRequest="ChannelDetailRequest",
+  ChannelDetailResponse="ChannelDetailResponse",
 }
 
 export interface UserReference {
@@ -115,4 +127,17 @@ export interface IceServer {
   urls: string;
   username: string;
   credential: string;
+}
+
+
+/** Server
+ *
+ */
+
+export interface ChannelDetailRequest extends EventBodyRequest<EventType.ChannelDetailRequest,ChannelDetailResponse>{
+  channelId: ServerObjectId
+}
+
+export interface ChannelDetailResponse extends EventBodyResponse<EventType.ChannelDetailResponse>{
+  channel: Channel;
 }

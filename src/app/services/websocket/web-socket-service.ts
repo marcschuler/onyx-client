@@ -9,7 +9,7 @@ import {
   AuthSuccessEvent,
   ClientChannelJoinEvent,
   ClientChannelLeaveEvent,
-  EventBody,
+  EventBody, EventBodyRequest, EventBodyResponse,
   EventType,
   IceServerData,
   ServerTreeChangeEvent
@@ -27,6 +27,8 @@ export class WebSocketService {
   connection: WebSocketServerConnection | undefined;
 
   private messageHandlers: Map<EventType, MessageHandler<any>> = new Map();
+
+  private responseCallbacks: Map<string,ResponseMessageHandler<any>> = new Map();
 
   constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService,
               private peerConnectionService: PeerConnectionService) {
@@ -115,6 +117,12 @@ export class WebSocketService {
     connection.serverConnection.send(JSON.stringify(event));
   }
 
+  public sendToServerResponse<T extends EventType,U extends EventBodyResponse<any>>(connection: WebSocketServerConnection, event: EventBodyRequest<T,U>, response:ResponseMessageHandler<U>){
+    event.requestId = self.crypto.randomUUID();
+    this.responseCallbacks.set(event.requestId,response);
+    this.sendToServer(connection,event);
+  }
+
   public addHandler<T extends EventType>(t: EventType, handler: MessageHandler<T>) {
     if (this.messageHandlers.get(t))
       console.warn("Message handler for " + t + " already exists, overwrite...")
@@ -122,7 +130,17 @@ export class WebSocketService {
   }
 
   public async handleEvent<T extends EventType>(connection: WebSocketServerConnection, event: EventBody<T>) {
-    var handler = this.messageHandlers.get(event.type);
+    if ('respondsTo' in event){
+      const eventResponse = event as EventBodyResponse<T>;
+      const responseHandler = this.responseCallbacks.get(eventResponse.respondsTo);
+      if (responseHandler==undefined){
+        console.warn("No response handler for " + JSON.stringify(eventResponse));
+      }else{
+        this.responseCallbacks.delete(eventResponse.respondsTo);
+        responseHandler(eventResponse,connection);
+      }
+    }
+    const handler = this.messageHandlers.get(event.type);
     if (!handler) {
       console.warn("No handler for message of type " + event.type + " exists. Ignoring");
     } else {
@@ -201,3 +219,4 @@ export class WebSocketService {
 
 export type MessageHandler<T extends EventType> = (event: EventBody<T>, connection: WebSocketServerConnection) => void | any;
 
+export type ResponseMessageHandler<U extends EventBodyResponse<any>> = (event: U, connection: WebSocketServerConnection) => void | any;

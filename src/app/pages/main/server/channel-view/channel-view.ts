@@ -1,39 +1,66 @@
-import {Component, HostListener, Input} from '@angular/core';
-import {ServerObjectId} from '../../../../services/websocket/WebSocketEvents';
-import {BrushCleaningIcon, LucideAngularModule} from 'lucide-angular';
+import {AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {
+  ChannelDetailRequest,
+  ChannelDetailResponse,
+  EventType,
+  ServerObjectId
+} from '../../../../services/websocket/WebSocketEvents';
 import {WebSocketService} from '../../../../services/websocket/web-socket-service';
 import {PeerConnectionService} from '../../../../services/peer/peer-connection-service';
 import {PeerView} from '../../../../components/server/peer-view/peer-view';
-import {NgStyle} from '@angular/common';
-import {InterfaceService, InterfaceSettings} from '../../../../services/interface-service';
+import {InterfaceService} from '../../../../services/interface-service';
 import {FormsModule} from '@angular/forms';
 import {MessageView} from '../../../../components/server/message-view/message-view';
+import {Channel} from '../../../../services/websocket/WebSocketServerConnection';
+import {Spinner} from '../../../../components/ui/spinner/spinner';
 
 @Component({
   selector: 'app-channel-view',
   imports: [
-    LucideAngularModule,
     PeerView,
     FormsModule,
     MessageView,
+    Spinner,
   ],
   templateUrl: './channel-view.html',
   styleUrl: './channel-view.css'
 })
-export class ChannelView {
+export class ChannelView implements AfterViewInit, OnChanges {
 
   @Input() channelId!: ServerObjectId;
+
+  details: Channel | undefined;
 
   gridRows: number = 1;
   gridCols: number = 1;
 
   resizing: boolean = false;
 
-  protected readonly BrushCleaningIcon = BrushCleaningIcon;
-
   constructor(protected webSocketService: WebSocketService,
               protected peerConnectionService: PeerConnectionService,
               protected interfaceService: InterfaceService) {
+  }
+
+  ngAfterViewInit(): void {
+    this.updateDetails();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['channelId']) {
+      this.details = undefined;
+      this.updateDetails();
+    }
+  }
+
+  updateDetails() {
+    this.webSocketService.sendToServerResponse(this.webSocketService.connection!,
+      {
+        channelId: this.channelId,
+        type: EventType.ChannelDetailRequest,
+      } as ChannelDetailRequest, (event, connection) => {
+        const e = event as ChannelDetailResponse;
+        this.details = e.channel;
+      })
   }
 
   /**

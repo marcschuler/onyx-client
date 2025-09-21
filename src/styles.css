@@ -53,3 +53,7 @@ h4 {
   @apply transition-all duration-200 ease-in-out
 }
 
+.skeleton{
+  @apply animate-pulse h-2 bg-gray-400 w-32
+}
+
