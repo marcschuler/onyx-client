@@ -30,9 +30,15 @@
                 <span class="text-neutral-400">{{ s.url }}</span>
               }
               @case (ServerInfoState.SUCCESS) {
-                @let info = detail.success!.details[0];
-                <p class="w-64 font-bold">{{ info.name }}</p>
-                <span class="text-neutral-400">{{ s.url }}</span>
+                @if (detail.success && detail.success.details) {
+                  @let info = detail.success!.details[0];
+                  <p class="w-64 font-bold">{{ info.name }}</p>
+                  <span class="text-neutral-400">{{ s.url }}</span>
+                } @else {
+                  <p class="w-64 font-bold">{{ s.url }}</p>
+                  <span class="text-red-400 line-clamp-2">Server gave invalid response</span>
+                }
+
               }
               @case (ServerInfoState.ERROR) {
                 <p class="w-64 font-bold">{{ s.url }}</p>

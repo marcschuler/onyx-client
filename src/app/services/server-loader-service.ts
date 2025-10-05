@@ -34,9 +34,9 @@ export class ServerLoaderService {
     localStorage.setItem("serverConnections", JSON.stringify(this.connections));
   }
 
-  public serverDetails(connection: ServerConnection): Promise<ServerInfo> {
+  public serverDetails(connection: ServerConnection): Promise<ServerDTOList> {
     // @ts-ignore
-    return this.httpClient.get<ServerInfo>(connection.url + "/v0/info/server").pipe(
+    return this.httpClient.get<ServerDTOList>(connection.url + "/v0/info/server").pipe(
       catchError(err => {
         // Wrap into custom error object
         return throwError(() => new Error(`Custom error: ${err.message || err.statusText}`));
@@ -50,16 +50,14 @@ export interface ServerConnection {
   url: string;
 }
 
-export interface ServerInfo {
-  version: string;
-  details: ServerInfoDetail[];
+export interface ServerDTOList {
+  details: ServerDTO[];
 }
 
-export interface ServerInfoDetail {
+export interface ServerDTO {
   id: string;
   name: string;
   publicKey: string;
-  user: number;
 }
 
 export interface ServerDetailError {

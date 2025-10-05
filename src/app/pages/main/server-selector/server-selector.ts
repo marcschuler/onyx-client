@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Spinner} from '../../../components/ui/spinner/spinner';
 import {
   ServerConnection,
-  ServerInfo,
+  ServerDTOList,
   ServerDetailError,
   ServerLoaderService
 } from '../../../services/server-loader-service';
@@ -114,7 +114,7 @@ export class ServerSelector implements OnInit, OnDestroy {
 
 export interface ServerInfoWithState {
   state: ServerInfoState;
-  success: ServerInfo | undefined;
+  success: ServerDTOList | undefined;
   error: string | undefined;
 }
 
