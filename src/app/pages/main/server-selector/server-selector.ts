@@ -10,6 +10,7 @@ import {FormsModule} from '@angular/forms';
 import {ImageIcon, LucideAngularModule, ServerIcon, ServerOffIcon, UserIcon} from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {IdentityService} from '../../../services/identity-service';
+import {ServerDTO} from '../../../../api/webrtc-server';
 
 @Component({
   selector: 'app-server-selector',
@@ -114,7 +115,7 @@ export class ServerSelector implements OnInit, OnDestroy {
 
 export interface ServerInfoWithState {
   state: ServerInfoState;
-  success: ServerInfo | undefined;
+  success: ServerDTO[] | undefined;
   error: string | undefined;
 }
 

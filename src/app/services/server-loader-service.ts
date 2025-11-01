@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, firstValueFrom, throwError} from 'rxjs';
+import {ServerDTO} from '../../api/webrtc-server';
 
 @Injectable({
   providedIn: 'root'
@@ -34,9 +35,9 @@ export class ServerLoaderService {
     localStorage.setItem("serverConnections", JSON.stringify(this.connections));
   }
 
-  public serverDetails(connection: ServerConnection): Promise<ServerInfo> {
+  public serverDetails(connection: ServerConnection): Promise<ServerDTO[]> {
     // @ts-ignore
-    return this.httpClient.get<ServerInfo>(connection.url + "/v0/info/server").pipe(
+    return this.httpClient.get<ServerDTO[]>(connection.url + "/v0/info/server").pipe(
       catchError(err => {
         // Wrap into custom error object
         return throwError(() => new Error(`Custom error: ${err.message || err.statusText}`));

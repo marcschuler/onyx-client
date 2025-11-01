@@ -133,8 +133,9 @@ export class WebSocketService {
     if ('respondsTo' in event){
       const eventResponse = event as EventBodyResponse<T>;
       const responseHandler = this.responseCallbacks.get(eventResponse.respondsTo);
-      if (responseHandler==undefined){
+      if (!responseHandler){
         console.warn("No response handler for " + JSON.stringify(eventResponse));
+        console.warn("Message was: " + JSON.stringify(event));
       }else{
         this.responseCallbacks.delete(eventResponse.respondsTo);
         responseHandler(eventResponse,connection);
@@ -143,6 +144,7 @@ export class WebSocketService {
     const handler = this.messageHandlers.get(event.type);
     if (!handler) {
       console.warn("No handler for message of type " + event.type + " exists. Ignoring");
+      console.warn("Message was: " + JSON.stringify(event));
     } else {
       handler(event, connection);
     }
