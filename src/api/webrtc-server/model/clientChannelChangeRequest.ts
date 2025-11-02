@@ -7,15 +7,12 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
-import { WebClient } from './webClient';
+import { MessageBody } from './messageBody';
 
 
-export interface ClientChannelChangeRequest { 
+export interface ClientChannelChangeRequest extends MessageBody { 
     channelId?: string;
     readonly type: ClientChannelChangeRequest.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace ClientChannelChangeRequest {
     export const TypeEnum = {

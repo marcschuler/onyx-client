@@ -7,15 +7,12 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
-import { WebClient } from './webClient';
+import { MessageBody } from './messageBody';
 
 
-export interface KickMessage { 
+export interface KickMessage extends MessageBody { 
     reason?: KickMessage.ReasonEnum;
     readonly type: KickMessage.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace KickMessage {
     export const ReasonEnum = {

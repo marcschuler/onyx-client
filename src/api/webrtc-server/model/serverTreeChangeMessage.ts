@@ -7,17 +7,14 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
 import { SectionDTO } from './sectionDTO';
-import { WebClient } from './webClient';
+import { MessageBody } from './messageBody';
 
 
-export interface ServerTreeChangeMessage { 
+export interface ServerTreeChangeMessage extends MessageBody { 
     name: string;
     sections: Array<SectionDTO>;
     readonly type: ServerTreeChangeMessage.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace ServerTreeChangeMessage {
     export const TypeEnum = {

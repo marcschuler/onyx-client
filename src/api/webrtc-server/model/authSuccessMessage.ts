@@ -7,16 +7,13 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
-import { WebClient } from './webClient';
+import { MessageBody } from './messageBody';
 
 
-export interface AuthSuccessMessage { 
+export interface AuthSuccessMessage extends MessageBody { 
     message?: string;
     jwt: string;
     readonly type: AuthSuccessMessage.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace AuthSuccessMessage {
     export const TypeEnum = {

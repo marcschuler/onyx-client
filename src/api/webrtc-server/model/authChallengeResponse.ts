@@ -7,19 +7,15 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
-import { SignedContentAuthChallenge } from './signedContentAuthChallenge';
-import { JsonNode } from './jsonNode';
-import { WebClient } from './webClient';
+import { SignedContent } from './signedContent';
+import { MessageBody } from './messageBody';
 
 
-export interface AuthChallengeResponse { 
-    publicKey: JsonNode;
-    challenge: SignedContentAuthChallenge;
+export interface AuthChallengeResponse extends MessageBody { 
+    publicKey: any | null;
+    challenge: SignedContent;
     username: string;
     readonly type: AuthChallengeResponse.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace AuthChallengeResponse {
     export const TypeEnum = {

@@ -9,7 +9,9 @@
  */
 
 
-export interface MessageBodyRequest { 
-    requestId?: string;
+export interface IceServer { 
+    urls?: string;
+    username?: string;
+    credential?: string;
 }
 

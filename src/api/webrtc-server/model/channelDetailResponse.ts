@@ -7,17 +7,13 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
 import { ChannelReference } from './channelReference';
-import { WebClient } from './webClient';
 
 
 export interface ChannelDetailResponse { 
     respondsTo: string;
     channel?: ChannelReference;
     readonly type: ChannelDetailResponse.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace ChannelDetailResponse {
     export const TypeEnum = {

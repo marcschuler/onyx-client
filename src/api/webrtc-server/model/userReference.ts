@@ -9,7 +9,9 @@
  */
 
 
-export interface MessageBodyRequest { 
-    requestId?: string;
+export interface UserReference { 
+    id?: string;
+    publicKey: any | null;
+    username?: string;
 }
 

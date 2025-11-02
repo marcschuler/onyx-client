@@ -34,9 +34,9 @@ export class ServerLoaderService {
     localStorage.setItem("serverConnections", JSON.stringify(this.connections));
   }
 
-  public serverDetails(connection: ServerConnection): Promise<ServerDTOList> {
+  public serverDetails(connection: ServerConnection): Promise<ServerDTO[]> {
     // @ts-ignore
-    return this.httpClient.get<ServerDTOList>(connection.url + "/v0/info/server").pipe(
+    return this.httpClient.get<ServerDTO[]>(connection.url + "/v0/info/server").pipe(
       catchError(err => {
         // Wrap into custom error object
         return throwError(() => new Error(`Custom error: ${err.message || err.statusText}`));

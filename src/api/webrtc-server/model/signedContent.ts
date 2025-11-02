@@ -9,7 +9,8 @@
  */
 
 
-export interface MessageBodyRequest { 
-    requestId?: string;
+export interface SignedContent { 
+    content: string;
+    contentSignature: string;
 }
 

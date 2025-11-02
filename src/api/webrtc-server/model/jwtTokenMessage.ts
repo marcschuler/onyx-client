@@ -7,15 +7,12 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
-import { WebClient } from './webClient';
+import { MessageBody } from './messageBody';
 
 
-export interface JwtTokenMessage { 
+export interface JwtTokenMessage extends MessageBody { 
     token: string;
     readonly type: JwtTokenMessage.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace JwtTokenMessage {
     export const TypeEnum = {

@@ -2,8 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Spinner} from '../../../components/ui/spinner/spinner';
 import {
   ServerConnection,
-  ServerInfo,
-  ServerDetailError,
   ServerLoaderService
 } from '../../../services/server-loader-service';
 import {FormsModule} from '@angular/forms';

@@ -7,17 +7,13 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
-import { JsonNode } from './jsonNode';
-import { WebClient } from './webClient';
+import { MessageBody } from './messageBody';
 
 
-export interface PeerOffer { 
+export interface PeerOffer extends MessageBody { 
     clientTo?: string;
-    offer?: JsonNode;
+    offer?: any | null;
     readonly type: PeerOffer.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace PeerOffer {
     export const TypeEnum = {

@@ -9,7 +9,7 @@
  */
 
 
-export interface MessageBodyRequest { 
-    requestId?: string;
+export interface MessageBody { 
+    type: string;
 }
 

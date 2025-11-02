@@ -3,19 +3,14 @@ import {Client, ConnectionState, WebSocketServerConnection} from './WebSocketSer
 import {Identity, IdentityService} from '../identity-service';
 import {ServerConnection} from '../server-loader-service';
 import {CryptoService} from '../crypto-service';
-import {
-  AuthChallengeRequest,
-  AuthChallengeResponse,
-  AuthSuccessEvent,
-  ClientChannelJoinEvent,
-  ClientChannelLeaveEvent,
-  EventBody, EventBodyRequest, EventBodyResponse,
-  EventType,
-  IceServerData,
-  ServerTreeChangeEvent
-} from './WebSocketEvents';
 import {ToastService, ToastType} from '../toast-service';
 import {PeerConnectionService} from '../peer/peer-connection-service';
+import {
+  AuthChallengeRequest,
+  AuthSuccessMessage,
+  ClientChannelJoinMessage, ClientChannelLeaveMessage, IceServerMessage, MessageBody, MessageTypes,
+  ServerTreeChangeMessage
+} from '../../../api/webrtc-server';
 
 @Injectable({
   providedIn: 'root'
@@ -26,18 +21,18 @@ export class WebSocketService {
 
   connection: WebSocketServerConnection | undefined;
 
-  private messageHandlers: Map<EventType, MessageHandler<any>> = new Map();
+  private messageHandlers: Map<MessageTypes, MessageHandler<any>> = new Map();
 
   private responseCallbacks: Map<string,ResponseMessageHandler<any>> = new Map();
 
   constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService,
               private peerConnectionService: PeerConnectionService) {
-    this.addHandler(EventType.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
-    this.addHandler(EventType.AuthSuccessEvent, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessEvent, c));
-    this.addHandler(EventType.ServerTreeChangeEvent, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeEvent, c))
-    this.addHandler(EventType.ClientChannelJoinEvent, (e, c) => this.onClientChannelJoinEvent(e as ClientChannelJoinEvent, c))
-    this.addHandler(EventType.ClientChannelLeaveEvent, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveEvent, c));
-    this.addHandler(EventType.IceServerData, (e, c) => this.onIceServerData(e as IceServerData, c));
+    this.addHandler(AuthChallengeRequest.TypeEnum.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
+    this.addHandler(AuthSuccessMessage.TypeEnum.AuthSuccessMessage, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessMessage, c));
+    this.addHandler(ServerTreeChangeMessage.TypeEnum.ServerTreeChangeMessage, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeMessage, c))
+    this.addHandler(ClientChannelJoinMessage.TypeEnum.ClientChannelJoinMessage, (e, c) => this.onClientChannelJoinEvent(e as ClientChannelJoinMessage, c))
+    this.addHandler(ClientChannelLeaveMessage.TypeEnum.ClientChannelLeaveMessage, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveMessage, c));
+    this.addHandler(IceServerMessage.TypeEnum.IceServerMessage, (e, c) => this.onIceServerData(e as IceServerMessage, c));
   }
 
 
@@ -73,7 +68,7 @@ export class WebSocketService {
       webSocket.onmessage = (event) => {
         if (this.LOG_MESSAGES)
           console.log('ws: message from server: ', event.data);
-        const data: EventBody<EventType> = JSON.parse(event.data);
+        const data: MessageBody = JSON.parse(event.data);
         this.handleEvent(connection, data)
           .catch(e => console.error(e));
       };
@@ -111,7 +106,7 @@ export class WebSocketService {
 
 
 
-  public sendToServer<T extends EventType>(connection: WebSocketServerConnection, event: EventBody<T>) {
+  public sendToServer(connection: WebSocketServerConnection, event: MessageBody) {
     if (this.LOG_MESSAGES)
       console.log("ws: sending data: " + JSON.stringify(event))
     connection.serverConnection.send(JSON.stringify(event));
@@ -123,15 +118,15 @@ export class WebSocketService {
     this.sendToServer(connection,event);
   }
 
-  public addHandler<T extends EventType>(t: EventType, handler: MessageHandler<T>) {
+  public addHandler<T>(t: MessageTypes, handler: MessageHandler<T>) {
     if (this.messageHandlers.get(t))
       console.warn("Message handler for " + t + " already exists, overwrite...")
     this.messageHandlers.set(t, handler);
   }
 
-  public async handleEvent<T extends EventType>(connection: WebSocketServerConnection, event: EventBody<T>) {
+  public async handleEvent<T>(connection: WebSocketServerConnection, event: MessageBody) {
     if ('respondsTo' in event){
-      const eventResponse = event as EventBodyResponse<T>;
+      const eventResponse = event as MessageBody;
       const responseHandler = this.responseCallbacks.get(eventResponse.respondsTo);
       if (!responseHandler){
         console.warn("No response handler for " + JSON.stringify(eventResponse));
@@ -219,6 +214,6 @@ export class WebSocketService {
 
 }
 
-export type MessageHandler<T extends EventType> = (event: EventBody<T>, connection: WebSocketServerConnection) => void | any;
+export type MessageHandler<T extends MessageBody> = (event: T, connection: WebSocketServerConnection) => void | any;
 
 export type ResponseMessageHandler<U extends EventBodyResponse<any>> = (event: U, connection: WebSocketServerConnection) => void | any;

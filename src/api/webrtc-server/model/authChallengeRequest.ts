@@ -8,15 +8,12 @@
  * Do not edit the class manually.
  */
 import { AuthChallenge } from './authChallenge';
-import { Server } from './server';
-import { WebClient } from './webClient';
+import { MessageBody } from './messageBody';
 
 
-export interface AuthChallengeRequest { 
+export interface AuthChallengeRequest extends MessageBody { 
     challenge: AuthChallenge;
     readonly type: AuthChallengeRequest.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace AuthChallengeRequest {
     export const TypeEnum = {

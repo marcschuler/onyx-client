@@ -7,21 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
-import { WebClient } from './webClient';
 
 
 export interface MessageBodyResponse { 
     respondsTo: string;
-    readonly type: MessageBodyResponse.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
-export namespace MessageBodyResponse {
-    export const TypeEnum = {
-        MessageBodyResponse: 'MessageBodyResponse'
-    } as const;
-    export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
-}
-
 

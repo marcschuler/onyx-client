@@ -7,17 +7,14 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
 import { UserReference } from './userReference';
-import { WebClient } from './webClient';
+import { MessageBody } from './messageBody';
 
 
-export interface ClientChannelJoinMessage { 
+export interface ClientChannelJoinMessage extends MessageBody { 
     user: UserReference;
     channelId?: string;
     readonly type: ClientChannelJoinMessage.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace ClientChannelJoinMessage {
     export const TypeEnum = {

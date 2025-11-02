@@ -7,16 +7,13 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
-import { WebClient } from './webClient';
+import { MessageBody } from './messageBody';
 
 
-export interface ChannelCreateRequest { 
+export interface ChannelCreateRequest extends MessageBody { 
     name?: string;
     section?: string;
     readonly type: ChannelCreateRequest.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace ChannelCreateRequest {
     export const TypeEnum = {

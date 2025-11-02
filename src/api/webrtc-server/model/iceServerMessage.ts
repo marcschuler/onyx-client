@@ -7,16 +7,13 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Server } from './server';
 import { IceServer } from './iceServer';
-import { WebClient } from './webClient';
+import { MessageBody } from './messageBody';
 
 
-export interface IceServerMessage { 
+export interface IceServerMessage extends MessageBody { 
     iceServers?: Array<IceServer>;
     readonly type: IceServerMessage.TypeEnum;
-    server?: Server;
-    clients?: Array<WebClient>;
 }
 export namespace IceServerMessage {
     export const TypeEnum = {
