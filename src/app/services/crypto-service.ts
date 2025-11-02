@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Identity} from './identity-service';
-import {KeyId} from './websocket/WebSocketEvents';
+import {KeyId} from './websocket/WebSocketServerConnection';
 
 @Injectable({
   providedIn: 'root'

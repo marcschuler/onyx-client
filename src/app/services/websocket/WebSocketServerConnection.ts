@@ -1,5 +1,5 @@
 import {Identity} from '../identity-service';
-import {IceServer, KeyId, ServerObjectId} from './WebSocketEvents';
+import {IceServer, SectionDTO} from '../../../api/webrtc-server';
 
 export interface WebSocketServerConnection {
   state: ConnectionState;
@@ -26,13 +26,7 @@ export interface ServerConfig{
 
 export interface ServerTree {
   name: string;
-  sections: Section[];
-}
-
-export interface Section {
-  id: string;
-  name: string;
-  channels: Channel[];
+  sections: SectionDTO[];
 }
 
 export interface Channel {
@@ -47,5 +41,12 @@ export enum ConnectionState {
   CONNECTED = "CONNECTED",
   CLOSED = "CLOSED",
   ERROR = "ERROR",
-
 }
+
+
+type Brand<K, T> = K & { __brand: T };
+
+// The ID all server objects use, may be a UUID
+export type ServerObjectId = Brand<string, "ServerObjectId">;
+// The ID of a key
+export type KeyId = Brand<string, "KeyId">;

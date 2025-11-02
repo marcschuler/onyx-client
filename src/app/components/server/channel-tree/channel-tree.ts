@@ -1,10 +1,18 @@
-import {Component} from '@angular/core';
-import {FolderClosedIcon, HexagonIcon, LogInIcon, LucideAngularModule, MicOffIcon} from 'lucide-angular';
+import {Component, Input} from '@angular/core';
+import {
+  FolderClosedIcon,
+  HexagonIcon,
+  LogInIcon,
+  LucideAngularModule,
+  MicOffIcon,
+  SettingsIcon,
+  TrashIcon
+} from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {Spinner} from '../../ui/spinner/spinner';
 import {Channel} from '../../../services/websocket/WebSocketServerConnection';
-import {ClientChannelChangeRequest, EventType} from '../../../services/websocket/WebSocketEvents';
 import {NgClass} from '@angular/common';
+import {ChannelReference, ClientChannelChangeRequest} from '../../../../api/webrtc-server';
 
 @Component({
   selector: 'app-channel-tree',
@@ -18,8 +26,8 @@ import {NgClass} from '@angular/common';
 })
 export class ChannelTree {
 
-  readonly FolderClosedIcon = FolderClosedIcon;
-  readonly MicOffIcon = MicOffIcon;
+  @Input() editMode!: boolean;
+
   readonly HexagonIcon = HexagonIcon;
 
   constructor(protected webSocketService: WebSocketService) {
@@ -28,11 +36,14 @@ export class ChannelTree {
 
   protected readonly LogInIcon = LogInIcon;
 
-  changeChannel(channel: Channel) {
+  changeChannel(channel: ChannelReference) {
     console.log("Changing channel to " + channel.name);
-    this.webSocketService.sendToServer(this.webSocketService.connection!, {
+    this.webSocketService.send(this.webSocketService.connection!, {
       channelId: channel.id,
-      type: EventType.ClientChannelChangeRequest
+      type: ClientChannelChangeRequest.TypeEnum.ClientChannelChangeRequest
     } as ClientChannelChangeRequest);
   }
+
+  protected readonly SettingsIcon = SettingsIcon;
+  protected readonly TrashIcon = TrashIcon;
 }

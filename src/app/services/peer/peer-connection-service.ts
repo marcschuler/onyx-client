@@ -3,8 +3,8 @@ import {MediaConnection, PeerConnection, PeerConnectionState} from './PeerConnec
 import {Client, ConnectionState, WebSocketServerConnection} from '../websocket/WebSocketServerConnection';
 import {WebSocketService} from '../websocket/web-socket-service';
 import {CryptoService} from '../crypto-service';
-import {EventType, PeerAnswer, PeerAnswerForward, PeerOffer, PeerOfferForward} from '../websocket/WebSocketEvents';
 import {ToastMessage, ToastService, ToastType} from '../toast-service';
+import {PeerAnswer, PeerAnswerForward, PeerOffer, PeerOfferForward} from '../../../api/webrtc-server';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +28,8 @@ export class PeerConnectionService {
               private toastService: ToastService) {
     setTimeout(() => {
       this.webSocketService = injector.get(WebSocketService);
-      this.webSocketService.addHandler(EventType.PeerOfferForward, (e, c) => this.onPeerOfferForward(e as PeerOfferForward, c))
-      this.webSocketService.addHandler(EventType.PeerAnswerForward, (e, c) => this.onPeerAnswerForward(e as PeerAnswerForward, c))
+      this.webSocketService.addHandler(PeerOfferForward.TypeEnum.PeerOfferForward, (e, c) => this.onPeerOfferForward(e as PeerOfferForward, c))
+      this.webSocketService.addHandler(PeerAnswerForward.TypeEnum.PeerAnswerForward, (e, c) => this.onPeerAnswerForward(e as PeerAnswerForward, c))
     }, 50);
   }
 
@@ -45,9 +45,9 @@ export class PeerConnectionService {
     const answer = await otherClient.connection.createAnswer();
     await otherClient.connection.setLocalDescription(answer);
     console.log("peer: sending answer")
-    this.webSocketService.sendToServer(c, {
+    this.webSocketService.send(c, {
       answer: answer,
-      type: EventType.PeerAnswer,
+      type: PeerAnswer.TypeEnum.PeerAnswer,
       clientTo: otherClient.client.id
     } as PeerAnswer)
   }
@@ -104,7 +104,7 @@ export class PeerConnectionService {
       //  iceCandidatePoolSize: 15,
       //   bundlePolicy: 'max-bundle',
       //   rtcpMuxPolicy: 'require',
-      iceServers: iceServers,
+      iceServers: iceServers as RTCIceServer[],
     };
     if (iceServers && iceServers.length < 2)
       console.warn("Got less than two ice servers (" + iceServers.length + "), this may be a problem")
@@ -187,10 +187,10 @@ export class PeerConnectionService {
     console.log("peer: connecting to " + peer.client.id + " (nice mode)")
     const offer = await pc.createOffer(); //{iceRestart: true}
     await pc.setLocalDescription(offer);
-    this.webSocketService.sendToServer(this.webSocketService.connection!,
+    this.webSocketService.send(this.webSocketService.connection!,
       {
         clientTo: peer.client.id,
-        type: EventType.PeerOffer,
+        type: PeerOffer.TypeEnum.PeerOffer,
         offer: offer
       } as PeerOffer)
     peer.state = PeerConnectionState.Offered;

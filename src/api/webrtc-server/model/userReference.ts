@@ -10,8 +10,8 @@
 
 
 export interface UserReference { 
-    id?: string;
+    id: string;
     publicKey: any | null;
-    username?: string;
+    username: string;
 }
 

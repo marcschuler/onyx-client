@@ -1,18 +1,13 @@
 import {AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {
-  ChannelDetailRequest,
-  ChannelDetailResponse,
-  EventType,
-  ServerObjectId
-} from '../../../../services/websocket/WebSocketEvents';
+
 import {WebSocketService} from '../../../../services/websocket/web-socket-service';
 import {PeerConnectionService} from '../../../../services/peer/peer-connection-service';
 import {PeerView} from '../../../../components/server/peer-view/peer-view';
 import {InterfaceService} from '../../../../services/interface-service';
 import {FormsModule} from '@angular/forms';
 import {MessageView} from '../../../../components/server/message-view/message-view';
-import {Channel} from '../../../../services/websocket/WebSocketServerConnection';
-import {Spinner} from '../../../../components/ui/spinner/spinner';
+import {ServerObjectId} from '../../../../services/websocket/WebSocketServerConnection';
+import {ChannelDetailRequest, ChannelDetailResponse, ChannelReference} from '../../../../../api/webrtc-server';
 
 @Component({
   selector: 'app-channel-view',
@@ -20,7 +15,6 @@ import {Spinner} from '../../../../components/ui/spinner/spinner';
     PeerView,
     FormsModule,
     MessageView,
-    Spinner,
   ],
   templateUrl: './channel-view.html',
   styleUrl: './channel-view.css'
@@ -29,7 +23,7 @@ export class ChannelView implements AfterViewInit, OnChanges {
 
   @Input() channelId!: ServerObjectId;
 
-  details: Channel | undefined;
+  details: ChannelReference | undefined;
 
   gridRows: number = 1;
   gridCols: number = 1;
@@ -53,10 +47,10 @@ export class ChannelView implements AfterViewInit, OnChanges {
   }
 
   updateDetails() {
-    this.webSocketService.sendToServerResponse(this.webSocketService.connection!,
+    this.webSocketService.sendWithResponse(this.webSocketService.connection!,
       {
         channelId: this.channelId,
-        type: EventType.ChannelDetailRequest,
+        type: ChannelDetailRequest.TypeEnum.ChannelDetailRequest,
       } as ChannelDetailRequest, (event, connection) => {
         const e = event as ChannelDetailResponse;
         this.details = e.channel;

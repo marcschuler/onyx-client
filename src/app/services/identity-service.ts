@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {KeyId} from './websocket/WebSocketEvents';
 import {CryptoService} from './crypto-service';
 import {ToastService, ToastType} from './toast-service';
+import {KeyId} from './websocket/WebSocketServerConnection';
 
 @Injectable({
   providedIn: 'root'

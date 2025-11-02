@@ -7,11 +7,12 @@ export class InterfaceService {
 
   settings: InterfaceSettings;
 
-  private defaultSettings = {
+  private defaultSettings: InterfaceSettings = {
     channelSplitSize: {
       peerView: 70,
       messageView: 30
-    }
+    },
+    sidebarWidth: 200
   };
 
   constructor() {
@@ -31,5 +32,6 @@ export class InterfaceService {
 
 
 export interface InterfaceSettings {
-  channelSplitSize: { peerView: number, messageView: number }
+  channelSplitSize: { peerView: number, messageView: number },
+  sidebarWidth: number
 }

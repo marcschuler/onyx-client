@@ -41,6 +41,10 @@ button {
   @apply bg-red-600
 }
 
+.button-ghost{
+  @apply border-2 border-dotted border-neutral-400 bg-neutral-800
+}
+
 h3 {
   @apply text-xl
 }
