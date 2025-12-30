@@ -7,12 +7,12 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserReference } from './userReference';
+import { PublicUserDTO } from './publicUserDTO';
 import { MessageBody } from './messageBody';
 
 
 export interface ClientChannelLeaveMessage extends MessageBody { 
-    user: UserReference;
+    user: PublicUserDTO;
     readonly type: ClientChannelLeaveMessage.TypeEnum;
 }
 export namespace ClientChannelLeaveMessage {

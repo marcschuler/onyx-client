@@ -7,12 +7,10 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ChannelDTO } from './channelDTO';
 
 
-export interface SectionDTO { 
-    name?: string;
+export interface ChannelDTO { 
     id?: string;
-    channels?: Array<ChannelDTO>;
+    name?: string;
 }
 

@@ -1,5 +1,6 @@
 @if (webSocketService.connection) {
-  <app-server></app-server>
+  <app-server [connection]="webSocketService.connection"></app-server>
 } @else {
-  <app-server-selector></app-server-selector>
+  <!--<app-server-selector></app-server-selector>-->
+  <app-settings></app-settings>
 }

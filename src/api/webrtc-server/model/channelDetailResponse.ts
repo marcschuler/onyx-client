@@ -7,12 +7,12 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ChannelReference } from './channelReference';
+import { ChannelDTO } from './channelDTO';
 
 
 export interface ChannelDetailResponse { 
     respondsTo: string;
-    channel?: ChannelReference;
+    channel?: ChannelDTO;
     readonly type: ChannelDetailResponse.TypeEnum;
 }
 export namespace ChannelDetailResponse {

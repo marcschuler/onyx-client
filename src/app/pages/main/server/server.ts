@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, HostListener, Input} from '@angular/core';
 import {ChannelTree} from '../../../components/server/channel-tree/channel-tree';
 import {UserPanel} from '../../../components/server/user-panel/user-panel';
 import {ChannelView} from './channel-view/channel-view';
@@ -6,6 +6,7 @@ import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {InfoIcon, LucideAngularModule, SettingsIcon} from 'lucide-angular';
 import {NgStyle} from '@angular/common';
 import {InterfaceService} from '../../../services/interface-service';
+import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 
 @Component({
   selector: 'app-server',
@@ -20,6 +21,8 @@ import {InterfaceService} from '../../../services/interface-service';
   styleUrl: './server.css'
 })
 export class Server {
+
+  @Input() connection!: WebSocketServerConnection;
 
   editMode = false;
 

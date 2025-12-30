@@ -9,7 +9,7 @@ import {KeyId} from './websocket/WebSocketServerConnection';
 })
 export class IdentityService {
 
-  private IDENTITY_STORE_KEY="identities";
+  private IDENTITY_STORE_KEY = "identities";
 
   identities: Identity[] = [];
 
@@ -33,7 +33,8 @@ export class IdentityService {
     const identity: Identity = {
       id: await this.cryptoService.generateKeyId(keyPair.publicKey),
       username: username,
-      keyPair: keyPair
+      keyPair: keyPair,
+      created: new Date().getTime()
     }
     this.identities.push(identity);
     await this.saveIdentities();
@@ -53,19 +54,20 @@ export class IdentityService {
         const identity = {
           id: await this.cryptoService.generateKeyId(publicKey),
           username: i.username,
-          keyPair: {privateKey: privateKey, publicKey: publicKey}
+          keyPair: {privateKey: privateKey, publicKey: publicKey},
+          created: new Date().getTime()
         };
         this.identities.push(identity);
-        console.log("loaded identity " +identity.username + " ( " + identity.id + ")" )
-      }catch (e) {
-        console.error("Could not load identity " + JSON.stringify(i)+ "," + e)
+        console.log("loaded identity " + identity.username + " ( " + identity.id + ")")
+      } catch (e) {
+        console.error("Could not load identity " + JSON.stringify(i) + "," + e)
         this.toastService.create({
           type: ToastType.Error,
-          title:"Could not load identity " + i.username,
-          message:JSON.stringify(e),
+          title: "Could not load identity " + i.username,
+          message: JSON.stringify(e),
           duration: 3000
         })
-     }
+      }
 
     }
   }
@@ -96,6 +98,7 @@ export interface Identity {
   id: KeyId;
   username: string;
   keyPair: CryptoKeyPair;
+  created: number;
 }
 
 export interface StoredIdentity {

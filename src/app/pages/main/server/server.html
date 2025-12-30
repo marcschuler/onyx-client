@@ -12,8 +12,8 @@
     (mousedown)="startResizing($event)"
   ></div>
   <main class="flex-1">
-    @if (webSocketService.connection && webSocketService.connection.currentChannel) {
-      <app-channel-view [channelId]="webSocketService.connection.currentChannel"></app-channel-view>
+    @if (connection.currentChannel) {
+      <app-channel-view [channelId]="connection.currentChannel"></app-channel-view>
     }
   </main>
 </div>

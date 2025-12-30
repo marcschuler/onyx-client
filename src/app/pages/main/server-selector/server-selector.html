@@ -1,9 +1,9 @@
 <div class="flex justify-center  items-center h-screen">
   <div class="p-6 bg-neutral-800 rounded w-xl ">
     @if (serverLoaderService.connections.length != 0) {
-      <h3>Connect to a server</h3>
+      <h3>Server Browser</h3>
     }
-    <div class="overflow-y-auto max-h-64">
+    <div class="overflow-y-auto max-h-96">
 
       @for (s of serverLoaderService.connections; track s.url) {
         <div class="p-4 my-1 bg-neutral-900 rounded gap-6 grid grid-cols-[auto_1fr_auto] w-full">
@@ -26,16 +26,16 @@
           <div>
             @switch (detail.state) {
               @case (ServerInfoState.CONNECTING) {
-                <p class="w-64 font-bold"></p>
+                <p class="w-72 font-bold"></p>
                 <span class="text-neutral-400">{{ s.url }}</span>
               }
               @case (ServerInfoState.SUCCESS) {
                 @if (detail.success && detail.success[0]) {
                   @let info = detail.success[0];
-                  <p class="w-64 font-bold">{{ info.name }}</p>
+                  <p class="w-72 font-bold">{{ info.name }}</p>
                   <span class="text-neutral-400">{{ s.url }}</span>
                 } @else {
-                  <p class="w-64 font-bold">{{ s.url }}</p>
+                  <p class="w-72 font-bold">{{ s.url }}</p>
                   <span class="text-red-400 line-clamp-2">Server gave invalid response</span>
                 }
 
@@ -62,7 +62,7 @@
     </div>
 
     @if (serverLoaderService.connections.length != 0) {
-      <div class="p-8"></div>
+      <div class="p-8 border-b-neutral-600 border-b-1"></div>
     }
 
     <label>Connect to a new server</label>
@@ -70,7 +70,7 @@
       <input [(ngModel)]="customUrl" class="col-span-3 !bg-neutral-900 !rounded-r-none"
              placeholder="For example: example.com or http://localhost:8080"/>
       <button (click)="addAndConnectToCustomUrl()" class="!rounded-l-none button-hover-dark"
-              [disabled]="selectedServer">Connect
+              [disabled]="selectedServer || customUrl.length<7">Connect
       </button>
     </div>
     @if (customUrlError) {

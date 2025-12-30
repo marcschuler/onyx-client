@@ -1,0 +1,27 @@
+<div class="min-h-screen flex">
+  <aside class="block min-h-screen shrink-0 bg-neutral-900 border-r-neutral-950 border-r-1 w-64">
+    <div class="flex flex-col h-screen">
+      <button class="button-dark">General</button>
+      <button>Identities</button>
+    </div>
+  </aside>
+  <main class="flex-1 px-8 py-4">
+    <h1>Identities</h1>
+    <div class="w-full flex justify-center">
+      <div class="w-xl max-w-xl">
+        @for (identity of identityService.identities; track identity) {
+          <div class="bg-neutral-800 rounded-xl">
+            <div class="flex">
+              <img [src]="identity.id | identicon | async" alt="Key ID: {{identity.id}}"
+                   class="w-16 h-16 rounded-l-xl">
+              <input class="text-h2 p-4" [ngModel]="identity.username">
+            </div>
+            <p class="p-2">Created: {{ identity.created | date: 'medium' }}</p>
+            <button class="right-2 bottom-2 absolute">Delete</button>
+          </div>
+        }
+      </div>
+    </div>
+    Create a new Identity
+  </main>
+</div>

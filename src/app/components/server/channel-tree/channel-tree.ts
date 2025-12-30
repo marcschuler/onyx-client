@@ -10,9 +10,8 @@ import {
 } from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {Spinner} from '../../ui/spinner/spinner';
-import {Channel} from '../../../services/websocket/WebSocketServerConnection';
 import {NgClass} from '@angular/common';
-import {ChannelReference, ClientChannelChangeRequest} from '../../../../api/webrtc-server';
+import {ChannelDTO, ClientChannelChangeRequest} from '../../../../api/webrtc-server';
 
 @Component({
   selector: 'app-channel-tree',
@@ -36,7 +35,7 @@ export class ChannelTree {
 
   protected readonly LogInIcon = LogInIcon;
 
-  changeChannel(channel: ChannelReference) {
+  changeChannel(channel: ChannelDTO) {
     console.log("Changing channel to " + channel.name);
     this.webSocketService.send(this.webSocketService.connection!, {
       channelId: channel.id,

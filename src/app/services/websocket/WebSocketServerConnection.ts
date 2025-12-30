@@ -2,15 +2,15 @@ import {Identity} from '../identity-service';
 import {IceServer, SectionDTO} from '../../../api/webrtc-server';
 
 export interface WebSocketServerConnection {
-  state: ConnectionState;
-  identity: Identity;
+  state: ConnectionState; // the current state of connection
+  identity: Identity; // the used identity
 
-  serverConnection: WebSocket;
+  serverConnection: WebSocket; // the websocket connection
 
-  data?: ServerTree;
-  config: ServerConfig;
-  clients: Client[];
-  currentChannel?: ServerObjectId | undefined;
+  data?: ServerTree; //the server tree
+  config: ServerConfig; //configuration settings for this server
+  clients: Client[]; //all clients
+  currentChannel?: ServerObjectId | undefined; //the current channel if existing
 }
 
 export interface Client{

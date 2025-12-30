@@ -7,7 +7,7 @@ import {InterfaceService} from '../../../../services/interface-service';
 import {FormsModule} from '@angular/forms';
 import {MessageView} from '../../../../components/server/message-view/message-view';
 import {ServerObjectId} from '../../../../services/websocket/WebSocketServerConnection';
-import {ChannelDetailRequest, ChannelDetailResponse, ChannelReference} from '../../../../../api/webrtc-server';
+import {ChannelDetailRequest, ChannelDetailResponse, ChannelDTO} from '../../../../../api/webrtc-server';
 
 @Component({
   selector: 'app-channel-view',
@@ -23,7 +23,7 @@ export class ChannelView implements AfterViewInit, OnChanges {
 
   @Input() channelId!: ServerObjectId;
 
-  details: ChannelReference | undefined;
+  details: ChannelDTO | undefined;
 
   gridRows: number = 1;
   gridCols: number = 1;

@@ -17,7 +17,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { ChannelReference } from '../model/channelReference';
+import { ChannelDTO } from '../model/channelDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -36,16 +36,16 @@ export class ChannelControllerService extends BaseService {
     }
 
     /**
-     * @param channelReference 
+     * @param channelDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public create1(channelReference: ChannelReference, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<ChannelReference>;
-    public create1(channelReference: ChannelReference, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ChannelReference>>;
-    public create1(channelReference: ChannelReference, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ChannelReference>>;
-    public create1(channelReference: ChannelReference, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (channelReference === null || channelReference === undefined) {
-            throw new Error('Required parameter channelReference was null or undefined when calling create1.');
+    public create1(channelDTO: ChannelDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<ChannelDTO>;
+    public create1(channelDTO: ChannelDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ChannelDTO>>;
+    public create1(channelDTO: ChannelDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ChannelDTO>>;
+    public create1(channelDTO: ChannelDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (channelDTO === null || channelDTO === undefined) {
+            throw new Error('Required parameter channelDTO was null or undefined when calling create1.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -84,10 +84,10 @@ export class ChannelControllerService extends BaseService {
 
         let localVarPath = `/v0/server//sectio`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<ChannelReference>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<ChannelDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: channelReference,
+                body: channelDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

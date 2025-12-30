@@ -16,10 +16,9 @@ model/authChallenge.ts
 model/authChallengeRequest.ts
 model/authChallengeResponse.ts
 model/authSuccessMessage.ts
-model/channelCreateRequest.ts
+model/channelDTO.ts
 model/channelDetailRequest.ts
 model/channelDetailResponse.ts
-model/channelReference.ts
 model/clientChannelChangeRequest.ts
 model/clientChannelJoinMessage.ts
 model/clientChannelLeaveMessage.ts
@@ -36,12 +35,12 @@ model/peerAnswer.ts
 model/peerAnswerForward.ts
 model/peerOffer.ts
 model/peerOfferForward.ts
+model/publicUserDTO.ts
 model/sectionDTO.ts
 model/sectionWriteDTO.ts
 model/serverDTO.ts
 model/serverTreeChangeMessage.ts
 model/signedContent.ts
-model/userReference.ts
 param.ts
 provide-api.ts
 variables.ts
