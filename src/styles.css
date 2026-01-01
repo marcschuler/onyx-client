@@ -34,7 +34,7 @@ button {
 }
 
 .button-dark{
-  @apply text-neutral-200 bg-neutral-800
+  @apply text-neutral-200 bg-neutral-800 disabled:bg-neutral-900
 }
 
 .button-hover-dark{
@@ -42,7 +42,7 @@ button {
 }
 
 .button-red{
-  @apply bg-red-600
+  @apply bg-red-600 focus:ring-red-600
 }
 
 .button-ghost{

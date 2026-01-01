@@ -1,27 +1,44 @@
 <div class="min-h-screen flex">
   <aside class="block min-h-screen shrink-0 bg-neutral-900 border-r-neutral-950 border-r-1 w-64">
     <div class="flex flex-col h-screen">
-      <button class="button-dark">General</button>
-      <button>Identities</button>
+      @for (m of menu; track m) {
+        <button class="button-dark border-l-0" (click)="selectedOption= m.id"
+                [disabled]="selectedOption==m.id">{{ m.name }}
+        </button>
+      }
     </div>
   </aside>
+
   <main class="flex-1 px-8 py-4">
-    <h1>Identities</h1>
-    <div class="w-full flex justify-center">
-      <div class="w-xl max-w-xl">
-        @for (identity of identityService.identities; track identity) {
-          <div class="bg-neutral-800 rounded-xl">
-            <div class="flex">
-              <img [src]="identity.id | identicon | async" alt="Key ID: {{identity.id}}"
-                   class="w-16 h-16 rounded-l-xl">
-              <input class="text-h2 p-4" [ngModel]="identity.username">
+  @switch (selectedOption){
+    @case (SettingsOptions.IDENTITY){
+      <h1>Identities</h1>
+      <div class="w-full flex justify-center">
+        <div class="w-xl max-w-xl">
+          @for (identity of identityService.identities; track identity) {
+            <div class="bg-neutral-800 rounded">
+              <div class="flex ">
+                <img [src]="identity.id | identicon | async" alt="Key ID: {{identity.id}}"
+                     class="w-16 h-16 rounded-tl">
+                <input class="text-h2 p-4" [ngModel]="identity.username">
+              </div>
+              <div class="flex">
+                <p class="p-2 flex-3/5">Created: {{ identity.created | date: 'medium' }}</p>
+                <button class="right-2 bottom-2 button-red rounded-none">Delete</button>
+              </div>
+              <app-popup [isOpen]="false" title="Delete your identity?"
+                         content="All groups, ranks and archivements on all servers using this identity will be inaccessible."
+                         [buttons]="[BUTTON_CANCEL,BUTTON_DELETE]">
+
+              </app-popup>
             </div>
-            <p class="p-2">Created: {{ identity.created | date: 'medium' }}</p>
-            <button class="right-2 bottom-2 absolute">Delete</button>
-          </div>
-        }
+          }
+          <div class="p-2"></div>
+          <button class="button-dark min-w-xl" routerLink="/settings/identity/new"> Create a new Identity</button>
+        </div>
       </div>
-    </div>
-    Create a new Identity
+    }
+  }
   </main>
+
 </div>
