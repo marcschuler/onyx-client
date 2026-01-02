@@ -8,7 +8,6 @@
         <div
           class="p-2 rounded gap-2 grid grid-cols-[1fr_auto] w-full
           text-neutral-200 hover:text-neutral-100  hover:bg-neutral-800 animate-default"
-
           [ngClass]="[
     webSocketService.connection.currentChannel==channel.id ? 'bg-neutral-800' : ''
   ]">
@@ -17,16 +16,20 @@
             {{ channel.name }}
 
           </div>
-          @if (webSocketService.connection.currentChannel!=channel.id && !editMode){
-          <button class="right-0 !p-1 !m-0 !bg-neutral-900 !hover:bg-neutral-800 rounded-r-md">
-            <lucide-icon [name]="LogInIcon" (click)="changeChannel(channel)"></lucide-icon>
-          </button>
+          @if (webSocketService.connection.currentChannel != channel.id && !editMode) {
+            <button class="right-0 !p-1 !m-0 !bg-neutral-900 !hover:bg-neutral-800 rounded-r-md">
+              <lucide-icon [name]="LogInIcon" (click)="changeChannel(channel)"></lucide-icon>
+            </button>
           }
         </div>
         @for (client of webSocketService.connection.clients; track client.id) {
           @if (client.channel == channel.id) {
-            <div class="ml-4 p-2 hover:bg-neutral-800 rounded animate-default">
-              {{ client.username }}
+            <div class="ml-4 p-2 hover:bg-neutral-800 rounded animate-default flex items-center gap-2">
+              <img
+                [src]="client.id | identicon: 32 | async"
+                class="w-8 h-8 rounded"
+              />
+              <span>{{ client.username }}</span>
             </div>
           }
         }
@@ -38,7 +41,7 @@
     </div>
   }
 
-  @if (editMode){
+  @if (editMode) {
     <button class="button-ghost min-w-full">
       + Section
     </button>

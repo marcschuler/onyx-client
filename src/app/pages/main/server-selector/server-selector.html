@@ -1,3 +1,11 @@
+@if (!showSettings){
+<button class="right-4 absolute top-4 button-dark" (click)="showSettings=true">
+  <lucide-icon [name]="SettingsIcon"></lucide-icon>
+</button>
+}
+<app-popup [isOpen]="showSettings" [closeButton]="true" (close)="showSettings=false">
+  <app-settings></app-settings>
+</app-popup>
 <div class="flex justify-center  items-center h-screen">
   <div class="p-6 bg-neutral-800 rounded w-xl ">
     @if (serverLoaderService.connections.length != 0) {
@@ -68,7 +76,7 @@
     <label>Connect to a new server</label>
     <div class="grid grid-cols-4">
       <input [(ngModel)]="customUrl" class="col-span-3 !bg-neutral-900 !rounded-r-none"
-             placeholder="For example: example.com or http://localhost:8080"/>
+             placeholder="example.com or http://localhost:8080"/>
       <button (click)="addAndConnectToCustomUrl()" class="!rounded-l-none button-hover-dark"
               [disabled]="selectedServer || customUrl.length<7">Connect
       </button>

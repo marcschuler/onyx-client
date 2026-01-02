@@ -29,11 +29,8 @@ export class IdentityWizzard {
     this.identityWaiting = true;
     this.identityService.create(this.username)
       .then(ready => {
-        setTimeout(() => {
-          this.identityWaiting = false;
-          this.goBack();
-        }, 2000);
-
+        this.identityWaiting = false;
+        this.goBack();
       })
   }
 

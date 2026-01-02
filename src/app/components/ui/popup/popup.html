@@ -2,12 +2,7 @@
   <div
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
     <div
-      class="bg-neutral-900 rounded-lg shadow-xl w-full max-w-md p-6 relative">
-      <!-- <button
-         class="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
-         (click)="closeDialog()">
-         ✕
-       </button>-->
+      class="bg-neutral-900 rounded-lg shadow-xl w-full max-w-9/12 max-h-9/12 p-6 relative">
 
       <!-- Content -->
       @if (title) {
@@ -15,6 +10,9 @@
       }
       @if (content) {
         <p class="text-neutral-500 mb-6">{{ content }} </p>
+      }
+      @if (closeButton) {
+        <button class="absolute right-2 top-2 button-red" (click)="onButton(undefined)">✕</button>
       }
 
       <ng-content></ng-content>

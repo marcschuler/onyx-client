@@ -1,6 +1,6 @@
 <div class="h-screen flex flex-col">
 
-  <div class="bg-emerald-600 p-4 rounded-br-xl">
+  <div class="bg-neutral-900 p-4 rounded-br-xl">
         <h2 class="font-semibold" [class.skeleton]="!details">
           @if (details) {
             {{details.name}}
@@ -10,7 +10,7 @@
 
   <!-- Talk View -->
   <div class="flex-grow max-h-[70vh] overflow-auto">
-    <div class="grid grid-cols-2 gap-2"><!--[style.height.%]="interfaceService.settings.channelSplitSize.peerView"-->
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-2"><!--[style.height.%]="interfaceService.settings.channelSplitSize.peerView"-->
       @if (peerConnectionService.localStream) {
         <app-peer-view class="h-64" [localStream]="peerConnectionService.localStream"></app-peer-view>
       }

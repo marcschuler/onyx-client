@@ -11,10 +11,11 @@ import {NgClass} from '@angular/common';
 })
 export class Popup {
   @Input() isOpen = false;
-  @Output() close = new EventEmitter<ButtonType>();
+  @Output() close = new EventEmitter<Button>();
 
   @Input() title?: string;
   @Input() content?: string;
+  @Input() closeButton?:boolean;
 
   @Input() buttons?: Button[];
 
@@ -32,8 +33,8 @@ export class Popup {
     }
   }
 
-  onButton(button: Button) {
-    this.close.emit(button.type);
+  onButton(button: Button|undefined) {
+    this.close.emit(button);
     this.isOpen = false;
   }
 }

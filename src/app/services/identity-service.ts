@@ -34,7 +34,7 @@ export class IdentityService {
       id: await this.cryptoService.generateKeyId(keyPair.publicKey),
       username: username,
       keyPair: keyPair,
-      created: new Date().getTime()
+      created: new Date()
     }
     this.identities.push(identity);
     await this.saveIdentities();
@@ -55,7 +55,7 @@ export class IdentityService {
           id: await this.cryptoService.generateKeyId(publicKey),
           username: i.username,
           keyPair: {privateKey: privateKey, publicKey: publicKey},
-          created: new Date().getTime()
+          created: new Date(i.created)
         };
         this.identities.push(identity);
         console.log("loaded identity " + identity.username + " ( " + identity.id + ")")
@@ -78,11 +78,12 @@ export class IdentityService {
       stored.push({
         username: i.username,
         publicKey: await crypto.subtle.exportKey("jwk", i.keyPair.publicKey),
-        privateKey: await crypto.subtle.exportKey("jwk", i.keyPair.privateKey)
+        privateKey: await crypto.subtle.exportKey("jwk", i.keyPair.privateKey),
+        created: i.created.getTime()
       } as StoredIdentity);
     }
-    console.log(stored)
     localStorage.setItem(this.IDENTITY_STORE_KEY, JSON.stringify(stored));
+    console.log("Saved new list of identites")
   }
 
   defaultIdentity() {
@@ -91,6 +92,16 @@ export class IdentityService {
       console.warn("No default identity found - but requested");
     return identity;
   }
+
+  delete(identity: Identity) {
+    const index = this.identities.indexOf(identity);
+    if (index !== -1) {
+      this.identities.splice(index, 1);
+      this.saveIdentities();
+    } else {
+      throw new Error("Identity is not in known list");
+    }
+  }
 }
 
 
@@ -98,11 +109,12 @@ export interface Identity {
   id: KeyId;
   username: string;
   keyPair: CryptoKeyPair;
-  created: number;
+  created: Date;
 }
 
 export interface StoredIdentity {
   username: string;
   publicKey: JsonWebKey;
   privateKey: JsonWebKey;
+  created: number;
 }

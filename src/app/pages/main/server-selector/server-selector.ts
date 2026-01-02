@@ -5,17 +5,23 @@ import {
   ServerLoaderService
 } from '../../../services/server-loader-service';
 import {FormsModule} from '@angular/forms';
-import {ImageIcon, LucideAngularModule, ServerIcon, ServerOffIcon, UserIcon} from 'lucide-angular';
+import {ImageIcon, LucideAngularModule, ServerIcon, ServerOffIcon, SettingsIcon, UserIcon} from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {IdentityService} from '../../../services/identity-service';
 import {ServerDTO} from '../../../../api/webrtc-server';
+import {RouterLink} from '@angular/router';
+import {Popup} from '../../../components/ui/popup/popup';
+import {Settings} from '../../settings/settings';
 
 @Component({
   selector: 'app-server-selector',
   imports: [
     Spinner,
     FormsModule,
-    LucideAngularModule
+    LucideAngularModule,
+    RouterLink,
+    Popup,
+    Settings
   ],
   templateUrl: './server-selector.html',
   styleUrl: './server-selector.css'
@@ -27,6 +33,9 @@ export class ServerSelector implements OnInit, OnDestroy {
     success: undefined,
     state: ServerInfoState.CONNECTING
   }
+
+
+  showSettings: boolean = false;
 
 
   selectedServer: ServerConnection | undefined;
@@ -109,6 +118,7 @@ export class ServerSelector implements OnInit, OnDestroy {
   protected readonly UserIcon = UserIcon;
   protected readonly ServerInfoState = ServerInfoState;
   protected readonly ServerOffIcon = ServerOffIcon;
+  protected readonly SettingsIcon = SettingsIcon;
 }
 
 export interface ServerInfoWithState {

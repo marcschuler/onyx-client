@@ -5,15 +5,16 @@
   <input id="username" placeholder="At least three characters" [(ngModel)]="username">
 
   <div class="p-4"></div>
-<!--
-  <label for="name" class="text-hint">Optional: Enter a name for your identity</label>
-  <input id="name" placeholder="Standard" [(ngModel)]="username">
--->
+  <!--
+    <label for="name" class="text-hint">Optional: Enter a name for your identity</label>
+    <input id="name" placeholder="Standard" [(ngModel)]="username">
+  -->
   <div class="p-4"></div>
 
   @if (identityWaiting) {
     <div class="float-right">
-    Generating Keys <app-spinner></app-spinner>
+      Generating Keys
+      <app-spinner></app-spinner>
     </div>
   } @else {
     <button [disabled]="username.length < 3" class="float-right" (click)="createIdentity()">

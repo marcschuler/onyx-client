@@ -1,24 +1,25 @@
 import {Component, Input} from '@angular/core';
 import {
-  FolderClosedIcon,
   HexagonIcon,
   LogInIcon,
   LucideAngularModule,
-  MicOffIcon,
   SettingsIcon,
   TrashIcon
 } from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {Spinner} from '../../ui/spinner/spinner';
-import {NgClass} from '@angular/common';
+import {AsyncPipe, NgClass} from '@angular/common';
 import {ChannelDTO, ClientChannelChangeRequest} from '../../../../api/webrtc-server';
+import {IdenticonPipe} from '../../../pipes/identicon-pipe';
 
 @Component({
   selector: 'app-channel-tree',
   imports: [
     LucideAngularModule,
     Spinner,
-    NgClass
+    NgClass,
+    IdenticonPipe,
+    AsyncPipe
   ],
   templateUrl: './channel-tree.html',
   styleUrl: './channel-tree.css'
@@ -29,7 +30,7 @@ export class ChannelTree {
 
   readonly HexagonIcon = HexagonIcon;
 
-  constructor(protected webSocketService: WebSocketService) {
+  constructor(protected webSocketService: WebSocketService,) {
 
   }
 
