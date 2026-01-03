@@ -9,46 +9,20 @@
     </div>
   </aside>
 
-  <main class="flex-1 px-8 py-4">
+  <main class="flex-1 px-8 py-4 overflow-y-scroll">
     <h1>{{ selectedOption.name }}</h1>
     <div class="pb-4"></div>
     @switch (selectedOption.id) {
-      @case (SettingsOptions.GENERAL){
+      @case (SettingsOptions.GENERAL) {
         <p>Nothing to see here</p>
       }
       @case (SettingsOptions.IDENTITY) {
-        <div class="w-full flex justify-center">
-          <div class="w-xl max-w-xl">
-            @for (identity of identityService.identities; track identity) {
-              <div class="bg-neutral-800 rounded">
-                <div class="flex ">
-                  <img [src]="identity.id | identicon | async" alt="Key ID: {{identity.id}}"
-                       class="w-16 h-16 rounded-tl">
-                  <input class="text-h2 p-4" [ngModel]="identity.username">
-                </div>
-                <div class="flex">
-                  <p class="p-2 flex-3/5">Created: {{ identity.created | date: 'medium' }}</p>
-                  <button class="right-2 bottom-2 button-red rounded-none" [disabled]="identityService.identities.length<2" (click)="identityToDelete = identity">Delete</button>
-                </div>
-
-              </div>
-            }
-            <div class="p-2"></div>
-            <button class="button-dark min-w-xl" routerLink="/settings/identity/new"> Create a new Identity</button>
-          </div>
-        </div>
-
-        @if (identityToDelete){
-          <app-popup [isOpen]="true" title="Delete your identity?"
-                     [content]="'All groups, ranks and archivements on all servers using the identity \'' + identityToDelete.username + '\' will be inaccessible.'"
-                     [buttons]="[BUTTON_CANCEL,BUTTON_DELETE]"
-          (close)="closeIdentityDialog($event)"
-          >
-
-          </app-popup>
-        }
-
+        <app-identity></app-identity>
       }
+      @case (SettingsOptions.DEBUG){
+        <app-debug></app-debug>
+      }
+
     }
   </main>
 

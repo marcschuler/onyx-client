@@ -7,6 +7,8 @@ import {InfoIcon, LucideAngularModule, SettingsIcon} from 'lucide-angular';
 import {NgStyle} from '@angular/common';
 import {InterfaceService} from '../../../services/interface-service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
+import {Popup} from '../../../components/ui/popup/popup';
+import {Settings} from '../../settings/settings';
 
 @Component({
   selector: 'app-server',
@@ -15,7 +17,9 @@ import {WebSocketServerConnection} from '../../../services/websocket/WebSocketSe
     UserPanel,
     ChannelView,
     LucideAngularModule,
-    NgStyle
+    NgStyle,
+    Popup,
+    Settings
   ],
   templateUrl: './server.html',
   styleUrl: './server.css'
@@ -25,6 +29,7 @@ export class Server {
   @Input() connection!: WebSocketServerConnection;
 
   editMode = false;
+  showSettings = false;
 
   private resizing = false;
   private minWidth = 100;

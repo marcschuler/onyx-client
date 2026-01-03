@@ -1,0 +1,13 @@
+<h3>Idenities</h3>
+<p class="pb-8">
+  {{identityService.identities | json}}
+</p>
+
+<h3>Connection</h3>
+<p class="pb-8">
+  @if (webSocketService.connection) {
+    {{webSocketService.connection | json}}
+  } @else {
+    (no connection)
+  }
+</p>

@@ -1,8 +1,17 @@
+@if (!showSettings){
+  <button class="right-4 absolute top-4 button-dark" (click)="showSettings=true">
+    <lucide-icon [name]="SettingsIcon"></lucide-icon>
+  </button>
+}
+<app-popup [isOpen]="showSettings" [closeButton]="true" (close)="showSettings=false">
+  <app-settings></app-settings>
+</app-popup>
+
 <div class="min-h-screen flex">
   <aside class="block min-h-screen shrink-0 bg-neutral-900 border-r-neutral-950 border-r-1"
          [ngStyle]="{ width: interfaceService.settings.sidebarWidth + 'px' }">
     <div class="flex flex-col h-screen">
-      <lucide-icon class="absolute right-2 top-2" [name]="SettingsIcon" (click)="editMode=true"></lucide-icon>
+     <!-- <lucide-icon class="absolute right-2 top-2" [name]="SettingsIcon" (click)="editMode=true"></lucide-icon>-->
       <app-channel-tree class="flex-1 p-2 overflow-y-auto" [editMode]="editMode"></app-channel-tree>
       <app-user-panel></app-user-panel>
     </div>
