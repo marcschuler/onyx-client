@@ -19,7 +19,6 @@ import {Settings} from '../../settings/settings';
     Spinner,
     FormsModule,
     LucideAngularModule,
-    RouterLink,
     Popup,
     Settings
   ],

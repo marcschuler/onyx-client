@@ -9,9 +9,7 @@
  */
 
 
-export interface ServerDTO { 
+export interface ServerWritableDTO { 
     name?: string;
-    id?: string;
-    publicKey?: any | null;
 }
 

@@ -9,7 +9,6 @@ import {Settings} from '../settings/settings';
   imports: [
     ServerSelector,
     Server,
-    Settings
   ],
   templateUrl: './main.html',
   styleUrl: './main.css'

@@ -6,8 +6,8 @@ import {generateIdenteapot} from '@teapotlabs/identeapots';
 })
 export class IdenticonPipe implements PipeTransform {
 
-  async transform(value: string, size: number = 256): Promise<string> {
-    return await generateIdenteapot(value, {
+  async transform(value: string|undefined|null, size: number = 256): Promise<string> {
+    return await generateIdenteapot(value || "", {
       size: size,
     });
   }

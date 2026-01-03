@@ -1,8 +1,36 @@
 <div class="p-4 max-w-xl m-auto">
   <h3 class="pb-8">Create a new Identity</h3>
 
-  <label for="username">Enter your username. You can change it later</label>
-  <input id="username" placeholder="At least three characters" [(ngModel)]="username">
+  <div class="pb-8">
+    <div class="w-full">
+      <p>Username</p>
+      <input id="username" class="w-full" placeholder="At least three characters" [(ngModel)]="username">
+    </div>
+
+  </div>
+
+
+  <h4>Your Key</h4>
+  @if (key) {
+    <div class="flex gap-4">
+      <div class="w-48">
+        <img [src]="key | keyID | async | identicon: 96 | async" class="rounded-t w-full"/>
+        <button class="button-dark w-full min-w-full !rounded-t-none  items-center justify-center" (click)="createKey()">
+          <lucide-icon [name]="RotateCcw" class="w-4 h-4 m-auto"></lucide-icon>
+        </button>
+      </div>
+      <div  class="text-neutral-300">
+        <p>
+          This is a visual representation of your private Identity key.
+        </p>
+        <p>
+          It is unique to you and servers save your profile, groups and messages
+          based on this key.<br>
+          Don't loose it and don't share it with anyone.
+        </p>
+      </div>
+    </div>
+  }
 
   <div class="p-4"></div>
   <!--

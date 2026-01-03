@@ -24,12 +24,9 @@ export class IdentityService {
     })
   }
 
-  async create(username: string) {
-    const keyPair: CryptoKeyPair = await crypto.subtle.generateKey(
-      "Ed25519",
-      true,
-      ["sign", "verify"]
-    );
+  async create(username: string, keyPair: CryptoKeyPair | undefined = undefined): Promise<Identity> {
+    if (!keyPair)
+      keyPair = await this.generateKey();
     const identity: Identity = {
       id: await this.cryptoService.generateKeyId(keyPair.publicKey),
       username: username,
@@ -39,6 +36,14 @@ export class IdentityService {
     this.identities.push(identity);
     await this.saveIdentities();
     return identity;
+  }
+
+  public async generateKey() {
+    return await crypto.subtle.generateKey(
+      "Ed25519",
+      true,
+      ["sign", "verify"]
+    );
   }
 
   private async loadIdentities() {

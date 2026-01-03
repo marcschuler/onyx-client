@@ -7,12 +7,12 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PublicUserDTO } from './publicUserDTO';
+import { UserSimpleDTO } from './userSimpleDTO';
 import { MessageBody } from './messageBody';
 
 
 export interface ClientChannelLeaveMessage extends MessageBody { 
-    user: PublicUserDTO;
+    user: UserSimpleDTO;
     readonly type: ClientChannelLeaveMessage.TypeEnum;
 }
 export namespace ClientChannelLeaveMessage {

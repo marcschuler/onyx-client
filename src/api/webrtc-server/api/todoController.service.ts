@@ -21,9 +21,9 @@ import { AuthChallenge } from '../model/authChallenge';
 // @ts-ignore
 import { IceServer } from '../model/iceServer';
 // @ts-ignore
-import { PublicUserDTO } from '../model/publicUserDTO';
-// @ts-ignore
 import { SignedContent } from '../model/signedContent';
+// @ts-ignore
+import { UserSimpleDTO } from '../model/userSimpleDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -192,9 +192,9 @@ export class TodoControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public userReference(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<PublicUserDTO>;
-    public userReference(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PublicUserDTO>>;
-    public userReference(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PublicUserDTO>>;
+    public userReference(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<UserSimpleDTO>;
+    public userReference(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserSimpleDTO>>;
+    public userReference(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserSimpleDTO>>;
     public userReference(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -224,7 +224,7 @@ export class TodoControllerService extends BaseService {
 
         let localVarPath = `/v0/server/userReference`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<PublicUserDTO>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<UserSimpleDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

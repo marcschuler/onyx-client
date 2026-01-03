@@ -9,9 +9,9 @@
  */
 
 
-export interface ServerDTO { 
-    name?: string;
-    id?: string;
-    publicKey?: any | null;
+export interface UserSimpleDTO { 
+    id: string;
+    publicKey: any | null;
+    username: string;
 }
 

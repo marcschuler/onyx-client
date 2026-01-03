@@ -163,6 +163,7 @@ export class WebSocketService {
     console.log("ws: server did welcome us - auth successfully")
     connection.state = ConnectionState.CONNECTED;
     this.connection = connection;
+    connection.jwt = event.jwt;
   }
 
   private async onServerTreeChangeEvent(event: ServerTreeChangeMessage, connection: WebSocketServerConnection) {

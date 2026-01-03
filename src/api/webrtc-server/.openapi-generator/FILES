@@ -35,12 +35,13 @@ model/peerAnswer.ts
 model/peerAnswerForward.ts
 model/peerOffer.ts
 model/peerOfferForward.ts
-model/publicUserDTO.ts
 model/sectionDTO.ts
 model/sectionWriteDTO.ts
 model/serverDTO.ts
 model/serverTreeChangeMessage.ts
+model/serverWritableDTO.ts
 model/signedContent.ts
+model/userSimpleDTO.ts
 param.ts
 provide-api.ts
 variables.ts

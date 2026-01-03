@@ -2,15 +2,23 @@ import {Component} from '@angular/core';
 import {IdentityService} from '../../../../services/identity-service';
 import {FormsModule} from '@angular/forms';
 import {Spinner} from '../../../../components/ui/spinner/spinner';
-import {Location} from '@angular/common';
+import {AsyncPipe, Location} from '@angular/common';
 import {Router} from '@angular/router';
+import {CryptoService} from '../../../../services/crypto-service';
+import {IdenticonPipe} from '../../../../pipes/identicon-pipe';
+import {KeyIDPipe} from '../../../../pipes/key-id-pipe';
+import {LucideAngularModule, RotateCcw} from 'lucide-angular';
 
 
 @Component({
   selector: 'app-identity-wizzard',
   imports: [
     FormsModule,
-    Spinner
+    Spinner,
+    IdenticonPipe,
+    AsyncPipe,
+    KeyIDPipe,
+    LucideAngularModule
   ],
   templateUrl: './identity-wizzard.html',
   styleUrl: './identity-wizzard.css'
@@ -18,16 +26,22 @@ import {Router} from '@angular/router';
 export class IdentityWizzard {
 
   username: string = "";
+  key: CryptoKeyPair | undefined;
 
   identityWaiting: boolean | undefined = undefined;
 
-  constructor(private identityService: IdentityService,
+  constructor(protected identityService: IdentityService,
               private location: Location, private router: Router) {
+    this.createKey();
+  }
+
+  async createKey() {
+    this.key = await this.identityService.generateKey();
   }
 
   createIdentity() {
     this.identityWaiting = true;
-    this.identityService.create(this.username)
+    this.identityService.create(this.username, this.key)
       .then(ready => {
         this.identityWaiting = false;
         this.goBack();
@@ -43,4 +57,5 @@ export class IdentityWizzard {
   }
 
 
+  protected readonly RotateCcw = RotateCcw;
 }
