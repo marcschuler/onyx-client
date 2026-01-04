@@ -6,10 +6,17 @@ import {CryptoService} from '../crypto-service';
 import {ToastService, ToastType} from '../toast-service';
 import {PeerConnectionService} from '../peer/peer-connection-service';
 import {
-  AuthChallengeRequest, AuthChallengeResponse,
+  AuthChallengeRequest,
+  AuthChallengeResponse,
   AuthSuccessMessage,
-  ClientChannelJoinMessage, ClientChannelLeaveMessage, IceServerMessage, MessageBody,
-  MessageBodyRequest, MessageBodyResponse, MessageTypes,
+  ClientChannelJoinMessage,
+  ClientChannelLeaveMessage,
+  IceServerMessage,
+  KickMessage,
+  MessageBody,
+  MessageBodyRequest,
+  MessageBodyResponse,
+  MessageTypes,
   ServerTreeChangeMessage
 } from '../../../api/webrtc-server';
 
@@ -24,7 +31,7 @@ export class WebSocketService {
 
   private messageHandlers: Map<MessageTypes, MessageHandler<any>> = new Map();
 
-  private responseCallbacks: Map<string,ResponseMessageHandler<any>> = new Map();
+  private responseCallbacks: Map<string, ResponseMessageHandler<any>> = new Map();
 
   constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService,
               private peerConnectionService: PeerConnectionService) {
@@ -34,6 +41,7 @@ export class WebSocketService {
     this.addHandler(ClientChannelJoinMessage.TypeEnum.ClientChannelJoinMessage, (e, c) => this.onClientChannelJoinEvent(e as ClientChannelJoinMessage, c))
     this.addHandler(ClientChannelLeaveMessage.TypeEnum.ClientChannelLeaveMessage, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveMessage, c));
     this.addHandler(IceServerMessage.TypeEnum.IceServerMessage, (e, c) => this.onIceServerData(e as IceServerMessage, c));
+    this.addHandler(KickMessage.TypeEnum.KickMessage, (e, c) => this.onKickMessage(e as KickMessage, c));
   }
 
 
@@ -74,20 +82,22 @@ export class WebSocketService {
           .catch(e => console.error(e));
       };
 
-      const reconnect = (error: string)=>{
+      const reconnect = (error: string) => {
         console.log("ws: reconnecting");
         this.peerConnectionService.updatePeerConnections();
-       // setTimeout(() => {
-          this.toastService.create({
-            title: "Server connection failed",
-            message: error,
-            type: ToastType.Error,
-          })
+        // setTimeout(() => {
+        let reason = "Reason: " + error;
+        console.warn("Server closed connection:" + reason)
+        this.toastService.create({
+          title: "Server closed connection",
+          message: reason,
+          type: ToastType.Error,
+        })
         this.connection = undefined;
         reject(error);
-          //TODO does not work, every reconnect doubles the connections
-          // this.connect(serverConnection, identity, retries - 1);
-       // }, 4000);
+        //TODO does not work, every reconnect doubles the connections
+        // this.connect(serverConnection, identity, retries - 1);
+        // }, 4000);
       }
 
       webSocket.onclose = () => {
@@ -106,17 +116,16 @@ export class WebSocketService {
   }
 
 
-
   public send(connection: WebSocketServerConnection, event: MessageBody | MessageBodyRequest) {
     if (this.LOG_MESSAGES)
       console.log("ws: sending data: " + JSON.stringify(event))
     connection.serverConnection.send(JSON.stringify(event));
   }
 
-  public sendWithResponse<U extends MessageBodyResponse>(connection: WebSocketServerConnection, message: MessageBodyRequest, response:ResponseMessageHandler<U>){
+  public sendWithResponse<U extends MessageBodyResponse>(connection: WebSocketServerConnection, message: MessageBodyRequest, response: ResponseMessageHandler<U>) {
     message.requestId = self.crypto.randomUUID();
-    this.responseCallbacks.set(message.requestId,response);
-    this.send(connection,message);
+    this.responseCallbacks.set(message.requestId, response);
+    this.send(connection, message);
   }
 
   public addHandler<T extends MessageBody>(t: MessageTypes, handler: MessageHandler<T>) {
@@ -126,15 +135,15 @@ export class WebSocketService {
   }
 
   public async handleEvent(connection: WebSocketServerConnection, event: MessageBody) {
-    if ('respondsTo' in event){
+    if ('respondsTo' in event) {
       const eventResponse = event as MessageBodyResponse;
       const responseHandler = this.responseCallbacks.get(eventResponse.respondsTo);
-      if (!responseHandler){
+      if (!responseHandler) {
         console.warn("No response handler for " + JSON.stringify(eventResponse));
         console.warn("Message was: " + JSON.stringify(event));
-      }else{
+      } else {
         this.responseCallbacks.delete(eventResponse.respondsTo);
-        responseHandler(eventResponse,connection);
+        responseHandler(eventResponse, connection);
       }
     }
     const handler = this.messageHandlers.get(event.type as MessageTypes);
@@ -214,6 +223,29 @@ export class WebSocketService {
     return (client.username == connection.identity.username) //TODO check by key id - this is terrible
   }
 
+  private onKickMessage(event: KickMessage, connection: WebSocketServerConnection) {
+    let message = "";
+    switch (event.reason) {
+      case "ALREADY_CONNECTED":
+        message = "You are already connected with this identity";
+        break;
+      case "UNAUTHORIZED_REQUEST":
+        message = "You made an unauthoirzed request";
+        break;
+      case "INTERNAL_ERROR":
+        message = "Internal server error";
+        break;
+      default:
+        message = "Unknown reason: " + event.reason;
+        break;
+    }
+    this.toastService.create({
+      type: ToastType.Error,
+      title: "Kicked from Server",
+      message: message,
+    })
+
+  }
 }
 
 export type MessageHandler<T extends MessageBody> = (event: T, connection: WebSocketServerConnection) => void | any;

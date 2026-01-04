@@ -4,7 +4,7 @@ import {IceServer, SectionDTO} from '../../../api/webrtc-server';
 export interface WebSocketServerConnection {
   state: ConnectionState; // the current state of connection
   identity: Identity; // the used identity
-
+  jwt?: string;
   serverConnection: WebSocket; // the websocket connection
 
   data?: ServerTree; //the server tree

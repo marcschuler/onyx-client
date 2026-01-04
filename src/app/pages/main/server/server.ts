@@ -9,6 +9,7 @@ import {InterfaceService} from '../../../services/interface-service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {Popup} from '../../../components/ui/popup/popup';
 import {Settings} from '../../settings/settings';
+import {ServerOverview} from './server-overview/server-overview';
 
 @Component({
   selector: 'app-server',
@@ -19,7 +20,8 @@ import {Settings} from '../../settings/settings';
     LucideAngularModule,
     NgStyle,
     Popup,
-    Settings
+    Settings,
+    ServerOverview
   ],
   templateUrl: './server.html',
   styleUrl: './server.css'

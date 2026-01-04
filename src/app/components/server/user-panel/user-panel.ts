@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {
   HexagonIcon,
   LogInIcon,
@@ -10,7 +10,7 @@ import {
 } from 'lucide-angular';
 import {NgClass} from '@angular/common';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
-import {ConnectionState} from '../../../services/websocket/WebSocketServerConnection';
+import {ConnectionState, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {PeerConnectionService, TrackType} from '../../../services/peer/peer-connection-service';
 
 @Component({
@@ -24,12 +24,8 @@ import {PeerConnectionService, TrackType} from '../../../services/peer/peer-conn
 })
 export class UserPanel {
 
-  protected readonly MicIcon = MicIcon;
-  protected readonly VideoIcon = VideoIcon;
-  protected readonly ScreenShareIcon = ScreenShareIcon;
-  protected readonly SettingsIcon = SettingsIcon;
-  protected readonly LogInIcon = LogInIcon;
-  protected readonly HexagonIcon = HexagonIcon;
+  @Input() connection!: WebSocketServerConnection;
+
 
   constructor(protected webSocketService:WebSocketService,
               protected peerConnectionService: PeerConnectionService) {
@@ -40,4 +36,8 @@ export class UserPanel {
   protected readonly VideoOffIcon = VideoOffIcon;
   protected readonly ScreenShareOffIcon = ScreenShareOffIcon;
   protected readonly TrackType = TrackType;
+
+  protected readonly MicIcon = MicIcon;
+  protected readonly VideoIcon = VideoIcon;
+  protected readonly ScreenShareIcon = ScreenShareIcon;
 }

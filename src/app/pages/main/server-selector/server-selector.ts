@@ -48,7 +48,7 @@ export class ServerSelector implements OnInit, OnDestroy {
 
   constructor(protected serverLoaderService: ServerLoaderService,
               private webSocketService: WebSocketService,
-              private identityService: IdentityService) {
+              protected identityService: IdentityService) {
 
   }
 
