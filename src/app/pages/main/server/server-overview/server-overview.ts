@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { WebSocketServerConnection } from "../../../../services/websocket/WebSocketServerConnection";
+import {ServerDTO} from '../../../../../api/webrtc-server';
 
 @Component({
   selector: 'app-server-overview',
@@ -8,6 +9,8 @@ import { WebSocketServerConnection } from "../../../../services/websocket/WebSoc
   styleUrl: './server-overview.css'
 })
 export class ServerOverview {
+
   @Input() connection!: WebSocketServerConnection;
+
 
 }

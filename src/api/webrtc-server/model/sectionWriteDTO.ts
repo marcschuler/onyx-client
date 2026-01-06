@@ -10,6 +10,6 @@
 
 
 export interface SectionWriteDTO { 
-    name?: string;
+    name: string;
 }
 

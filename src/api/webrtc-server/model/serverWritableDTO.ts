@@ -10,6 +10,6 @@
 
 
 export interface ServerWritableDTO { 
-    name?: string;
+    name: string;
 }
 

@@ -166,15 +166,15 @@ export class SectionControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public edit(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
-    public edit(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
-    public edit(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
-    public edit(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
+    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
+    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
+    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (sectionId === null || sectionId === undefined) {
-            throw new Error('Required parameter sectionId was null or undefined when calling edit.');
+            throw new Error('Required parameter sectionId was null or undefined when calling edit1.');
         }
         if (sectionWriteDTO === null || sectionWriteDTO === undefined) {
-            throw new Error('Required parameter sectionWriteDTO was null or undefined when calling edit.');
+            throw new Error('Required parameter sectionWriteDTO was null or undefined when calling edit1.');
         }
 
         let localVarHeaders = this.defaultHeaders;

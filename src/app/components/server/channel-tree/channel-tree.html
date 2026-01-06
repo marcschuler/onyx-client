@@ -1,6 +1,6 @@
 @if (webSocketService.connection && webSocketService.connection.data) {
   @let data = webSocketService.connection.data;
-  <h3 class="font-bold pb-2 text-center w-full">{{ data.name }}</h3>
+  <h3 class="font-bold pb-2 text-center w-full">{{ data.server.name }}</h3>
   @for (section of data.sections; track section) {
     <div>
       <h4 class="font-semibold  text-neutral-400 py-2 pt-3">{{ section.name }}</h4>

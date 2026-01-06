@@ -1,16 +1,29 @@
 import {Identity} from '../identity-service';
-import {IceServer, SectionDTO} from '../../../api/webrtc-server';
+import {
+  ChatControllerService,
+  IceServer,
+  SectionDTO,
+  ServerControllerService,
+  ServerTreeChangeMessage
+} from '../../../api/webrtc-server';
 
 export interface WebSocketServerConnection {
   state: ConnectionState; // the current state of connection
   identity: Identity; // the used identity
-  jwt?: string;
   serverConnection: WebSocket; // the websocket connection
 
-  data?: ServerTree; //the server tree
+  data?: ServerTreeChangeMessage; //the server tree
   config: ServerConfig; //configuration settings for this server
   clients: Client[]; //all clients
   currentChannel?: ServerObjectId | undefined; //the current channel if existing
+
+  rest: RestConfiguration;
+}
+
+export interface RestConfiguration{
+  readonly jwt?: string;
+  serverController: ServerControllerService;
+  chatController: ChatControllerService;
 }
 
 export interface Client{
@@ -23,17 +36,6 @@ export interface Client{
 export interface ServerConfig{
   iceServers?: IceServer[];
 }
-
-export interface ServerTree {
-  name: string;
-  sections: SectionDTO[];
-}
-
-export interface Channel {
-  id: string;
-  name: string;
-}
-
 
 export enum ConnectionState {
   CONNECTING = "CONNECTING",

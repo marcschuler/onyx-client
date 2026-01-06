@@ -22,7 +22,7 @@
   ></div>
   <main class="flex-1">
     @if (connection.currentChannel) {
-      <app-channel-view [channelId]="connection.currentChannel"></app-channel-view>
+      <app-channel-view [connection]="connection" [channelId]="connection.currentChannel"></app-channel-view>
     } @else {
       <app-server-overview [connection]="connection"></app-server-overview>
     }

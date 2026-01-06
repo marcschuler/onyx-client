@@ -6,7 +6,7 @@ import {PeerView} from '../../../../components/server/peer-view/peer-view';
 import {InterfaceService} from '../../../../services/interface-service';
 import {FormsModule} from '@angular/forms';
 import {MessageView} from '../../../../components/server/message-view/message-view';
-import {ServerObjectId} from '../../../../services/websocket/WebSocketServerConnection';
+import {ServerObjectId, WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {ChannelDetailRequest, ChannelDetailResponse, ChannelDTO} from '../../../../../api/webrtc-server';
 
 @Component({
@@ -21,6 +21,7 @@ import {ChannelDetailRequest, ChannelDetailResponse, ChannelDTO} from '../../../
 })
 export class ChannelView implements AfterViewInit, OnChanges {
 
+  @Input() connection!: WebSocketServerConnection;
   @Input() channelId!: ServerObjectId;
 
   details: ChannelDTO | undefined;
@@ -47,7 +48,7 @@ export class ChannelView implements AfterViewInit, OnChanges {
   }
 
   updateDetails() {
-    this.webSocketService.sendWithResponse(this.webSocketService.connection!,
+    this.webSocketService.sendWithResponse(this.connection,
       {
         channelId: this.channelId,
         type: ChannelDetailRequest.TypeEnum.ChannelDetailRequest,

@@ -9,9 +9,7 @@
  */
 
 
-export interface ChannelDTO { 
-    name: string;
-    id: string;
-    chatId: string;
+export interface MessageWriteDTO { 
+    markdown: string;
 }
 

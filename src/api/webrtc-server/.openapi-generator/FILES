@@ -4,6 +4,7 @@ api.base.service.ts
 api.module.ts
 api/api.ts
 api/channelController.service.ts
+api/chatController.service.ts
 api/infoController.service.ts
 api/sectionController.service.ts
 api/serverController.service.ts
@@ -24,11 +25,16 @@ model/clientChannelJoinMessage.ts
 model/clientChannelLeaveMessage.ts
 model/iceServer.ts
 model/iceServerMessage.ts
+model/incomeMessageEvent.ts
 model/jwtTokenMessage.ts
 model/kickMessage.ts
+model/markdownMessageContentDTO.ts
 model/messageBody.ts
 model/messageBodyRequest.ts
 model/messageBodyResponse.ts
+model/messageContentDTO.ts
+model/messageCreationDTO.ts
+model/messageDTO.ts
 model/messageTypes.ts
 model/models.ts
 model/peerAnswer.ts

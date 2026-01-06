@@ -14,21 +14,22 @@
  */
 export const MessageTypes = {
     IceServerMessage: 'IceServerMessage',
-    ClientChannelLeaveMessage: 'ClientChannelLeaveMessage',
-    PeerAnswerForward: 'PeerAnswerForward',
-    JwtTokenMessage: 'JwtTokenMessage',
-    PeerOfferForward: 'PeerOfferForward',
-    AuthChallengeRequest: 'AuthChallengeRequest',
-    ClientChannelChangeRequest: 'ClientChannelChangeRequest',
-    ServerTreeChangeMessage: 'ServerTreeChangeMessage',
-    ChannelDetailRequest: 'ChannelDetailRequest',
-    PeerAnswer: 'PeerAnswer',
-    PeerOffer: 'PeerOffer',
     AuthChallengeResponse: 'AuthChallengeResponse',
+    AuthChallengeRequest: 'AuthChallengeRequest',
     KickMessage: 'KickMessage',
     ClientChannelJoinMessage: 'ClientChannelJoinMessage',
-    ChannelDetailResponse: 'ChannelDetailResponse',
-    AuthSuccessMessage: 'AuthSuccessMessage'
+    JwtTokenMessage: 'JwtTokenMessage',
+    PeerAnswer: 'PeerAnswer',
+    ChannelDetailRequest: 'ChannelDetailRequest',
+    ClientChannelLeaveMessage: 'ClientChannelLeaveMessage',
+    IncomeMessageEvent: 'IncomeMessageEvent',
+    ServerTreeChangeMessage: 'ServerTreeChangeMessage',
+    PeerOfferForward: 'PeerOfferForward',
+    ClientChannelChangeRequest: 'ClientChannelChangeRequest',
+    PeerAnswerForward: 'PeerAnswerForward',
+    PeerOffer: 'PeerOffer',
+    AuthSuccessMessage: 'AuthSuccessMessage',
+    ChannelDetailResponse: 'ChannelDetailResponse'
 } as const;
 export type MessageTypes = typeof MessageTypes[keyof typeof MessageTypes];
 

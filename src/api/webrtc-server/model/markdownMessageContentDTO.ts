@@ -7,11 +7,13 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MessageContentDTO } from './messageContentDTO';
 
 
-export interface ChannelDTO { 
-    name: string;
-    id: string;
-    chatId: string;
+export interface MarkdownMessageContentDTO extends MessageContentDTO { 
+    text: string;
 }
+export namespace MarkdownMessageContentDTO {
+}
+
 

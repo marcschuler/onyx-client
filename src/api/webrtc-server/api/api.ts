@@ -1,5 +1,7 @@
 export * from './channelController.service';
 import { ChannelControllerService } from './channelController.service';
+export * from './chatController.service';
+import { ChatControllerService } from './chatController.service';
 export * from './infoController.service';
 import { InfoControllerService } from './infoController.service';
 export * from './sectionController.service';
@@ -8,4 +10,4 @@ export * from './serverController.service';
 import { ServerControllerService } from './serverController.service';
 export * from './todoController.service';
 import { TodoControllerService } from './todoController.service';
-export const APIS = [ChannelControllerService, InfoControllerService, SectionControllerService, ServerControllerService, TodoControllerService];
+export const APIS = [ChannelControllerService, ChatControllerService, InfoControllerService, SectionControllerService, ServerControllerService, TodoControllerService];

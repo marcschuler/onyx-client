@@ -16,9 +16,10 @@ import {
   MessageBody,
   MessageBodyRequest,
   MessageBodyResponse,
-  MessageTypes,
+  MessageTypes, ServerControllerService,
   ServerTreeChangeMessage
 } from '../../../api/webrtc-server';
+import {RestController} from '../rest-controller';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,7 @@ export class WebSocketService {
   private responseCallbacks: Map<string, ResponseMessageHandler<any>> = new Map();
 
   constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService,
+              private restController: RestController,
               private peerConnectionService: PeerConnectionService) {
     this.addHandler(AuthChallengeRequest.TypeEnum.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
     this.addHandler(AuthSuccessMessage.TypeEnum.AuthSuccessMessage, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessMessage, c));
@@ -67,7 +69,8 @@ export class WebSocketService {
         serverConnection: webSocket,
         identity: identity,
         clients: [],
-        config: {}
+        config: {},
+        rest: this.restController.createRestConfig(serverConnection.url, undefined)
       }
       webSocket.onopen = (_) => {
         console.log("ws: connected to server")
@@ -134,6 +137,15 @@ export class WebSocketService {
     this.messageHandlers.set(t, handler);
   }
 
+  removeHandler<T extends MessageBody>(handler: MessageHandler<T>) {
+    for (const [key, value] of this.messageHandlers.entries()) {
+      if (value === handler) {
+        this.messageHandlers.delete(key);
+        break;
+      }
+    }
+  }
+
   public async handleEvent(connection: WebSocketServerConnection, event: MessageBody) {
     if ('respondsTo' in event) {
       const eventResponse = event as MessageBodyResponse;
@@ -172,13 +184,12 @@ export class WebSocketService {
     console.log("ws: server did welcome us - auth successfully")
     connection.state = ConnectionState.CONNECTED;
     this.connection = connection;
-    connection.jwt = event.jwt;
+    connection.rest = this.restController.updateRestConfig(connection.rest, event.jwt);
   }
 
   private async onServerTreeChangeEvent(event: ServerTreeChangeMessage, connection: WebSocketServerConnection) {
     connection.data = event;
   }
-
 
   private onIceServerData(event: IceServerMessage, connection: WebSocketServerConnection) {
     console.log("ws: added " + event.iceServers.length + " ice servers");
@@ -246,6 +257,8 @@ export class WebSocketService {
     })
 
   }
+
+
 }
 
 export type MessageHandler<T extends MessageBody> = (event: T, connection: WebSocketServerConnection) => void | any;

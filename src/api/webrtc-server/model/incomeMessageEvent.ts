@@ -7,19 +7,18 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ServerDTO } from './serverDTO';
-import { SectionDTO } from './sectionDTO';
+import { MessageDTO } from './messageDTO';
 import { MessageBody } from './messageBody';
 
 
-export interface ServerTreeChangeMessage extends MessageBody { 
-    server: ServerDTO;
-    sections: Array<SectionDTO>;
-    readonly type: ServerTreeChangeMessage.TypeEnum;
+export interface IncomeMessageEvent extends MessageBody { 
+    chatId: string;
+    message: MessageDTO;
+    readonly type: IncomeMessageEvent.TypeEnum;
 }
-export namespace ServerTreeChangeMessage {
+export namespace IncomeMessageEvent {
     export const TypeEnum = {
-        ServerTreeChangeMessage: 'ServerTreeChangeMessage'
+        IncomeMessageEvent: 'IncomeMessageEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

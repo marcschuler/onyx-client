@@ -8,12 +8,13 @@
  * Do not edit the class manually.
  */
 import { MarkdownMessageContentDTO } from './markdownMessageContentDTO';
+import { UserSimpleDTO } from './userSimpleDTO';
 
 
-export interface ServerDTO { 
-    name: string;
+export interface MessageDTO { 
     id: string;
-    publicKey: any | null;
-    description?: MarkdownMessageContentDTO;
+    timestamp: string;
+    user: UserSimpleDTO;
+    content?: Array<MarkdownMessageContentDTO>;
 }
 

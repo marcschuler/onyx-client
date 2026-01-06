@@ -82,7 +82,7 @@ export class ChannelControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/server//sectio`;
+        let localVarPath = `/v0/server//channel`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ChannelDTO>('post', `${basePath}${localVarPath}`,
             {

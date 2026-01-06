@@ -17,9 +17,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { ServerDTO } from '../model/serverDTO';
+import { MessageCreationDTO } from '../model/messageCreationDTO';
 // @ts-ignore
-import { ServerWritableDTO } from '../model/serverWritableDTO';
+import { MessageDTO } from '../model/messageDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -31,27 +31,27 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ServerControllerService extends BaseService {
+export class ChatControllerService extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
     /**
-     * @param serverId 
-     * @param serverWritableDTO 
+     * @param id 
+     * @param messageCreationDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public edit(serverId: string, serverWritableDTO: ServerWritableDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<ServerDTO>;
-    public edit(serverId: string, serverWritableDTO: ServerWritableDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ServerDTO>>;
-    public edit(serverId: string, serverWritableDTO: ServerWritableDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ServerDTO>>;
-    public edit(serverId: string, serverWritableDTO: ServerWritableDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (serverId === null || serverId === undefined) {
-            throw new Error('Required parameter serverId was null or undefined when calling edit.');
+    public message(id: string, messageCreationDTO: MessageCreationDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<MessageDTO>;
+    public message(id: string, messageCreationDTO: MessageCreationDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageDTO>>;
+    public message(id: string, messageCreationDTO: MessageCreationDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageDTO>>;
+    public message(id: string, messageCreationDTO: MessageCreationDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling message.');
         }
-        if (serverWritableDTO === null || serverWritableDTO === undefined) {
-            throw new Error('Required parameter serverWritableDTO was null or undefined when calling edit.');
+        if (messageCreationDTO === null || messageCreationDTO === undefined) {
+            throw new Error('Required parameter messageCreationDTO was null or undefined when calling message.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -88,12 +88,12 @@ export class ServerControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/server/${this.configuration.encodeParam({name: "serverId", value: serverId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        let localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/message`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<ServerDTO>('put', `${basePath}${localVarPath}`,
+        return this.httpClient.request<MessageDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: serverWritableDTO,
+                body: messageCreationDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -109,12 +109,12 @@ export class ServerControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public info(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<ServerDTO>;
-    public info(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ServerDTO>>;
-    public info(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ServerDTO>>;
-    public info(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public messages(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<MessageDTO>>;
+    public messages(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<MessageDTO>>>;
+    public messages(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<MessageDTO>>>;
+    public messages(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling info.');
+            throw new Error('Required parameter id was null or undefined when calling messages.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -142,9 +142,9 @@ export class ServerControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/server/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        let localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/message`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<ServerDTO>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<MessageDTO>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
