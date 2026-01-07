@@ -11,7 +11,7 @@
   <!-- Talk View -->
   <div class="flex-grow max-h-[70vh] overflow-auto">
     <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-2"><!--[style.height.%]="interfaceService.settings.channelSplitSize.peerView"-->
-      @if (peerConnectionService.localStream) {
+      @if (peerConnectionService.localStream && !(peerConnectionService.peers.length==0 && !peerConnectionService.screenShared && !peerConnectionService.microphoneShared && !peerConnectionService.cameraShared)) {
         <app-peer-view class="h-64" [localStream]="peerConnectionService.localStream"></app-peer-view>
       }
       @for (peer of peerConnectionService.peers; track peer) {
@@ -25,7 +25,7 @@
   </div>
 
   <!-- Messages view -->
-  <div class="flex flex-col flex-grow min-h-[30vh] ">
+  <div class="flex flex-col flex-grow min-h-[10vh] ">
     <!--[style.height.%]="interfaceService.settings.channelSplitSize.peerView"-->
     <app-message-view class="h-full" [connection]="connection" [channelId]="channelId"></app-message-view>
   </div>

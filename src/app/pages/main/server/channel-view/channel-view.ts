@@ -7,7 +7,8 @@ import {InterfaceService} from '../../../../services/interface-service';
 import {FormsModule} from '@angular/forms';
 import {MessageView} from '../../../../components/server/message-view/message-view';
 import {ServerObjectId, WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
-import {ChannelDetailRequest, ChannelDetailResponse, ChannelDTO} from '../../../../../api/webrtc-server';
+import {ChannelDetailRequest, ChannelDetailResponse} from '../../../../../api/webrtc-server';
+import {ChannelDTO} from '../../../../../api/webrtc-server/model/channelDTO';
 
 @Component({
   selector: 'app-channel-view',

@@ -11,10 +11,10 @@
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+         HttpResponse, HttpEvent, HttpContext 
         }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
+import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 
 // @ts-ignore
 import { ServerDTO } from '../model/serverDTO';
@@ -38,23 +38,28 @@ export class ServerControllerService extends BaseService {
     }
 
     /**
+     * @endpoint put /v0/server/{serverId}
      * @param serverId 
-     * @param serverWritableDTO 
+     * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
+     * @param options additional options
      */
-    public edit(serverId: string, serverWritableDTO: ServerWritableDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<ServerDTO>;
-    public edit(serverId: string, serverWritableDTO: ServerWritableDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ServerDTO>>;
-    public edit(serverId: string, serverWritableDTO: ServerWritableDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ServerDTO>>;
-    public edit(serverId: string, serverWritableDTO: ServerWritableDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public edit(serverId: string, body: ServerWritableDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<ServerDTO>;
+    public edit(serverId: string, body: ServerWritableDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ServerDTO>>;
+    public edit(serverId: string, body: ServerWritableDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ServerDTO>>;
+    public edit(serverId: string, body: ServerWritableDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (serverId === null || serverId === undefined) {
             throw new Error('Required parameter serverId was null or undefined when calling edit.');
         }
-        if (serverWritableDTO === null || serverWritableDTO === undefined) {
-            throw new Error('Required parameter serverWritableDTO was null or undefined when calling edit.');
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling edit.');
         }
 
         let localVarHeaders = this.defaultHeaders;
+
+        // authentication (jwt-auth) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('jwt-auth', 'Authorization', localVarHeaders, 'Bearer ');
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
             '*/*'
@@ -93,21 +98,23 @@ export class ServerControllerService extends BaseService {
         return this.httpClient.request<ServerDTO>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: serverWritableDTO,
+                body: body,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
-                transferCache: localVarTransferCache,
+                ...(localVarTransferCache !== undefined ? { transferCache: localVarTransferCache } : {}),
                 reportProgress: reportProgress
             }
         );
     }
 
     /**
+     * @endpoint get /v0/server/{id}
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
+     * @param options additional options
      */
     public info(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<ServerDTO>;
     public info(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ServerDTO>>;
@@ -118,6 +125,9 @@ export class ServerControllerService extends BaseService {
         }
 
         let localVarHeaders = this.defaultHeaders;
+
+        // authentication (jwt-auth) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('jwt-auth', 'Authorization', localVarHeaders, 'Bearer ');
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
             '*/*'
@@ -151,7 +161,7 @@ export class ServerControllerService extends BaseService {
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
-                transferCache: localVarTransferCache,
+                ...(localVarTransferCache !== undefined ? { transferCache: localVarTransferCache } : {}),
                 reportProgress: reportProgress
             }
         );

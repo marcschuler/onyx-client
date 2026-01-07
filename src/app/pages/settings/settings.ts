@@ -8,6 +8,7 @@ import {Popup} from '../../components/ui/popup/popup';
 import {RouterLink} from '@angular/router';
 import {Identity} from './identity/identity';
 import {Debug} from './debug/debug';
+import {Contributors} from './contributors/contributors';
 
 @Component({
   selector: 'app-settings',
@@ -15,7 +16,8 @@ import {Debug} from './debug/debug';
     LucideAngularModule,
     FormsModule,
     Identity,
-    Debug
+    Debug,
+    Contributors
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css'
@@ -29,6 +31,9 @@ export class Settings {
     }, {
       id: SettingsOptions.IDENTITY,
       name: 'Identities',
+    }, {
+      id: SettingsOptions.CONTRIBUTORS,
+      name: 'Contributors',
     }, {
       id: SettingsOptions.DEBUG,
       name: 'Debug'
@@ -44,5 +49,6 @@ export class Settings {
 enum SettingsOptions {
   GENERAL,
   IDENTITY,
-  DEBUG
+  DEBUG,
+  CONTRIBUTORS,
 }

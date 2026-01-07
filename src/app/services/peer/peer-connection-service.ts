@@ -5,6 +5,11 @@ import {WebSocketService} from '../websocket/web-socket-service';
 import {CryptoService} from '../crypto-service';
 import {ToastMessage, ToastService, ToastType} from '../toast-service';
 import {PeerAnswer, PeerAnswerForward, PeerOffer, PeerOfferForward} from '../../../api/webrtc-server';
+import {
+  NOTIFICATION_USER_JOINED_CHANNEL,
+  NOTIFICATION_USER_LEFT_CHANNEL,
+  NotificationService
+} from '../notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +22,7 @@ export class PeerConnectionService {
 
   localFakePeer: MediaConnection | undefined;
 
+  //TODO remake as localSourceShared:TrackStatus={} ?
   microphoneShared: MediaStream | undefined;
   cameraShared: MediaStream | undefined;
   screenShared: MediaStream | undefined;
@@ -25,6 +31,7 @@ export class PeerConnectionService {
 
   constructor(private injector: Injector,
               private cryptoService: CryptoService,
+              private notificationService: NotificationService,
               private toastService: ToastService) {
     setTimeout(() => {
       this.webSocketService = injector.get(WebSocketService);
@@ -171,6 +178,8 @@ export class PeerConnectionService {
     } else {
       console.log("peer: waiting for " + peer.client.id + " to connect (wait mode)")
     }
+    this.notificationService.notify(NOTIFICATION_USER_JOINED_CHANNEL);
+
     return peer;
 
   }
@@ -200,6 +209,7 @@ export class PeerConnectionService {
     console.log("peer: disconnecting peer " + peer.client.username)
     this.peers.splice(this.peers.indexOf(peer), 1);
     peer.connection.close();
+    this.notificationService.notify(NOTIFICATION_USER_LEFT_CHANNEL);
   }
 
   /**
@@ -214,6 +224,32 @@ export class PeerConnectionService {
       return false;
     }
     return peer.client.id > this.webSocketService.connection.identity.id;
+  }
+
+  public async changeTrack(type: TrackType) {
+    switch (type) {
+      case TrackType.Microphone:
+        if (this.microphoneShared) {
+          await this.stopTrack(type);
+        } else {
+          await this.startTrack(type);
+        }
+        break;
+      case TrackType.Camera:
+        if (this.microphoneShared) {
+          await this.stopTrack(type);
+        } else {
+          await this.startTrack(type);
+        }
+        break;
+      case TrackType.Screen:
+        if (this.microphoneShared) {
+          await this.stopTrack(type);
+        } else {
+          await this.startTrack(type);
+        }
+        break;
+    }
   }
 
 
@@ -284,6 +320,40 @@ export class PeerConnectionService {
     }
   }
 
+  public async stopTrack(type: TrackType) {
+    console.log("deactivating stream " + type)
+    switch (type) {
+      case TrackType.Microphone:
+        this.stopTracks(this.microphoneShared!);
+        this.microphoneShared = undefined;
+        break;
+      case TrackType.Camera:
+        this.stopTracks(this.cameraShared!);
+        this.cameraShared = undefined;
+        break;
+      case TrackType.Screen:
+        this.stopTracks(this.screenShared!);
+        this.screenShared = undefined;
+        break;
+    }
+
+  }
+
+  private stopTracks(stream: MediaStream | undefined) {
+    if (!stream) {
+      this.toastService.create({
+        title: 'Cannot deactivate stream',
+        message: 'The stream is not active',
+        type: ToastType.Error,
+      })
+      return;
+    }
+    stream.getTracks().forEach(track => {
+      track.stop();
+    });
+  }
+
+
   // Only set on start, never when adding or removing inputs
   public setTracks(peer: PeerConnection) {
     if (this.localStream.getTracks().length > 0) {
@@ -339,6 +409,7 @@ export class PeerConnectionService {
     });
   }
 
+
 }
 
 
@@ -347,3 +418,7 @@ export enum TrackType {
   Camera = "Camera",
   Screen = "Screen"
 }
+
+type TrackStatus = {
+  [K in TrackType]?: MediaStream | undefined;
+};

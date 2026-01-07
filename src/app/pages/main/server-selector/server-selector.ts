@@ -1,15 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Spinner} from '../../../components/ui/spinner/spinner';
 import {
-  ServerConnection,
+  ServerConnection, ServerDTO,
   ServerLoaderService
 } from '../../../services/server-loader-service';
 import {FormsModule} from '@angular/forms';
-import {ImageIcon, LucideAngularModule, ServerIcon, ServerOffIcon, SettingsIcon, UserIcon} from 'lucide-angular';
+import {LucideAngularModule, ServerIcon, ServerOffIcon, SettingsIcon, UserIcon} from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {IdentityService} from '../../../services/identity-service';
-import {ServerDTO} from '../../../../api/webrtc-server';
-import {RouterLink} from '@angular/router';
 import {Popup} from '../../../components/ui/popup/popup';
 import {Settings} from '../../settings/settings';
 

@@ -22,21 +22,21 @@
                    [ngClass]="[
     peerConnectionService.microphoneShared ? 'text-emerald-600' : 'text-neutral-400'
   ]"
-                   (click)="peerConnectionService.startTrack(TrackType.Microphone)"></lucide-icon>
+                   (click)="peerConnectionService.changeTrack(TrackType.Microphone)"></lucide-icon>
     </button>
     <button class="!bg-neutral-900 !rounded-none">
       <lucide-icon [name]="peerConnectionService.cameraShared?VideoIcon:VideoOffIcon"
                    [ngClass]="[
     peerConnectionService.cameraShared ? 'text-emerald-600' : 'text-neutral-400'
   ]"
-                   (click)="peerConnectionService.startTrack(TrackType.Camera)"></lucide-icon>
+                   (click)="peerConnectionService.changeTrack(TrackType.Camera)"></lucide-icon>
     </button>
     <button class="!bg-neutral-900 !rounded-l-none">
       <lucide-icon [name]="peerConnectionService.screenShared?ScreenShareIcon:ScreenShareOffIcon"
                    [ngClass]="[
     peerConnectionService.screenShared ? 'text-emerald-600' : 'text-neutral-400'
   ]"
-                   (click)="peerConnectionService.startTrack(TrackType.Screen)"></lucide-icon>
+                   (click)="peerConnectionService.changeTrack(TrackType.Screen)"></lucide-icon>
     </button>
   </div>
 </div>

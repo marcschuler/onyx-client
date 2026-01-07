@@ -1,22 +1,27 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {RestConfiguration} from './websocket/WebSocketServerConnection';
-import {ChatControllerService, ServerControllerService} from '../../api/webrtc-server';
+import {ChatControllerService, Configuration, ServerControllerService} from '../../api/webrtc-server';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RestController {
+export class RestService {
 
   constructor(private http: HttpClient) {
   }
 
   public createRestConfig(basePath: string, jwt: string | undefined): RestConfiguration {
     //TODO add jwt token
+    const config = jwt ? new Configuration({
+      credentials: {
+        "jwt-auth": jwt
+      }
+    }) : new Configuration();
     return {
       jwt: jwt,
-      serverController: new ServerControllerService(this.http, basePath),
-      chatController: new ChatControllerService(this.http, basePath),
+      serverController: new ServerControllerService(this.http, basePath, config),
+      chatController: new ChatControllerService(this.http, basePath, config),
     }
   }
 

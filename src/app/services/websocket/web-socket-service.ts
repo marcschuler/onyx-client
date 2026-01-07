@@ -11,7 +11,7 @@ import {
   AuthSuccessMessage,
   ClientChannelJoinMessage,
   ClientChannelLeaveMessage,
-  IceServerMessage,
+  IceServerMessage, JwtTokenMessage,
   KickMessage,
   MessageBody,
   MessageBodyRequest,
@@ -19,7 +19,7 @@ import {
   MessageTypes, ServerControllerService,
   ServerTreeChangeMessage
 } from '../../../api/webrtc-server';
-import {RestController} from '../rest-controller';
+import {RestService} from '../rest-service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,7 @@ export class WebSocketService {
   private responseCallbacks: Map<string, ResponseMessageHandler<any>> = new Map();
 
   constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService,
-              private restController: RestController,
+              private restService: RestService,
               private peerConnectionService: PeerConnectionService) {
     this.addHandler(AuthChallengeRequest.TypeEnum.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
     this.addHandler(AuthSuccessMessage.TypeEnum.AuthSuccessMessage, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessMessage, c));
@@ -44,6 +44,7 @@ export class WebSocketService {
     this.addHandler(ClientChannelLeaveMessage.TypeEnum.ClientChannelLeaveMessage, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveMessage, c));
     this.addHandler(IceServerMessage.TypeEnum.IceServerMessage, (e, c) => this.onIceServerData(e as IceServerMessage, c));
     this.addHandler(KickMessage.TypeEnum.KickMessage, (e, c) => this.onKickMessage(e as KickMessage, c));
+    this.addHandler(JwtTokenMessage.TypeEnum.JwtTokenMessage,(e,c)=>this.onJwtToken(e as JwtTokenMessage,c));
   }
 
 
@@ -70,7 +71,7 @@ export class WebSocketService {
         identity: identity,
         clients: [],
         config: {},
-        rest: this.restController.createRestConfig(serverConnection.url, undefined)
+        rest: this.restService.createRestConfig(serverConnection.url, undefined)
       }
       webSocket.onopen = (_) => {
         console.log("ws: connected to server")
@@ -184,7 +185,7 @@ export class WebSocketService {
     console.log("ws: server did welcome us - auth successfully")
     connection.state = ConnectionState.CONNECTED;
     this.connection = connection;
-    connection.rest = this.restController.updateRestConfig(connection.rest, event.jwt);
+    connection.rest = this.restService.updateRestConfig(connection.rest, event.jwt);
   }
 
   private async onServerTreeChangeEvent(event: ServerTreeChangeMessage, connection: WebSocketServerConnection) {
@@ -258,7 +259,9 @@ export class WebSocketService {
 
   }
 
-
+  private onJwtToken(event: JwtTokenMessage, connection: WebSocketServerConnection) {
+    connection.rest = this.restService.updateRestConfig(connection.rest,event.jwt);
+  }
 }
 
 export type MessageHandler<T extends MessageBody> = (event: T, connection: WebSocketServerConnection) => void | any;

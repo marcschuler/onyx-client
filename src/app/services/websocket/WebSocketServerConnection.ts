@@ -1,11 +1,10 @@
 import {Identity} from '../identity-service';
 import {
   ChatControllerService,
-  IceServer,
-  SectionDTO,
   ServerControllerService,
   ServerTreeChangeMessage
 } from '../../../api/webrtc-server';
+import {IceServer} from '../../../api/webrtc-server/model/iceServer';
 
 export interface WebSocketServerConnection {
   state: ConnectionState; // the current state of connection

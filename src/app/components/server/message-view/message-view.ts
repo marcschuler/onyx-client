@@ -1,24 +1,29 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {BrushCleaningIcon, LucideAngularModule, SendIcon} from 'lucide-angular';
+import {LucideAngularModule, SendIcon} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {getChannelFromId} from '../../../services/Util';
 import {ToastService, ToastType} from '../../../services/toast-service';
 import {MessageHandler, WebSocketService} from '../../../services/websocket/web-socket-service';
-import {IncomeMessageEvent, MessageDTO} from '../../../../api/webrtc-server';
+import {IncomeMessageEvent} from '../../../../api/webrtc-server';
 import {DatePipe} from '@angular/common';
+import {MessageDTO} from '../../../../api/webrtc-server/model/messageDTO';
+import {MarkdownPipe} from '../../../pipes/markdown-pipe';
+import {Message} from 'postcss';
+import {NOTIFICATION_MESSAGE_NEW, NotificationService} from '../../../services/notification.service';
 
 @Component({
   selector: 'app-message-view',
   imports: [
     FormsModule,
     LucideAngularModule,
-    DatePipe
+    DatePipe,
+    MarkdownPipe
   ],
   templateUrl: './message-view.html',
   styleUrl: './message-view.css'
 })
-export class MessageView implements OnInit, OnDestroy {
+export class MessageView implements OnInit, OnDestroy, OnChanges {
 
   protected readonly SendIcon = SendIcon;
 
@@ -29,27 +34,41 @@ export class MessageView implements OnInit, OnDestroy {
 
   message: string = "";
 
+  @ViewChild('messageList') private messageListElement!: ElementRef;
+
+
   incomeMessageHandler: MessageHandler<IncomeMessageEvent> = (event: IncomeMessageEvent, connection) => {
-    //TODO check if it is THIS chat
+    //TODO check if it is THIS chat. Could be depending on the server response but might not be
     console.log("received new message " + JSON.stringify(event));
-    this.messages.push(event.message);
+    this.addMessageToList([event.message]);
+    if (event.message.user.id !== connection.identity.id)
+      this.notificationService.notify(NOTIFICATION_MESSAGE_NEW)
+
   };
 
   constructor(private toastService: ToastService,
-              private webSocketService: WebSocketService) {
+              private webSocketService: WebSocketService,
+              private notificationService: NotificationService) {
 
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["channelId"]) {
+      this.messages = [];
+      this.updateMessages();
+    }
   }
 
   updateMessages() {
     const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
     this.connection.rest.chatController.messages(channel!.chatId).subscribe(messages => {
-      console.log("messages are " + JSON.stringify(messages));
+
       if (messages == undefined || messages.length == undefined) {
         console.warn("no messages received");
         return;
       }
       console.log("Got " + messages.length + " messages in chat")
-      this.messages = messages;
+      this.addMessageToList(messages);
     })
   }
 
@@ -62,7 +81,34 @@ export class MessageView implements OnInit, OnDestroy {
     this.webSocketService.removeHandler(this.incomeMessageHandler);
   }
 
-  sendMessage() {
+  addMessageToList(messages: MessageDTO[]) {
+    for (const message of messages) {
+      this.messages.push(message);
+    }
+    //TODO remove duplicates
+
+    // sort the messages by date in case they are in wrong order
+    this.messages.sort((a, b) => {
+      return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+    })
+    setTimeout(() => {
+      this.messageListElement.nativeElement.scrollTop = this.messageListElement.nativeElement.scrollHeight;
+    }, 100)
+  }
+
+  sendMessage(event?: KeyboardEvent) {
+    if (event && !event.shiftKey) {
+      event.preventDefault();
+    }
+    if (this.message.length == 0) {
+      this.toastService.create({
+        title: "Empty message",
+        message: "The message cannot be empty",
+        type: ToastType.Warning,
+        duration: 3000
+      });
+      return;
+    }
     const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
     if (!channel) {
       this.toastService.create({

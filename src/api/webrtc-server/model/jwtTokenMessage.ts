@@ -11,7 +11,7 @@ import { MessageBody } from './messageBody';
 
 
 export interface JwtTokenMessage extends MessageBody { 
-    token: string;
+    jwt: string;
     readonly type: JwtTokenMessage.TypeEnum;
 }
 export namespace JwtTokenMessage {
