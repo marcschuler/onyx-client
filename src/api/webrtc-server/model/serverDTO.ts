@@ -12,8 +12,8 @@ import { MarkdownMessageContentDTO } from './markdownMessageContentDTO';
 
 export interface ServerDTO { 
     name: string;
+    description: MarkdownMessageContentDTO;
     id: string;
     publicKey: any | null;
-    description?: MarkdownMessageContentDTO;
 }
 

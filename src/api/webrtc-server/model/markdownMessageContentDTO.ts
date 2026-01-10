@@ -13,7 +13,4 @@ import { MessageContentDTO } from './messageContentDTO';
 export interface MarkdownMessageContentDTO extends MessageContentDTO { 
     text: string;
 }
-export namespace MarkdownMessageContentDTO {
-}
-
 

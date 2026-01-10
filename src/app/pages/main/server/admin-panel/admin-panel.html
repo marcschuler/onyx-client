@@ -1,0 +1,12 @@
+<app-button-panel [buttons]="[BUTTON_SERVER_ADMINISTRATION]">
+  @if (server){
+    <h3>Server Name</h3>
+    <input [(ngModel)]="server.name">
+    <h3> Server Description </h3>
+    <textarea [(ngModel)]="server.description.text"></textarea>
+
+    <button class="right-2 bottom-2 absolute" (click)="saveServerInfo()">Save</button>
+  } @else {
+    <app-spinner></app-spinner>
+  }
+</app-button-panel>

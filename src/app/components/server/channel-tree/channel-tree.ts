@@ -12,6 +12,7 @@ import {AsyncPipe, NgClass} from '@angular/common';
 import {ClientChannelChangeRequest} from '../../../../api/webrtc-server';
 import {IdenticonPipe} from '../../../pipes/identicon-pipe';
 import {ChannelDTO} from '../../../../api/webrtc-server/model/channelDTO';
+import {ServerObjectId, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 
 @Component({
   selector: 'app-channel-tree',
@@ -28,6 +29,7 @@ import {ChannelDTO} from '../../../../api/webrtc-server/model/channelDTO';
 export class ChannelTree {
 
   @Input() editMode!: boolean;
+  @Input() connection!: WebSocketServerConnection;
 
   readonly HexagonIcon = HexagonIcon;
 
@@ -39,12 +41,25 @@ export class ChannelTree {
 
   changeChannel(channel: ChannelDTO) {
     console.log("Changing channel to " + channel.name);
-    this.webSocketService.send(this.webSocketService.connection!, {
+    this.selectChannel(channel);
+    this.webSocketService.send(this.connection, {
       channelId: channel.id,
       type: ClientChannelChangeRequest.TypeEnum.ClientChannelChangeRequest
     } as ClientChannelChangeRequest);
   }
 
+  protected selectChannel(channel: ChannelDTO | undefined) {
+    if (channel == undefined) {
+      console.log("unselecting channel")
+      this.connection.selectedChannel = undefined;
+    }else{
+      console.log("Selecting channel " + channel.name)
+      this.connection.selectedChannel = channel.id as ServerObjectId;
+    }
+  }
+
   protected readonly SettingsIcon = SettingsIcon;
   protected readonly TrashIcon = TrashIcon;
+
+
 }

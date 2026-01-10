@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Spinner} from '../../../components/ui/spinner/spinner';
 import {
-  ServerConnection, ServerDTO,
+  ServerConnection,
   ServerLoaderService
 } from '../../../services/server-loader-service';
 import {FormsModule} from '@angular/forms';
@@ -10,6 +10,8 @@ import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {IdentityService} from '../../../services/identity-service';
 import {Popup} from '../../../components/ui/popup/popup';
 import {Settings} from '../../settings/settings';
+import {KeyVisualizer} from '../../../components/ui/key-visualizer/key-visualizer';
+import {ServerDTO} from '../../../../api/webrtc-server/model/serverDTO';
 
 @Component({
   selector: 'app-server-selector',
@@ -18,7 +20,7 @@ import {Settings} from '../../settings/settings';
     FormsModule,
     LucideAngularModule,
     Popup,
-    Settings
+    Settings,
   ],
   templateUrl: './server-selector.html',
   styleUrl: './server-selector.css'

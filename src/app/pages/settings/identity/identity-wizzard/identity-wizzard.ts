@@ -8,6 +8,7 @@ import {CryptoService} from '../../../../services/crypto-service';
 import {IdenticonPipe} from '../../../../pipes/identicon-pipe';
 import {KeyIDPipe} from '../../../../pipes/key-id-pipe';
 import {LucideAngularModule, RotateCcw} from 'lucide-angular';
+import {KeyVisualizer} from '../../../../components/ui/key-visualizer/key-visualizer';
 
 
 @Component({
@@ -18,7 +19,8 @@ import {LucideAngularModule, RotateCcw} from 'lucide-angular';
     IdenticonPipe,
     AsyncPipe,
     KeyIDPipe,
-    LucideAngularModule
+    LucideAngularModule,
+    KeyVisualizer
   ],
   templateUrl: './identity-wizzard.html',
   styleUrl: './identity-wizzard.css'

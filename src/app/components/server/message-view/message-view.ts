@@ -11,6 +11,7 @@ import {MessageDTO} from '../../../../api/webrtc-server/model/messageDTO';
 import {MarkdownPipe} from '../../../pipes/markdown-pipe';
 import {Message} from 'postcss';
 import {NOTIFICATION_MESSAGE_NEW, NotificationService} from '../../../services/notification.service';
+import {RestService} from '../../../services/rest-service';
 
 @Component({
   selector: 'app-message-view',
@@ -48,6 +49,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
 
   constructor(private toastService: ToastService,
               private webSocketService: WebSocketService,
+              private restService: RestService,
               private notificationService: NotificationService) {
 
   }
@@ -69,7 +71,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
       }
       console.log("Got " + messages.length + " messages in chat")
       this.addMessageToList(messages);
-    })
+    }, error => this.restService.handleError(error))
   }
 
   ngOnInit(): void {
@@ -125,6 +127,6 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
     }).subscribe(value => {
       this.message = "";
       console.log("Message send");
-    })
+    }, error => this.restService.handleError(error))
   }
 }

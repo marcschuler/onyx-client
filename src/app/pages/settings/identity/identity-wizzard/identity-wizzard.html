@@ -15,11 +15,12 @@
     <div class="flex gap-4">
       <div class="w-48">
         <img [src]="key | keyID | async | identicon: 96 | async" class="rounded-t w-full"/>
-        <button class="button-dark w-full min-w-full !rounded-t-none  items-center justify-center" (click)="createKey()">
+        <button class="button-dark w-full min-w-full !rounded-t-none  items-center justify-center"
+                (click)="createKey()">
           <lucide-icon [name]="RotateCcw" class="w-4 h-4 m-auto"></lucide-icon>
         </button>
       </div>
-      <div  class="text-neutral-300">
+      <div class="text-neutral-300">
         <p>
           This is a visual representation of your private Identity key.
         </p>
@@ -30,6 +31,7 @@
         </p>
       </div>
     </div>
+    <app-key-visualizer class="w-full" [keyId]="key | keyID | async "></app-key-visualizer>
   }
 
   <div class="p-4"></div>

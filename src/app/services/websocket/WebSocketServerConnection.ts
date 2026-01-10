@@ -15,6 +15,7 @@ export interface WebSocketServerConnection {
   config: ServerConfig; //configuration settings for this server
   clients: Client[]; //all clients
   currentChannel?: ServerObjectId | undefined; //the current channel if existing
+  selectedChannel?: ServerObjectId| undefined; //the selected channel in UI if existing
 
   rest: RestConfiguration;
 }

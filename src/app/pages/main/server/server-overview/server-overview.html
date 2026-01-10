@@ -2,10 +2,8 @@
   <h2 class="text-center p-8">{{ connection.data.server.name }}</h2>
 
   <div class="flex justify-center  items-center">
-    <div class="p-6 bg-neutral-800 rounded w-xl max-h-9/12">
-      @if (connection.data.server.description) {
-        {{ connection.data.server.description.text }}
-      }
+    <div class="p-6 bg-neutral-800 rounded w-xl max-h-9/12"
+         [innerHTML]="connection.data.server.description.text | markdown">
     </div>
   </div>
 }

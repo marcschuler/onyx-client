@@ -1,0 +1,36 @@
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+
+@Component({
+  selector: 'app-key-visualizer',
+  imports: [],
+  templateUrl: './key-visualizer.html',
+  styleUrl: './key-visualizer.css'
+})
+export class KeyVisualizer implements OnInit, OnChanges {
+
+
+  @Input() keyId: string | undefined | null;
+
+  bits: boolean[] | undefined;
+
+  ngOnInit(): void {
+    this.base64ToBitString(this.keyId);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.base64ToBitString(this.keyId);
+  }
+
+  public base64ToBitString(base64: string | undefined|null) {
+    if (!base64) {
+      this.bits = undefined
+      return;
+    }
+    const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+    this.bits = [...bytes]
+      .map(b => b.toString(2).padStart(8, '0'))
+      .flatMap(s => s.split(""))
+      .map(s => s == "1")
+  }
+
+}

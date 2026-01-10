@@ -1,18 +1,29 @@
-@if (!showSettings){
-  <button class="right-2 absolute top-2 button-dark" (click)="showSettings=true">
-    <lucide-icon [name]="SettingsIcon"></lucide-icon>
+<div class="right-2 top-2 absolute">
+  <button class="button-dark" (click)="showAdminPanel=true">
+    <lucide-icon [name]="ServerCog"></lucide-icon>
   </button>
-}
+  @if (!showSettings) {
+    <button class="button-dark" (click)="showSettings=true">
+      <lucide-icon [name]="SettingsIcon"></lucide-icon>
+    </button>
+  }
+</div>
 <app-popup [isOpen]="showSettings" [closeButton]="true" (close)="showSettings=false">
   <app-settings></app-settings>
 </app-popup>
+@if (showAdminPanel) {
+  <app-popup [isOpen]="showAdminPanel" [closeButton]="true" (close)="showAdminPanel=false">
+    <app-admin-panel [connection]="connection"></app-admin-panel>
+  </app-popup>
+}
+
 
 <div class="min-h-screen flex">
   <aside class="block min-h-screen shrink-0 bg-neutral-900 border-r-neutral-950 border-r-1"
          [ngStyle]="{ width: interfaceService.settings.sidebarWidth + 'px' }">
     <div class="flex flex-col h-screen">
-     <!-- <lucide-icon class="absolute right-2 top-2" [name]="SettingsIcon" (click)="editMode=true"></lucide-icon>-->
-      <app-channel-tree class="flex-1 p-2 overflow-y-auto" [editMode]="editMode"></app-channel-tree>
+      <!-- <lucide-icon class="absolute right-2 top-2" [name]="SettingsIcon" (click)="editMode=true"></lucide-icon>-->
+      <app-channel-tree class="flex-1 p-2 overflow-y-auto" [editMode]="editMode" [connection]="connection"></app-channel-tree>
       <app-user-panel [connection]="connection"></app-user-panel>
     </div>
   </aside>
@@ -21,8 +32,8 @@
     (mousedown)="startResizing($event)"
   ></div>
   <main class="flex-1">
-    @if (connection.currentChannel) {
-      <app-channel-view [connection]="connection" [channelId]="connection.currentChannel"></app-channel-view>
+    @if (connection.selectedChannel) {
+      <app-channel-view [connection]="connection" [channelId]="connection.selectedChannel"></app-channel-view>
     } @else {
       <app-server-overview [connection]="connection"></app-server-overview>
     }

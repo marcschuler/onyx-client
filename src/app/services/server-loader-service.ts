@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, firstValueFrom, throwError} from 'rxjs';
+import {ServerDTO} from '../../api/webrtc-server/model/serverDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -54,11 +55,6 @@ export interface ServerDTOList {
   details: ServerDTO[];
 }
 
-export interface ServerDTO {
-  id: string;
-  name: string;
-  publicKey: string;
-}
 
 export interface ServerDetailError {
   error: string;

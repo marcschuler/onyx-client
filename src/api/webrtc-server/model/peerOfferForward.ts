@@ -11,8 +11,8 @@ import { MessageBody } from './messageBody';
 
 
 export interface PeerOfferForward extends MessageBody { 
-    clientFrom?: string;
-    offer?: any | null;
+    clientFrom: string;
+    offer: any | null;
     readonly type: PeerOfferForward.TypeEnum;
 }
 export namespace PeerOfferForward {

@@ -11,8 +11,8 @@ import { MessageBody } from './messageBody';
 
 
 export interface PeerAnswerForward extends MessageBody { 
-    clientFrom?: string;
-    answer?: any | null;
+    clientFrom: string;
+    answer: any | null;
     readonly type: PeerAnswerForward.TypeEnum;
 }
 export namespace PeerAnswerForward {
