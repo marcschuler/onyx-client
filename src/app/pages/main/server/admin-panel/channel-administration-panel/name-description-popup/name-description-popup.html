@@ -1,12 +1,12 @@
-<app-popup [isOpen]="true">
+<app-popup [isOpen]="true" [buttons]="[BUTTON_CANCEL,BUTTON_EDIT]" (close)="onClose($event)">
   <label>
     Name
   </label>
-  <input minlength="3">
-
-  <label>
-    Description
-  </label>
-  <textarea></textarea>
-
+  <input [(ngModel)]="internalEntity.name">
+  <!--
+    <label>
+      Description
+    </label>
+    <textarea [(ngModel)]="internalEntity.description?.text"></textarea>
+  -->
 </app-popup>

@@ -6,6 +6,7 @@ export * from './channelCreateDTO';
 export * from './channelDTO';
 export * from './channelDetailRequest';
 export * from './channelDetailResponse';
+export * from './channelWriteDTO';
 export * from './clientChannelChangeRequest';
 export * from './clientChannelJoinMessage';
 export * from './clientChannelLeaveMessage';

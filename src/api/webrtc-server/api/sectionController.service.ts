@@ -38,22 +38,18 @@ export class SectionControllerService extends BaseService {
     }
 
     /**
-     * @endpoint delete /v0/server/{serverId}/section/{sectionId}
+     * @endpoint delete /v0/section/{sectionId}
      * @param sectionId 
-     * @param serverId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public _delete(sectionId: string, serverId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public _delete(sectionId: string, serverId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public _delete(sectionId: string, serverId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public _delete(sectionId: string, serverId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public _delete(sectionId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public _delete(sectionId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public _delete(sectionId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public _delete(sectionId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (sectionId === null || sectionId === undefined) {
             throw new Error('Required parameter sectionId was null or undefined when calling _delete.');
-        }
-        if (serverId === null || serverId === undefined) {
-            throw new Error('Required parameter serverId was null or undefined when calling _delete.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -83,7 +79,7 @@ export class SectionControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/server/${this.configuration.encodeParam({name: "serverId", value: serverId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/section/${this.configuration.encodeParam({name: "sectionId", value: sectionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        let localVarPath = `/v0/section/${this.configuration.encodeParam({name: "sectionId", value: sectionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`,
             {
@@ -99,20 +95,16 @@ export class SectionControllerService extends BaseService {
     }
 
     /**
-     * @endpoint post /v0/server/{serverId}/section
-     * @param serverId 
+     * @endpoint post /v0/section
      * @param sectionWriteDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public create(serverId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
-    public create(serverId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
-    public create(serverId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
-    public create(serverId: string, sectionWriteDTO: SectionWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (serverId === null || serverId === undefined) {
-            throw new Error('Required parameter serverId was null or undefined when calling create.');
-        }
+    public create(sectionWriteDTO: SectionWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
+    public create(sectionWriteDTO: SectionWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
+    public create(sectionWriteDTO: SectionWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
+    public create(sectionWriteDTO: SectionWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (sectionWriteDTO === null || sectionWriteDTO === undefined) {
             throw new Error('Required parameter sectionWriteDTO was null or undefined when calling create.');
         }
@@ -123,7 +115,7 @@ export class SectionControllerService extends BaseService {
         localVarHeaders = this.configuration.addCredentialToHeaders('jwt-auth', 'Authorization', localVarHeaders, 'Bearer ');
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -154,7 +146,7 @@ export class SectionControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/server/${this.configuration.encodeParam({name: "serverId", value: serverId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/section`;
+        let localVarPath = `/v0/section`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<SectionDTO>('post', `${basePath}${localVarPath}`,
             {
@@ -171,17 +163,17 @@ export class SectionControllerService extends BaseService {
     }
 
     /**
-     * @endpoint put /v0/server/{serverId}/section/{sectionId}
+     * @endpoint put /v0/section/{sectionId}
      * @param sectionId 
      * @param sectionWriteDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
-    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
-    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
-    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
+    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
+    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
+    public edit1(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (sectionId === null || sectionId === undefined) {
             throw new Error('Required parameter sectionId was null or undefined when calling edit1.');
         }
@@ -195,7 +187,7 @@ export class SectionControllerService extends BaseService {
         localVarHeaders = this.configuration.addCredentialToHeaders('jwt-auth', 'Authorization', localVarHeaders, 'Bearer ');
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
+            'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
             localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
@@ -226,7 +218,7 @@ export class SectionControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/server//section/${this.configuration.encodeParam({name: "sectionId", value: sectionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        let localVarPath = `/v0/section/${this.configuration.encodeParam({name: "sectionId", value: sectionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<SectionDTO>('put', `${basePath}${localVarPath}`,
             {
@@ -243,22 +235,22 @@ export class SectionControllerService extends BaseService {
     }
 
     /**
-     * @endpoint put /v0/server/{serverId}/section/{sectionId}/reorder/{newOrder}
-     * @param sectionId 
+     * @endpoint put /v0/section/{id}/order/{newOrder}
+     * @param id 
      * @param newOrder 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public reorder(sectionId: string, newOrder: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public reorder(sectionId: string, newOrder: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public reorder(sectionId: string, newOrder: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public reorder(sectionId: string, newOrder: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (sectionId === null || sectionId === undefined) {
-            throw new Error('Required parameter sectionId was null or undefined when calling reorder.');
+    public order(id: string, newOrder: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public order(id: string, newOrder: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public order(id: string, newOrder: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public order(id: string, newOrder: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling order.');
         }
         if (newOrder === null || newOrder === undefined) {
-            throw new Error('Required parameter newOrder was null or undefined when calling reorder.');
+            throw new Error('Required parameter newOrder was null or undefined when calling order.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -288,7 +280,7 @@ export class SectionControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/server//section/${this.configuration.encodeParam({name: "sectionId", value: sectionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/reorder/${this.configuration.encodeParam({name: "newOrder", value: newOrder, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/v0/section/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/order/${this.configuration.encodeParam({name: "newOrder", value: newOrder, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('put', `${basePath}${localVarPath}`,
             {

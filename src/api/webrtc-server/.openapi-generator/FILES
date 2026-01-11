@@ -21,6 +21,7 @@ model/channelCreateDTO.ts
 model/channelDTO.ts
 model/channelDetailRequest.ts
 model/channelDetailResponse.ts
+model/channelWriteDTO.ts
 model/clientChannelChangeRequest.ts
 model/clientChannelJoinMessage.ts
 model/clientChannelLeaveMessage.ts

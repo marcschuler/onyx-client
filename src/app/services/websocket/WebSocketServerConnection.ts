@@ -1,7 +1,7 @@
 import {Identity} from '../identity-service';
 import {
   ChannelControllerService,
-  ChatControllerService,
+  ChatControllerService, SectionControllerService,
   ServerControllerService,
   ServerTreeChangeMessage
 } from '../../../api/webrtc-server';
@@ -26,6 +26,7 @@ export interface RestConfiguration{
   serverController: ServerControllerService;
   channelController: ChannelControllerService;
   chatController: ChatControllerService;
+  sectionController: SectionControllerService;
 }
 
 export interface Client{

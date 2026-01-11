@@ -4,7 +4,7 @@ import {RestConfiguration} from './websocket/WebSocketServerConnection';
 import {
   ChannelControllerService,
   ChatControllerService,
-  Configuration,
+  Configuration, SectionControllerService,
   ServerControllerService
 } from '../../api/webrtc-server';
 import {ToastService, ToastType} from './toast-service';
@@ -45,7 +45,8 @@ export class RestService {
       jwt: jwt,
       serverController: new ServerControllerService(this.http, basePath, config),
       chatController: new ChatControllerService(this.http, basePath, config),
-      channelController: new ChannelControllerService(this.http, basePath, config)
+      channelController: new ChannelControllerService(this.http, basePath, config),
+      sectionController: new SectionControllerService(this.http, basePath, config)
     }
   }
 

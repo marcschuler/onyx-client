@@ -28,6 +28,8 @@ export class Popup {
     switch (type) {
       case ButtonType.DELETE:
         return "button-red";
+      case ButtonType.EDIT:
+        return "button";
       default:
         return "button-dark";
     }
@@ -42,7 +44,8 @@ export class Popup {
 export enum ButtonType {
   CANCEL,
   OK,
-  DELETE
+  DELETE,
+  EDIT,
 }
 
 export interface Button {
@@ -61,5 +64,11 @@ export const BUTTON_CANCEL: Button = {
 export const BUTTON_DELETE: Button = {
   text: 'Delete',
   type: ButtonType.DELETE,
+  callback: true
+}
+
+export const BUTTON_EDIT: Button = {
+  text:'Edit',
+  type: ButtonType.EDIT,
   callback: true
 }

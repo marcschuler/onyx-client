@@ -29,7 +29,7 @@ export class AdminPanel implements OnInit, OnChanges {
   }
   BUTTON_CHANNEL_TREE: TabPanelEntry = {
     id: "channel-tree",
-    name: "Channels"
+    name: "Sections & Channel"
   }
 
   constructor(private restService: RestService,
