@@ -1,7 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {RestConfiguration} from './websocket/WebSocketServerConnection';
-import {ChatControllerService, Configuration, ServerControllerService} from '../../api/webrtc-server';
+import {
+  ChannelControllerService,
+  ChatControllerService,
+  Configuration,
+  ServerControllerService
+} from '../../api/webrtc-server';
 import {ToastService, ToastType} from './toast-service';
 
 @Injectable({
@@ -40,6 +45,7 @@ export class RestService {
       jwt: jwt,
       serverController: new ServerControllerService(this.http, basePath, config),
       chatController: new ChatControllerService(this.http, basePath, config),
+      channelController: new ChannelControllerService(this.http, basePath, config)
     }
   }
 
@@ -50,7 +56,7 @@ export class RestService {
   public handleError(error: HttpErrorResponse) {
     console.error(JSON.stringify(error))
     var description = error.status + " " + error.statusText
-    if (error.error && error.error.title){
+    if (error.error && error.error.title) {
       description = error.error.title;
     }
     const emoji: string | undefined = this.statusCodeEmojis[error.status];

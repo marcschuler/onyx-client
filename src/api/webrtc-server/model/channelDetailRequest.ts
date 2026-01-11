@@ -7,9 +7,10 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MessageBody } from './messageBody';
 
 
-export interface ChannelDetailRequest { 
+export interface ChannelDetailRequest extends MessageBody { 
     requestId?: string;
     channelId?: string;
     readonly type: ChannelDetailRequest.TypeEnum;

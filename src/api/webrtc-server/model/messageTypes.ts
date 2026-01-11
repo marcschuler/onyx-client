@@ -10,26 +10,26 @@
 
 
 /**
- * A list of all messages
+ * A list of all message types
  */
 export const MessageTypes = {
-    PeerAnswerForward: 'PeerAnswerForward',
-    ClientChannelJoinMessage: 'ClientChannelJoinMessage',
-    IncomeMessageEvent: 'IncomeMessageEvent',
-    AuthChallengeResponse: 'AuthChallengeResponse',
     ClientChannelChangeRequest: 'ClientChannelChangeRequest',
-    ClientChannelLeaveMessage: 'ClientChannelLeaveMessage',
-    IceServerMessage: 'IceServerMessage',
     PeerOffer: 'PeerOffer',
-    PeerOfferForward: 'PeerOfferForward',
-    ServerTreeChangeMessage: 'ServerTreeChangeMessage',
-    AuthChallengeRequest: 'AuthChallengeRequest',
-    ChannelDetailRequest: 'ChannelDetailRequest',
     KickMessage: 'KickMessage',
-    ChannelDetailResponse: 'ChannelDetailResponse',
-    PeerAnswer: 'PeerAnswer',
+    PeerAnswerForward: 'PeerAnswerForward',
+    IceServerMessage: 'IceServerMessage',
     AuthSuccessMessage: 'AuthSuccessMessage',
-    JwtTokenMessage: 'JwtTokenMessage'
+    AuthChallengeResponse: 'AuthChallengeResponse',
+    IncomeMessageEvent: 'IncomeMessageEvent',
+    ClientChannelLeaveMessage: 'ClientChannelLeaveMessage',
+    ClientChannelJoinMessage: 'ClientChannelJoinMessage',
+    AuthChallengeRequest: 'AuthChallengeRequest',
+    PeerOfferForward: 'PeerOfferForward',
+    ChannelDetailRequest: 'ChannelDetailRequest',
+    ChannelDetailResponse: 'ChannelDetailResponse',
+    JwtTokenMessage: 'JwtTokenMessage',
+    ServerTreeChangeMessage: 'ServerTreeChangeMessage',
+    PeerAnswer: 'PeerAnswer'
 } as const;
 export type MessageTypes = typeof MessageTypes[keyof typeof MessageTypes];
 

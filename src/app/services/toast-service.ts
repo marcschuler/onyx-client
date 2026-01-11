@@ -28,7 +28,7 @@ export class ToastService {
 
 export interface ToastMessage {
   title?: string;
-  message: string;
+  message?: string;
   duration?: number;
   type: ToastType;
 }

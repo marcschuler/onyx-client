@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-button-panel',
@@ -12,13 +12,21 @@ export class ButtonPanel implements OnInit {
   @Input() buttons!: TabPanelEntry[];
 
   @Input() selectedOption!: TabPanelEntry;
+  @Output() selectedOptionChange = new EventEmitter<TabPanelEntry>();
 
   ngOnInit() {
-    this.selectedOption = this.buttons[0];
+    if (!this.buttons || this.buttons.length == 0)
+      console.warn("Got no buttons on panel - this may crash")
+    this.select(this.buttons[0]);
   }
 
+  protected select(button: TabPanelEntry) {
+    this.selectedOption = button;
+    this.selectedOptionChange.emit(button);
+  }
 }
 
 export interface TabPanelEntry {
+  id: string;
   name: string;
 }

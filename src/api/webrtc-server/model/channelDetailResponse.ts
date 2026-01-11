@@ -8,9 +8,10 @@
  * Do not edit the class manually.
  */
 import { ChannelDTO } from './channelDTO';
+import { MessageBody } from './messageBody';
 
 
-export interface ChannelDetailResponse { 
+export interface ChannelDetailResponse extends MessageBody { 
     respondsTo: string;
     channel?: ChannelDTO;
     readonly type: ChannelDetailResponse.TypeEnum;

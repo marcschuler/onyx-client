@@ -8,7 +8,7 @@
       @for (channel of section.channels; track channel) {
         <div
           class="p-2 rounded gap-2 grid grid-cols-[1fr_auto] w-full
-          text-neutral-200 hover:text-neutral-100  hover:bg-neutral-800 animate-default group"
+          text-neutral-200 hover:text-neutral-100  hover:bg-neutral-800 animate-default group cursor-pointer"
           [ngClass]="[
     connection.selectedChannel==channel.id || connection.currentChannel==channel.id ? 'bg-neutral-800' : ''
   ]" (click)="selectChannel(channel)">

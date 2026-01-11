@@ -58,8 +58,5 @@ export class ChannelTree {
     }
   }
 
-  protected readonly SettingsIcon = SettingsIcon;
-  protected readonly TrashIcon = TrashIcon;
-
 
 }

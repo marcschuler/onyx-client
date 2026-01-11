@@ -40,20 +40,20 @@ export class ChatControllerService extends BaseService {
     /**
      * @endpoint post /v0/chat/{id}/message
      * @param id 
-     * @param body 
+     * @param messageCreationDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public message(id: string, body: MessageCreationDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MessageDTO>;
-    public message(id: string, body: MessageCreationDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageDTO>>;
-    public message(id: string, body: MessageCreationDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageDTO>>;
-    public message(id: string, body: MessageCreationDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public message(id: string, messageCreationDTO: MessageCreationDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MessageDTO>;
+    public message(id: string, messageCreationDTO: MessageCreationDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageDTO>>;
+    public message(id: string, messageCreationDTO: MessageCreationDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageDTO>>;
+    public message(id: string, messageCreationDTO: MessageCreationDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling message.');
         }
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling message.');
+        if (messageCreationDTO === null || messageCreationDTO === undefined) {
+            throw new Error('Required parameter messageCreationDTO was null or undefined when calling message.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -98,7 +98,7 @@ export class ChatControllerService extends BaseService {
         return this.httpClient.request<MessageDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: body,
+                body: messageCreationDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

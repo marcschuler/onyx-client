@@ -1,5 +1,6 @@
 import {Identity} from '../identity-service';
 import {
+  ChannelControllerService,
   ChatControllerService,
   ServerControllerService,
   ServerTreeChangeMessage
@@ -23,6 +24,7 @@ export interface WebSocketServerConnection {
 export interface RestConfiguration{
   readonly jwt?: string;
   serverController: ServerControllerService;
+  channelController: ChannelControllerService;
   chatController: ChatControllerService;
 }
 

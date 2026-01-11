@@ -29,8 +29,8 @@ textarea {
 
 
 button {
-  @apply text-neutral-200 bg-emerald-600 disabled:bg-neutral-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center
-   border-2 border-transparent hover:border-neutral-200 disabled:border-none transition-all duration-200 ease-in-out
+  @apply text-neutral-200 bg-emerald-600 disabled:bg-neutral-800 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center
+   border-2 border-transparent hover:border-neutral-200 transition-all duration-200 ease-in-out
 }
 
 .button-dark{
@@ -43,6 +43,10 @@ button {
 
 .button-red{
   @apply bg-red-600 focus:ring-red-600
+}
+
+.button-hover-red{
+  @apply hover:bg-red-600 focus:ring-red-600
 }
 
 .button-ghost{

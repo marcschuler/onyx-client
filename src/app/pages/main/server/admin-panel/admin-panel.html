@@ -1,12 +1,12 @@
-<app-button-panel [buttons]="[BUTTON_SERVER_ADMINISTRATION]">
-  @if (server){
-    <h3>Server Name</h3>
-    <input [(ngModel)]="server.name">
-    <h3> Server Description </h3>
-    <textarea [(ngModel)]="server.description.text"></textarea>
+<app-button-panel [buttons]="[BUTTON_SERVER_ADMINISTRATION,BUTTON_CHANNEL_TREE]" [(selectedOption)]="selectedOption">
 
-    <button class="right-2 bottom-2 absolute" (click)="saveServerInfo()">Save</button>
-  } @else {
-    <app-spinner></app-spinner>
+  @switch (selectedOption){
+    @case (BUTTON_SERVER_ADMINISTRATION){
+      <app-server-administration-panel [connection]="connection"></app-server-administration-panel>
+    }
+    @case (BUTTON_CHANNEL_TREE){
+      <app-channel-administration-panel [connection]="connection"></app-channel-administration-panel>
+    }
   }
 </app-button-panel>
+

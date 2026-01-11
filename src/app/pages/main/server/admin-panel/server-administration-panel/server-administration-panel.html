@@ -1,0 +1,10 @@
+@if (server){
+  <h3>Server Name</h3>
+  <input [(ngModel)]="server.name">
+  <h3> Server Description </h3>
+  <textarea [(ngModel)]="server.description.text" class="min-h-48"></textarea>
+  <div class="h-16"></div>
+  <button class="right-2" (click)="saveServerInfo()">Save</button>
+} @else {
+  <app-spinner></app-spinner>
+}
