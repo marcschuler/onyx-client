@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import {RestService} from '../../../../../services/rest-service';
 import {ToastService, ToastType} from '../../../../../services/toast-service';
@@ -23,7 +23,7 @@ import {NameDescriptionPopup} from './name-description-popup/name-description-po
   templateUrl: './channel-administration-panel.html',
   styleUrl: './channel-administration-panel.css'
 })
-export class ChannelAdministrationPanel {
+export class ChannelAdministrationPanel implements OnInit, OnChanges {
 
   @Input() connection!: WebSocketServerConnection;
   @Input() serverTree!: ServerTreeChangeMessage;
@@ -158,9 +158,7 @@ export class ChannelAdministrationPanel {
   protected readonly Pencil = Pencil;
 
 
-
   protected readonly GripVertical = GripVertical;
-
 
 
 }
