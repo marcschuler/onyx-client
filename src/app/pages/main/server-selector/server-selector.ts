@@ -5,13 +5,22 @@ import {
   ServerLoaderService
 } from '../../../services/server-loader-service';
 import {FormsModule} from '@angular/forms';
-import {LucideAngularModule, ServerIcon, ServerOffIcon, SettingsIcon, UserIcon} from 'lucide-angular';
+import {
+  ArrowBigRightDash,
+  LucideAngularModule,
+  ServerIcon,
+  ServerOffIcon,
+  SettingsIcon, Trash,
+  UserIcon
+} from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {IdentityService} from '../../../services/identity-service';
-import {Popup} from '../../../components/ui/popup/popup';
+import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_EDIT, ButtonType, Popup} from '../../../components/ui/popup/popup';
 import {Settings} from '../../settings/settings';
 import {KeyVisualizer} from '../../../components/ui/key-visualizer/key-visualizer';
 import {ServerDTO} from '../../../../api/webrtc-server/model/serverDTO';
+import {RestService} from '../../../services/rest-service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-server-selector',
@@ -27,7 +36,7 @@ import {ServerDTO} from '../../../../api/webrtc-server/model/serverDTO';
 })
 export class ServerSelector implements OnInit, OnDestroy {
 
-  CONNECTING_STATE: ServerInfoWithState ={
+  CONNECTING_STATE: ServerInfoWithState = {
     error: undefined,
     success: undefined,
     state: ServerInfoState.CONNECTING
@@ -38,6 +47,9 @@ export class ServerSelector implements OnInit, OnDestroy {
 
 
   selectedServer: ServerConnection | undefined;
+  serverToEdit: ServerConnection | undefined;
+  serverToDelete: boolean = false;
+  serverToEditCopy: ServerConnection | undefined;
 
   serverDetails: Map<ServerConnection, ServerInfoWithState> = new Map();
 
@@ -48,6 +60,7 @@ export class ServerSelector implements OnInit, OnDestroy {
 
   constructor(protected serverLoaderService: ServerLoaderService,
               private webSocketService: WebSocketService,
+              private restService: RestService,
               protected identityService: IdentityService) {
 
   }
@@ -72,12 +85,7 @@ export class ServerSelector implements OnInit, OnDestroy {
           });
         })
         .catch(error => {
-          console.log("server-selector: error", error);
-          this.serverDetails.set(connection, {
-            state: ServerInfoState.ERROR,
-            success: undefined,
-            error: error
-          });
+          this.setErrorMessageForConnection(connection, error);
         })
     })
   }
@@ -90,14 +98,22 @@ export class ServerSelector implements OnInit, OnDestroy {
     this.updateDetails();
     this.customUrl = "";
     this.serverLoaderService.serverDetails(server)
-      .then(serverDetail => {
+      .then(() => {
         this.connect(server)
       })
-      .catch(error => {
-        console.log("new server not available: " + error);
-        //TODO show error to user
-        this.customUrlError = error.error;
+      .catch((error: HttpErrorResponse) => {
+        console.log("server-selector: error", JSON.stringify(error));
+        this.setErrorMessageForConnection(server, error);
       })
+  }
+
+  private setErrorMessageForConnection(connection: ServerConnection, error: HttpErrorResponse) {
+    console.log("server-selector: error", JSON.stringify(error));
+    this.serverDetails.set(connection, {
+      state: ServerInfoState.ERROR,
+      success: undefined,
+      error: this.restService.buildErrorMessage(error)
+    });
   }
 
   connect(server: ServerConnection) {
@@ -107,17 +123,42 @@ export class ServerSelector implements OnInit, OnDestroy {
       .catch(e => this.selectedServer = undefined);
   }
 
+  protected editServer(s: ServerConnection) {
+    this.serverToEdit = s
+    this.serverToEditCopy = JSON.parse(JSON.stringify(s));
+  }
 
-  removeServer(s: ServerConnection) {
+  protected closeEditDialog(button: Button) {
+    if (button == BUTTON_EDIT && this.serverToEditCopy && this.serverToEdit) {
+      console.log("changing server data")
+      this.serverToEdit.url = this.serverToEditCopy.url;
+      this.serverToEdit.name = this.serverToEditCopy.name;
+      this.serverLoaderService.saveServer();
+    }
+    this.serverToEditCopy = undefined;
+    this.serverToEdit = undefined;
+  }
+
+  removeServer(s: ServerConnection, button: Button) {
+    this.serverToDelete = false;
+    if (!button || button == BUTTON_CANCEL) {
+      return;
+    }
+    this.serverToEdit = undefined;
     this.serverLoaderService.removeServer(s);
 
   }
 
   protected readonly ServerIcon = ServerIcon;
-  protected readonly UserIcon = UserIcon;
   protected readonly ServerInfoState = ServerInfoState;
   protected readonly ServerOffIcon = ServerOffIcon;
   protected readonly SettingsIcon = SettingsIcon;
+  protected readonly ArrowBigRightDash = ArrowBigRightDash;
+  protected readonly BUTTON_CANCEL = BUTTON_CANCEL;
+  protected readonly BUTTON_DELETE = BUTTON_DELETE;
+
+
+  protected readonly BUTTON_EDIT = BUTTON_EDIT;
 }
 
 export interface ServerInfoWithState {

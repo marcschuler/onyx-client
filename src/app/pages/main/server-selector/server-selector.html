@@ -1,23 +1,23 @@
-@if (!showSettings){
-<button class="right-2 absolute top-2 button-dark" (click)="showSettings=true">
-  <lucide-icon [name]="SettingsIcon"></lucide-icon>
-</button>
+@if (!showSettings) {
+  <button class="right-2 absolute top-2 button-dark" (click)="showSettings=true">
+    <lucide-icon [name]="SettingsIcon"></lucide-icon>
+  </button>
 }
 <app-popup [isOpen]="showSettings" [closeButton]="true" (close)="showSettings=false">
   <app-settings></app-settings>
 </app-popup>
-<div class="flex justify-center  items-center h-screen">
-  <div class="p-6 bg-neutral-800 rounded w-xl ">
+<div class="flex justify-center  items-center h-screen max-h-screen">
+  <div class="p-6 bg-neutral-800 rounded w-xl">
     @if (serverLoaderService.connections.length != 0) {
       <h3>Server Browser</h3>
     }
     <div class="overflow-y-auto max-h-96">
 
-      @for (s of serverLoaderService.connections; track s.url) {
-        <div class="p-4 my-1 bg-neutral-900 rounded gap-6 grid grid-cols-[auto_1fr_auto] w-full">
+      @for (s of serverLoaderService.connections; track s) {
+        <div class="bg-neutral-900 rounded gap-6 grid grid-cols-[auto_1fr_auto] w-full my-2">
           @let detail = serverDetails.get(s) || CONNECTING_STATE;
 
-          <div class="w-12 h-12 bg-neutral-800 rounded">
+          <div class="p-4 w-12 h-12 rounded">
             @switch (detail.state) {
               @case (ServerInfoState.CONNECTING) {
                 <app-spinner></app-spinner>
@@ -31,39 +31,42 @@
             }
           </div>
 
-          <div>
+          <div class="p-4">
             @switch (detail.state) {
               @case (ServerInfoState.CONNECTING) {
                 <p class="w-72 font-bold"></p>
-                <span class="text-neutral-400">{{ s.url }}</span>
+                <span class="text-neutral-400">{{ s.name || s.url }}</span>
               }
               @case (ServerInfoState.SUCCESS) {
                 @if (detail.success && detail.success[0]) {
                   @let info = detail.success[0];
                   <p class="w-72 font-bold">{{ info.name }}</p>
-                  <span class="text-neutral-400">{{ s.url }}</span>
+                  <span class="text-neutral-400">{{ s.name || s.url }}</span>
                 } @else {
-                  <p class="w-72 font-bold">{{ s.url }}</p>
+                  <p class="w-72 font-bold">{{ s.name || s.url }}</p>
                   <span class="text-red-400 line-clamp-2">Server gave invalid response</span>
                 }
 
               }
               @case (ServerInfoState.ERROR) {
-                <p class="w-64 font-bold">{{ s.url }}</p>
+                <p class="w-64 font-bold">{{ s.name || s.url }}</p>
                 <span class="text-red-400 line-clamp-2">{{ detail.error }}</span>
               }
             }
           </div>
 
           <div class="flex justify-end">
-            <button (click)="connect(s)" [disabled]="selectedServer">
+            <button class=" button-dark !rounded-none !p-2" (click)="editServer(s)">
+              <lucide-icon [name]="SettingsIcon"></lucide-icon>
+            </button>
+
+            <button class="!rounded-l-none button-green" (click)="connect(s)" [disabled]="selectedServer">
               @if (selectedServer == s) {
                 <app-spinner></app-spinner>
               } @else {
-                Join
+                <lucide-icon [name]="ArrowBigRightDash"></lucide-icon>
               }
             </button>
-            <button class="button-red" (click)="removeServer(s)">X</button>
           </div>
         </div>
       }
@@ -73,11 +76,11 @@
       <div class="p-8 border-b-neutral-600 border-b-1"></div>
     }
 
-    <h4 class="pt-2">Connect to a new server</h4>
+    <h4 class="pt-2">Add a new server</h4>
     <div class="grid grid-cols-4">
       <input [(ngModel)]="customUrl" class="col-span-3 !bg-neutral-900 !rounded-r-none"
              placeholder="example.com or http://localhost:8080"/>
-      <button (click)="addAndConnectToCustomUrl()" class="!rounded-l-none button-hover-dark"
+      <button (click)="addAndConnectToCustomUrl()" class="!rounded-l-none button-dark"
               [disabled]="selectedServer || customUrl.length<7">Connect
       </button>
     </div>
@@ -86,5 +89,30 @@
     }
   </div>
 
+  @if (serverToEdit && serverToEditCopy) {
+    <app-popup [isOpen]="true"
+               [buttons]="[BUTTON_EDIT]" [closeButton]="true" (close)="closeEditDialog($event)">
+      <h3>Connection</h3>
 
+      <div class="pt-4">
+        <label>Server Name</label>
+        <input [(ngModel)]="serverToEditCopy.name" placeholder="No name">
+        <label>Server URL</label>
+        <input [(ngModel)]="serverToEditCopy.url">
+      </div>
+
+      <div class="pt-8">
+        <label>Danger Zone</label>
+        <button class="button-dark button-red w-full" (click)="serverToDelete = true">
+          Delete Connection
+        </button>
+      </div>
+
+      <app-popup [isOpen]="serverToDelete" [buttons]="[BUTTON_CANCEL, BUTTON_DELETE]"
+                 title="Delete this connection?"
+                 (close)="removeServer(serverToEdit,$event)"
+                 [content]="'You can already create a new connection using this URL.'">
+      </app-popup>
+    </app-popup>
+  }
 </div>

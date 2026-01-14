@@ -31,7 +31,7 @@ export class ServerLoaderService {
     this.saveServer();
   }
 
-  private saveServer() {
+  public saveServer() {
     localStorage.setItem("serverConnections", JSON.stringify(this.connections));
   }
 
@@ -49,13 +49,5 @@ export class ServerLoaderService {
 
 export interface ServerConnection {
   url: string;
-}
-
-export interface ServerDTOList {
-  details: ServerDTO[];
-}
-
-
-export interface ServerDetailError {
-  error: string;
+  name?: string;
 }

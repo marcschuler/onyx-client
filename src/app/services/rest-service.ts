@@ -19,6 +19,7 @@ export class RestService {
 
   constructor(private http: HttpClient,
               private toastService: ToastService) {
+    this.statusCodeEmojis[  0] = "🌏";
     this.statusCodeEmojis[400] = "👎";
     this.statusCodeEmojis[401] = "🔐";
     this.statusCodeEmojis[402] = "💳️";
@@ -56,19 +57,33 @@ export class RestService {
 
   public handleError(error: HttpErrorResponse) {
     console.error(JSON.stringify(error))
-    var description = error.status + " " + error.statusText
+
+    this.toastService.create({
+      title: this.buildErrorTitle(error),
+      type: ToastType.Error,
+      message: this.buildErrorMessage(error)
+    })
+  }
+
+  public buildErrorTitle(error:HttpErrorResponse):string{
+    var title = error.status + " " + error.statusText
     if (error.error && error.error.title) {
-      description = error.error.title;
+      title = error.error.title;
+    }
+    if(error.status===0){
+      title = "No Connection"
     }
     const emoji: string | undefined = this.statusCodeEmojis[error.status];
     if (emoji)
-      description = emoji + " " + description
-    const text = error.error.detail || JSON.stringify(error.error)
-    this.toastService.create({
-      title: description,
-      type: ToastType.Error,
-      message: text
-    })
+      title = emoji + " " + title
+    return title;
+  }
+
+  public buildErrorMessage(error:HttpErrorResponse):string{
+    if (error.status==0 || error.status==undefined){
+      return "No Connection to server";
+    }
+    return error.error.detail || JSON.stringify(error.error);
   }
 
 }
