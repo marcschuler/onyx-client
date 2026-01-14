@@ -55,6 +55,10 @@ button {
   @apply border-2 border-dotted border-neutral-400 bg-neutral-800
 }
 
+.text-green-bold{
+  @apply text-emerald-400
+}
+
 a {
   @apply text-indigo-200 visited:text-indigo-400
 }

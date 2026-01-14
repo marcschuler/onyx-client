@@ -7,6 +7,9 @@ export const routes: Routes = [{
   path: 'settings/identity/new',
   loadComponent: () => import('./pages/settings/identity/identity-wizzard/identity-wizzard').then(x => x.IdentityWizzard)
 }, {
+  path: 'welcome',
+  loadComponent: () => import('./pages/intro/welcome/welcome').then(x => x.Welcome)
+},{
   path: '',
   loadComponent: () => import('./pages/main/main').then(x => x.Main)
 }];

@@ -19,7 +19,7 @@ export class IdentityService {
       console.log("Loaded " + this.identities.length + " identities");
       if (this.identities.length == 0) {
         console.log("No identity found - requesting user to create one");
-        this.router.navigate(['/settings/identity/new'])
+        this.router.navigate(['/welcome'])
       }
     })
   }

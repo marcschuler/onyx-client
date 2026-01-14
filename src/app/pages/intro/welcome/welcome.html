@@ -1,0 +1,44 @@
+<div class="p-4">
+  <h1 class="w-full text-center font-bold text-green-bold">Hello
+    @if (identityService.identities.length > 0) {
+      , {{ identityService.identities[0].username }}
+    }</h1>
+  <p class="text-center py-4">Let's set you up</p>
+
+  <div class="relative h-16 px-16">
+    <p class="p-4 inline bg-neutral-800 rounded-full absolute left-0">
+      <lucide-icon [name]="Hand"></lucide-icon>
+    </p>
+    <span class="w-1/2 absolute left-0 h-2 bg-emerald-400 -z-10 top-6"></span>
+    <p class="p-4 inline bg-neutral-800 rounded-full absolute left-1/2">
+      <lucide-icon [name]="ShieldUser"></lucide-icon>
+    </p>
+    <span class="w-1/2 absolute left-1/2 h-2 bg-emerald-800 -z-10 top-6"></span>
+    <p class="p-4 inline bg-neutral-800 rounded-full absolute right-0">
+      <lucide-icon [name]="Check"></lucide-icon>
+    </p>
+  </div>
+
+  @switch (stage) {
+    @case (WelcomeStage.HELLO) {
+      <button class="float-right" (click)="stage=WelcomeStage.IDENTITY">
+        Next
+      </button>
+    }
+    @case (WelcomeStage.IDENTITY) {
+      <app-identity-wizzard>
+
+      </app-identity-wizzard>
+      <button [disabled]="identityService.identities.length==0" class="float-right"
+              (click)="stage=WelcomeStage.IDENTITY">
+        Next
+      </button>
+    }
+    @case (WelcomeStage.FINISHED) {
+
+    }
+  }
+
+
+</div>
+
