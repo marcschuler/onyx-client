@@ -1,14 +1,9 @@
-<div class="w-96 h-8 p-4">
+<div class="w-96 h-24 p-4">
   @if (bits) {
     <div class="grid grid-cols-32">
       @for (bit of bits; track $index) {
-        @if (bit) {
-          <div class="w-2 h-2 rounded-full bg-neutral-200"></div>
-        } @else {
-          <div class="w-2 h-2 rounded-full bg-neutral-700"></div>
-        }
+        <span class="w-2 h-2 rounded  transition-colors duration-500 ease-in-out" [ngClass]="[bit?'bg-neutral-200':'bg-neutral-700'  ]"></span>
       }
     </div>
   }
-
 </div>

@@ -59,6 +59,10 @@ button {
   @apply text-emerald-400
 }
 
+.hover-greenish{
+  @apply hover:bg-emerald-400/10 transition-colors duration-300 ease-in-out
+}
+
 a {
   @apply text-indigo-200 visited:text-indigo-400
 }

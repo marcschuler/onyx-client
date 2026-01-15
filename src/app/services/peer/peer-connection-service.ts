@@ -20,8 +20,6 @@ export class PeerConnectionService {
 
   localStream: MediaStream = new MediaStream();
 
-  localFakePeer: MediaConnection | undefined;
-
   //TODO remake as localSourceShared:TrackStatus={} ?
   microphoneShared: MediaStream | undefined;
   cameraShared: MediaStream | undefined;
@@ -66,8 +64,21 @@ export class PeerConnectionService {
       console.warn("peer: Could not find client " + e.clientFrom + ". This is either bad concurrency or we don't know the client")
       return;
     }
-    await otherClient.connection.setRemoteDescription(e.answer);
+    try {
+      await otherClient.connection.setRemoteDescription(e.answer);
+    } catch (e: any) {
+      this.toastService.create({
+        title: "No connection to " + otherClient.client.username,
+        message: "Could not receive data stream from client: " + JSON.stringify(e),
+        type: ToastType.Error
+      })
+      console.error("Could not answer forward")
+      console.error(e);
+      otherClient.state = PeerConnectionState.Error;
+      return;
+    }
     otherClient.state = PeerConnectionState.Connected;
+    console.log("peer: " + otherClient.client.username + " connected");
   }
 
   /**
@@ -93,14 +104,18 @@ export class PeerConnectionService {
     const clientsInChannelThatShouldConnect = [...clientsInChannel].filter(item => !clientsConnected.has(item));
     const clientsConnectedThatAreNotInChannel = [...clientsConnected].filter(item => !clientsInChannel.has(item));
 
-    console.log("peer: updating connections. " + clientsConnectedThatAreNotInChannel + " to delete and " + clientsInChannelThatShouldConnect + " to add")
+    if (clientsConnectedThatAreNotInChannel.length > 0) {
+      console.log("peer: disconnecting from " + JSON.stringify(clientsConnectedThatAreNotInChannel.map(c => c.username)))
+      clientsConnectedThatAreNotInChannel.forEach(client => {
+        this.peers.filter(p => p.client === client)
+          .forEach(p => this.disconnect(p))
+      })
+    }
 
-    clientsInChannelThatShouldConnect.forEach(client => this.connect(client));
-
-    clientsConnectedThatAreNotInChannel.forEach(client => {
-      this.peers.filter(p => p.client === client)
-        .forEach(p => this.disconnect(p))
-    })
+    if (clientsInChannelThatShouldConnect.length > 0) {
+      console.log("peer: connecting to " + JSON.stringify(clientsInChannelThatShouldConnect.map(c => c.username)))
+      clientsInChannelThatShouldConnect.forEach(client => this.connect(client));
+    }
   }
 
 
@@ -133,7 +148,7 @@ export class PeerConnectionService {
     };
     pc.oniceconnectionstatechange = (event) => {
       console.log("peer: ice: connection state has changed to " + pc.iceConnectionState)
-      if (pc.iceConnectionState === 'failed') {
+      if (pc.iceConnectionState === 'failed' && this.shouldConnectAsNicePeer(peer)) {
         this.negotiate(peer);
       }
     }
@@ -164,11 +179,11 @@ export class PeerConnectionService {
     }
 
     pc.ontrack = event => {
-      console.log("peer: got new tracks");
       if (event.streams.length != 1)
         console.warn("peer: Expected 1 stream, got " + event.streams.length)
       if (peer.stream)
         console.warn("Already have a stream: " + peer.stream);
+      console.log("peer: received a new track: " + event.streams[0].getTracks().map(t => t.id + " - " + t.kind + " - " + t.label));
       peer.stream = event.streams[0];
     }
     console.log("peer: setup clear, waiting for ice config");
@@ -223,7 +238,8 @@ export class PeerConnectionService {
       console.warn("peer: cannot compare peer niceness - no connection")
       return false;
     }
-    return peer.client.id > this.webSocketService.connection.identity.id;
+    let b = peer.client.id > this.webSocketService.connection.identity.id;
+    return b;
   }
 
   public async changeTrack(type: TrackType) {
@@ -243,7 +259,7 @@ export class PeerConnectionService {
         }
         break;
       case TrackType.Screen:
-        if (this.microphoneShared) {
+        if (this.screenShared) {
           await this.stopTrack(type);
         } else {
           await this.startTrack(type);

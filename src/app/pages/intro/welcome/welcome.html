@@ -3,17 +3,17 @@
     @if (identityService.identities.length > 0) {
       , {{ identityService.identities[0].username }}
     }</h1>
-  <p class="text-center py-4">Let's set you up</p>
+  <p class="text-center py-4">Let's set you up!</p>
 
   <div class="relative h-16 px-16">
     <p class="p-4 inline bg-neutral-800 rounded-full absolute left-0">
       <lucide-icon [name]="Hand"></lucide-icon>
     </p>
-    <span class="w-1/2 absolute left-0 h-2 bg-emerald-400 -z-10 top-6"></span>
+    <span class="w-1/2 absolute left-0 h-2 -z-10 top-6" [ngClass]="stage>0?'bg-emerald-400':'bg-emerald-800'"></span>
     <p class="p-4 inline bg-neutral-800 rounded-full absolute left-1/2">
       <lucide-icon [name]="ShieldUser"></lucide-icon>
     </p>
-    <span class="w-1/2 absolute left-1/2 h-2 bg-emerald-800 -z-10 top-6"></span>
+    <span class="w-1/2 absolute left-1/2 h-2 -z-10 top-6" [ngClass]="stage>1?'bg-emerald-400':'bg-emerald-800'"></span>
     <p class="p-4 inline bg-neutral-800 rounded-full absolute right-0">
       <lucide-icon [name]="Check"></lucide-icon>
     </p>
@@ -21,24 +21,58 @@
 
   @switch (stage) {
     @case (WelcomeStage.HELLO) {
+      <h2 class="pb-4">Why?</h2>
+      <div class="grid grid-cols-2 gap-4  max-w-xl">
+        @for (benefit of benefits; track benefit) {
+          <div class="bg-neutral-800 rounded text-center p-4 hover-greenish">
+            <lucide-icon class="m-auto" [name]="benefit.icon"></lucide-icon>
+            <h3>{{ benefit.name }}</h3>
+            <p class="text-neutral-400">{{ benefit.description }}</p>
+          </div>
+        }
+      </div>
       <button class="float-right" (click)="stage=WelcomeStage.IDENTITY">
         Next
       </button>
     }
     @case (WelcomeStage.IDENTITY) {
+      <h2 class="pb-4">Create your Identity</h2>
       <app-identity-wizzard>
 
       </app-identity-wizzard>
       <button [disabled]="identityService.identities.length==0" class="float-right"
-              (click)="stage=WelcomeStage.IDENTITY">
+              (click)="stage=WelcomeStage.FINISHED">
         Next
       </button>
     }
     @case (WelcomeStage.FINISHED) {
+      <h2 class="pb-4">Community server</h2>
+      <p>
+        You can select a few community server to start with.
+      </p>
+      <p>
+        This is completly optional. At any time you can
+        add your own server and delete these.
+      </p>
+      @for (server of communityServer; track server) {
+        <div class="p-4 rounded flex bg-neutral-800 hover-greenish max-w-64 gap-4">
 
+          <input type="checkbox" class="flex max-w-8">
+          <label class="flex">
+            <h2>{{ server.name }}</h2>
+            <p>{{ server.description }}</p>
+            <p class="text-neutral-400">URL: {{ server.url }}</p>
+          </label>
+        </div>
+      }
+      <button class="float-right"
+              (click)="finish()">
+        @if (selectedCommunityServer.length == 0) {
+          Skip
+        } @else {
+          Finish
+        }
+      </button>
     }
   }
-
-
 </div>
-
