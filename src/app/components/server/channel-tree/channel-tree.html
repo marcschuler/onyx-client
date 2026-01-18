@@ -4,7 +4,7 @@
       (click)="selectChannel(undefined)">{{ data.server.name }}</h3>
   @for (section of data.sections; track section) {
     <div>
-      <h4 class="font-semibold  text-neutral-400 py-2 pt-3">{{ section.name }}</h4>
+      <h4 class="font-semibold  text-neutral-400 pt-2 pt-3">{{ section.name }}</h4>
       @for (channel of section.channels; track channel) {
         <div
           class="p-2 rounded gap-2 grid grid-cols-[1fr_auto] w-full
@@ -17,7 +17,7 @@
             {{ channel.name }}
 
           </div>
-          @if (connection.currentChannel != channel.id && !editMode) {
+          @if (connection.currentChannel != channel.id) {
             <button class="right-0 !p-1 !m-0 !bg-neutral-900 !hover:bg-neutral-800 rounded-r-md
                     opacity-0 pointer-events-none
                     group-hover:opacity-100 group-hover:pointer-events-auto
@@ -40,18 +40,11 @@
             </div>
           }
         }
-        <!-- <div class="pl-4 p-1 hover:bg-neutral-800 rounded">
-           <lucide-icon class="inline-flex translate-y-0.5" [img]="MicOffIcon"></lucide-icon>
-           Test
-         </div>-->
       }
     </div>
   }
-  @if (editMode) {
-    <button class="button-ghost min-w-full">
-      + Section
-    </button>
-  }
+
+  <!-- TODO show clients that are in no channel as "idle" -->
 } @else {
   <app-spinner></app-spinner>
 }

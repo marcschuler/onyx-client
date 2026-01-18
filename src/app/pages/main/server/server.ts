@@ -32,7 +32,6 @@ export class Server {
 
   @Input() connection!: WebSocketServerConnection;
 
-  editMode = false;
   showSettings = false;
   showAdminPanel: boolean = false;
 

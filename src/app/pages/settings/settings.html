@@ -1,31 +1,17 @@
-<div class="min-h-screen flex">
-  <aside class="block min-h-screen shrink-0 bg-neutral-900 border-r-neutral-950 border-r-1 w-64">
-    <div class="flex flex-col h-screen rounded">
-      @for (m of menu; track m) {
-        <button class="button-dark !rounded-none" (click)="selectedOption= m"
-                [disabled]="selectedOption==m">{{ m.name }}
-        </button>
-      }
-    </div>
-  </aside>
-
-  <main class="flex-1 px-8 py-4 overflow-y-scroll">
-    <h1>{{ selectedOption.name }}</h1>
-    <div class="pb-4"></div>
-    @switch (selectedOption.id) {
-      @case (SettingsOptions.GENERAL) {
-        <p>Nothing to see here</p>
-      }
-      @case (SettingsOptions.IDENTITY) {
-        <app-identity></app-identity>
-      }
-      @case (SettingsOptions.CONTRIBUTORS){
-        <app-contributors></app-contributors>
-      }
-      @case (SettingsOptions.DEBUG){
-        <app-debug></app-debug>
-      }
+<app-button-panel [buttons]="[TAB_GENERAL,TAB_IDENTITES,TAB_CONTRIBUTORS,TAB_DEBUG]"
+                  [(selectedOption)]="selectedOption">
+  @switch (selectedOption) {
+    @case (TAB_GENERAL) {
+      <p>Nothing to see here</p>
     }
-  </main>
-
-</div>
+    @case (TAB_IDENTITES) {
+      <app-identity></app-identity>
+    }
+    @case (TAB_CONTRIBUTORS) {
+      <app-contributors></app-contributors>
+    }
+    @case (TAB_DEBUG) {
+      <app-debug></app-debug>
+    }
+  }
+</app-button-panel>

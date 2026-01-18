@@ -1,15 +1,15 @@
 import {Injectable, Injector} from '@angular/core';
-import {MediaConnection, PeerConnection, PeerConnectionState} from './PeerConnection';
+import {PeerConnection, PeerConnectionState, SecurityState} from './PeerConnection';
 import {Client, ConnectionState, WebSocketServerConnection} from '../websocket/WebSocketServerConnection';
 import {WebSocketService} from '../websocket/web-socket-service';
-import {CryptoService} from '../crypto-service';
-import {ToastMessage, ToastService, ToastType} from '../toast-service';
+import {ToastService, ToastType} from '../toast-service';
 import {PeerAnswer, PeerAnswerForward, PeerOffer, PeerOfferForward} from '../../../api/webrtc-server';
 import {
   NOTIFICATION_USER_JOINED_CHANNEL,
   NOTIFICATION_USER_LEFT_CHANNEL,
   NotificationService
 } from '../notification.service';
+import {compareLists} from '../Util';
 
 @Injectable({
   providedIn: 'root'
@@ -18,74 +18,40 @@ export class PeerConnectionService {
 
   peers: PeerConnection[] = [];
 
+  /**
+   * localStream and sharedStream are synced on it's content.
+   * It's preferred by the RTC library.
+   * No more then the three defined TrackTypes are allowed concurrently.
+   */
   localStream: MediaStream = new MediaStream();
 
-  //TODO remake as localSourceShared:TrackStatus={} ?
-  microphoneShared: MediaStream | undefined;
-  cameraShared: MediaStream | undefined;
-  screenShared: MediaStream | undefined;
+  /**
+   * A UI-compatible list of all three possible streams: mic, camera and screen
+   * Is synced with localStream
+   */
+  sharedStreams: Partial<Record<TrackType, MediaStream | undefined>> = {
+    [TrackType.Microphone]: undefined,
+    [TrackType.Camera]: undefined,
+    [TrackType.Screen]: undefined
+  };
 
   private webSocketService!: WebSocketService;
 
   constructor(private injector: Injector,
-              private cryptoService: CryptoService,
               private notificationService: NotificationService,
               private toastService: ToastService) {
     setTimeout(() => {
-      this.webSocketService = injector.get(WebSocketService);
+      this.webSocketService = this.injector.get(WebSocketService);
       this.webSocketService.addHandler(PeerOfferForward.TypeEnum.PeerOfferForward, (e, c) => this.onPeerOfferForward(e as PeerOfferForward, c))
       this.webSocketService.addHandler(PeerAnswerForward.TypeEnum.PeerAnswerForward, (e, c) => this.onPeerAnswerForward(e as PeerAnswerForward, c))
     }, 50);
   }
 
-  private async onPeerOfferForward(e: PeerOfferForward, c: WebSocketServerConnection) {
-    console.log("peer: Peer wants to connect")
-    const otherClient = this.peers.find(p => p.client.id == e.clientFrom);
-    if (otherClient == undefined) {
-      console.warn("peer: Could not find client " + e.clientFrom + ". This is either bad concurrency or we don't know the client. known clients are " + JSON.stringify(c.clients))
-      return;
-    }
-    otherClient.state = PeerConnectionState.Answered;
-    await otherClient.connection.setRemoteDescription(e.offer);
-    const answer = await otherClient.connection.createAnswer();
-    await otherClient.connection.setLocalDescription(answer);
-    console.log("peer: sending answer")
-    this.webSocketService.send(c, {
-      answer: answer,
-      type: PeerAnswer.TypeEnum.PeerAnswer,
-      clientTo: otherClient.client.id
-    } as PeerAnswer)
-  }
-
-  private async onPeerAnswerForward(e: PeerAnswerForward, c: WebSocketServerConnection) {
-    console.log("peer: Peer did send answer")
-    const otherClient = this.peers.find(p => p.client.id == e.clientFrom);
-    if (otherClient == undefined) {
-      console.warn("peer: Could not find client " + e.clientFrom + ". This is either bad concurrency or we don't know the client")
-      return;
-    }
-    try {
-      await otherClient.connection.setRemoteDescription(e.answer);
-    } catch (e: any) {
-      this.toastService.create({
-        title: "No connection to " + otherClient.client.username,
-        message: "Could not receive data stream from client: " + JSON.stringify(e),
-        type: ToastType.Error
-      })
-      console.error("Could not answer forward")
-      console.error(e);
-      otherClient.state = PeerConnectionState.Error;
-      return;
-    }
-    otherClient.state = PeerConnectionState.Connected;
-    console.log("peer: " + otherClient.client.username + " connected");
-  }
 
   /**
-   * Updates the connection by adding or removing clients
-   * so only connections are available that we only connect
-   * to clients in our channel
-   * @param clients
+   * Updates the connection by adding or removing clients based
+   * on if the clients are in our channel - if we are in a channel anyway.
+   * TODO is not really reactive yet, instead checks everything and creates list of whom to add or remove
    */
   public updatePeerConnections() {
     if (!this.webSocketService.connection //no connection (anymore)
@@ -114,12 +80,16 @@ export class PeerConnectionService {
 
     if (clientsInChannelThatShouldConnect.length > 0) {
       console.log("peer: connecting to " + JSON.stringify(clientsInChannelThatShouldConnect.map(c => c.username)))
-      clientsInChannelThatShouldConnect.forEach(client => this.connect(client));
+      clientsInChannelThatShouldConnect.forEach(client => this.connectToPeer(client));
     }
   }
 
 
-  public async connect(client: Client): Promise<PeerConnection> {
+  /**
+   * Connect to a peer given it's client data
+   * @param client the client to connect to
+   */
+  public async connectToPeer(client: Client): Promise<PeerConnection> {
     console.log("peer: connecting to " + client.username)
     const iceServers = this.webSocketService.connection?.config.iceServers;
     const config: RTCConfiguration = {
@@ -136,29 +106,31 @@ export class PeerConnectionService {
       client: client,
       state: PeerConnectionState.WaitingForOffer,
       dataChannel: pc.createDataChannel("data"),
-      tracks: new Map()
+      securityState: SecurityState.UNTESTED
     }
-    this.setTracks(peer);
+    // this.setTracks(peer);
     this.peers.push(peer);
 
     pc.onicecandidate = (event) => {
       if (event.candidate) {
-        console.log("peer: sending ice data");
+        console.log("peer: ice: sending ice data");
       }
     };
     pc.oniceconnectionstatechange = (event) => {
       console.log("peer: ice: connection state has changed to " + pc.iceConnectionState)
-      if (pc.iceConnectionState === 'failed' && this.shouldConnectAsNicePeer(peer)) {
-        this.negotiate(peer);
-      }
+      if (pc.iceConnectionState === 'failed')
+        this.negotiateConnection(peer, false);
     }
 
     pc.ondatachannel = (event) => {
-      console.log("peer: data channel is active: " + event.type);
+      console.log("peer: data: channel is active: " + event.type);
+      //TODO send authchallengerequest with owns key id
+      //TODO receive authchallengerequest from other, valide key id
+      //TODO send fulfilled authchallengerequest
     }
 
     pc.onsignalingstatechange = () => {
-      console.log("peer: signaling state change to " + pc.signalingState);
+      console.log("peer: state: " + client.username + " changed to " + pc.signalingState);
       switch (pc.signalingState) {
         case "closed":
           peer.state = PeerConnectionState.Closed;
@@ -173,42 +145,63 @@ export class PeerConnectionService {
           break;
         case "stable":
           peer.state = PeerConnectionState.Connected;
+          //in case of a stream delete a new stable channel
+          this.addAllExistingTracksToPeer(peer);
           break;
-
       }
     }
 
     pc.ontrack = event => {
-      if (event.streams.length != 1)
-        console.warn("peer: Expected 1 stream, got " + event.streams.length)
-      if (peer.stream)
-        console.warn("Already have a stream: " + peer.stream);
-      console.log("peer: received a new track: " + event.streams[0].getTracks().map(t => t.id + " - " + t.kind + " - " + t.label));
-      peer.stream = event.streams[0];
+      if (event.streams.length != 1) //can this ever happen?
+        console.warn("peer: Expected 1 stream, got " + event.streams.length + ". using the first one")
+      this.onPeerTrackAdded(peer, event.track, event.streams[0]);
     }
     console.log("peer: setup clear, waiting for ice config");
 
-    if (this.shouldConnectAsNicePeer(peer)) {
-      this.negotiate(peer)
-    } else {
-      console.log("peer: waiting for " + peer.client.id + " to connect (wait mode)")
-    }
+    this.negotiateConnection(peer, false);
     this.notificationService.notify(NOTIFICATION_USER_JOINED_CHANNEL);
-
     return peer;
+  }
+
+  private onPeerTrackAdded(peer: PeerConnection, track: MediaStreamTrack, stream: MediaStream | undefined) {
+    console.log("peer: received a new track: " + track.id + " - " + track.kind + " - " + track.label);
+    if (stream == undefined && peer.stream == undefined) {
+      console.warn("peer: Manually adding a stream")
+      peer.stream = new MediaStream();
+    } else {
+      peer.stream = stream;
+    }
+    peer.stream!.addTrack(track);
+    track.onended = () => {
+      this.onPeerTrackRemoved(peer, track);
+    }
 
   }
 
+  private onPeerTrackRemoved(peer: PeerConnection, track: MediaStreamTrack) {
+    console.log("Removing track " + track.label + " from peer " + peer.client.username)
+    peer.stream!.removeTrack(track);
+  }
+
+
   /**
-   * Should be called (1) on start of connection
-   * (2) when a new track is added
-   * @param peer
+   * Negotiate a direct connection to a peer through our server
+   * Should be called:
+   * (1) on start of the connection
+   * (2) when a new track is added from us (like a new screen share)
+   * Every time the tracks change, the connection has to be rebuild from scratch
+   * @param peer the peer to negotiate to
+   * @param force true if we should force it, e.g. on a new source. false for fresh connections
    */
-  public async negotiate(peer: PeerConnection) {
+  public async negotiateConnection(peer: PeerConnection, force: boolean) {
+    if (!force && !this.shouldConnectAsNicePeer(peer)) {
+      console.log("peer: waiting for " + peer.client.id + " to connect (wait mode)")
+      return;
+    }
+    console.log("peer: connecting to " + peer.client.id + " (nice mode)")
     const pc = peer.connection;
     if (peer.state == PeerConnectionState.Connected)
       console.log("peer: renegotiating...");
-    console.log("peer: connecting to " + peer.client.id + " (nice mode)")
     const offer = await pc.createOffer(); //{iceRestart: true}
     await pc.setLocalDescription(offer);
     this.webSocketService.send(this.webSocketService.connection!,
@@ -220,9 +213,16 @@ export class PeerConnectionService {
     peer.state = PeerConnectionState.Offered;
   }
 
+  /**
+   * Disconnect from a peer
+   * @param peer the peer to disconnect to
+   */
   public disconnect(peer: PeerConnection) {
     console.log("peer: disconnecting peer " + peer.client.username)
     this.peers.splice(this.peers.indexOf(peer), 1);
+    const state = peer.connection.connectionState;
+    if (state == "closed" || state == "disconnected" || state == "failed")
+      console.warn("peer: connecting is already in state " + state);
     peer.connection.close();
     this.notificationService.notify(NOTIFICATION_USER_LEFT_CHANNEL);
   }
@@ -230,7 +230,7 @@ export class PeerConnectionService {
   /**
    * As only one peer should connect to the other and not
    * both at the same time, the one with the higher ID
-   * is responsible for connecting
+   * is responsible for connecting, the other passively receives the first message
    * @param peer
    */
   public shouldConnectAsNicePeer(peer: PeerConnection): boolean {
@@ -238,65 +238,49 @@ export class PeerConnectionService {
       console.warn("peer: cannot compare peer niceness - no connection")
       return false;
     }
-    let b = peer.client.id > this.webSocketService.connection.identity.id;
-    return b;
+    return peer.client.id > this.webSocketService.connection.identity.id;
   }
 
+  /**
+   * Switches the state of a track
+   * Convenience method for our UI View to simply switch the state
+   * @param type the track type
+   */
   public async changeTrack(type: TrackType) {
-    switch (type) {
-      case TrackType.Microphone:
-        if (this.microphoneShared) {
-          await this.stopTrack(type);
-        } else {
-          await this.startTrack(type);
-        }
-        break;
-      case TrackType.Camera:
-        if (this.microphoneShared) {
-          await this.stopTrack(type);
-        } else {
-          await this.startTrack(type);
-        }
-        break;
-      case TrackType.Screen:
-        if (this.screenShared) {
-          await this.stopTrack(type);
-        } else {
-          await this.startTrack(type);
-        }
-        break;
+    const media = this.sharedStreams[type];
+    if (media) {
+      await this.stopTrack(type);
+    } else {
+      await this.startTrack(type);
     }
   }
 
 
+  /**
+   * Starts a track of the given type
+   * If the track already started, an error is displayed
+   * @param type the track type
+   */
   public async startTrack(type: TrackType) {
     console.log("peer: requesting track " + type)
-    var streamPromise: Promise<MediaStream>;
-    var alreadySharedError: ToastMessage = {
-      title: type + " is already shared",
-      type: ToastType.Error,
-      message: 'If the error persists, reload the page'
+    let streamPromise: Promise<MediaStream>;
+    if (this.sharedStreams[type]) {
+      console.warn("User tried to start the track " + type + " although it's already started")
+      this.toastService.create({
+        title: type + " is already shared",
+        type: ToastType.Error,
+        message: 'If the error persists, reload the page'
+      });
+      return;
     }
     switch (type) {
       case TrackType.Microphone:
-        if (this.microphoneShared) {
-          this.toastService.create(alreadySharedError);
-          return;
-        }
         streamPromise = navigator.mediaDevices.getUserMedia({audio: true})
         break;
       case TrackType.Camera:
-        if (this.cameraShared) {
-          this.toastService.create(alreadySharedError);
-          return;
-        }
         streamPromise = navigator.mediaDevices.getUserMedia({video: true})
         break;
       case TrackType.Screen:
-        if (this.screenShared) {
-          this.toastService.create(alreadySharedError);
-          return;
-        }
         streamPromise = navigator.mediaDevices.getDisplayMedia({video: true})
         break;
     }
@@ -304,17 +288,7 @@ export class PeerConnectionService {
     try {
       console.log("peer: Waiting for answer for track")
       const stream = await streamPromise;
-      switch (type) {
-        case TrackType.Microphone:
-          this.microphoneShared = stream;
-          break;
-        case TrackType.Camera:
-          this.cameraShared = stream;
-          break;
-        case TrackType.Screen:
-          this.screenShared = stream;
-          break;
-      }
+      this.sharedStreams[type] = stream;
       console.log("peer: activated track, adding to locals and " + this.peers.length + " peers")
       stream.getTracks().forEach(track => {
         this.localStream.addTrack(track);
@@ -324,39 +298,28 @@ export class PeerConnectionService {
           this.removeTrack(track, stream);
         };
       })
-
+      //this.updateTracksForPeers();
     } catch (e: any) {
       console.error("Could not open device", e);
       this.toastService.create({
         title: "Could not open device",
         message: ('message' in e) ? JSON.stringify(e.message) : "Unknown error",
         type: ToastType.Error,
-        duration: 5000
       })
     }
   }
 
+
+  /**
+   * Stops the given track
+   * An error is displayed if the track is not running
+   * @param type the type
+   */
   public async stopTrack(type: TrackType) {
     console.log("deactivating stream " + type)
-    switch (type) {
-      case TrackType.Microphone:
-        this.stopTracks(this.microphoneShared!);
-        this.microphoneShared = undefined;
-        break;
-      case TrackType.Camera:
-        this.stopTracks(this.cameraShared!);
-        this.cameraShared = undefined;
-        break;
-      case TrackType.Screen:
-        this.stopTracks(this.screenShared!);
-        this.screenShared = undefined;
-        break;
-    }
-
-  }
-
-  private stopTracks(stream: MediaStream | undefined) {
+    const stream = this.sharedStreams[type];
     if (!stream) {
+      console.warn("User tried to stop the track " + type + " although it's already stopped / not yet started")
       this.toastService.create({
         title: 'Cannot deactivate stream',
         message: 'The stream is not active',
@@ -365,32 +328,63 @@ export class PeerConnectionService {
       return;
     }
     stream.getTracks().forEach(track => {
+      this.localStream.removeTrack(track);
+      this.removeTrackFromPeers(track);
       track.stop();
     });
+    this.sharedStreams[type] = undefined;
   }
 
-
   // Only set on start, never when adding or removing inputs
-  public setTracks(peer: PeerConnection) {
+  private setTracks(peer: PeerConnection) {
     if (this.localStream.getTracks().length > 0) {
       console.log("peer: adding " + this.localStream.getTracks().length + " tracks to new peer");
     }
     this.localStream.getTracks().forEach(track => {
-      peer.connection.addTrack(track);
+      peer.connection.addTrack(track, this.localStream);
     })
   }
 
+  private addAllExistingTracksToPeer(peer: PeerConnection) {
+    let addedTrack = 0;
+    this.localStream.getTracks().forEach(track => {
+      if (peer.connection.getSenders().filter(s => s.track == track).length > 0) {
+        return;
+      }
+      peer.connection.addTrack(track, this.localStream);
+      addedTrack++;
+    })
+    if (addedTrack > 0) {
+      console.log("peer: track: adding " + addedTrack + " tracks to peer " + peer.client.username)
+      this.negotiateConnection(peer, true);
+    }
+  }
+
+  /**
+   * Adds a new track to all peers
+   * @param track the track
+   * @private
+   */
   private addTrackToPeers(track: MediaStreamTrack) {
     this.peers.forEach(peer => {
       console.log("peer: (" + peer.client.username + ") gets new track")
-      const sender = peer.connection.addTrack(track, this.localStream);
-      if (peer.tracks.has(track))
-        console.warn("peer: track: sender already exists for track")
-      peer.tracks.set(track, sender);
-      this.negotiate(peer);
+      peer.connection.addTrack(track, this.localStream);
+      this.negotiateConnection(peer, true);
     });
   }
 
+  private removeTrackFromPeers(track: MediaStreamTrack) {
+    this.peers.filter(peer => {
+      console.log("peer: (" + peer.client.username + ") removed from track")
+      const sender = peer.connection.getSenders().filter(s => s.track == track);
+      if (sender.length > 1)
+        console.warn("peer: update: found multiple sender, using first")
+      if (sender[0].track)
+        sender[0].track.stop()
+      peer.connection.removeTrack(sender[0]);
+      this.negotiateConnection(peer, true);
+    });
+  }
 
   /**
    * Removes a track
@@ -402,39 +396,65 @@ export class PeerConnectionService {
     console.log("peer: track: Removing track");
     stream.removeTrack(track);
     this.localStream.removeTrack(track);
-    if (this.localStream.getTracks().length == 0)
-      if (this.microphoneShared && this.microphoneShared.getTracks().length == 0)
-        this.microphoneShared = undefined;
-    if (this.cameraShared && this.cameraShared.getTracks().length == 0)
-      this.cameraShared = undefined;
-    if (this.screenShared && this.screenShared.getTracks().length == 0)
-      this.screenShared = undefined;
+
+    //TODO right place for this function
+    //this.updateTracksForPeers();
     this.removeTrackFromPeers(track);
   }
 
-  private removeTrackFromPeers(track: MediaStreamTrack) {
-    this.peers.forEach(peer => {
-      var sender = peer.tracks.get(track);
-      if (!sender) {
-        console.warn("peer: track: peer has no track to remove. Does track exist? " + peer.tracks.has(track))
-        return;
-      }
-      peer.connection.removeTrack(sender);
-      peer.tracks.delete(track);
-      this.negotiate(peer);
-    });
+
+  /*
+      Peer Offers + Answers messages
+   */
+  private async onPeerOfferForward(e: PeerOfferForward, c: WebSocketServerConnection) {
+    console.log("peer: Peer wants to connect")
+    const otherClient = this.peers.find(p => p.client.id == e.clientFrom);
+    if (otherClient == undefined) {
+      console.warn("peer: Could not find client " + e.clientFrom + ". This is either bad concurrency or we don't know the client. known clients are " + JSON.stringify(c.clients))
+      return;
+    }
+    otherClient.state = PeerConnectionState.Answered;
+    await otherClient.connection.setRemoteDescription(e.offer);
+    const answer = await otherClient.connection.createAnswer();
+    await otherClient.connection.setLocalDescription(answer);
+    console.log("peer: sending answer")
+    this.webSocketService.send(c, {
+      answer: answer,
+      type: PeerAnswer.TypeEnum.PeerAnswer,
+      clientTo: otherClient.client.id
+    } as PeerAnswer)
+  }
+
+  private async onPeerAnswerForward(e: PeerAnswerForward, c: WebSocketServerConnection) {
+    console.log("peer: Peer did send answer")
+    const peer = this.peers.find(p => p.client.id == e.clientFrom);
+    if (peer == undefined) {
+      console.warn("peer: Could not find client " + e.clientFrom + ". This is either bad concurrency or we don't know the client")
+      return;
+    }
+    try {
+      await peer.connection.setRemoteDescription(e.answer);
+    } catch (e: any) {
+      this.toastService.create({
+        title: "No connection to " + peer.client.username,
+        message: "Could not receive data stream from client: " + JSON.stringify(e),
+        type: ToastType.Error
+      })
+      console.error("Could not answer forward")
+      console.error(e);
+      peer.state = PeerConnectionState.Error;
+      return;
+    }
+    peer.state = PeerConnectionState.Connected;
+    console.log("peer: " + peer.client.username + " connected");
   }
 
 
 }
 
-
+// The three track types
 export enum TrackType {
   Microphone = "Microphone",
   Camera = "Camera",
   Screen = "Screen"
 }
-
-type TrackStatus = {
-  [K in TrackType]?: MediaStream | undefined;
-};

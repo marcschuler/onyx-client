@@ -1,12 +1,25 @@
-<h3>Idenities</h3>
+<h3>Identities</h3>
 <p class="pb-8">
-  {{identityService.identities | json}}
+  @for (identity of identityService.identities; track identity) {
+    <p>{{ identity.id }},{{ identity.username }},{{ identity.created }},{{ identity.keyPair.publicKey|json }}</p>
+  }
 </p>
 
 <h3>Connection</h3>
 <p class="pb-8">
   @if (webSocketService.connection) {
-    {{webSocketService.connection | json}}
+    <h4>State</h4>
+    {{ webSocketService.connection.state }}
+    <h4>Server Tree</h4>
+    {{ webSocketService.connection.data | json }}
+    <h4>Channel: Current / Selected</h4>
+    {{ webSocketService.connection.currentChannel  | json }}
+    {{ webSocketService.connection.selectedChannel  | json }}
+    <h4>Server Config</h4>
+    {{ webSocketService.connection.config | json }}
+
+    <h4>Peers</h4>
+    {{ peerConnectionService.peers | json }}
   } @else {
     (no connection)
   }

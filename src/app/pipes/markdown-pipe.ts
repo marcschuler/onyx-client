@@ -7,6 +7,10 @@ import {marked} from 'marked';
 export class MarkdownPipe implements PipeTransform {
 
   transform(value: string): unknown {
+    marked.use({
+      gfm: true,
+      breaks: true
+    })
     return marked.parse(value);
   }
 

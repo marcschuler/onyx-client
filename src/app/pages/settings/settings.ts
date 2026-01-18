@@ -9,6 +9,7 @@ import {RouterLink} from '@angular/router';
 import {Identity} from './identity/identity';
 import {Debug} from './debug/debug';
 import {Contributors} from './contributors/contributors';
+import {ButtonPanel, TabPanelEntry} from '../../components/ui/button-panel/button-panel';
 
 @Component({
   selector: 'app-settings',
@@ -17,38 +18,30 @@ import {Contributors} from './contributors/contributors';
     FormsModule,
     Identity,
     Debug,
-    Contributors
+    Contributors,
+    ButtonPanel
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css'
 })
 export class Settings {
 
-  menu: { id: SettingsOptions, name: string }[] = [
-    {
-      id: SettingsOptions.GENERAL,
-      name: 'General',
-    }, {
-      id: SettingsOptions.IDENTITY,
-      name: 'Identities',
-    }, {
-      id: SettingsOptions.CONTRIBUTORS,
-      name: 'Contributors',
-    }, {
-      id: SettingsOptions.DEBUG,
-      name: 'Debug'
-    },
-  ]
+  TAB_GENERAL: TabPanelEntry = {
+    id: "General",
+    name: 'General',
+  };
+  TAB_IDENTITES: TabPanelEntry = {
+    id: "Identities",
+    name: 'Identities',
+  };
+  TAB_CONTRIBUTORS: TabPanelEntry = {
+    id: "Contributors",
+    name: 'Contributors & Licences'
+  };
+  TAB_DEBUG: TabPanelEntry = {
+    id: "Debug",
+    name: 'Debug'
+  }
 
-  selectedOption: { id: SettingsOptions, name: string } = this.menu[0];
-
-
-  protected readonly SettingsOptions = SettingsOptions;
-}
-
-enum SettingsOptions {
-  GENERAL,
-  IDENTITY,
-  DEBUG,
-  CONTRIBUTORS,
+  selectedOption!: TabPanelEntry;
 }

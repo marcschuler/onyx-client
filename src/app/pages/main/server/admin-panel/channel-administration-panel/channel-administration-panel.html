@@ -68,7 +68,7 @@
 }
 
 @if (sectionToDelete) {
-  <app-popup [isOpen]="true" title="Delete this channel?"
+  <app-popup [isOpen]="true" title="Delete this section?"
              [content]="'All channel and messages on section \'' + sectionToDelete.name + '\' will be removed.'"
              [buttons]="[BUTTON_CANCEL,BUTTON_DELETE]"
              (close)="deleteSection($event)">

@@ -1,16 +1,24 @@
-<div class="h-full flex flex-col pt-4">
+<div class="h-full flex flex-col pt-4 bg-neutral-900">
   <!-- Scrollable messages -->
   <div #messageList class="flex-grow overflow-auto p-4">
     @for (message of messages; track message) {
-      <div>
-        <p class="text-neutral-300 pt-4">
-          {{ message.user.username }}
-          <span class="pl-8 text-neutral-700">{{ message.timestamp | date: 'medium' }}</span>
-        </p>
-        <div class="bg-neutral-800 px-4 py-2.5 rounded inline-flex">
-          @for (content of message.content; track content) {
-            <p [innerHTML]=" content.text | markdown"></p>
+      <div class="pt-2">
+        <div [ngClass]="{
+      'right-0': message.user.id == connection.identity.id
+      }">
+          @if ($index == 0 || messages[$index - 1].user.id != message.user.id) {
+            <p class="text-neutral-300 text-xl pb-1">
+              <img class="inline rounded max-w-6 max-h-6 mr-2" [src]="message.user.id | identicon:32 | async"
+                   alt="Key ID: {{message.user.id}}"/>
+              {{ message.user.username }}
+            </p>
           }
+          <div class="bg-neutral-800 px-4 py-2.5 rounded w-fit">
+            @for (content of message.content; track content) {
+              <p [innerHTML]=" content.text | markdown"></p>
+            }
+            <p class="pl-8 text-neutral-700">{{ message.timestamp | userDate }}</p>
+          </div>
         </div>
       </div>
     }

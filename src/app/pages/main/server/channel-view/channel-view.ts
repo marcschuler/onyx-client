@@ -1,7 +1,16 @@
-import {AfterViewInit, Component, HostListener, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 
 import {WebSocketService} from '../../../../services/websocket/web-socket-service';
-import {PeerConnectionService} from '../../../../services/peer/peer-connection-service';
+import {PeerConnectionService, TrackType} from '../../../../services/peer/peer-connection-service';
 import {PeerView} from '../../../../components/server/peer-view/peer-view';
 import {InterfaceService} from '../../../../services/interface-service';
 import {FormsModule} from '@angular/forms';
@@ -9,6 +18,7 @@ import {MessageView} from '../../../../components/server/message-view/message-vi
 import {ServerObjectId, WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {ChannelDetailRequest, ChannelDetailResponse} from '../../../../../api/webrtc-server';
 import {ChannelDTO} from '../../../../../api/webrtc-server/model/channelDTO';
+import {NgClass, NgStyle} from '@angular/common';
 
 @Component({
   selector: 'app-channel-view',
@@ -16,6 +26,8 @@ import {ChannelDTO} from '../../../../../api/webrtc-server/model/channelDTO';
     PeerView,
     FormsModule,
     MessageView,
+    NgClass,
+    NgStyle,
   ],
   templateUrl: './channel-view.html',
   styleUrl: './channel-view.css'
@@ -25,10 +37,17 @@ export class ChannelView implements AfterViewInit, OnChanges {
   @Input() connection!: WebSocketServerConnection;
   @Input() channelId!: ServerObjectId;
 
+  @ViewChild('title') titleContainer!: ElementRef;
+  @ViewChild('peerGrid') peerGridContainer!: ElementRef;
+  @ViewChild('talkView') talkViewContainer!: ElementRef;
+
+
   details: ChannelDTO | undefined;
 
-  gridRows: number = 1;
-  gridCols: number = 1;
+  gridCols = 2;
+  gridRows = 2;
+  gridColHeight = 128;
+  gridColWidth = 128;
 
   resizing: boolean = false;
 
@@ -39,6 +58,9 @@ export class ChannelView implements AfterViewInit, OnChanges {
 
   ngAfterViewInit(): void {
     this.updateDetails();
+    setInterval(() => {
+      this.updateGridSize(); //TODO this is bad
+    }, 1000)
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -62,53 +84,89 @@ export class ChannelView implements AfterViewInit, OnChanges {
   /**
    * Resizing
    */
-  startResize(event: MouseEvent) {
-    event.preventDefault();
+  startResizing($event: MouseEvent) {
     this.resizing = true;
+    $event.preventDefault();
   }
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
     if (!this.resizing) return;
 
-    const totalHeight = window.innerHeight;
-    const headerHeight = 56;
-    const availableHeight = totalHeight - headerHeight;
+    const containerTop = this.talkViewContainer.nativeElement.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
 
-    // Calculate percentage based on mouse Y position
-    const mainPx = event.clientY - headerHeight;
-    const mainPercent = (mainPx / availableHeight) * 100;
+    // Mouse position relative to the container top
+    let newHeightVh = ((event.clientY - containerTop) / viewportHeight) * 100;
 
-    // Constrain between 30–70
-    const peerView = Math.min(70, Math.max(30, mainPercent));
-    const messageView = 100 - peerView;
+    // Clamp between min and max vh
+    if (newHeightVh < 10) newHeightVh = 10;
+    if (newHeightVh > 90) newHeightVh = 90;
 
-    this.interfaceService.settings.channelSplitSize.peerView = peerView;
-    this.interfaceService.settings.channelSplitSize.messageView = messageView;
+    console.log("new height is " + newHeightVh + "vh")
 
-    this.interfaceService.saveSettings();
+
+    this.interfaceService.settings.channelSplitSize.peerView = newHeightVh;
+    this.updateGridSize();
   }
 
   @HostListener('document:mouseup')
-  stopResize() {
-    this.resizing = false;
+  stopResizing() {
+    if (this.resizing) {
+      this.resizing = false;
+      this.interfaceService.saveSettings();
+    }
   }
 
-  updateGrid(): void {
-    const num = this.peerConnectionService.peers.length;
-    //TODO there probably is a clever mathematical way to do this, but I don't care right now
-    if (num <= 1) {
-      this.gridRows = 1;
-      this.gridRows = 1;
-    } else if (num <= 2) {
-      this.gridRows = 1;
-      this.gridCols = 2;
-    } else if (num <= 4) {
-      this.gridRows = 2;
-      this.gridCols = 2;
-    } else if (num <= 6) {
-      this.gridRows = 3;
-      this.gridCols = 2;
-    }//TODO
+
+  @HostListener('window:resize')
+  onResize() {
+    this.updateGridSize();
+  }
+
+
+  updateGridSize() {
+    const containerWidth = this.peerGridContainer.nativeElement.clientWidth;
+    // const containerHeight = this.peerGridContainer.nativeElement.clientHeight;
+    // const containerHeight = this.talkViewContainer.nativeElement.clientHeight - this.titleContainer.nativeElement.clientHeight;
+    const talkViewHeight =
+      this.talkViewContainer.nativeElement.getBoundingClientRect().height;
+
+    const titleHeight =
+      this.titleContainer.nativeElement.getBoundingClientRect().height;
+    const containerHeight = talkViewHeight - titleHeight;
+
+
+    const ratio = containerWidth / containerHeight;
+    const peers = this.peerConnectionService.peers.length + 1;
+
+    let cols = 0;
+    let rows = 0;
+
+    //feel like i'm bruteforcing something very simple
+    while (true) {
+      if (cols == rows) {
+        cols++
+      } else {
+        rows++;
+      }
+      if (cols * rows >= peers)
+        break;
+    }
+
+    let colHeight = containerHeight / rows;
+    let colWidth = colHeight / 9 * 16;
+
+    if (colWidth * cols > containerWidth) {
+      colWidth = containerWidth/cols;
+      colHeight = colWidth / 16 * 9;
+    }
+
+    this.gridCols = cols;
+    this.gridRows = rows;
+    this.gridColHeight = colHeight;
+    this.gridColWidth = colHeight / 9 * 16;
+    console.log("using " + cols + "x" + rows + " for height " + colHeight + "/" + containerHeight)
+
   }
 }

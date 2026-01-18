@@ -22,8 +22,7 @@
   <aside class="block min-h-screen shrink-0 bg-neutral-900 border-r-neutral-950 border-r-1"
          [ngStyle]="{ width: interfaceService.settings.sidebarWidth + 'px' }">
     <div class="flex flex-col h-screen">
-      <!-- <lucide-icon class="absolute right-2 top-2" [name]="SettingsIcon" (click)="editMode=true"></lucide-icon>-->
-      <app-channel-tree class="flex-1 p-2 overflow-y-auto" [editMode]="editMode" [connection]="connection"></app-channel-tree>
+      <app-channel-tree class="flex-1 p-2 overflow-y-auto" [connection]="connection"></app-channel-tree>
       <app-user-panel [connection]="connection"></app-user-panel>
     </div>
   </aside>

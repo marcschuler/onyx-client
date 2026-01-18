@@ -28,7 +28,6 @@ import {ServerObjectId, WebSocketServerConnection} from '../../../services/webso
 })
 export class ChannelTree {
 
-  @Input() editMode!: boolean;
   @Input() connection!: WebSocketServerConnection;
 
   readonly HexagonIcon = HexagonIcon;

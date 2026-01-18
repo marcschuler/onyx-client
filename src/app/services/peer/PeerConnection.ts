@@ -1,16 +1,16 @@
 import {Client} from '../websocket/WebSocketServerConnection';
 
-export interface PeerConnection extends MediaConnection{
-  connection:RTCPeerConnection;
-  state: PeerConnectionState;
-  dataChannel: RTCDataChannel;
+export interface PeerConnection extends MediaConnection {
+  connection: RTCPeerConnection; // underlaying RTC connection
+  state: PeerConnectionState; // our connection state
+  dataChannel: RTCDataChannel; //the data channel for further communication
 
-  tracks: Map<MediaStreamTrack,RTCRtpSender>;
+  securityState: SecurityState;
 }
 
-export interface MediaConnection{
-  client:Client;
-  stream?:MediaStream;
+export interface MediaConnection {
+  client: Client;
+  stream?: MediaStream;
 }
 
 export enum PeerConnectionState {
@@ -20,4 +20,10 @@ export enum PeerConnectionState {
   Connected,
   Error,
   Closed
+}
+
+export enum SecurityState{
+  UNTESTED,
+  INVALID,
+  SECURE
 }

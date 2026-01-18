@@ -11,3 +11,14 @@ export function getChannelFromId(id: string, sections: SectionDTO[]): ChannelDTO
   }
   return undefined;
 }
+
+export function compareLists<T>(left:T[], right:T[]) {
+  const leftSet = new Set(left);
+  const rightSet = new Set(right);
+
+  return {
+    missingFromLeft: right.filter(item => !leftSet.has(item)),
+    missingFromRight: left.filter(item => !rightSet.has(item))
+  };
+}
+

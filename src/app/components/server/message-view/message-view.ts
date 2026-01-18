@@ -6,12 +6,14 @@ import {getChannelFromId} from '../../../services/Util';
 import {ToastService, ToastType} from '../../../services/toast-service';
 import {MessageHandler, WebSocketService} from '../../../services/websocket/web-socket-service';
 import {IncomeMessageEvent} from '../../../../api/webrtc-server';
-import {DatePipe} from '@angular/common';
+import {AsyncPipe, DatePipe, NgClass} from '@angular/common';
 import {MessageDTO} from '../../../../api/webrtc-server/model/messageDTO';
 import {MarkdownPipe} from '../../../pipes/markdown-pipe';
 import {Message} from 'postcss';
 import {NOTIFICATION_MESSAGE_NEW, NotificationService} from '../../../services/notification.service';
 import {RestService} from '../../../services/rest-service';
+import {UserDatePipe} from '../../../pipes/user-date-pipe';
+import {IdenticonPipe} from '../../../pipes/identicon-pipe';
 
 @Component({
   selector: 'app-message-view',
@@ -19,7 +21,11 @@ import {RestService} from '../../../services/rest-service';
     FormsModule,
     LucideAngularModule,
     DatePipe,
-    MarkdownPipe
+    MarkdownPipe,
+    UserDatePipe,
+    AsyncPipe,
+    IdenticonPipe,
+    NgClass
   ],
   templateUrl: './message-view.html',
   styleUrl: './message-view.css'

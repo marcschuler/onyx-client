@@ -1,5 +1,4 @@
-<div class="w-full flex justify-center">
-  <div class="w-xl max-w-xl">
+<div class="justify-center">
     @for (identity of identityService.identities; track identity) {
       <div class="bg-neutral-800 rounded">
         <div class="flex ">
@@ -15,8 +14,7 @@
       </div>
     }
     <div class="p-2"></div>
-    <button class="min-w-xl" routerLink="/settings/identity/new"> Create a new Identity</button>
-  </div>
+    <button  routerLink="/settings/identity/new"> Create a new Identity</button>
 </div>
 
 @if (identityToDelete){
