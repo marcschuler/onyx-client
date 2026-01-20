@@ -3,7 +3,7 @@ import {
   ChannelControllerService,
   ChatControllerService, SectionControllerService,
   ServerControllerService,
-  ServerTreeChangeMessage
+  ServerTreeChangeMessage, UserControllerService
 } from '../../../api/webrtc-server';
 import {IceServer} from '../../../api/webrtc-server/model/iceServer';
 
@@ -16,27 +16,28 @@ export interface WebSocketServerConnection {
   config: ServerConfig; //configuration settings for this server
   clients: Client[]; //all clients
   currentChannel?: ServerObjectId | undefined; //the current channel if existing
-  selectedChannel?: ServerObjectId| undefined; //the selected channel in UI if existing
+  selectedChannel?: ServerObjectId | undefined; //the selected channel in UI if existing
 
   rest: RestConfiguration;
 }
 
-export interface RestConfiguration{
+export interface RestConfiguration {
   readonly jwt?: string;
   serverController: ServerControllerService;
   channelController: ChannelControllerService;
   chatController: ChatControllerService;
   sectionController: SectionControllerService;
+  userController: UserControllerService
 }
 
-export interface Client{
+export interface Client {
   id: KeyId;
   publicKey: JsonWebKey;
   username: string;
   channel: ServerObjectId;
 }
 
-export interface ServerConfig{
+export interface ServerConfig {
   iceServers?: IceServer[];
 }
 

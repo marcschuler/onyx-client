@@ -3,7 +3,7 @@ import {ChannelTree} from '../../../components/server/channel-tree/channel-tree'
 import {UserPanel} from '../../../components/server/user-panel/user-panel';
 import {ChannelView} from './channel-view/channel-view';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
-import {InfoIcon, LucideAngularModule, ServerCog, SettingsIcon} from 'lucide-angular';
+import {BookUser, InfoIcon, LucideAngularModule, ServerCog, SettingsIcon} from 'lucide-angular';
 import {NgStyle} from '@angular/common';
 import {InterfaceService} from '../../../services/interface-service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
@@ -11,6 +11,7 @@ import {Popup} from '../../../components/ui/popup/popup';
 import {Settings} from '../../settings/settings';
 import {ServerOverview} from './server-overview/server-overview';
 import {AdminPanel} from './admin-panel/admin-panel';
+import {UsersPanel} from './users-panel/users-panel';
 
 @Component({
   selector: 'app-server',
@@ -23,7 +24,8 @@ import {AdminPanel} from './admin-panel/admin-panel';
     Popup,
     Settings,
     ServerOverview,
-    AdminPanel
+    AdminPanel,
+    UsersPanel
   ],
   templateUrl: './server.html',
   styleUrl: './server.css'
@@ -33,7 +35,8 @@ export class Server {
   @Input() connection!: WebSocketServerConnection;
 
   showSettings = false;
-  showAdminPanel: boolean = false;
+  showAdminPanel = false;
+  showUsersPanel = false;
 
   private resizing = false;
   private minWidth = 100;
@@ -69,4 +72,5 @@ export class Server {
   }
 
   protected readonly ServerCog = ServerCog;
+  protected readonly BookUser = BookUser;
 }

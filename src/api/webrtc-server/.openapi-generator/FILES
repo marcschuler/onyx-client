@@ -9,6 +9,7 @@ api/infoController.service.ts
 api/sectionController.service.ts
 api/serverController.service.ts
 api/todoController.service.ts
+api/userController.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -25,6 +26,7 @@ model/channelWriteDTO.ts
 model/clientChannelChangeRequest.ts
 model/clientChannelJoinMessage.ts
 model/clientChannelLeaveMessage.ts
+model/fileDTO.ts
 model/iceServer.ts
 model/iceServerMessage.ts
 model/incomeMessageEvent.ts
@@ -49,6 +51,8 @@ model/serverDTO.ts
 model/serverTreeChangeMessage.ts
 model/serverWriteDTO.ts
 model/signedContent.ts
+model/uploadMediaRequest.ts
+model/userExtendedDTO.ts
 model/userSimpleDTO.ts
 param.ts
 provide-api.ts

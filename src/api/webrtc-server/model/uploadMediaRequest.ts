@@ -7,13 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileDTO } from './fileDTO';
 
 
-export interface UserSimpleDTO { 
-    id: string;
-    publicKey: any | null;
-    username: string;
-    avatar?: FileDTO;
+export interface UploadMediaRequest { 
+    file: Blob;
 }
 

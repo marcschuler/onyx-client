@@ -5,7 +5,7 @@ import {
   ChannelControllerService,
   ChatControllerService,
   Configuration, SectionControllerService,
-  ServerControllerService
+  ServerControllerService, UserControllerService
 } from '../../api/webrtc-server';
 import {ToastService, ToastType} from './toast-service';
 
@@ -19,7 +19,7 @@ export class RestService {
 
   constructor(private http: HttpClient,
               private toastService: ToastService) {
-    this.statusCodeEmojis[  0] = "🌏";
+    this.statusCodeEmojis[0] = "🌏";
     this.statusCodeEmojis[400] = "👎";
     this.statusCodeEmojis[401] = "🔐";
     this.statusCodeEmojis[402] = "💳️";
@@ -47,7 +47,8 @@ export class RestService {
       serverController: new ServerControllerService(this.http, basePath, config),
       chatController: new ChatControllerService(this.http, basePath, config),
       channelController: new ChannelControllerService(this.http, basePath, config),
-      sectionController: new SectionControllerService(this.http, basePath, config)
+      sectionController: new SectionControllerService(this.http, basePath, config),
+      userController: new UserControllerService(this.http, basePath, config),
     }
   }
 
@@ -65,12 +66,12 @@ export class RestService {
     })
   }
 
-  public buildErrorTitle(error:HttpErrorResponse):string{
+  public buildErrorTitle(error: HttpErrorResponse): string {
     var title = error.status + " " + error.statusText
     if (error.error && error.error.title) {
       title = error.error.title;
     }
-    if(error.status===0){
+    if (error.status === 0) {
       title = "No Connection"
     }
     const emoji: string | undefined = this.statusCodeEmojis[error.status];
@@ -79,8 +80,8 @@ export class RestService {
     return title;
   }
 
-  public buildErrorMessage(error:HttpErrorResponse):string{
-    if (error.status==0 || error.status==undefined){
+  public buildErrorMessage(error: HttpErrorResponse): string {
+    if (error.status == 0 || error.status == undefined) {
       return "No Connection to server";
     }
     return error.error.detail || JSON.stringify(error.error);

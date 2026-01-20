@@ -10,4 +10,6 @@ export * from './serverController.service';
 import { ServerControllerService } from './serverController.service';
 export * from './todoController.service';
 import { TodoControllerService } from './todoController.service';
-export const APIS = [ChannelControllerService, ChatControllerService, InfoControllerService, SectionControllerService, ServerControllerService, TodoControllerService];
+export * from './userController.service';
+import { UserControllerService } from './userController.service';
+export const APIS = [ChannelControllerService, ChatControllerService, InfoControllerService, SectionControllerService, ServerControllerService, TodoControllerService, UserControllerService];

@@ -50,7 +50,7 @@ bg-neutral-800 rounded w-full h-full">
               <lucide-icon class="inline" [name]="ShieldOff" appTooltip="Not verified"></lucide-icon>
             }
             @case (SecurityState.INVALID) {
-              <lucide-icon class="inline" [name]="ShieldAlert"appTooltip="Cryptography error. Do not trust Client."></lucide-icon>
+              <lucide-icon class="inline" [name]="ShieldAlert" appTooltip="Cryptography error. Do not trust Client."></lucide-icon>
             }
             @case (SecurityState.SECURE) {
               <!-- Nothing should be done to not confuse the user -->
