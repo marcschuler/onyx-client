@@ -59,6 +59,9 @@ export class ChannelView implements AfterViewInit, OnChanges {
   ngAfterViewInit(): void {
     this.updateDetails();
     setInterval(() => {
+      this.updateGridSize();
+    }, 50)
+    setInterval(() => {
       this.updateGridSize(); //TODO this is bad
     }, 1000)
   }
@@ -103,7 +106,7 @@ export class ChannelView implements AfterViewInit, OnChanges {
     if (newHeightVh < 10) newHeightVh = 10;
     if (newHeightVh > 90) newHeightVh = 90;
 
-    console.log("new height is " + newHeightVh + "vh")
+    //console.log("new height is " + newHeightVh + "vh")
 
 
     this.interfaceService.settings.channelSplitSize.peerView = newHeightVh;
@@ -158,7 +161,7 @@ export class ChannelView implements AfterViewInit, OnChanges {
     let colWidth = colHeight / 9 * 16;
 
     if (colWidth * cols > containerWidth) {
-      colWidth = containerWidth/cols;
+      colWidth = containerWidth / cols;
       colHeight = colWidth / 16 * 9;
     }
 
@@ -166,7 +169,6 @@ export class ChannelView implements AfterViewInit, OnChanges {
     this.gridRows = rows;
     this.gridColHeight = colHeight;
     this.gridColWidth = colHeight / 9 * 16;
-    console.log("using " + cols + "x" + rows + " for height " + colHeight + "/" + containerHeight)
-
+    //console.log("using " + cols + "x" + rows + " for height " + colHeight + "/" + containerHeight)
   }
 }

@@ -15,7 +15,7 @@ export class Popup {
 
   @Input() title?: string;
   @Input() content?: string;
-  @Input() closeButton?:boolean;
+  @Input() closeButton?: boolean;
 
   @Input() buttons?: Button[];
 
@@ -35,7 +35,7 @@ export class Popup {
     }
   }
 
-  onButton(button: Button|undefined) {
+  onButton(button: Button | undefined) {
     this.close.emit(button);
     this.isOpen = false;
   }
@@ -61,6 +61,12 @@ export const BUTTON_CANCEL: Button = {
 } as Button;
 
 
+export const BUTTON_SKIP: Button = {
+  text: 'Skip',
+  type: ButtonType.OK,
+  callback: true
+}
+
 export const BUTTON_DELETE: Button = {
   text: 'Delete',
   type: ButtonType.DELETE,
@@ -68,7 +74,7 @@ export const BUTTON_DELETE: Button = {
 }
 
 export const BUTTON_EDIT: Button = {
-  text:'Edit',
+  text: 'Edit',
   type: ButtonType.EDIT,
   callback: true
 }

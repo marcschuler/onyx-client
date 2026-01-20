@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {IdentityService} from '../../../../services/identity-service';
+import {Component, EventEmitter, Output} from '@angular/core';
+import {Identity, IdentityService} from '../../../../services/identity-service';
 import {FormsModule} from '@angular/forms';
 import {Spinner} from '../../../../components/ui/spinner/spinner';
 import {AsyncPipe, Location} from '@angular/common';
@@ -30,6 +30,8 @@ export class IdentityWizzard {
   username: string = "";
   key: CryptoKeyPair | undefined;
 
+  @Output() identityCreated = new EventEmitter<Identity>();
+
   identityWaiting: boolean | undefined = undefined;
 
   constructor(protected identityService: IdentityService,
@@ -44,20 +46,11 @@ export class IdentityWizzard {
   createIdentity() {
     this.identityWaiting = true;
     this.identityService.create(this.username, this.key)
-      .then(ready => {
+      .then(identity => {
         this.identityWaiting = false;
-        this.goBack();
+        this.identityCreated.emit(identity);
       })
   }
-
-  goBack() {
-    if (window.history.length > 1) {
-      this.location.back();
-    } else {
-      this.router.navigate(['/']);
-    }
-  }
-
 
   protected readonly RotateCcw = RotateCcw;
 }

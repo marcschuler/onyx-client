@@ -8,11 +8,13 @@ import {
   SignalIcon
 } from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
+import {Tooltip} from '../../../directives/tooltip';
 
 @Component({
   selector: 'app-peer-view',
   imports: [
-    LucideAngularModule
+    LucideAngularModule,
+    Tooltip
   ],
   templateUrl: './peer-view.html',
   styleUrl: './peer-view.css'

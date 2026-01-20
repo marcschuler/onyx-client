@@ -9,50 +9,55 @@ bg-neutral-800 rounded w-full h-full">
     } @else {
     }
   </div>
-  @if (peer) {
-    <div class="absolute top-2 right-2">
-      <div class="bg-neutral-800/50 w-full bg-opacity-20 text-neutral-200 text-right p-2 rounded">
+  <div class="absolute top-2 right-2">
+    <div class="bg-neutral-800/50 w-full bg-opacity-20 text-neutral-200 text-right p-2 rounded">
 
       <span>
-        {{ peer.client.username }}
-        @switch (peer.state) {
-          @case (PeerConnectionState.WaitingForOffer) {
-            <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
-            Waiting for connection (1/4)
-          }
-          @case (PeerConnectionState.Offered) {
-            <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
-            Waiting for answer (2/4)
-          }
-          @case (PeerConnectionState.Answered) {
-            <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
-            Waiting for {{ peer.client.username }} (3/4)
-          }
-          @case (PeerConnectionState.Connected) {
-            <!--<lucide-icon class="inline" [name]="SignalIcon"></lucide-icon>-->
-          }
-          @case (PeerConnectionState.Closed) {
-            <lucide-icon class="inline" [name]="PowerOffIcon"></lucide-icon>
-            Offline
-          }
-          @case (PeerConnectionState.Error) {
-            <lucide-icon class="inline" [name]="CircleXIcon"></lucide-icon>
-            Error
-          }
+        @if (peer){
+          {{ peer.client.username }}
+        } @else {
+          {{connection.identity.username}}
         }
-        @switch (peer.securityState) {
-          @case (SecurityState.UNTESTED) {
-            <lucide-icon class="inline" [name]="ShieldOff"></lucide-icon>
+
+        @if (peer) {
+          @switch (peer.state) {
+            @case (PeerConnectionState.WaitingForOffer) {
+              <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
+              Waiting for connection (1/4)
+            }
+            @case (PeerConnectionState.Offered) {
+              <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
+              Waiting for answer (2/4)
+            }
+            @case (PeerConnectionState.Answered) {
+              <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
+              Waiting for {{ peer.client.username }} (3/4)
+            }
+            @case (PeerConnectionState.Connected) {
+              <!--<lucide-icon class="inline" [name]="SignalIcon"></lucide-icon>-->
+            }
+            @case (PeerConnectionState.Closed) {
+              <lucide-icon class="inline" [name]="PowerOffIcon"></lucide-icon>
+              Offline
+            }
+            @case (PeerConnectionState.Error) {
+              <lucide-icon class="inline" [name]="CircleXIcon"></lucide-icon>
+              Error
+            }
           }
-          @case (SecurityState.INVALID) {
-            <lucide-icon class="inline" [name]="ShieldAlert"></lucide-icon>
-          }
-          @case (SecurityState.SECURE) {
-            <!-- Nothing should be done to not confuse the user -->
+          @switch (peer.securityState) {
+            @case (SecurityState.UNTESTED) {
+              <lucide-icon class="inline" [name]="ShieldOff" appTooltip="Not verified"></lucide-icon>
+            }
+            @case (SecurityState.INVALID) {
+              <lucide-icon class="inline" [name]="ShieldAlert"appTooltip="Cryptography error. Do not trust Client."></lucide-icon>
+            }
+            @case (SecurityState.SECURE) {
+              <!-- Nothing should be done to not confuse the user -->
+            }
           }
         }
     </span>
-      </div>
     </div>
-  }
+  </div>
 </div>
