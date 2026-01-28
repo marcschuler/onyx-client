@@ -8,6 +8,7 @@ import {ServerDTO} from '../../../../../api/webrtc-server/model/serverDTO';
 import {ToastService, ToastType} from '../../../../services/toast-service';
 import {ServerAdministrationPanel} from './server-administration-panel/server-administration-panel';
 import {ChannelAdministrationPanel} from './channel-administration-panel/channel-administration-panel';
+import {HexagonIcon, ServerCog} from 'lucide-angular';
 
 @Component({
   selector: 'app-admin-panel',
@@ -25,10 +26,12 @@ export class AdminPanel implements OnInit, OnChanges {
 
   BUTTON_SERVER_ADMINISTRATION: TabPanelEntry = {
     id: "server-administration",
+    icon: ServerCog,
     name: "Server Administration"
   }
   BUTTON_CHANNEL_TREE: TabPanelEntry = {
     id: "channel-tree",
+    icon: HexagonIcon,
     name: "Sections & Channel"
   }
 

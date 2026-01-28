@@ -9,9 +9,10 @@
         <div
           class="p-2 rounded gap-2 grid grid-cols-[1fr_auto] w-full
           text-neutral-200 hover:text-neutral-100  hover:bg-neutral-800 animate-default group cursor-pointer"
-          [ngClass]="[
-    connection.selectedChannel==channel.id || connection.currentChannel==channel.id ? 'bg-neutral-800' : ''
-  ]" (click)="selectChannel(channel)">
+          [ngClass]="{
+          'border-l-emerald-600 border-l-3': connection.currentChannel == channel.id,
+          'bg-neutral-800': connection.selectedChannel ==channel.id
+  }" (click)="selectChannel(channel)">
           <div class=" w-full   rounded-l-md select-none">
             <lucide-icon class="inline-flex translate-y-0.5" [name]="HexagonIcon"></lucide-icon>
             {{ channel.name }}
@@ -30,7 +31,7 @@
           @if (client.channel == channel.id) {
             <div class="ml-4 p-2 hover:bg-neutral-800 rounded animate-default flex items-center gap-2"
                  [ngClass]="[
-    client.id==connection.identity.id ? 'bg-neutral-800' : ''
+    client.id==connection.identity.id ? 'border-l-emerald-600 border-l-3' : ''
   ]">
               <img
                 [src]="client.id | identicon: 32 | async"

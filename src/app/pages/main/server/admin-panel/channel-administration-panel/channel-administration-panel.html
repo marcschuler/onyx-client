@@ -1,7 +1,7 @@
 @if (connection.data) {
   <div cdkDropList (cdkDropListDropped)="dropSection($event)">
     @for (section of connection.data.sections; track section) {
-      <div class="p-2 bg-neutral-800 rounded m-1" cdkDrag>
+      <div class="p-2 bg-neutral-900 rounded m-1" cdkDrag>
         <h3 class="p-2 relative">
           <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
           {{ section.name }}
@@ -18,14 +18,14 @@
              [cdkDropListConnectedTo]="dropListSections"
              class="min-h-8" (cdkDropListDropped)="dropChannel($event)">
           @for (channel of section.channels; track channel) {
-            <div class="p-2 ml-4 m-1 bg-neutral-900 rounded relative" cdkDrag>
+            <div class="p-2 ml-4 m-1 bg-neutral-800 rounded relative" cdkDrag>
               <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
               {{ channel.name }}
               <div class="absolute right-2 top-2">
-                <button class="!p-0  button-dark" (click)="channelToEdit=channel">
+                <button class="!p-0  " (click)="channelToEdit=channel">
                   <lucide-icon [name]="Pencil"></lucide-icon>
                 </button>
-                <button class="!p-0 button-hover-red button-dark" (click)="channelToDelete=channel">
+                <button class="!p-0 button-hover-red " (click)="channelToDelete=channel">
                   <lucide-icon [name]="CircleMinus"></lucide-icon>
                 </button>
               </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="px-4">
           <button class="button-ghost min-w-full !p-1 inline-block" (click)="createChannel(section)">
-            +
+            + Channel
           </button>
         </div>
       </div>
@@ -42,7 +42,7 @@
   </div>
   <div class="px-4">
     <button class="button-ghost min-w-full !p-1 inline-block" (click)="createSection()">
-      +
+      + Section
     </button>
   </div>
 }

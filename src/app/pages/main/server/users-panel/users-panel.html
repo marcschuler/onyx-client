@@ -1,7 +1,7 @@
 <app-button-panel [buttons]="[BUTTON_USER_LIST]" [(selectedOption)]="selectedOption">
   @switch (selectedOption) {
     @case (BUTTON_USER_LIST) {
-      <div class="rounded bg-neutral-800 p-4 m-4 overflow-y-scroll">
+      <div class="overflow-y-scroll">
         @for (user of users || []; track user) {
           <div class="m-2 p-4 bg-neutral-900 rounded flex">
             <img [src]="user.id | identicon | async" alt="Key ID: {{user.id}}"
@@ -27,6 +27,9 @@
               </p>
             </div>
           </div>
+          @if (!$last) {
+            <div class="border-neutral-800 border mx-16"></div>
+          }
         }
       </div>
     }

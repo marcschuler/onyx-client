@@ -1,8 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {LucideAngularModule, LucideIconData} from 'lucide-angular';
 
 @Component({
   selector: 'app-button-panel',
-  imports: [],
+  imports: [
+    LucideAngularModule
+  ],
   templateUrl: './button-panel.html',
   styleUrl: './button-panel.css'
 })
@@ -28,5 +31,6 @@ export class ButtonPanel implements OnInit {
 
 export interface TabPanelEntry {
   id: string;
+  icon?: LucideIconData;
   name: string;
 }
