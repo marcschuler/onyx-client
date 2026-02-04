@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { FileDTO } from './fileDTO';
+import { GroupDTO } from './groupDTO';
 
 
 export interface UserExtendedDTO { 
@@ -15,6 +16,7 @@ export interface UserExtendedDTO {
     publicKey: any | null;
     username: string;
     avatar?: FileDTO;
+    groups: Set<GroupDTO>;
     state: UserExtendedDTO.StateEnum;
     knownSince: string;
     lastSeen?: string;

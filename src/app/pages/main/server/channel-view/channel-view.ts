@@ -26,7 +26,6 @@ import {NgClass, NgStyle} from '@angular/common';
     PeerView,
     FormsModule,
     MessageView,
-    NgClass,
     NgStyle,
   ],
   templateUrl: './channel-view.html',

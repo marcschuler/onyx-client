@@ -16,7 +16,6 @@ import {KeyVisualizer} from '../../../../components/ui/key-visualizer/key-visual
   imports: [
     FormsModule,
     Spinner,
-    IdenticonPipe,
     AsyncPipe,
     KeyIDPipe,
     LucideAngularModule,

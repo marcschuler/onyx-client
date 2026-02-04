@@ -24,6 +24,10 @@
                     <lucide-icon [name]="UserPlus" class="inline h-4"></lucide-icon> Invitation Pending
                   }
                 }
+
+                @for (group of user.groups;track group.id){
+                  {{group.name}}
+                }
               </p>
             </div>
           </div>

@@ -8,11 +8,12 @@ import {ServerDTO} from '../../../../../api/webrtc-server/model/serverDTO';
 import {ToastService, ToastType} from '../../../../services/toast-service';
 import {ServerAdministrationPanel} from './server-administration-panel/server-administration-panel';
 import {ChannelAdministrationPanel} from './channel-administration-panel/channel-administration-panel';
-import {HexagonIcon, ServerCog} from 'lucide-angular';
+import {HexagonIcon, IdCardLanyard, ServerCog} from 'lucide-angular';
+import {GroupAdministrationPanel} from './group-administration-panel/group-administration-panel';
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [ButtonPanel, FormsModule, Spinner, ServerAdministrationPanel, ChannelAdministrationPanel],
+  imports: [ButtonPanel, FormsModule, ServerAdministrationPanel, ChannelAdministrationPanel, GroupAdministrationPanel],
   templateUrl: './admin-panel.html',
   standalone: true,
   styleUrl: './admin-panel.css'
@@ -33,6 +34,11 @@ export class AdminPanel implements OnInit, OnChanges {
     id: "channel-tree",
     icon: HexagonIcon,
     name: "Sections & Channel"
+  }
+  BUTTON_GROUP: TabPanelEntry = {
+    id: "groups",
+    icon: IdCardLanyard,
+    name: "Groups"
   }
 
   constructor(private restService: RestService,

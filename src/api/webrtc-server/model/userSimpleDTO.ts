@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { FileDTO } from './fileDTO';
+import { GroupDTO } from './groupDTO';
 
 
 export interface UserSimpleDTO { 
@@ -15,5 +16,6 @@ export interface UserSimpleDTO {
     publicKey: any | null;
     username: string;
     avatar?: FileDTO;
+    groups: Set<GroupDTO>;
 }
 

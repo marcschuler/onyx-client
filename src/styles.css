@@ -16,15 +16,19 @@ label {
 }
 
 input {
-  @apply bg-neutral-800 border border-neutral-900 text-neutral-100 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
+  @apply bg-neutral-800 border border-neutral-900 text-neutral-200 focus:text-neutral-100 text-sm rounded-lg focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
 }
 
 input::placeholder {
   @apply text-neutral-400
 }
 
+.input-invisible{
+  @apply border-0 focus:bg-neutral-600 hover:bg-neutral-700
+}
+
 textarea {
-  @apply bg-neutral-800 border border-neutral-900 text-neutral-100 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
+  @apply bg-neutral-800 border border-neutral-900 text-neutral-100 text-sm rounded-lg  focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
 }
 
 
@@ -109,4 +113,9 @@ h4 {
 
 .skeleton {
   @apply animate-pulse h-2 bg-gray-400 w-32
+}
+
+
+select{
+  @apply border-b-3 border-b-neutral-600 hover:border-b-neutral-300
 }

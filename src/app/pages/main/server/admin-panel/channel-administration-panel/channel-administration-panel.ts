@@ -18,7 +18,6 @@ import {NameDescriptionPopup} from './name-description-popup/name-description-po
     Popup,
     NameDescriptionPopup,
     CdkDragHandle,
-    CdkDragPlaceholder
   ],
   templateUrl: './channel-administration-panel.html',
   styleUrl: './channel-administration-panel.css'
@@ -89,7 +88,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
   }
 
   protected createChannel(section: SectionDTO) {
-    this.connection.rest.channelController.create1({
+    this.connection.rest.channelController.create3({
       name: "Channel",
       sectionId: section.id,
       order: section.channels.length
@@ -117,7 +116,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
       this.channelToEdit = undefined;
       return;
     }
-    this.connection.rest.channelController.edit2(this.channelToEdit!.id, event)
+    this.connection.rest.channelController.edit4(this.channelToEdit!.id, event)
       .subscribe(() => {
       }, error => this.restService.handleError(error), () => this.channelToEdit = undefined);
   }
@@ -134,7 +133,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
 
   protected deleteChannel(type: Button) {
     if (type == BUTTON_DELETE) {
-      this.connection.rest.channelController.delete1(this.channelToDelete!.id)
+      this.connection.rest.channelController.delete3(this.channelToDelete!.id)
         .subscribe(value => {
         }, error => this.restService.handleError(error))
     }

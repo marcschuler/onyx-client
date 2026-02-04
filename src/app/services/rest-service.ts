@@ -4,7 +4,7 @@ import {RestConfiguration} from './websocket/WebSocketServerConnection';
 import {
   ChannelControllerService,
   ChatControllerService,
-  Configuration, SectionControllerService,
+  Configuration, GroupControllerService, SectionControllerService,
   ServerControllerService, UserControllerService
 } from '../../api/webrtc-server';
 import {ToastService, ToastType} from './toast-service';
@@ -49,6 +49,7 @@ export class RestService {
       channelController: new ChannelControllerService(this.http, basePath, config),
       sectionController: new SectionControllerService(this.http, basePath, config),
       userController: new UserControllerService(this.http, basePath, config),
+      groupController: new GroupControllerService(this.http,basePath,config)
     }
   }
 

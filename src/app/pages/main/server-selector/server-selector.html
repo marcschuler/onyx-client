@@ -6,7 +6,10 @@
 <app-popup [isOpen]="showSettings" [closeButton]="true" (close)="showSettings=false">
   <app-settings></app-settings>
 </app-popup>
+<img class="w-32" src="/assets/logo/emerald.png">
 <div class="flex justify-center  items-center h-screen max-h-screen">
+
+
   <div class="p-6 bg-neutral-800 rounded w-xl">
     @if (serverLoaderService.connections.length != 0) {
       <h3>Server Browser</h3>

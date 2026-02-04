@@ -15,7 +15,6 @@ import {FormsModule} from '@angular/forms';
   selector: 'app-name-description-popup',
   imports: [
     Popup,
-    FormField,
     FormsModule
   ],
   templateUrl: './name-description-popup.html',

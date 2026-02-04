@@ -11,7 +11,6 @@ import {LucideAngularModule, UserCheck, UserMinus, UserPlus} from 'lucide-angula
   selector: 'app-users-panel',
   imports: [
     ButtonPanel,
-    JsonPipe,
     AsyncPipe,
     IdenticonPipe,
     DatePipe,

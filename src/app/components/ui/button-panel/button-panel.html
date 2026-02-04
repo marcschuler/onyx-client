@@ -3,7 +3,7 @@
 
     <div class="inline-block flex-col rounded align-top">
       @for (button of buttons; track button) {
-        <button class="button-dark !rounded-none" (click)="select(button)"
+        <button class="button-dark !rounded-none min-w-max" (click)="select(button)"
                 [disabled]="selectedOption==button">
           @if (button.icon) {
             <lucide-icon [name]="button.icon" class="inline pr-1"></lucide-icon>

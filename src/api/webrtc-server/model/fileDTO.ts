@@ -7,20 +7,14 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { HashDTO } from './hashDTO';
 
 
 export interface FileDTO { 
     id?: string;
     filename?: string;
     contentType?: string;
-    hashType?: FileDTO.HashTypeEnum;
+    hash?: HashDTO;
     created?: string;
 }
-export namespace FileDTO {
-    export const HashTypeEnum = {
-        Sha256: 'SHA_256'
-    } as const;
-    export type HashTypeEnum = typeof HashTypeEnum[keyof typeof HashTypeEnum];
-}
-
 

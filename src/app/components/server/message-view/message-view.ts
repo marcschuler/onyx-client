@@ -20,7 +20,6 @@ import {IdenticonPipe} from '../../../pipes/identicon-pipe';
   imports: [
     FormsModule,
     LucideAngularModule,
-    DatePipe,
     MarkdownPipe,
     UserDatePipe,
     AsyncPipe,
