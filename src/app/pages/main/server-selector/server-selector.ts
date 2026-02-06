@@ -21,6 +21,7 @@ import {KeyVisualizer} from '../../../components/ui/key-visualizer/key-visualize
 import {ServerDTO} from '../../../../api/webrtc-server/model/serverDTO';
 import {RestService} from '../../../services/rest-service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {APP_VERSION} from '../../../services/Util';
 
 @Component({
   selector: 'app-server-selector',
@@ -159,6 +160,7 @@ export class ServerSelector implements OnInit, OnDestroy {
 
 
   protected readonly BUTTON_EDIT = BUTTON_EDIT;
+  protected readonly APP_VERSION = APP_VERSION;
 }
 
 export interface ServerInfoWithState {

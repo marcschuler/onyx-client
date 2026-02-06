@@ -3,6 +3,7 @@ import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {JsonPipe} from '@angular/common';
 import {IdentityService} from '../../../services/identity-service';
 import {PeerConnectionService} from '../../../services/peer/peer-connection-service';
+import {APP_VERSION} from '../../../services/Util';
 
 @Component({
   selector: 'app-debug',
@@ -19,4 +20,5 @@ export class Debug {
               protected identityService: IdentityService,) {
   }
 
+  protected readonly APP_VERSION = APP_VERSION;
 }

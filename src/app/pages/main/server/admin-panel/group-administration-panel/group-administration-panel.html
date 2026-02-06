@@ -1,0 +1,30 @@
+@if (groups) {
+  @for (group of groups; track group.id) {
+    <div class="bg-neutral-800 p-4 m-2 rounded">
+      <input class="text-h3 input-invisible" [(ngModel)]="group.name">
+      <textarea class="input-invisible" [(ngModel)]="group.description"></textarea>
+
+      <p>
+        Inherits from
+        <select class="ml-2" [(ngModel)]="group.parentId">
+          <option [value]="undefined"></option>
+          @for (g of groups; track g.id) {
+            @if (g != group) {
+              <option [value]="g.id">{{ g.name }}</option>
+            }
+          }
+        </select>
+      </p>
+
+      <div class="text-right">
+        <button>Save</button>
+        <button>Delete</button>
+      </div>
+    </div>
+  }
+  <div class="text-right">
+    <button class="button-ghost" (click)="addGroup()">+
+      <lucide-icon [name]="IdCardLanyard" class="inline"></lucide-icon>
+    </button>
+  </div>
+}

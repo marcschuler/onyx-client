@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {LucideAngularModule} from "lucide-angular";
+import {Bug, FingerprintIcon, LucideAngularModule, Scale, SettingsIcon} from "lucide-angular";
 import {UserPanel} from "../../components/server/user-panel/user-panel";
 import {FormsModule} from '@angular/forms';
 import {IdenticonPipe} from '../../pipes/identicon-pipe';
@@ -29,18 +29,22 @@ export class Settings {
   TAB_GENERAL: TabPanelEntry = {
     id: "General",
     name: 'General',
+    icon: SettingsIcon
   };
   TAB_IDENTITES: TabPanelEntry = {
     id: "Identities",
     name: 'Identities',
+    icon:FingerprintIcon
   };
   TAB_CONTRIBUTORS: TabPanelEntry = {
     id: "Contributors",
-    name: 'Contributors & Licences'
+    name: 'Contributors & Licences',
+    icon: Scale
   };
   TAB_DEBUG: TabPanelEntry = {
     id: "Debug",
-    name: 'Debug'
+    name: 'Debug',
+    icon: Bug
   }
 
   selectedOption!: TabPanelEntry;
