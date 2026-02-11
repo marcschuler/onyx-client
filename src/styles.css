@@ -23,7 +23,7 @@ input::placeholder {
   @apply text-neutral-400
 }
 
-.input-invisible{
+.input-invisible {
   @apply border-0 focus:bg-neutral-600 hover:bg-neutral-700
 }
 
@@ -51,23 +51,27 @@ button {
   @apply disabled:bg-neutral-900
 }
 
+.button-line {
+  @apply border-neutral-600 border-1
+}
+
 .button-red {
   @apply hover:bg-red-800 border-red-600 border-1 bg-red-800/10
 }
 
 .button-ghost {
-  @apply border-2 border-dotted border-neutral-400 bg-neutral-800
+  @apply border-2 border-dotted border-neutral-400 bg-neutral-800/25
 }
 
-.text-green-bold{
+.text-green-bold {
   @apply text-emerald-400
 }
 
-.hover-greenish{
+.hover-greenish {
   @apply hover:bg-emerald-400/10 transition-colors duration-300 ease-in-out
 }
 
-.greenish{
+.greenish {
   @apply bg-emerald-400/20 hover:bg-emerald-400/30
 }
 
@@ -116,6 +120,24 @@ h4 {
 }
 
 
-select{
+select {
   @apply border-b-3 border-b-neutral-600 hover:border-b-neutral-300
+}
+
+
+.wave-background {
+  --mask: radial-gradient(34.4px at 50% calc(100% + 13.5px), #0000 calc(99% - 3px), #000 calc(101% - 3px) 99%, #0000 101%) calc(50% - 60px) calc(50% - 16.5px + .5px)/120px 33px,
+  radial-gradient(34.4px at 50% -13.5px, #0000 calc(99% - 3px), #000 calc(101% - 3px) 99%, #0000 101%) 50% calc(50% + 16.5px)/120px 33px;
+  -webkit-mask: var(--mask);
+  mask: var(--mask);
+}
+
+.gradient-white-emerald{
+  background: #009966;
+  background: linear-gradient(90deg, rgba(0, 153, 102, 1) 50%, rgba(224, 224, 224, 1) 100%);
+}
+
+.gradient-white-emerald-5{
+  background: #009966;
+  background: linear-gradient(90deg, rgba(0, 153, 102, .05) 50%, rgba(224, 224, 224, .05) 100%);
 }

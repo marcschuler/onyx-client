@@ -6,11 +6,16 @@
 <app-popup [isOpen]="showSettings" [closeButton]="true" (close)="showSettings=false">
   <app-settings></app-settings>
 </app-popup>
-<div class="grid place-items-center  items-center h-screen max-h-screen">
 
+<div class="fixed w-screen h-screen wave-background gradient-white-emerald-5 -z-10">
 
-  <img class="w-24 flex-col" src="/assets/logo/emerald.png">
+</div>
 
+<div class="flex flex-col justify-center  items-center h-screen max-h-screen">
+
+  <div class="p-4">
+    <h1 class="text-5xl font-serif font-bold">Onyx</h1>
+  </div>
 
   <div class="p-6 bg-neutral-800 rounded w-xl">
     @if (serverLoaderService.connections.length != 0) {

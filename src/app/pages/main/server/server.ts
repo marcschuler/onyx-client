@@ -3,7 +3,15 @@ import {ChannelTree} from '../../../components/server/channel-tree/channel-tree'
 import {UserPanel} from '../../../components/server/user-panel/user-panel';
 import {ChannelView} from './channel-view/channel-view';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
-import {BookUser, InfoIcon, LucideAngularModule, ServerCog, SettingsIcon} from 'lucide-angular';
+import {
+  BookUser,
+  InfoIcon,
+  LucideAngularModule,
+  PanelLeftClose,
+  PanelLeftOpen,
+  ServerCog,
+  SettingsIcon
+} from 'lucide-angular';
 import {NgStyle} from '@angular/common';
 import {InterfaceService} from '../../../services/interface-service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
@@ -41,15 +49,16 @@ export class Server {
   private resizing = false;
   private minWidth = 100;
   private maxWidth = 500;
+  protected minimized = false;
 
   constructor(protected webSocketService: WebSocketService,
               protected interfaceService: InterfaceService,) {
   }
 
-  protected readonly SettingsIcon = SettingsIcon;
-  protected readonly InfoIcon = InfoIcon;
 
   startResizing($event: MouseEvent) {
+    if (this.minimized)
+      return;
     this.resizing = true;
     $event.preventDefault();
   }
@@ -71,6 +80,11 @@ export class Server {
     }
   }
 
+
+  protected readonly SettingsIcon = SettingsIcon;
+  protected readonly InfoIcon = InfoIcon;
   protected readonly ServerCog = ServerCog;
   protected readonly BookUser = BookUser;
+  protected readonly PanelLeftClose = PanelLeftClose;
+  protected readonly PanelLeftOpen = PanelLeftOpen;
 }
