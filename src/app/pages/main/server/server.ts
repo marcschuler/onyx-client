@@ -5,7 +5,7 @@ import {ChannelView} from './channel-view/channel-view';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {
   BookUser,
-  InfoIcon,
+  InfoIcon, LogOut,
   LucideAngularModule,
   PanelLeftClose,
   PanelLeftOpen,
@@ -87,4 +87,9 @@ export class Server {
   protected readonly BookUser = BookUser;
   protected readonly PanelLeftClose = PanelLeftClose;
   protected readonly PanelLeftOpen = PanelLeftOpen;
+  protected readonly LogOut = LogOut;
+
+  protected closeConnection() {
+    this.webSocketService.closeConnection(this.connection);
+  }
 }

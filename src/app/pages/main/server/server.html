@@ -5,6 +5,9 @@
   <button class="button-dark" (click)="showUsersPanel=true">
     <lucide-icon [name]="BookUser"></lucide-icon>
   </button>
+  <button class="button-dark" (click)="closeConnection()">
+    <lucide-icon [name]="LogOut"></lucide-icon>
+  </button>
   <button class="button-dark" (click)="showSettings=true">
     <lucide-icon [name]="SettingsIcon"></lucide-icon>
   </button>
@@ -41,12 +44,12 @@
         <app-user-panel [connection]="connection"></app-user-panel>
       </div>
     </aside>
+    <div
+      class="w-0.5 min-h-full cursor-col-resize bg-neutral-800 hover:bg-neutral-600"
+      (mousedown)="startResizing($event)"
+    ></div>
   }
 
-  <div
-    class="w-0.5 min-h-full cursor-col-resize bg-neutral-800 hover:bg-neutral-600"
-    (mousedown)="startResizing($event)"
-  ></div>
   <main class="flex-1">
     @if (connection.selectedChannel) {
       <app-channel-view [connection]="connection" [channelId]="connection.selectedChannel"></app-channel-view>

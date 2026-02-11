@@ -30,7 +30,7 @@ export class WebSocketService {
 
   connection: WebSocketServerConnection | undefined;
 
-  private messageHandlers: Map<MessageTypes, MessageHandler<any>> = new Map();
+  private messageHandlers: Map<MessageTypes, MessageHandler<any>[]> = new Map();
 
   private responseCallbacks: Map<string, ResponseMessageHandler<any>> = new Map();
 
@@ -44,7 +44,7 @@ export class WebSocketService {
     this.addHandler(ClientChannelLeaveMessage.TypeEnum.ClientChannelLeaveMessage, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveMessage, c));
     this.addHandler(IceServerMessage.TypeEnum.IceServerMessage, (e, c) => this.onIceServerData(e as IceServerMessage, c));
     this.addHandler(KickMessage.TypeEnum.KickMessage, (e, c) => this.onKickMessage(e as KickMessage, c));
-    this.addHandler(JwtTokenMessage.TypeEnum.JwtTokenMessage,(e,c)=>this.onJwtToken(e as JwtTokenMessage,c));
+    this.addHandler(JwtTokenMessage.TypeEnum.JwtTokenMessage, (e, c) => this.onJwtToken(e as JwtTokenMessage, c));
   }
 
 
@@ -119,6 +119,11 @@ export class WebSocketService {
     });
   }
 
+  closeConnection(connection: WebSocketServerConnection) {
+    console.log("ws: closing connection")
+    connection.serverConnection.close();
+    this.connection = undefined;
+  }
 
   public send(connection: WebSocketServerConnection, event: MessageBody | MessageBodyRequest) {
     if (this.LOG_MESSAGES)
@@ -135,14 +140,18 @@ export class WebSocketService {
   public addHandler<T extends MessageBody>(t: MessageTypes, handler: MessageHandler<T>) {
     if (this.messageHandlers.get(t))
       console.warn("Message handler for " + t + " already exists, overwrite...")
-    this.messageHandlers.set(t, handler);
+    let values = this.messageHandlers.get(t) || [];
+    values.push(handler);
+    this.messageHandlers.set(t, values);
   }
 
   removeHandler<T extends MessageBody>(handler: MessageHandler<T>) {
     for (const [key, value] of this.messageHandlers.entries()) {
-      if (value === handler) {
-        this.messageHandlers.delete(key);
-        break;
+      for (const v of value) {
+        if (v === handler) {
+          this.messageHandlers.delete(key);
+          break;
+        }
       }
     }
   }
@@ -160,11 +169,17 @@ export class WebSocketService {
       }
     }
     const handler = this.messageHandlers.get(event.type as MessageTypes);
-    if (!handler) {
+    if (!handler || handler.length == 0) {
       console.warn("No handler for message of type " + event.type + " exists. Ignoring");
       console.warn("Message was: " + JSON.stringify(event));
     } else {
-      handler(event, connection);
+      for(let h of handler){
+        try {
+          h(event, connection);
+        }catch (e) {
+          console.error("Event Handler threw exception",e)
+        }
+      }
     }
   }
 
@@ -260,8 +275,10 @@ export class WebSocketService {
   }
 
   private onJwtToken(event: JwtTokenMessage, connection: WebSocketServerConnection) {
-    connection.rest = this.restService.updateRestConfig(connection.rest,event.jwt);
+    connection.rest = this.restService.updateRestConfig(connection.rest, event.jwt);
   }
+
+
 }
 
 export type MessageHandler<T extends MessageBody> = (event: T, connection: WebSocketServerConnection) => void | any;
