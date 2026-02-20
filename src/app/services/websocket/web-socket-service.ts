@@ -121,7 +121,7 @@ export class WebSocketService {
 
   closeConnection(connection: WebSocketServerConnection) {
     console.log("ws: closing connection")
-    connection.serverConnection.close();
+    connection.serverConnection.close(); //TODO return a code or something?
     this.connection = undefined;
   }
 
@@ -173,11 +173,11 @@ export class WebSocketService {
       console.warn("No handler for message of type " + event.type + " exists. Ignoring");
       console.warn("Message was: " + JSON.stringify(event));
     } else {
-      for(let h of handler){
+      for (let h of handler) {
         try {
           h(event, connection);
-        }catch (e) {
-          console.error("Event Handler threw exception",e)
+        } catch (e) {
+          console.error("Event Handler threw exception", e)
         }
       }
     }
@@ -213,6 +213,7 @@ export class WebSocketService {
   }
 
   private onClientChannelJoinEvent(event: ClientChannelJoinMessage, connection: WebSocketServerConnection) {
+    console.log("Client " + event.user.username + " changed channel to " + event.channelId)
     const clients = connection.clients.filter(c => event.user.id == c.id);
     let client: Client | undefined;
     if (clients.length == 0) {
@@ -227,9 +228,10 @@ export class WebSocketService {
       client = clients[0];
       client.channel = event.channelId as ServerObjectId;
     }
-    if (this.isMe(client, connection))
+    if (this.isMe(client, connection)) {
+      console.log("Our channel changed to " + client.channel)
       connection.currentChannel = client.channel;
-
+    }
     this.peerConnectionService.updatePeerConnections();
   }
 
@@ -239,6 +241,10 @@ export class WebSocketService {
     if (clients.length == 1) {
       const index = connection.clients.indexOf(clients[0]);
       connection.clients.splice(index, 1)
+      if (this.isMe(clients[0], connection)) {
+        console.log("Left our channel ")
+        connection.currentChannel = undefined;
+      }
     } else {
       console.error("Could not find client " + event.user + " that did leave the channel");
     }

@@ -5,12 +5,14 @@ import {RestService} from '../../../../../services/rest-service';
 import {FormsModule} from '@angular/forms';
 import {IdCardLanyard, LucideAngularModule} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../../../services/toast-service';
+import {PolicyPanel} from './policy-panel/policy-panel';
 
 @Component({
   selector: 'app-group-administration-panel',
   imports: [
     FormsModule,
-    LucideAngularModule
+    LucideAngularModule,
+    PolicyPanel
   ],
   templateUrl: './group-administration-panel.html',
   styleUrl: './group-administration-panel.css',

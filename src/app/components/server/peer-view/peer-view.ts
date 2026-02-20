@@ -13,8 +13,7 @@ import {Tooltip} from '../../../directives/tooltip';
 @Component({
   selector: 'app-peer-view',
   imports: [
-    LucideAngularModule,
-    Tooltip
+    LucideAngularModule
   ],
   templateUrl: './peer-view.html',
   styleUrl: './peer-view.css'

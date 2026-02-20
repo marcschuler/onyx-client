@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {
   HexagonIcon,
-  LogInIcon,
+  LogInIcon, LogOut, LogOutIcon,
   LucideAngularModule,
   SettingsIcon,
   TrashIcon
@@ -38,24 +38,26 @@ export class ChannelTree {
 
   protected readonly LogInIcon = LogInIcon;
 
-  changeChannel(channel: ChannelDTO) {
-    console.log("Changing channel to " + channel.name);
+  changeChannel(channel: ChannelDTO | undefined) {
+    console.log("Changing channel to " + (channel ? channel.name : "(none)"));
     this.selectChannel(channel);
     this.webSocketService.send(this.connection, {
-      channelId: channel.id,
+      channelId: (channel ? channel.id : undefined),
       type: ClientChannelChangeRequest.TypeEnum.ClientChannelChangeRequest
     } as ClientChannelChangeRequest);
   }
 
   protected selectChannel(channel: ChannelDTO | undefined) {
     if (channel == undefined) {
-      console.log("unselecting channel")
+      console.log("Unselecting channel")
       this.connection.selectedChannel = undefined;
-    }else{
+    } else {
       console.log("Selecting channel " + channel.name)
       this.connection.selectedChannel = channel.id as ServerObjectId;
     }
   }
 
 
+  protected readonly LogOut = LogOut;
+  protected readonly LogOutIcon = LogOutIcon;
 }

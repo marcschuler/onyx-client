@@ -16,6 +16,7 @@
             }
           </select>
         </p>
+        <app-policy-panel [group]="group" [connection]="connection"></app-policy-panel>
         <div class="text-right">
           <button class="button-line" (click)="updateGroup(group)">Save</button>
           <button class="button-red" (click)="deleteGroup(group)">Delete</button>

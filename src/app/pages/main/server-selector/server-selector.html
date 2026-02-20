@@ -14,7 +14,7 @@
 <div class="flex flex-col justify-center  items-center h-screen max-h-screen">
 
   <div class="p-4">
-    <h1 class="text-5xl font-serif font-bold">Onyx</h1>
+    <h1 class="text-5xl font-serif font-bold">ONYX</h1>
   </div>
 
   <div class="p-6 bg-neutral-800 rounded w-xl">
@@ -83,7 +83,14 @@
     </div>
 
     @if (serverLoaderService.connections.length != 0) {
-      <div class="p-8 border-b-neutral-600 border-b-1"></div>
+      <div class="p-8 border-b-neutral-600 border-b-1">
+        Using Identity
+        <select [(ngModel)]="identity">
+          @for (identity of identityService.identities; track identity.id){
+            <option [value]="identity">{{identity.username}}</option>
+          }
+        </select>
+      </div>
     }
 
     <h4 class="pt-2">Add a new server</h4>

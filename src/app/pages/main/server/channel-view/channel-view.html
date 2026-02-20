@@ -1,42 +1,41 @@
 <div class="h-screen">
-
-
-  <!-- Talk View -->
-  <div #talkView
-       [ngStyle]="{ maxHeight: interfaceService.settings.channelSplitSize.peerView + 'vh',minHeight: interfaceService.settings.channelSplitSize.peerView + 'vh' }">
-    <div #title>
-      <div class="bg-neutral-900 p-4 rounded-br-xl">
-        <h2 class="font-semibold" [class.skeleton]="!details">
-          @if (details) {
-            {{ details.name }}
-          }
-        </h2>
-      </div>
+  <div #title>
+    <div class="bg-neutral-900 p-4 rounded-br-xl">
+      <h2 class="font-semibold" [class.skeleton]="!details" [style.padding-left]="titleOffsetLeft?'40px':'0'">
+        @if (details) {
+          {{ details.name }}
+        }
+      </h2>
     </div>
-    <div #peerGrid class="flex flex-wrap items-stretch h-full items-center justify-center">
-      <!--@if (peerConnectionService.localStream && !(peerConnectionService.peers.length == 0 && !peerConnectionService.sharedStreams[TrackType.Microphone] && !peerConnectionService.sharedStreams[TrackType.Camera] && !peerConnectionService.sharedStreams[TrackType.Screen])) {-->
-      <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
-                     [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
-                     class="p-1"
-                     [localStream]="peerConnectionService.localStream" [connection]="connection"></app-peer-view>
-      @for (peer of peerConnectionService.peers; track peer) {
+  </div>
+  @let showTalkView = peerConnectionService.peers.length > 0 || (peerConnectionService.sharedStreams[TrackType.Microphone] != undefined || peerConnectionService.sharedStreams[TrackType.Camera] != undefined || peerConnectionService.sharedStreams[TrackType.Screen] != undefined);
+  @if (showTalkView) {
+    <!-- Talk View -->
+    <div #talkView
+         [ngStyle]="{ maxHeight: interfaceService.settings.channelSplitSize.peerView + 'vh',minHeight: interfaceService.settings.channelSplitSize.peerView + 'vh' }">
+      <div #peerGrid class="flex flex-wrap items-stretch h-full items-center justify-center">
+        <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
+                       [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
+                       class="p-1"
+                       [localStream]="peerConnectionService.localStream" [connection]="connection"></app-peer-view>
+        @for (peer of peerConnectionService.peers; track peer) {
           <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
                          [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
                          class="p-1"
                          [connection]="connection" [peer]="peer"></app-peer-view>
-      }
+        }
+      </div>
     </div>
-  </div>
 
-  <div
-    class="h-1 min-w-full cursor-row-resize bg-neutral-700 hover:bg-neutral-600"
-    (mousedown)="startResizing($event)"
-  ></div>
-
+    <div
+      class="h-1 min-w-full cursor-row-resize bg-neutral-700 hover:bg-neutral-600"
+      (mousedown)="startResizing($event)"
+    ></div>
+  }
 
   <!-- Messages view -->
   <div
-    [ngStyle]="{ height: 'calc(' + (100 - interfaceService.settings.channelSplitSize.peerView) + 'vh - 4px)' }">
+    [ngStyle]="{ height: 'calc(' + (100 - (showTalkView?interfaceService.settings.channelSplitSize.peerView:0)) + 'vh - 4px - '+titleHeight+'px)' }">
 
     <app-message-view [connection]="connection" [channelId]="channelId"></app-message-view>
   </div>

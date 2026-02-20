@@ -14,6 +14,7 @@ export interface GroupDTO {
     description?: string;
     icon?: any;
     parentId?: string;
+    permissions?: { [key: string]: number; };
     id: string;
 }
 

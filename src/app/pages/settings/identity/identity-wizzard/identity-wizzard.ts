@@ -48,6 +48,7 @@ export class IdentityWizzard {
       .then(identity => {
         this.identityWaiting = false;
         this.identityCreated.emit(identity);
+        this.createKey();
       })
   }
 

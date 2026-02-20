@@ -10,6 +10,7 @@ import {
   NotificationService
 } from '../notification.service';
 import {compareLists} from '../Util';
+import {getMediaTracker, TrackType} from './MediaTracker';
 
 @Injectable({
   providedIn: 'root'
@@ -273,21 +274,11 @@ export class PeerConnectionService {
       });
       return;
     }
-    switch (type) {
-      case TrackType.Microphone:
-        streamPromise = navigator.mediaDevices.getUserMedia({audio: true})
-        break;
-      case TrackType.Camera:
-        streamPromise = navigator.mediaDevices.getUserMedia({video: true})
-        break;
-      case TrackType.Screen:
-        streamPromise = navigator.mediaDevices.getDisplayMedia({video: true})
-        break;
-    }
+
 
     try {
       console.log("peer: Waiting for answer for track")
-      const stream = await streamPromise;
+      const stream = await getMediaTracker().openTrack(type);
       this.sharedStreams[type] = stream;
       console.log("peer: activated track, adding to locals and " + this.peers.length + " peers")
       stream.getTracks().forEach(track => {
@@ -298,7 +289,6 @@ export class PeerConnectionService {
           this.removeTrack(track, stream);
         };
       })
-      //this.updateTracksForPeers();
     } catch (e: any) {
       console.error("Could not open device", e);
       this.toastService.create({
@@ -452,9 +442,3 @@ export class PeerConnectionService {
 
 }
 
-// The three track types
-export enum TrackType {
-  Microphone = "Microphone",
-  Camera = "Camera",
-  Screen = "Screen"
-}

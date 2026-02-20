@@ -14,7 +14,7 @@ import {
   UserIcon
 } from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
-import {IdentityService} from '../../../services/identity-service';
+import {Identity, IdentityService} from '../../../services/identity-service';
 import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_EDIT, ButtonType, Popup} from '../../../components/ui/popup/popup';
 import {Settings} from '../../settings/settings';
 import {KeyVisualizer} from '../../../components/ui/key-visualizer/key-visualizer';
@@ -43,6 +43,7 @@ export class ServerSelector implements OnInit, OnDestroy {
     state: ServerInfoState.CONNECTING
   }
 
+  protected identity: Identity;
 
   showSettings: boolean = false;
 
@@ -63,6 +64,7 @@ export class ServerSelector implements OnInit, OnDestroy {
               private webSocketService: WebSocketService,
               private restService: RestService,
               protected identityService: IdentityService) {
+    this.identity = identityService.defaultIdentity();
 
   }
 
@@ -119,7 +121,7 @@ export class ServerSelector implements OnInit, OnDestroy {
 
   connect(server: ServerConnection) {
     this.selectedServer = server;
-    this.webSocketService.connect(server, this.identityService.defaultIdentity())
+    this.webSocketService.connect(server, this.identity)
       .then(c => this.selectedServer = undefined)
       .catch(e => this.selectedServer = undefined);
   }

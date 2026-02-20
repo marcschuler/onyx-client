@@ -6,25 +6,18 @@ import {getChannelFromId} from '../../../services/Util';
 import {ToastService, ToastType} from '../../../services/toast-service';
 import {MessageHandler, WebSocketService} from '../../../services/websocket/web-socket-service';
 import {IncomeMessageEvent} from '../../../../api/webrtc-server';
-import {AsyncPipe, DatePipe, NgClass} from '@angular/common';
 import {MessageDTO} from '../../../../api/webrtc-server/model/messageDTO';
-import {MarkdownPipe} from '../../../pipes/markdown-pipe';
-import {Message} from 'postcss';
 import {NOTIFICATION_MESSAGE_NEW, NotificationService} from '../../../services/notification.service';
 import {RestService} from '../../../services/rest-service';
-import {UserDatePipe} from '../../../pipes/user-date-pipe';
-import {IdenticonPipe} from '../../../pipes/identicon-pipe';
+import {Message} from './message/message';
+import {MessageService} from '../../../services/message-service';
 
 @Component({
   selector: 'app-message-view',
   imports: [
     FormsModule,
     LucideAngularModule,
-    MarkdownPipe,
-    UserDatePipe,
-    AsyncPipe,
-    IdenticonPipe,
-    NgClass
+    Message
   ],
   templateUrl: './message-view.html',
   styleUrl: './message-view.css'
@@ -55,6 +48,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
   constructor(private toastService: ToastService,
               private webSocketService: WebSocketService,
               private restService: RestService,
+              private messageService: MessageService,
               private notificationService: NotificationService) {
 
   }
@@ -119,16 +113,17 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
     const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
     if (!channel) {
       this.toastService.create({
-        title: 'Internal Client Error',
+        title: 'Client Error',
         message: 'Could not find the chat you are trying to send this message',
         type: ToastType.Error,
         duration: 5000
       });
       return;
     }
+    const message = this.messageService.convertLinksToMarkdownLinks(this.message);
     console.log("sending message to channel/chat " + channel.id + "/" + channel.chatId);
     this.connection.rest.chatController.message(channel.chatId, {
-      markdown: this.message
+      markdown: message
     }).subscribe(value => {
       this.message = "";
       console.log("Message send");

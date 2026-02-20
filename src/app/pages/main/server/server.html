@@ -52,7 +52,7 @@
 
   <main class="flex-1">
     @if (connection.selectedChannel) {
-      <app-channel-view [connection]="connection" [channelId]="connection.selectedChannel"></app-channel-view>
+      <app-channel-view [connection]="connection" [channelId]="connection.selectedChannel" [titleOffsetLeft]="minimized"></app-channel-view>
     } @else {
       <app-server-overview [connection]="connection"></app-server-overview>
     }

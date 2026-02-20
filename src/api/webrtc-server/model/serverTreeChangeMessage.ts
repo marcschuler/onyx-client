@@ -8,13 +8,16 @@
  * Do not edit the class manually.
  */
 import { ServerDTO } from './serverDTO';
-import { SectionDTO } from './sectionDTO';
+import { SectionExtendedDTO } from './sectionExtendedDTO';
+import { UserSimpleDTO } from './userSimpleDTO';
 import { MessageBody } from './messageBody';
 
 
 export interface ServerTreeChangeMessage extends MessageBody { 
     server: ServerDTO;
-    sections: Array<SectionDTO>;
+    sections: Array<SectionExtendedDTO>;
+    users: Array<UserSimpleDTO>;
+    usersNotInChannel: Array<UserSimpleDTO>;
     readonly type: ServerTreeChangeMessage.TypeEnum;
 }
 export namespace ServerTreeChangeMessage {

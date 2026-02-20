@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 import {WebSocketService} from '../../../../services/websocket/web-socket-service';
-import {PeerConnectionService, TrackType} from '../../../../services/peer/peer-connection-service';
+import {PeerConnectionService} from '../../../../services/peer/peer-connection-service';
 import {PeerView} from '../../../../components/server/peer-view/peer-view';
 import {InterfaceService} from '../../../../services/interface-service';
 import {FormsModule} from '@angular/forms';
@@ -19,6 +19,7 @@ import {ServerObjectId, WebSocketServerConnection} from '../../../../services/we
 import {ChannelDetailRequest, ChannelDetailResponse} from '../../../../../api/webrtc-server';
 import {ChannelDTO} from '../../../../../api/webrtc-server/model/channelDTO';
 import {NgClass, NgStyle} from '@angular/common';
+import {TrackType} from '../../../../services/peer/MediaTracker';
 
 @Component({
   selector: 'app-channel-view',
@@ -35,6 +36,7 @@ export class ChannelView implements AfterViewInit, OnChanges {
 
   @Input() connection!: WebSocketServerConnection;
   @Input() channelId!: ServerObjectId;
+  @Input() titleOffsetLeft!: boolean;
 
   @ViewChild('title') titleContainer!: ElementRef;
   @ViewChild('peerGrid') peerGridContainer!: ElementRef;
@@ -43,6 +45,7 @@ export class ChannelView implements AfterViewInit, OnChanges {
 
   details: ChannelDTO | undefined;
 
+  titleHeight: number = 0; //in px
   gridCols = 2;
   gridRows = 2;
   gridColHeight = 128;
@@ -128,15 +131,17 @@ export class ChannelView implements AfterViewInit, OnChanges {
 
 
   updateGridSize() {
+    const titleHeight =
+      this.titleContainer.nativeElement.getBoundingClientRect().height;
+    this.titleHeight =titleHeight;
+
+    if (!this.peerGridContainer)
+      return;
     const containerWidth = this.peerGridContainer.nativeElement.clientWidth;
-    // const containerHeight = this.peerGridContainer.nativeElement.clientHeight;
-    // const containerHeight = this.talkViewContainer.nativeElement.clientHeight - this.titleContainer.nativeElement.clientHeight;
     const talkViewHeight =
       this.talkViewContainer.nativeElement.getBoundingClientRect().height;
 
-    const titleHeight =
-      this.titleContainer.nativeElement.getBoundingClientRect().height;
-    const containerHeight = talkViewHeight - titleHeight;
+    const containerHeight = talkViewHeight;
 
 
     const ratio = containerWidth / containerHeight;
@@ -170,4 +175,6 @@ export class ChannelView implements AfterViewInit, OnChanges {
     this.gridColWidth = colHeight / 9 * 16;
     //console.log("using " + cols + "x" + rows + " for height " + colHeight + "/" + containerHeight)
   }
+
+  protected readonly TrackType = TrackType;
 }

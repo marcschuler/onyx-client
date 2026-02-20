@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
 import {IdentityService} from '../../../services/identity-service';
 import {Identity as IdentityDTO} from '../../../services/identity-service';
+import {IdentityWizzard} from './identity-wizzard/identity-wizzard';
 
 @Component({
   selector: 'app-identity',
@@ -16,7 +17,8 @@ import {Identity as IdentityDTO} from '../../../services/identity-service';
     Popup,
     ReactiveFormsModule,
     RouterLink,
-    FormsModule
+    FormsModule,
+    IdentityWizzard
   ],
   templateUrl: './identity.html',
   styleUrl: './identity.css'

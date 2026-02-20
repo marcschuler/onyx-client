@@ -7,13 +7,13 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserSimpleDTO } from './userSimpleDTO';
 
 
-export interface GroupWriteDTO { 
+export interface ChannelExtendedDTO { 
     name: string;
-    description?: string;
-    icon?: any;
-    parentId?: string;
-    permissions?: { [key: string]: number; };
+    id: string;
+    chatId: string;
+    users: Array<UserSimpleDTO>;
 }
 

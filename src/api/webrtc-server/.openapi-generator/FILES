@@ -24,6 +24,7 @@ model/channelCreateDTO.ts
 model/channelDTO.ts
 model/channelDetailRequest.ts
 model/channelDetailResponse.ts
+model/channelExtendedDTO.ts
 model/channelWriteDTO.ts
 model/clientChannelChangeRequest.ts
 model/clientChannelJoinMessage.ts
@@ -56,6 +57,7 @@ model/peerOfferForward.ts
 model/policyDTO.ts
 model/policyWriteDTO.ts
 model/sectionDTO.ts
+model/sectionExtendedDTO.ts
 model/sectionWriteDTO.ts
 model/serverDTO.ts
 model/serverTreeChangeMessage.ts

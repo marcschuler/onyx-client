@@ -7,13 +7,12 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ChannelExtendedDTO } from './channelExtendedDTO';
 
 
-export interface GroupWriteDTO { 
+export interface SectionExtendedDTO { 
     name: string;
-    description?: string;
-    icon?: any;
-    parentId?: string;
-    permissions?: { [key: string]: number; };
+    id: string;
+    channels: Array<ChannelExtendedDTO>;
 }
 

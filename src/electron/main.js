@@ -25,6 +25,10 @@ function createWindow() {
   mainWindow.loadURL(startUrl);
 }
 
+// Fix for Linux Wayland Issues
+app.commandLine.appendSwitch('enable-features', 'WebRTCPipeWireCapturer');
+app.commandLine.appendSwitch('enable-webrtc-pipewire-capturer');
+
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {

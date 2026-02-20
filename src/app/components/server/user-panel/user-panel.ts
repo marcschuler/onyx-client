@@ -11,7 +11,8 @@ import {
 import {NgClass} from '@angular/common';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {ConnectionState, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {PeerConnectionService, TrackType} from '../../../services/peer/peer-connection-service';
+import {PeerConnectionService} from '../../../services/peer/peer-connection-service';
+import {TrackType} from '../../../services/peer/MediaTracker';
 
 @Component({
   selector: 'app-user-panel',

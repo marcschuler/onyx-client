@@ -6,7 +6,7 @@ import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDragPlaceholder, CdkDropList} fr
 import {SectionDTO} from '../../../../../../api/webrtc-server/model/sectionDTO';
 import {CircleMinus, GripVertical, LucideAngularModule, Pencil} from 'lucide-angular';
 import {Button, BUTTON_CANCEL, BUTTON_DELETE, Popup} from '../../../../../components/ui/popup/popup';
-import {ChannelDTO, ServerTreeChangeMessage} from '../../../../../../api/webrtc-server';
+import {ChannelDTO, SectionExtendedDTO, ServerTreeChangeMessage} from '../../../../../../api/webrtc-server';
 import {NameDescriptionPopup} from './name-description-popup/name-description-popup';
 
 @Component({
@@ -53,7 +53,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
     this.dropListSections = this.connection.data!.sections.map(s => 'droplist-section-' + s.id);
   }
 
-  protected dropChannel(event: CdkDragDrop<SectionDTO, any>) {
+  protected dropChannel(event: CdkDragDrop<SectionExtendedDTO, any>) {
     const channel = (event.previousContainer.data as SectionDTO).channels[event.previousIndex];
     const newOrder = event.currentIndex;
     console.log("moved channel " + channel.name + " (" + channel.id + ") to order " + newOrder + " (from " + event.previousIndex + ")")
