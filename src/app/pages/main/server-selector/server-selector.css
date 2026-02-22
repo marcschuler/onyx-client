@@ -1,8 +1,0 @@
-img:hover {
-  animation: rotate6 1.2s steps(6, end) infinite;
-}
-
-@keyframes rotate6 {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
