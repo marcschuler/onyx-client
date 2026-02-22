@@ -1,32 +1,39 @@
-@if (groups) {
-  @for (group of groups; track group.id) {
-    <div class="bg-neutral-800 m-2 rounded">
-      <input class="text-h3 input-invisible" [(ngModel)]="group.name">
-      <textarea class="input-invisible" [(ngModel)]="group.description"></textarea>
+<div class="flex flex-2">
+  <div class="w-48">
+    @for (group of groups; track group.id) {
+      <button class="min-w-48 button-dark button-no-round" [class.button-dark]="selectedGroup!=group" (click)="selectedGroup = group">{{ group.name }}</button><br>
+    }
+    <div class="text-right m-2">
+      <button class="button-ghost min-w-48" (click)="addGroup()">+
+        <lucide-icon [name]="IdCardLanyard" class="inline"></lucide-icon>
+      </button>
+    </div>
+  </div>
 
-      <div class="grid grid-cols-2">
+  @if (selectedGroup) {
+    <div class="px-2 w-full">
+      <input class="text-h3 input-invisible" [(ngModel)]="selectedGroup.name">
+      <textarea class="input-invisible" [(ngModel)]="selectedGroup.description"></textarea>
+
+      <div class="">
         <p class="ml-2">
           Inherits from
-          <select class="ml-2" [(ngModel)]="group.parentId">
+          <select class="ml-2" [(ngModel)]="selectedGroup.parentId">
             <option [value]="undefined"></option>
             @for (g of groups; track g.id) {
-              @if (g != group) {
+              @if (g != selectedGroup) {
                 <option [value]="g.id">{{ g.name }}</option>
               }
             }
           </select>
         </p>
-        <app-policy-panel [group]="group" [connection]="connection"></app-policy-panel>
-        <div class="text-right">
-          <button class="button-line" (click)="updateGroup(group)">Save</button>
-          <button class="button-red" (click)="deleteGroup(group)">Delete</button>
+        <br>
+        <app-policy-panel [group]="selectedGroup" [groups]="groups!" [connection]="connection"></app-policy-panel>
+        <div class="text-right pt-4">
+          <button class="button-line" (click)="updateGroup(selectedGroup)">Save</button>
+          <button class="button-red" (click)="deleteGroup(selectedGroup)">Delete</button>
         </div>
       </div>
     </div>
   }
-  <div class="text-right m-2">
-    <button class="button-ghost" (click)="addGroup()">+
-      <lucide-icon [name]="IdCardLanyard" class="inline"></lucide-icon>
-    </button>
-  </div>
-}
+</div>

@@ -1,2 +1,21 @@
-<p>policy-panel works!</p>
-{{group.permissions}}
+<h2>Permissions</h2>
+<div>
+  @for (header of permissionList; track header) {
+    <h3 class="pt-4">{{ header.name }}</h3>
+    @for (item of header.items; track item) {
+      <div class="grid grid-cols-5 gap-2 pt-2 hover:bg-neutral-800 rounded">
+        <p class="col-span-1">
+          {{ item.name }}
+          <span class="text-neutral-500">
+           {{ item.type }}
+          </span>
+        </p>
+        <p class="col-span-3">
+          {{ item.description }}
+        </p>
+        <input class="w-full" type="number" placeholder="0 (default)" [(ngModel)]="group.permissions[item.type]">
+      </div>
+    }
+  }
+
+</div>

@@ -16,7 +16,6 @@ import {IdentityWizzard} from './identity-wizzard/identity-wizzard';
     IdenticonPipe,
     Popup,
     ReactiveFormsModule,
-    RouterLink,
     FormsModule,
     IdentityWizzard
   ],

@@ -9,7 +9,6 @@ import {
   NOTIFICATION_USER_LEFT_CHANNEL,
   NotificationService
 } from '../notification.service';
-import {compareLists} from '../Util';
 import {getMediaTracker, TrackType} from './MediaTracker';
 
 @Injectable({
@@ -264,7 +263,6 @@ export class PeerConnectionService {
    */
   public async startTrack(type: TrackType) {
     console.log("peer: requesting track " + type)
-    let streamPromise: Promise<MediaStream>;
     if (this.sharedStreams[type]) {
       console.warn("User tried to start the track " + type + " although it's already started")
       this.toastService.create({
@@ -279,6 +277,13 @@ export class PeerConnectionService {
     try {
       console.log("peer: Waiting for answer for track")
       const stream = await getMediaTracker().openTrack(type);
+      //We cannot stream camera and screen at the same time
+      if (type==TrackType.Camera && this.sharedStreams["Screen"]){
+        await this.stopTrack(TrackType.Screen)
+      }else if (type==TrackType.Screen && this.sharedStreams["Camera"]){
+        await this.stopTrack(TrackType.Camera)
+      }
+
       this.sharedStreams[type] = stream;
       console.log("peer: activated track, adding to locals and " + this.peers.length + " peers")
       stream.getTracks().forEach(track => {

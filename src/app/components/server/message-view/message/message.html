@@ -19,7 +19,7 @@
       }
 
       @for (content of message.content; track content) {
-        <p [innerHTML]=" content.text | markdown"></p>
+        <p [innerHTML]=" content.text | markdown" class="break-all"></p>
       }
       <p class="pl-8 text-sm text-right text-neutral-700">{{ message.timestamp | userDate }}</p>
     </div>

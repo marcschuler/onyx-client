@@ -14,6 +14,6 @@ export interface GroupWriteDTO {
     description?: string;
     icon?: any;
     parentId?: string;
-    permissions?: { [key: string]: number; };
+    permissions: { [key: string]: number; };
 }
 

@@ -24,4 +24,20 @@ export function compareLists<T>(left:T[], right:T[]) {
   };
 }
 
+
+/**
+ * Finds a free name that is either "baseName" or "baseName 1", "baseName 2", etc...
+ * @param baseName the base nanme
+ * @param namesTaken a list of taken names
+ */
+export function findFreeName(baseName: string, namesTaken: string[]){
+  let name = baseName;
+  let index = 1;
+  while(namesTaken.filter(n => n == name).length>0){
+    name = baseName + " " + index;
+    index++;
+  }
+  return name;
+}
+
 export const APP_VERSION = version;

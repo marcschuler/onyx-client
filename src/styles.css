@@ -16,7 +16,7 @@ label {
 }
 
 input {
-  @apply bg-neutral-800 border border-neutral-900 text-neutral-200 focus:text-neutral-100 text-sm rounded-lg focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
+  @apply bg-neutral-900 border border-neutral-900 text-neutral-200 focus:text-neutral-100 text-sm rounded-lg focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
 }
 
 input::placeholder {
@@ -28,7 +28,7 @@ input::placeholder {
 }
 
 textarea {
-  @apply bg-neutral-800 border border-neutral-900 text-neutral-100 text-sm rounded-lg  focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
+  @apply bg-neutral-900 border border-neutral-900 text-neutral-100 text-sm rounded-lg  focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
 }
 
 
@@ -61,6 +61,10 @@ button {
 
 .button-ghost {
   @apply border-2 border-dotted border-neutral-400 bg-neutral-800/25
+}
+
+.button-no-round{
+  @apply rounded-none
 }
 
 .text-green-bold {

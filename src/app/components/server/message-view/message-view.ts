@@ -86,7 +86,10 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
     for (const message of messages) {
       this.messages.push(message);
     }
-    //TODO remove duplicates
+    //remove duplicates, e.g. from duplicate calls to updateMessages
+   this.messages = this.messages.filter(
+      (item, index, self) => index === self.findIndex(i => i.id === item.id)
+    );
 
     // sort the messages by date in case they are in wrong order
     this.messages.sort((a, b) => {

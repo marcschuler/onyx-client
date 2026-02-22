@@ -35,6 +35,10 @@ export class Welcome {
   warnDuplicate: boolean = false;
 
   communityServer: { name: string, description: string, url: string }[] = [{
+    name: "karlthebee ONYX Server",
+    description: "Developer Server",
+    url: "https://onyx.karlthebee.de"
+  },{
     name: "Local DEV Server",
     description: "The local test server",
     url: "http://localhost:8080"

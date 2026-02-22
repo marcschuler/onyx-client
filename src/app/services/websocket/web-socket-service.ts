@@ -59,7 +59,7 @@ export class WebSocketService {
     return new Promise((resolve, reject) => {
       var url = serverConnection.url;
       url = url.replace("http://", "ws://")
-        .replace("https://", "ws://");
+        .replace("https://", "wss://");
       url += "/websocket";
 
       console.log("ws: Connecting to " + url)

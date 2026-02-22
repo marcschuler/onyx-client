@@ -6,6 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {IdCardLanyard, LucideAngularModule} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../../../services/toast-service';
 import {PolicyPanel} from './policy-panel/policy-panel';
+import {findFreeName} from '../../../../../services/Util';
 
 @Component({
   selector: 'app-group-administration-panel',
@@ -23,6 +24,8 @@ export class GroupAdministrationPanel implements OnInit {
 
   groups: GroupDTO[] | undefined;
 
+  selectedGroup: GroupDTO | undefined;
+
   constructor(private restService: RestService,
               private toastService: ToastService) {
   }
@@ -31,6 +34,8 @@ export class GroupAdministrationPanel implements OnInit {
     this.connection.rest.groupController.all()
       .subscribe(value => {
         this.groups = value;
+        if (!this.selectedGroup && value.length > 0)
+          this.selectedGroup = value[0];
       }, error => this.restService.handleError(error));
   }
 
@@ -44,6 +49,7 @@ export class GroupAdministrationPanel implements OnInit {
         type: ToastType.Success,
         title: 'Group ' + group.name + ' deleted'
       })
+      this.groups?.splice(this.groups?.indexOf(group),1)
     }, error => this.restService.handleError(error));
   }
 
@@ -56,15 +62,16 @@ export class GroupAdministrationPanel implements OnInit {
     }, error => this.restService.handleError(error))
   }
 
-  protected readonly navigator = navigator;
   protected readonly IdCardLanyard = IdCardLanyard;
 
   protected addGroup() {
     this.connection.rest.groupController.create2({
-      name: "Group",
+      name: findFreeName("Group", (this.groups || []).map(g => g.name)),
+      permissions: {},
       description: ""
     }).subscribe(value => {
       this.groups?.push(value);
+      this.selectedGroup = value;
     }, error => this.restService.handleError(error));
   }
 }
