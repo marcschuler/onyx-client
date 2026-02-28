@@ -40,4 +40,8 @@ export function findFreeName(baseName: string, namesTaken: string[]){
   return name;
 }
 
+export function isElectron(){
+  return navigator.userAgent.toLowerCase().includes('electron');
+}
+
 export const APP_VERSION = version;

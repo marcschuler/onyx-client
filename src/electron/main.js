@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, shell} = require('electron');
 const path = require('path');
 
 let mainWindow;
@@ -21,6 +21,18 @@ function createWindow() {
       `file://${path.join(__dirname, '../../dist/webrtc-client/browser/index.html')}`
     )
   ;
+
+    // Intercept opening links in the electron window and open in an external browser
+    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+      shell.openExternal(url);
+      return { action: 'deny' }; // prevent Electron from opening a new window
+    });
+    mainWindow.webContents.on('will-navigate', (event, url) => {
+      if (url !== mainWindow.webContents.getURL()) {
+        event.preventDefault();
+        shell.openExternal(url);
+      }
+    });
 
   mainWindow.loadURL(startUrl);
 }

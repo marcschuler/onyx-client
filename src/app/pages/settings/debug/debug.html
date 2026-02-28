@@ -2,6 +2,9 @@
 <p>
   Version: {{ APP_VERSION }}
 </p>
+<p>
+  Plattform: {{ isElectron() ? 'Electron' : 'Web' }}
+</p>
 <h3>Identities</h3>
 <p class="pb-8">
   @for (identity of identityService.identities; track identity) {

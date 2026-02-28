@@ -37,8 +37,16 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
 
 
   incomeMessageHandler: MessageHandler<IncomeMessageEvent> = (event: IncomeMessageEvent, connection) => {
-    //TODO check if it is THIS chat. Could be depending on the server response but might not be
     console.log("received new message " + JSON.stringify(event));
+    if (!this.connection.selectedChannel){
+      console.log("Ignoring message, no channel selected");
+      return;
+    }
+    const currentChatId = getChannelFromId(this.connection.selectedChannel,connection.data!.sections)?.chatId;
+    if (currentChatId != event.chatId){
+      console.log("Ignoring message, other chat selected (" + currentChatId + "!=" + event.chatId + ")");
+      return;
+    }
     this.addMessageToList([event.message]);
     if (event.message.user.id !== connection.identity.id)
       this.notificationService.notify(NOTIFICATION_MESSAGE_NEW)
