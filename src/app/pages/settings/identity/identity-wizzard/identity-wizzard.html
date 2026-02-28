@@ -11,7 +11,7 @@
   <h4>Your Key</h4>
   @if (key) {
     <div class="bg-neutral-800 rounded mx-4">
-      <app-key-visualizer class="" [keyId]="key | keyID | async "></app-key-visualizer>
+      <app-key-visualizer [keyId]="key | keyID | async "></app-key-visualizer>
       <button class="button-dark min-w-full !rounded-none"
               (click)="createKey()">
         <lucide-icon [name]="RotateCcw" class="w-4 h-4 m-auto"></lucide-icon>

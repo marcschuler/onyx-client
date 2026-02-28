@@ -13,7 +13,7 @@ import { GroupDTO } from './groupDTO';
 
 export interface UserExtendedDTO { 
     id: string;
-    publicKey: any | null;
+    publicKey: { [key: string]: any; };
     username: string;
     avatar?: FileDTO;
     groups: Set<GroupDTO>;

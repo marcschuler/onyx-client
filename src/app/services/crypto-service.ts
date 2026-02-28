@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Identity} from './identity-service';
 import {KeyId} from './websocket/WebSocketServerConnection';
+import * as jose from 'jose'
+import {calculateJwkThumbprint} from 'jose';
 
 @Injectable({
   providedIn: 'root'
@@ -9,27 +11,21 @@ export class CryptoService {
 
   async sign<T>(content: T, identity: Identity): Promise<SignedContent> {
     const jsonString = this.toJson(content);
-    const encoded = new TextEncoder().encode(jsonString).buffer;
-    const signature = await window.crypto.subtle.sign("Ed25519",
-      identity.keyPair.privateKey,
-      encoded);
-    const signatureBase64 = this.arrayBufferToBase64(signature);
+    const encoded = new TextEncoder().encode(jsonString);
+    const jws = await new jose.CompactSign(encoded).setProtectedHeader({alg: 'EdDSA'}).sign(identity.keyPair.privateKey);
+
     return {
-      content: jsonString,
-      contentSignature: signatureBase64
+      jws: jws
     }
   }
 
   async verify<T>(signedContent: SignedContent, publicKey: CryptoKey) {
-    const encodedContent = new TextEncoder().encode(signedContent.content).buffer;
-    const encodedSignature = this.base64ToArrayBuffer(signedContent.contentSignature);
-    return await window.crypto.subtle.verify("Ed25519", publicKey, encodedSignature, encodedContent);
+    const { payload, protectedHeader } = await jose.compactVerify(signedContent.jws, publicKey);
+    return payload;
   }
 
   public async generateKeyId(publicKey:CryptoKey):Promise<KeyId> {
-    const spki = await crypto.subtle.exportKey('spki', publicKey);
-    const digest = await crypto.subtle.digest('SHA-256', spki);
-    return btoa(String.fromCharCode(...new Uint8Array(digest))) as KeyId;
+    return await calculateJwkThumbprint(publicKey,"sha256") as KeyId;
   }
 
 
@@ -71,6 +67,5 @@ export class CryptoService {
  * The signature is the signature of that string representation.
  */
 export interface SignedContent{
-  content: string;
-  contentSignature: string;
+  jws: string;
 }

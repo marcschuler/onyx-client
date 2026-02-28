@@ -24,11 +24,12 @@ export class KeyVisualizer implements OnInit, OnChanges {
     this.base64ToBitString(this.keyId);
   }
 
-  public base64ToBitString(base64: string | undefined|null) {
-    if (!base64) {
+  public base64ToBitString(keyId: string | undefined|null) {
+    if (!keyId) {
       this.bits = undefined
       return;
     }
+    var base64 = btoa(keyId);
     const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
     var bits = [...bytes]
       .map(b => b.toString(2).padStart(8, '0'))

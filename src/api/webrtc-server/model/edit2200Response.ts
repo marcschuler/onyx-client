@@ -8,12 +8,12 @@
  * Do not edit the class manually.
  */
 import { PolicyDTO } from './policyDTO';
-import { SimplePolicyDTO } from './simplePolicyDTO';
+import { RolePolicyDTO } from './rolePolicyDTO';
 
 
 /**
  * @type Edit2200Response
  * @export
  */
-export type Edit2200Response = PolicyDTO | SimplePolicyDTO;
+export type Edit2200Response = PolicyDTO | RolePolicyDTO;
 

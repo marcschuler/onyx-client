@@ -14,6 +14,6 @@ export interface ServerDTO {
     name: string;
     description: MarkdownMessageContentDTO;
     id: string;
-    publicKey: any | null;
+    publicKey: { [key: string]: any; };
 }
 

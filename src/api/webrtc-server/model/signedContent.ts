@@ -10,7 +10,6 @@
 
 
 export interface SignedContent { 
-    content: string;
-    contentSignature: string;
+    jws: string;
 }
 

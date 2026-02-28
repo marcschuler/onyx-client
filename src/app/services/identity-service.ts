@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {CryptoService} from './crypto-service';
 import {ToastService, ToastType} from './toast-service';
 import {KeyId} from './websocket/WebSocketServerConnection';
+import {CryptoKey, generateKeyPair, GenerateKeyPairResult, importJWK} from 'jose';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class IdentityService {
     })
   }
 
-  async create(username: string, keyPair: CryptoKeyPair | undefined = undefined): Promise<Identity> {
+  async create(username: string, keyPair: GenerateKeyPairResult | undefined = undefined): Promise<Identity> {
     if (!keyPair)
       keyPair = await this.generateKey();
     const identity: Identity = {
@@ -39,11 +40,10 @@ export class IdentityService {
   }
 
   public async generateKey() {
-    return await crypto.subtle.generateKey(
-      "Ed25519",
-      true,
-      ["sign", "verify"]
-    );
+   return await generateKeyPair('EdDSA', {
+      crv: 'Ed25519',
+      extractable: true
+    });
   }
 
   private async loadIdentities() {
@@ -54,8 +54,8 @@ export class IdentityService {
     const stored = (JSON.parse(storedIdentities) as StoredIdentity[]);
     for (const i of stored) {
       try {
-        const publicKey = await crypto.subtle.importKey("jwk", i.publicKey, "Ed25519", true, ["verify"]);
-        const privateKey = await crypto.subtle.importKey("jwk", i.privateKey, "Ed25519", true, ["sign"]);
+        const publicKey = await importJWK(i.publicKey, "Ed25519") as CryptoKey;
+        const privateKey = await importJWK(i.privateKey, "Ed25519") as CryptoKey;
         const identity = {
           id: await this.cryptoService.generateKeyId(publicKey),
           username: i.username,
@@ -113,7 +113,7 @@ export class IdentityService {
 export interface Identity {
   id: KeyId;
   username: string;
-  keyPair: CryptoKeyPair;
+  keyPair: { privateKey: CryptoKey, publicKey: CryptoKey };
   created: Date;
 }
 
