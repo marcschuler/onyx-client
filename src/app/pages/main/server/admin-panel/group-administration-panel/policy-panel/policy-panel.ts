@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {GroupDTO} from '../../../../../../../api/webrtc-server';
 import {WebSocketServerConnection} from '../../../../../../services/websocket/WebSocketServerConnection';
 import {FormsModule} from '@angular/forms';
+import {PermissionListHeader, PolicyService} from '../../../../../../services/policy-service';
 
 @Component({
   selector: 'app-policy-panel',
@@ -16,22 +17,10 @@ export class PolicyPanel {
   @Input() groups!: GroupDTO[];
   @Input() connection!: WebSocketServerConnection;
 
-  permissionList: PermissionListHeader[] = [
-    {
-      name: "Channel",
-      items: [{
-        name: "General",
-        type: PermissionType.CHANNEL,
-        description: "General Channel permission"
-      }, {
-        name: "Join",
-        type: PermissionType.CHANNEL_JOIN,
-        description: "Joining a channel",
-      }]
-    }
-  ]
+  permissionList: PermissionListHeader[];
 
-  constructor() {
+  constructor(private policyService: PolicyService) {
+    this.permissionList = policyService.buildPermissionList();
   }
 }
 
@@ -47,15 +36,3 @@ export enum PermissionType {
 }
 
 
-export interface PermissionListHeader {
-  name: string;
-  items: PermissionListItem[];
-}
-
-export interface PermissionListItem {
-  name: string;
-  type: PermissionType;
-  description: string;
-  defaultValue?: string;
-  defaultValueReason?: string;
-}

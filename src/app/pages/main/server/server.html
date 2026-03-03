@@ -41,7 +41,11 @@
            [ngStyle]="{ width: interfaceService.settings.sidebarWidth + 'px' }">
       <div class="flex flex-col h-screen">
         <app-channel-tree class="flex-1 p-2 overflow-y-auto" [connection]="connection"></app-channel-tree>
-        <app-user-panel [connection]="connection"></app-user-panel>
+       <div class="flex justify-center ">
+         <div class="w-64">
+           <app-user-panel [connection]="connection"></app-user-panel>
+         </div>
+       </div>
       </div>
     </aside>
     <div

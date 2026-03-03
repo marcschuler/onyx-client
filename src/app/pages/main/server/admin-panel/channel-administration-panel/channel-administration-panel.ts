@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import {RestService} from '../../../../../services/rest-service';
 import {ToastService, ToastType} from '../../../../../services/toast-service';
-import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDragPlaceholder, CdkDropList} from '@angular/cdk/drag-drop';
+import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
 import {SectionDTO} from '../../../../../../api/webrtc-server/model/sectionDTO';
 import {CircleMinus, GripVertical, LucideAngularModule, Pencil} from 'lucide-angular';
 import {Button, BUTTON_CANCEL, BUTTON_DELETE, Popup} from '../../../../../components/ui/popup/popup';

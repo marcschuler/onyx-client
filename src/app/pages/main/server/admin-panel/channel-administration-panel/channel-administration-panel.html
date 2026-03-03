@@ -5,11 +5,11 @@
         <h3 class="p-2 relative">
           <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
           {{ section.name }}
-          <div class="absolute right-2 top-2">
-            <button class="!p-0  button-dark" (click)="sectionToEdit=section">
+          <div class="absolute right-3 top-2">
+            <button class="!p-1  button-dark" (click)="sectionToEdit=section">
               <lucide-icon [name]="Pencil"></lucide-icon>
             </button>
-            <button class="!p-0 button-hover-red button-dark" (click)="sectionToDelete=section">
+            <button class="!p-1 button-hover-red button-dark" (click)="sectionToDelete=section">
               <lucide-icon [name]="CircleMinus"></lucide-icon>
             </button>
           </div>
@@ -22,10 +22,10 @@
               <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
               {{ channel.name }}
               <div class="absolute right-2 top-2">
-                <button class="!p-0  " (click)="channelToEdit=channel">
+                <button class="!p-1" (click)="channelToEdit=channel">
                   <lucide-icon [name]="Pencil"></lucide-icon>
                 </button>
-                <button class="!p-0 button-hover-red " (click)="channelToDelete=channel">
+                <button class="!p-1 button-hover-red " (click)="channelToDelete=channel">
                   <lucide-icon [name]="CircleMinus"></lucide-icon>
                 </button>
               </div>

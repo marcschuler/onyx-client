@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
-import {UserExtendedDTO, UserSimpleDTO} from '../../../../../api/webrtc-server';
+import {GroupDTO, UserExtendedDTO, UserSimpleDTO} from '../../../../../api/webrtc-server';
 import {RestService} from '../../../../services/rest-service';
 import {ButtonPanel, TabPanelEntry} from '../../../../components/ui/button-panel/button-panel';
 import {AsyncPipe, DatePipe, JsonPipe} from '@angular/common';
@@ -30,6 +30,9 @@ export class UsersPanel implements OnInit {
   users: UserExtendedDTO[] | undefined;
   selectedOption!: TabPanelEntry;
 
+
+  groups: GroupDTO[] | undefined;
+
   constructor(private restService: RestService) {
   }
 
@@ -38,6 +41,9 @@ export class UsersPanel implements OnInit {
       .subscribe(users => {
         this.users = users;
       }, error => this.restService.handleError(error));
+    this.connection.rest.groupController.all().subscribe(groups => {
+      this.groups = groups;
+    },error=>this.restService.handleError(error))
   }
 
   protected readonly UserExtendedDTO = UserExtendedDTO;

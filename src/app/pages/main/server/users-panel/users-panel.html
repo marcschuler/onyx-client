@@ -9,26 +9,42 @@
             <div class="pl-4">
               <h4>{{ user.username }}</h4>
               <p class="text-neutral-400">
-                ID: {{ user.id }}<br>
-                Known Since: {{ user.knownSince | date: 'medium' }}<br>
-                Last Seen: {{ user.lastSeen | date: 'medium' }}<br>
-                State:
-                @switch (user.state) {
-                  @case (UserExtendedDTO.StateEnum.Allowed) {
-                    <lucide-icon [name]="UserCheck" class="inline  h-4"></lucide-icon> Regular User
-                  }
-                  @case (UserExtendedDTO.StateEnum.Blocked) {
-                    <lucide-icon [name]="UserMinus" class="inline h-4"></lucide-icon> Blocked
-                  }
-                  @case (UserExtendedDTO.StateEnum.InvitationPending) {
-                    <lucide-icon [name]="UserPlus" class="inline h-4"></lucide-icon> Invitation Pending
-                  }
-                }
+              <div class="grid grid-cols-12">
+                <p class="col-span-4">ID</p>
+                <p class="col-span-8">{{ user.id }}</p>
 
-                @for (group of user.groups;track group.id){
-                  {{group.name}}
-                }
-              </p>
+                <p class="col-span-4">Known Since</p>
+                <p class="col-span-8">{{ user.knownSince | date: 'medium' }}</p>
+
+                <p class="col-span-4">Last Seen</p>
+                <p class="col-span-8">{{ user.lastSeen | date: 'medium' }}</p>
+
+                <p class="col-span-4">State</p>
+                <p class="col-span-8">
+                  @switch (user.state) {
+                    @case (UserExtendedDTO.StateEnum.Allowed) {
+                      <lucide-icon [name]="UserCheck" class="inline  h-4"></lucide-icon> Regular User
+                    }
+                    @case (UserExtendedDTO.StateEnum.Blocked) {
+                      <lucide-icon [name]="UserMinus" class="inline h-4"></lucide-icon> Blocked
+                    }
+                    @case (UserExtendedDTO.StateEnum.InvitationPending) {
+                      <lucide-icon [name]="UserPlus" class="inline h-4"></lucide-icon> Invitation Pending
+                    }
+                  }
+                </p>
+
+                <p class="col-span-4">Groups</p>
+                <p class="col-span-8">
+                  @if (groups) {
+                    @for (group of groups; track group.id) {
+                      <button class="!p-2 mx-0.5">
+                        {{ group.name }}
+                      </button>
+                    }
+                  }
+                </p>
+              </div>
             </div>
           </div>
           @if (!$last) {

@@ -32,11 +32,18 @@ textarea {
 }
 
 
+/**
+  Buttons
+ */
 button {
   @apply text-neutral-200 bg-neutral-800
   disabled:bg-neutral-800 disabled:text-neutral-400
   font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center
   hover:bg-neutral-600  transition-all duration-200 ease-in-out
+}
+
+button-selected{
+
 }
 
 .button-green {

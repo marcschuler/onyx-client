@@ -35,15 +35,14 @@
           }
         </div>
         @for (client of channel.users; track client.id) {
-          <div class="ml-4 p-2 hover:bg-neutral-800 rounded animate-default flex items-center gap-2"
-               [ngClass]="[
-    client.id==connection.identity.id ? 'border-l-emerald-600 border-l-3' : ''
-  ]">
+          <div class="ml-4 p-2 hover:bg-neutral-800 rounded animate-default flex items-center gap-2">
             <img
               [src]="client.id | identicon: 32 | async"
               class="w-8 h-8 rounded"
             />
-            <span>{{ client.username }}</span>
+            <span [ngClass]="[
+    client.id==connection.identity.id ? 'text-neutral-100' : ''
+  ]">{{ client.username }}</span>
           </div>
         }
       }
@@ -55,14 +54,14 @@
       <h4 class="text-neutral-200 font-semibold">Idle</h4>
       @for (client of connection.data.usersNotInChannel; track client.id) {
         <div class="p-2 hover:bg-neutral-800 text-neutral-400 rounded animate-default flex items-center gap-2"
-             [ngClass]="[
-    client.id==connection.identity.id ? 'border-l-emerald-600 border-l-3' : ''
-  ]">
+        >
           <img
             [src]="client.id | identicon: 32 | async"
             class="w-8 h-8 rounded"
           />
-          <span>{{ client.username }}</span>
+          <span [ngClass]="[
+    client.id==connection.identity.id ? 'text-neutral-100' : ''
+  ]">{{ client.username }}</span>
         </div>
       }
     </div>
