@@ -1,13 +1,13 @@
 <app-button-panel [buttons]="[BUTTON_USER_LIST]" [(selectedOption)]="selectedOption">
   @switch (selectedOption) {
     @case (BUTTON_USER_LIST) {
-      <div class="overflow-y-scroll">
+      <div class="overflow-y-auto">
         @for (user of users || []; track user) {
           <div class="m-2 p-4 bg-neutral-900 rounded flex">
             <img [src]="user.id | identicon | async" alt="Key ID: {{user.id}}"
                  class="w-16 h-16 rounded">
-            <div class="pl-4">
-              <h4>{{ user.username }}</h4>
+            <div class="pl-4 text-neutral-400">
+              <h4 class="text-neutral-200">{{ user.username }}</h4>
               <p class="text-neutral-400">
               <div class="grid grid-cols-12">
                 <p class="col-span-4">ID</p>
@@ -38,7 +38,8 @@
                 <p class="col-span-8">
                   @if (groups) {
                     @for (group of groups; track group.id) {
-                      <button class="!p-2 mx-0.5">
+                      <button class="!p-2 mx-0.5"
+                              [class.button-selected]="user.groups && user.groups.includes(group)">
                         {{ group.name }}
                       </button>
                     }

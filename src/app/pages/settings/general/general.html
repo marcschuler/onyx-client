@@ -1,0 +1,22 @@
+<h3>UI</h3>
+<div class="settings-grid">
+  <p class="settings-grid-label">
+    Compact Mode
+  </p>
+  <p class="settings-grid-desc">
+    Shows less padding around larger elements like the channel list.
+  </p>
+  <app-toggle class="settings-grid-option" [(value)]="interfaceService.settings.compactMode"
+              (valueChange)="interfaceService.saveSettings()"></app-toggle>
+
+
+  <p class="settings-grid-label">
+    Legacy Chat
+  </p>
+  <p class="settings-grid-desc">
+    Shows an IRC like UI instead of the chat mode
+  </p>
+  <app-toggle class="settings-grid-option" [(value)]="interfaceService.settings.legacyChat"
+              (valueChange)="interfaceService.saveSettings()"></app-toggle>
+
+</div>

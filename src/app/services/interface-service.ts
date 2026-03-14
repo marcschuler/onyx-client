@@ -13,7 +13,8 @@ export class InterfaceService {
       messageView: 30
     },
     sidebarWidth: 200,
-    compactSidebar: false
+    compactMode: false,
+    legacyChat: false
   };
 
   constructor() {
@@ -35,5 +36,6 @@ export class InterfaceService {
 export interface InterfaceSettings {
   channelSplitSize: { peerView: number, messageView: number },
   sidebarWidth: number
-  compactSidebar: boolean //TODO implement a compact server tree view without large paddings
+  compactMode: boolean
+  legacyChat: boolean;
 }

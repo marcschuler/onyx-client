@@ -5,6 +5,7 @@ import {WebSocketServerConnection} from '../../../../services/websocket/WebSocke
 import {IdenticonPipe} from '../../../../pipes/identicon-pipe';
 import {MarkdownPipe} from '../../../../pipes/markdown-pipe';
 import {UserDatePipe} from '../../../../pipes/user-date-pipe';
+import {InterfaceService, InterfaceSettings} from '../../../../services/interface-service';
 
 @Component({
   selector: 'app-message',
@@ -23,5 +24,8 @@ export class Message {
   @Input() useHeader!: boolean;
 
   @Input() connection!: WebSocketServerConnection;
+
+  constructor(protected interfaceService: InterfaceService) {
+  }
 
 }

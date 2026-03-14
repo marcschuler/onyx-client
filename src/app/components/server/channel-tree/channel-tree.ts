@@ -13,6 +13,10 @@ import {ClientChannelChangeRequest} from '../../../../api/webrtc-server';
 import {IdenticonPipe} from '../../../pipes/identicon-pipe';
 import {ChannelDTO} from '../../../../api/webrtc-server/model/channelDTO';
 import {ServerObjectId, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
+import {ContextMenuService} from '../../../services/context-menu-service';
+import {InterfaceService} from '../../../services/interface-service';
+import {UserEntry} from '../user-entry/user-entry';
+import {ChannelEntry} from '../channel-entry/channel-entry';
 
 @Component({
   selector: 'app-channel-tree',
@@ -21,7 +25,9 @@ import {ServerObjectId, WebSocketServerConnection} from '../../../services/webso
     Spinner,
     NgClass,
     IdenticonPipe,
-    AsyncPipe
+    AsyncPipe,
+    UserEntry,
+    ChannelEntry
   ],
   templateUrl: './channel-tree.html',
   styleUrl: './channel-tree.css'
@@ -32,30 +38,14 @@ export class ChannelTree {
 
   readonly HexagonIcon = HexagonIcon;
 
-  constructor(protected webSocketService: WebSocketService,) {
+  constructor(protected webSocketService: WebSocketService, protected contextMenuService: ContextMenuService,
+              protected interfaceService: InterfaceService) {
 
   }
 
   protected readonly LogInIcon = LogInIcon;
 
-  changeChannel(channel: ChannelDTO | undefined) {
-    console.log("Changing channel to " + (channel ? channel.name : "(none)"));
-    this.selectChannel(channel);
-    this.webSocketService.send(this.connection, {
-      channelId: (channel ? channel.id : undefined),
-      type: ClientChannelChangeRequest.TypeEnum.ClientChannelChangeRequest
-    } as ClientChannelChangeRequest);
-  }
 
-  protected selectChannel(channel: ChannelDTO | undefined) {
-    if (channel == undefined) {
-      console.log("Unselecting channel")
-      this.connection.selectedChannel = undefined;
-    } else {
-      console.log("Selecting channel " + channel.name)
-      this.connection.selectedChannel = channel.id as ServerObjectId;
-    }
-  }
 
 
   protected readonly LogOut = LogOut;

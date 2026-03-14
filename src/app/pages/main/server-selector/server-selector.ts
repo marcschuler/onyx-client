@@ -70,7 +70,7 @@ export class ServerSelector implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.updateDetails();
-    this.interval = setInterval(() => this.updateDetails(), 8000);
+    this.interval = window.setInterval(() => this.updateDetails(), 8000);
   }
 
   ngOnDestroy() {

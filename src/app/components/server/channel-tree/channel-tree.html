@@ -1,68 +1,24 @@
 @if (connection.data) {
   @let data = connection.data;
   <h3 class="font-bold pb-2 text-center w-full cursor-pointer"
-      (click)="selectChannel(undefined)">{{ data.server.name }}</h3>
+      (click)="connection.selectedChannel=undefined">{{ data.server.name }}</h3>
   @for (section of data.sections; track section) {
     <div>
       <h4 class="font-semibold pt-3">{{ section.name }}</h4>
       @for (channel of section.channels; track channel) {
-        <div
-          class="p-2 rounded gap-2 grid grid-cols-[1fr_auto] w-full
-          D hover:text-neutral-100  hover:bg-neutral-800 animate-default group cursor-pointer"
-          [ngClass]="{
-          'border-l-emerald-600 border-l-3': connection.currentChannel == channel.id,
-          'bg-neutral-800': connection.selectedChannel ==channel.id
-  }" (click)="selectChannel(channel)">
-          <div class=" w-full   rounded-l-md select-none">
-            <lucide-icon class="inline-flex translate-y-0.5" [name]="HexagonIcon"></lucide-icon>
-            {{ channel.name }}
-
-          </div>
-          @if (connection.currentChannel != channel.id) {
-            <button class="right-0 !p-1 !m-0 !bg-neutral-900 !hover:bg-neutral-800 rounded-r-md
-                    opacity-0 pointer-events-none
-                    group-hover:opacity-100 group-hover:pointer-events-auto
-                    transition">
-              <lucide-icon [name]="LogInIcon" (click)="changeChannel(channel)"></lucide-icon>
-            </button>
-          } @else if (connection.currentChannel == channel.id) {
-            <button class="right-0 !p-1 !m-0 !bg-neutral-900 !hover:bg-neutral-800 rounded-r-md
-                    opacity-0 pointer-events-none
-                    group-hover:opacity-100 group-hover:pointer-events-auto
-                    transition">
-              <lucide-icon [name]="LogOutIcon" (click)="changeChannel(undefined)"></lucide-icon>
-            </button>
-          }
-        </div>
-        @for (client of channel.users; track client.id) {
-          <div class="ml-4 p-2 hover:bg-neutral-800 rounded animate-default flex items-center gap-2">
-            <img
-              [src]="client.id | identicon: 32 | async"
-              class="w-8 h-8 rounded"
-            />
-            <span [ngClass]="[
-    client.id==connection.identity.id ? 'text-neutral-100' : ''
-  ]">{{ client.username }}</span>
-          </div>
+        <app-channel-entry [channel]="channel" [connection]="connection"></app-channel-entry>
+        @for (user of channel.users; track user.id) {
+          <app-user-entry [user]="user" [connection]="connection"></app-user-entry>
         }
       }
     </div>
   }
 
   @if (connection.data.usersNotInChannel.length > 0) {
-    <div class="pt-8">
+    <div [class.pt-8]="!interfaceService.settings.compactMode" [class.pt-4]="interfaceService.settings.compactMode">
       <h4 class="text-neutral-200 font-semibold">Idle</h4>
-      @for (client of connection.data.usersNotInChannel; track client.id) {
-        <div class="p-2 hover:bg-neutral-800 text-neutral-400 rounded animate-default flex items-center gap-2"
-        >
-          <img
-            [src]="client.id | identicon: 32 | async"
-            class="w-8 h-8 rounded"
-          />
-          <span [ngClass]="[
-    client.id==connection.identity.id ? 'text-neutral-100' : ''
-  ]">{{ client.username }}</span>
-        </div>
+      @for (user of connection.data.usersNotInChannel; track user.id) {
+        <app-user-entry [user]="user" [connection]="connection"></app-user-entry>
       }
     </div>
   }

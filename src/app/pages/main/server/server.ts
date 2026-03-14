@@ -20,6 +20,7 @@ import {Settings} from '../../settings/settings';
 import {ServerOverview} from './server-overview/server-overview';
 import {AdminPanel} from './admin-panel/admin-panel';
 import {UsersPanel} from './users-panel/users-panel';
+import {ServerLoaderService} from '../../../services/server-loader-service';
 
 @Component({
   selector: 'app-server',
@@ -52,7 +53,8 @@ export class Server {
   protected minimized = false;
 
   constructor(protected webSocketService: WebSocketService,
-              protected interfaceService: InterfaceService,) {
+              protected interfaceService: InterfaceService,
+              protected serverLoaderService: ServerLoaderService) {
   }
 
 

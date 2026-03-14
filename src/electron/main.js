@@ -1,4 +1,4 @@
-const {app, BrowserWindow, shell} = require('electron');
+const {app, BrowserWindow, shell, ipcMain, Menu} = require('electron');
 const path = require('path');
 
 let mainWindow;
@@ -13,6 +13,7 @@ function createWindow() {
     }
   });
 
+  console.log("using environment " + process.env.NODE_ENV + " (optional start url is " + process.env.ELECTRON_START_URL + ")");
   // Dev vs Prod
   const startUrl =
     process.env.ELECTRON_START_URL ||
@@ -21,6 +22,19 @@ function createWindow() {
       `file://${path.join(__dirname, '../../dist/webrtc-client/browser/index.html')}`
     )
   ;
+
+  const menu = Menu.buildFromTemplate([
+    { role: 'copy' },
+    { role: 'cut' },
+    { role: 'paste' },
+    { role: 'selectall' }
+  ])
+
+  ipcMain.on('context-menu', (event) => {
+    menu.popup({
+      window: BrowserWindow.fromWebContents(event.sender)
+    })
+  })
 
     // Intercept opening links in the electron window and open in an external browser
     mainWindow.webContents.setWindowOpenHandler(({ url }) => {

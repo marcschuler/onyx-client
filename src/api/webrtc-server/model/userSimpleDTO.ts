@@ -16,6 +16,6 @@ export interface UserSimpleDTO {
     publicKey: { [key: string]: any; };
     username: string;
     avatar?: FileDTO;
-    groups: Set<GroupDTO>;
+    groups: Array<GroupDTO>;
 }
 

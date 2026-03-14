@@ -42,8 +42,8 @@ button {
   hover:bg-neutral-600  transition-all duration-200 ease-in-out
 }
 
-button-selected{
-
+.button-selected {
+  @apply bg-neutral-900
 }
 
 .button-green {
@@ -52,6 +52,10 @@ button-selected{
 
 .button-dark {
   @apply bg-neutral-900 hover:bg-neutral-700 disabled:bg-neutral-900
+}
+
+.button-dark-selected {
+  @apply bg-neutral-800!
 }
 
 .button-hover-dark {
@@ -70,7 +74,7 @@ button-selected{
   @apply border-2 border-dotted border-neutral-400 bg-neutral-800/25
 }
 
-.button-no-round{
+.button-no-round {
   @apply rounded-none
 }
 
@@ -143,12 +147,39 @@ select {
   mask: var(--mask);
 }
 
-.gradient-white-emerald{
+.gradient-white-emerald {
   background: #009966;
   background: linear-gradient(90deg, rgba(0, 153, 102, 1) 50%, rgba(224, 224, 224, 1) 100%);
 }
 
-.gradient-white-emerald-5{
+.gradient-white-emerald-5 {
   background: #009966;
   background: linear-gradient(90deg, rgba(0, 153, 102, .05) 50%, rgba(224, 224, 224, .05) 100%);
 }
+
+
+/**
+UI Stuff
+ */
+
+.settings-grid {
+  @apply grid grid-cols-12 gap-2
+}
+
+.settings-grid-label {
+  @apply col-span-3
+}
+
+.settings-grid-label-no-desc {
+  @apply col-span-9
+}
+
+.settings-grid-desc {
+  @apply col-span-6 text-neutral-400
+}
+
+.settings-grid-option {
+  @apply col-span-3
+}
+
+

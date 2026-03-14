@@ -3,7 +3,7 @@
     @for (group of groups; track group.id) {
       <button class="min-w-48 button-dark button-no-round" [class.button-dark]="selectedGroup!=group" (click)="selectedGroup = group">{{ group.name }}</button><br>
     }
-    <div class="text-right m-2">
+    <div class="text-right pt-2">
       <button class="button-ghost min-w-48" (click)="addGroup()">+
         <lucide-icon [name]="IdCardLanyard" class="inline"></lucide-icon>
       </button>
@@ -17,7 +17,7 @@
 
       <div class="">
         <p class="ml-2">
-          Inherits from
+          <!--Inherits from
           <select class="ml-2" [(ngModel)]="selectedGroup.parentId">
             <option [value]="undefined"></option>
             @for (g of groups; track g.id) {
@@ -25,7 +25,7 @@
                 <option [value]="g.id">{{ g.name }}</option>
               }
             }
-          </select>
+          </select>-->
         </p>
         <br>
         <app-policy-panel [group]="selectedGroup" [groups]="groups!" [connection]="connection"></app-policy-panel>

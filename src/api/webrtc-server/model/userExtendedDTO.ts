@@ -16,7 +16,7 @@ export interface UserExtendedDTO {
     publicKey: { [key: string]: any; };
     username: string;
     avatar?: FileDTO;
-    groups: Set<GroupDTO>;
+    groups: Array<GroupDTO>;
     state: UserExtendedDTO.StateEnum;
     knownSince: string;
     lastSeen?: string;

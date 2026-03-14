@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform, SecurityContext} from '@angular/core';
-import {marked, RendererObject} from 'marked';
+import {marked, RendererObject, Tokens} from 'marked';
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Pipe({
@@ -25,6 +25,16 @@ export class MarkdownPipe implements PipeTransform {
       </a>
     `;
       },
+      image({href, title, text, tokens}: Tokens.Image) {
+
+
+        const titleAttr = title ? ` title="${title}"` : '';
+        const altAttr = text  ? ` alt="${text}"`   : '';
+        return sanitizer.bypassSecurityTrustHtml( `
+      <app-chat-image src="${href}" ${altAttr}${titleAttr}>
+      </app-chat-image>
+    `) as any;
+      }
     };
     marked.use({
       gfm: true,

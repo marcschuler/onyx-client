@@ -1,0 +1,13 @@
+<div class="hover:bg-neutral-800 rounded animate-default pl-4"
+[class.p-2]="!interfaceService.settings.compactMode">
+  <img
+    [src]="user.id | identicon: 32 | async"
+    [ngClass]="{
+'w-8 h-8': !interfaceService.settings.compactMode,
+'w-6 h-6': interfaceService.settings.compactMode}"
+    class="rounded inline"
+  />
+  <span class="pl-2" [ngClass]="[
+    user.id==connection.identity.id ? 'text-neutral-100' : ''
+  ]">{{ user.username }}</span>
+</div>

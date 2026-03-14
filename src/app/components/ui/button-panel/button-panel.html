@@ -3,7 +3,8 @@
 
     <div class="inline-block flex-col rounded align-top">
       @for (button of buttons; track button) {
-        <button class="button-dark !rounded-none min-w-max" (click)="select(button)"
+        <button class="button-dark !rounded-none min-w-full text-left!" (click)="select(button)"
+                [class.button-dark-selected]="selectedOption==button"
                 [disabled]="selectedOption==button">
           @if (button.icon) {
             <lucide-icon [name]="button.icon" class="inline pr-1"></lucide-icon>
@@ -15,7 +16,7 @@
     </div>
   </aside>
 
-  <main class="flex-1 overflow-y-scroll max-h-[70vh]">
+  <main class="flex-1 overflow-y-auto max-h-[70vh]">
     @if (showHeader) {
       <h1>{{ selectedOption.name }}</h1>
       <div class="pb-4"></div>

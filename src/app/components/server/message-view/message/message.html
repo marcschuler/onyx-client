@@ -1,3 +1,14 @@
+@if (interfaceService.settings.legacyChat) {
+<p class="font-mono pb-4">
+  <span class="text-neutral-600">{{ message.timestamp | userDate }}</span>
+  <span class="text-emerald-600">
+    {{message.user.username}}
+  </span>
+  @for (content of message.content; track content) {
+    <span [innerHTML]=" content.text | markdown" class="break-all"></span>
+  }
+</p>
+} @else {
 <div class="pt-1" [ngClass]="{
 'pt-1': !useHeader,
 'pt-3': useHeader}">
@@ -26,3 +37,4 @@
 
   </div>
 </div>
+}

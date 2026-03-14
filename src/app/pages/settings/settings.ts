@@ -10,6 +10,7 @@ import {Identity} from './identity/identity';
 import {Debug} from './debug/debug';
 import {Contributors} from './contributors/contributors';
 import {ButtonPanel, TabPanelEntry} from '../../components/ui/button-panel/button-panel';
+import {General} from './general/general';
 
 @Component({
   selector: 'app-settings',
@@ -19,7 +20,8 @@ import {ButtonPanel, TabPanelEntry} from '../../components/ui/button-panel/butto
     Identity,
     Debug,
     Contributors,
-    ButtonPanel
+    ButtonPanel,
+    General
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css'

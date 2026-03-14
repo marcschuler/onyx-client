@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import {PermissionType} from '../pages/main/server/admin-panel/group-administration-panel/policy-panel/policy-panel';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +6,7 @@ import {PermissionType} from '../pages/main/server/admin-panel/group-administrat
 export class PolicyService {
 
 
-  public buildPermissionList():PermissionListHeader[]{
+  public buildPermissionList(): PermissionListHeader[] {
     return [
       {
         name: "Channel",
@@ -31,7 +30,12 @@ export class PolicyService {
           name: "Edit Description",
           type: PermissionType.CHANNEL_EDIT_DESCRIPTION,
           description: "Edit the description of the channel"
-        }]
+        },
+          {
+            name: "Delete",
+            type: PermissionType.CHANNEL_DELETE,
+            description: "Delete the channel"
+          }]
       }
     ]
   }
@@ -51,3 +55,14 @@ export interface PermissionListItem {
   defaultValue?: string;
   defaultValueReason?: string;
 }
+
+export enum PermissionType {
+  CHANNEL = "CHANNEL",
+  CHANNEL_JOIN = "CHANNEL_JOIN",
+  CHANNEL_EDIT = "CHANNEL_EDIT",
+  CHANNEL_EDIT_TITLE = "CHANNEL_EDIT_TITLE",
+  CHANNEL_EDIT_DESCRIPTION = "CHANNEL_EDIT_DESCRIPTION",
+  CHANNEL_EDIT_AVATAR = "CHANNEL_EDIT_AVATAR",
+  CHANNEL_DELETE = "CHANNEL_DELETE",
+}
+
