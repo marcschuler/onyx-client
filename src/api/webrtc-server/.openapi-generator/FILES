@@ -54,7 +54,9 @@ model/peerAnswer.ts
 model/peerAnswerForward.ts
 model/peerOffer.ts
 model/peerOfferForward.ts
+model/policy.ts
 model/policyDTO.ts
+model/policyItem.ts
 model/policyWriteDTO.ts
 model/rolePolicyDTO.ts
 model/sectionDTO.ts

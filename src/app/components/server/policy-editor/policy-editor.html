@@ -1,0 +1,19 @@
+@for (header of permissionList; track header) {
+
+  <h4>{{ header.name }}</h4>
+  <div class="settings-grid pl-4">
+    @for (item of header.items; track item) {
+      <p class="settings-grid-label">{{ item.name }}</p>
+      <p class="settings-grid-desc">{{ item.description }}</p>
+
+      <select multiple>
+        @for (policy of policies; track policy.id) {
+          <option>{{ policy.name }} ({{ policy.order }})</option>
+        }
+      </select>
+
+
+    })
+  </div>
+}
+

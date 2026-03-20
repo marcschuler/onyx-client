@@ -20,7 +20,10 @@ export class ButtonPanel implements OnInit {
   ngOnInit() {
     if (!this.buttons || this.buttons.length == 0)
       console.warn("Got no buttons on panel - this may crash")
-    this.select(this.buttons[0]);
+    setTimeout(() => {
+      if (this.buttons.length > 0)
+        this.select(this.buttons[0])
+    }, 1);
   }
 
   protected select(button: TabPanelEntry) {

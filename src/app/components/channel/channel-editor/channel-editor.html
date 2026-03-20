@@ -1,0 +1,16 @@
+<app-button-panel [buttons]="[BUTTON_GENERAL,BUTTON_POLICIES]" [(selectedOption)]="selectedOption">
+
+  @switch (selectedOption) {
+    @case (BUTTON_GENERAL) {
+      <input placeholder="name">
+      <textarea placeholder="description"></textarea>
+    }
+    @case (BUTTON_POLICIES) {
+      <div class="px-8 bg-neutral-800 rounded">
+        <app-policy-editor [connection]="connection" [type]="PolicyType.CHANNEL">
+
+        </app-policy-editor>
+      </div>
+    }
+  }
+</app-button-panel>

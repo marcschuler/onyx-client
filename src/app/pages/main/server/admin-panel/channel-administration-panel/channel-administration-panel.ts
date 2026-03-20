@@ -8,6 +8,7 @@ import {CircleMinus, GripVertical, LucideAngularModule, Pencil} from 'lucide-ang
 import {Button, BUTTON_CANCEL, BUTTON_DELETE, Popup} from '../../../../../components/ui/popup/popup';
 import {ChannelDTO, SectionExtendedDTO, ServerTreeChangeMessage} from '../../../../../../api/webrtc-server';
 import {NameDescriptionPopup} from './name-description-popup/name-description-popup';
+import {ChannelEditor} from '../../../../../components/channel/channel-editor/channel-editor';
 
 @Component({
   selector: 'app-channel-administration-panel',
@@ -18,6 +19,7 @@ import {NameDescriptionPopup} from './name-description-popup/name-description-po
     Popup,
     NameDescriptionPopup,
     CdkDragHandle,
+    ChannelEditor,
   ],
   templateUrl: './channel-administration-panel.html',
   styleUrl: './channel-administration-panel.css'

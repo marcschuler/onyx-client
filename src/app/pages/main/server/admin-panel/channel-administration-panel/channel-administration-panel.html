@@ -48,8 +48,9 @@
 }
 
 @if (channelToEdit) {
-  <app-name-description-popup [entity]="channelToEdit"
-                              (entityChanges)="editChannel($event)"></app-name-description-popup>
+  <app-channel-editor [connection]="connection" [channelId]="channelToEdit.id">
+
+  </app-channel-editor>
 }
 
 @if (sectionToEdit) {
