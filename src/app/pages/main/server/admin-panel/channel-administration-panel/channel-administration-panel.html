@@ -22,7 +22,7 @@
               <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
               {{ channel.name }}
               <div class="absolute right-2 top-2">
-                <button class="!p-1" (click)="channelToEdit=channel">
+                <button class="!p-1 button-dark" (click)="channelToEdit=channel">
                   <lucide-icon [name]="Pencil"></lucide-icon>
                 </button>
                 <button class="!p-1 button-hover-red " (click)="channelToDelete=channel">
@@ -48,9 +48,11 @@
 }
 
 @if (channelToEdit) {
-  <app-channel-editor [connection]="connection" [channelId]="channelToEdit.id">
+  <app-popup [isOpen]="true" (close)="channelToEdit=undefined" [closeButton]="true">
+    <app-channel-editor [connection]="connection" [channelId]="channelToEdit.id">
 
-  </app-channel-editor>
+    </app-channel-editor>
+  </app-popup>
 }
 
 @if (sectionToEdit) {

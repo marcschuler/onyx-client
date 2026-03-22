@@ -6,11 +6,8 @@
       <textarea placeholder="description"></textarea>
     }
     @case (BUTTON_POLICIES) {
-      <div class="px-8 bg-neutral-800 rounded">
-        <app-policy-editor [connection]="connection" [type]="PolicyType.CHANNEL">
-
-        </app-policy-editor>
-      </div>
+      <app-policy-editor [connection]="connection" [type]="PolicyType.CHANNEL">
+      </app-policy-editor>
     }
   }
 </app-button-panel>

@@ -14,7 +14,7 @@ export class ButtonPanel implements OnInit {
   @Input() showHeader: boolean = true;
   @Input() buttons!: TabPanelEntry[];
 
-  @Input() selectedOption!: TabPanelEntry;
+  @Input() selectedOption!: TabPanelEntry; //is undefined on init. we need a timeout because angular hates me
   @Output() selectedOptionChange = new EventEmitter<TabPanelEntry>();
 
   ngOnInit() {

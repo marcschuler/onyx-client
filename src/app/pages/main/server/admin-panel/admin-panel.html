@@ -1,4 +1,4 @@
-<app-button-panel [buttons]="[BUTTON_SERVER_ADMINISTRATION,BUTTON_CHANNEL_TREE,BUTTON_GROUP]" [(selectedOption)]="selectedOption">
+<app-button-panel [buttons]="[BUTTON_SERVER_ADMINISTRATION,BUTTON_CHANNEL_TREE,BUTTON_GROUP,BUTTON_POLICY]" [(selectedOption)]="selectedOption">
 
   @switch (selectedOption){
     @case (BUTTON_SERVER_ADMINISTRATION){
@@ -9,6 +9,9 @@
     }
     @case (BUTTON_GROUP){
       <app-group-administration-panel [connection]="connection"></app-group-administration-panel>
+    }
+    @case (BUTTON_POLICY){
+      <app-policy-administration-panel [connection]="connection"></app-policy-administration-panel>
     }
   }
 </app-button-panel>

@@ -6,7 +6,7 @@
       <p class="settings-grid-label">{{ item.name }}</p>
       <p class="settings-grid-desc">{{ item.description }}</p>
 
-      <select multiple>
+      <select class="settings-grid-option" multiple>
         @for (policy of policies; track policy.id) {
           <option>{{ policy.name }} ({{ policy.order }})</option>
         }

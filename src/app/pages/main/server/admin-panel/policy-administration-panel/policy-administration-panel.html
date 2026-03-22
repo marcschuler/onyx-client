@@ -1,0 +1,31 @@
+<div class="flex flex-2">
+  <div class="w-48">
+    @for (policy of policies; track policy.id) {
+      <button class="min-w-48 button-dark button-no-round" [class.button-dark]="selectedPolicy!=policy"
+              (click)="selectedPolicy = policy">{{ policy.name }}
+      </button><br>
+    }
+    <div class="text-right pt-2">
+      <button class="button-ghost min-w-48" (click)="addPolicy()">+
+        <lucide-icon [name]="IdCardLanyard" class="inline"></lucide-icon>
+      </button>
+    </div>
+  </div>
+
+  @if (selectedPolicy) {
+    <div class="px-2 w-full">
+      <input class="text-h3 input-invisible" [(ngModel)]="selectedPolicy.name">
+      <textarea class="input-invisible" [(ngModel)]="selectedPolicy.description"></textarea>
+
+      <div class="">
+        <p class="ml-2">
+        </p>
+        <br>
+        <div class="text-right pt-4">
+          <button class="button-line" (click)="updateGroup(selectedPolicy)">Save</button>
+          <button class="button-red" (click)="deleteGroup(selectedPolicy)">Delete</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
