@@ -23,9 +23,9 @@ export interface UserExtendedDTO {
 }
 export namespace UserExtendedDTO {
     export const StateEnum = {
-        InvitationPending: 'INVITATION_PENDING',
-        Blocked: 'BLOCKED',
-        Allowed: 'ALLOWED'
+        PendingAccess: 'PENDING_ACCESS',
+        Active: 'ACTIVE',
+        Banned: 'BANNED'
     } as const;
     export type StateEnum = typeof StateEnum[keyof typeof StateEnum];
 }

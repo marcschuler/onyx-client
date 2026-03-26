@@ -10,7 +10,7 @@
 
 
 export interface PolicyDTO { 
-    order: number;
+    priority: number;
     name: string;
     description?: string;
     id: string;

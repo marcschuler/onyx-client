@@ -12,6 +12,7 @@ export * from './clientChannelChangeRequest';
 export * from './clientChannelJoinMessage';
 export * from './clientChannelLeaveMessage';
 export * from './edit2200Response';
+export * from './errorMessage';
 export * from './fileDTO';
 export * from './groupDTO';
 export * from './groupWriteDTO';

@@ -30,6 +30,7 @@ model/clientChannelChangeRequest.ts
 model/clientChannelJoinMessage.ts
 model/clientChannelLeaveMessage.ts
 model/edit2200Response.ts
+model/errorMessage.ts
 model/fileDTO.ts
 model/groupDTO.ts
 model/groupWriteDTO.ts

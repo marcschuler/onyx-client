@@ -66,6 +66,7 @@ export class WebSocketService {
       const webSocket = new WebSocket(url);
 
       const connection: WebSocketServerConnection = {
+        serverConnections: serverConnection,
         state: ConnectionState.CONNECTING,
         serverConnection: webSocket,
         identity: identity,
@@ -267,6 +268,9 @@ export class WebSocketService {
         break;
       case "INTERNAL_ERROR":
         message = "Internal server error";
+        break;
+      case "BANNED":
+        message = "You were banned from the server";
         break;
       default:
         message = "Unknown reason: " + event.reason;

@@ -6,6 +6,7 @@ import {IdenticonPipe} from '../../../../pipes/identicon-pipe';
 import {MarkdownPipe} from '../../../../pipes/markdown-pipe';
 import {UserDatePipe} from '../../../../pipes/user-date-pipe';
 import {InterfaceService, InterfaceSettings} from '../../../../services/interface-service';
+import {Tooltip} from '../../../../directives/tooltip';
 
 @Component({
   selector: 'app-message',
@@ -14,7 +15,8 @@ import {InterfaceService, InterfaceSettings} from '../../../../services/interfac
     IdenticonPipe,
     AsyncPipe,
     MarkdownPipe,
-    UserDatePipe
+    UserDatePipe,
+    Tooltip
   ],
   templateUrl: './message.html',
   styleUrl: './message.css',

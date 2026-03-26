@@ -46,6 +46,10 @@ button {
   @apply bg-neutral-900
 }
 
+.button-selected-border {
+  @apply bg-neutral-900 border border-neutral-700
+}
+
 .button-green {
   @apply bg-emerald-600 hover:bg-emerald-400
 }

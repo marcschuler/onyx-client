@@ -7,13 +7,15 @@ import {IdCardLanyard, LucideAngularModule} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../../../services/toast-service';
 import {PolicyPanel} from './policy-panel/policy-panel';
 import {findFreeName} from '../../../../../services/Util';
+import {Toggle} from '../../../../../components/ui/toggle/toggle';
 
 @Component({
   selector: 'app-group-administration-panel',
   imports: [
     FormsModule,
     LucideAngularModule,
-    PolicyPanel
+    PolicyPanel,
+    Toggle
   ],
   templateUrl: './group-administration-panel.html',
   styleUrl: './group-administration-panel.css',
@@ -68,7 +70,8 @@ export class GroupAdministrationPanel implements OnInit {
     this.connection.rest.groupController.create2({
       name: findFreeName("Group", (this.groups || []).map(g => g.name)),
       accessPowers: {},
-      description: ""
+      description: "",
+      showInTree: false
     }).subscribe(value => {
       this.groups?.push(value);
       this.selectedGroup = value;

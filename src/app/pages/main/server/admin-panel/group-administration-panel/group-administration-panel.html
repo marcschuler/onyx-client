@@ -15,6 +15,11 @@
       <input class="text-h3 input-invisible" [(ngModel)]="selectedGroup.name">
       <textarea class="input-invisible" [(ngModel)]="selectedGroup.description"></textarea>
 
+      <div class="settings-grid">
+        <p class="settings-grid-label-no-desc">Show in Tree</p>
+        <app-toggle [(value)]="selectedGroup.showInTree"></app-toggle>
+      </div>
+
       <div class="">
         <p class="ml-2">
           <!--Inherits from

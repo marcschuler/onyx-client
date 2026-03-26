@@ -6,8 +6,10 @@ import {
   ServerTreeChangeMessage, UserControllerService
 } from '../../../api/webrtc-server';
 import {IceServer} from '../../../api/webrtc-server/model/iceServer';
+import {ServerConnection} from '../server-loader-service';
 
 export interface WebSocketServerConnection {
+  serverConnections: ServerConnection;
   state: ConnectionState; // the current state of connection
   identity: Identity; // the used identity
   serverConnection: WebSocket; // the websocket connection

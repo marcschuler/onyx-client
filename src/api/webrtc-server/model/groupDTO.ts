@@ -15,6 +15,7 @@ export interface GroupDTO {
     icon?: any;
     parentId?: string;
     accessPowers: { [key: string]: number; };
+    showInTree: boolean;
     id: string;
 }
 

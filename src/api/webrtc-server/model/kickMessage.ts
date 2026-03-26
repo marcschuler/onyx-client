@@ -18,7 +18,8 @@ export namespace KickMessage {
     export const ReasonEnum = {
         AlreadyConnected: 'ALREADY_CONNECTED',
         UnauthorizedRequest: 'UNAUTHORIZED_REQUEST',
-        InternalError: 'INTERNAL_ERROR'
+        InternalError: 'INTERNAL_ERROR',
+        Banned: 'BANNED'
     } as const;
     export type ReasonEnum = typeof ReasonEnum[keyof typeof ReasonEnum];
     export const TypeEnum = {

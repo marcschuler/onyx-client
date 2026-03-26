@@ -20,7 +20,7 @@ export class ButtonPanel implements OnInit {
   ngOnInit() {
     if (!this.buttons || this.buttons.length == 0)
       console.warn("Got no buttons on panel - this may crash")
-    setTimeout(() => {
+    setTimeout(() => { //TODO see comment above. fix when time.
       if (this.buttons.length > 0)
         this.select(this.buttons[0])
     }, 1);

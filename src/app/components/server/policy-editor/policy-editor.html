@@ -8,7 +8,7 @@
 
       <select class="settings-grid-option" multiple>
         @for (policy of policies; track policy.id) {
-          <option>{{ policy.name }} ({{ policy.order }})</option>
+          <option>{{ policy.name }} ({{ policy.priority }})</option>
         }
       </select>
 

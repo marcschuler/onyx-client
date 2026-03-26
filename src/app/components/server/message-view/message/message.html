@@ -1,6 +1,6 @@
 @if (interfaceService.settings.legacyChat) {
 <p class="font-mono pb-4">
-  <span class="text-neutral-600">{{ message.timestamp | userDate }}</span>
+  <span class="text-neutral-600" [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</span>
   <span class="text-emerald-600">
     {{message.user.username}}
   </span>
@@ -12,7 +12,6 @@
 <div class="pt-1" [ngClass]="{
 'pt-1': !useHeader,
 'pt-3': useHeader}">
-  <!-- TODO -->
   <div class="flex">
     @if (useHeader) {
       <img class="inline rounded max-w-6 max-h-6 mr-2 mt-1" [src]="message.user.id | identicon:32 | async"
@@ -26,13 +25,13 @@
       @if (useHeader) {
         <p class="text-emerald-600 font-bold">
           {{ message.user.username }}
+        <span class="pl-8 text-sm text-right text-neutral-700" [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</span>
         </p>
       }
 
       @for (content of message.content; track content) {
         <p [innerHTML]=" content.text | markdown" class="break-all"></p>
       }
-      <p class="pl-8 text-sm text-right text-neutral-700">{{ message.timestamp | userDate }}</p>
     </div>
 
   </div>

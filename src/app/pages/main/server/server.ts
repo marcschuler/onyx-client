@@ -9,10 +9,10 @@ import {
   LucideAngularModule,
   PanelLeftClose,
   PanelLeftOpen,
-  ServerCog,
+  ServerCog, ServerIcon,
   SettingsIcon
 } from 'lucide-angular';
-import {NgStyle} from '@angular/common';
+import {NgClass, NgStyle} from '@angular/common';
 import {InterfaceService} from '../../../services/interface-service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {Popup} from '../../../components/ui/popup/popup';
@@ -34,7 +34,8 @@ import {ServerLoaderService} from '../../../services/server-loader-service';
     Settings,
     ServerOverview,
     AdminPanel,
-    UsersPanel
+    UsersPanel,
+    NgClass
   ],
   templateUrl: './server.html',
   styleUrl: './server.css'
@@ -94,4 +95,6 @@ export class Server {
   protected closeConnection() {
     this.webSocketService.closeConnection(this.connection);
   }
+
+  protected readonly ServerIcon = ServerIcon;
 }

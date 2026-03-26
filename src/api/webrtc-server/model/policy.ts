@@ -11,7 +11,6 @@
 
 export interface Policy { 
     id?: string;
-    priority?: number;
     name?: string;
     description?: string;
 }

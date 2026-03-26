@@ -18,12 +18,30 @@
       <textarea class="input-invisible" [(ngModel)]="selectedPolicy.description"></textarea>
 
       <div class="">
-        <p class="ml-2">
-        </p>
+
+        <div class="grid grid-cols-3">
+          <select>
+            <option>Group</option>
+            <option>User</option>
+          </select>
+          <select>
+            <option>in</option>
+            <option>not in</option>
+            <option>in all</option>
+          </select>
+          <select multiple>
+            TODO
+          </select>
+        </div>
+        @switch (selectedPolicy.type) {
+          @case (PolicyType.ROLE) {
+
+          }
+        }
         <br>
         <div class="text-right pt-4">
-          <button class="button-line" (click)="updateGroup(selectedPolicy)">Save</button>
-          <button class="button-red" (click)="deleteGroup(selectedPolicy)">Delete</button>
+          <button class="button-line" (click)="updatePolicy(selectedPolicy)">Save</button>
+          <button class="button-red" (click)="deletePolicy(selectedPolicy)">Delete</button>
         </div>
       </div>
     </div>
