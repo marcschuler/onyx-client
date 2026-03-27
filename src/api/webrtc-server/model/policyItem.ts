@@ -12,6 +12,6 @@ import { Policy } from './policy';
 
 export interface PolicyItem { 
     id?: string;
-    policies?: Set<Policy>;
+    policies?: Array<Policy>;
 }
 

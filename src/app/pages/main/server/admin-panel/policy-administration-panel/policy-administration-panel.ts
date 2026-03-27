@@ -38,7 +38,6 @@ export class PolicyAdministrationPanel implements OnInit {
     this.connection.rest.policyController.create1({
       name: "Policy",
       description: undefined,
-      priority: 0
     }).subscribe(value => {
       this.policies?.push(value);
     }, error => this.restService.handleError(error))

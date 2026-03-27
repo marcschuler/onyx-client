@@ -10,7 +10,6 @@
 
 
 export interface PolicyWriteDTO { 
-    priority: number;
     name: string;
     description?: string;
 }

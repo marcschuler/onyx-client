@@ -11,6 +11,7 @@
 
 export interface ChannelDTO { 
     name: string;
+    policies: { [key: string]: any; };
     id: string;
     chatId: string;
 }

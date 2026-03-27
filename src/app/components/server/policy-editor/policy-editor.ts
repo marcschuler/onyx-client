@@ -1,12 +1,16 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {PermissionListHeader, PolicyService} from '../../../services/policy-service';
-import {PolicyDTO} from '../../../../api/webrtc-server';
+import {PermissionListHeader, PermissionListItem, PolicyService} from '../../../services/policy-service';
+import {PolicyDTO, PolicyItem} from '../../../../api/webrtc-server';
 import {RestService} from '../../../services/rest-service';
+import {DTOWithPolicies} from '../../../types';
+import {Popup} from '../../ui/popup/popup';
 
 @Component({
   selector: 'app-policy-editor',
-  imports: [],
+  imports: [
+    Popup
+  ],
   templateUrl: './policy-editor.html',
   styleUrl: './policy-editor.css',
 })
@@ -14,10 +18,13 @@ export class PolicyEditor implements AfterContentInit {
 
   @Input() connection!: WebSocketServerConnection;
   @Input() type!: PolicyType;
+  @Input() data!: DTOWithPolicies;
 
-  policies: PolicyDTO[]|undefined;
+  policies: PolicyDTO[] | undefined;
 
   permissionList!: PermissionListHeader[];
+
+  policyToAdd: PermissionListItem | undefined;
 
   constructor(private policyService: PolicyService, private restService: RestService) {
     this.initPolicy();
@@ -36,6 +43,10 @@ export class PolicyEditor implements AfterContentInit {
       }, error => this.restService.handleError(error));
   }
 
+  protected addPolicyToPolicyItem(policyToAdd: PermissionListItem, policy: PolicyDTO) {
+    const policyItem = (this.data.policies[policyToAdd.type] as PolicyItem)
+    policyItem.policies?.push(policy);
+  }
 }
 
 export enum PolicyType {

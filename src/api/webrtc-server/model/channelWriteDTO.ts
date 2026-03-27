@@ -11,5 +11,6 @@
 
 export interface ChannelWriteDTO { 
     name: string;
+    policies: { [key: string]: any; };
 }
 

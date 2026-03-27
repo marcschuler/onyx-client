@@ -93,7 +93,8 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
     this.connection.rest.channelController.create3({
       name: "Channel",
       sectionId: section.id,
-      order: section.channels.length
+      order: section.channels.length,
+      policies:{}
     }).subscribe(value => {
       this.toastService.create({
         title: "Channel created",

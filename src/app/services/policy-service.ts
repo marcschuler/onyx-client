@@ -57,6 +57,8 @@ export interface PermissionListItem {
 }
 
 export enum PermissionType {
+  
+
   CHANNEL = "CHANNEL",
   CHANNEL_JOIN = "CHANNEL_JOIN",
   CHANNEL_EDIT = "CHANNEL_EDIT",

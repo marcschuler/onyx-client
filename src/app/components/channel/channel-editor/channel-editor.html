@@ -6,8 +6,10 @@
       <textarea placeholder="description"></textarea>
     }
     @case (BUTTON_POLICIES) {
-      <app-policy-editor [connection]="connection" [type]="PolicyType.CHANNEL">
-      </app-policy-editor>
+      @if (channel) {
+        <app-policy-editor [connection]="connection" [type]="PolicyType.CHANNEL" [data]="channel">
+        </app-policy-editor>
+      }
     }
   }
 </app-button-panel>
