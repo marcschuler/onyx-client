@@ -5,28 +5,53 @@
     @for (item of header.items; track item) {
       <p class="settings-grid-label">
         {{ item.name }}<br>
-        <span class="text-neutral-600">{{ item.type }}</span>
+       <!-- <span class="text-neutral-600">{{ item.type }}</span>-->
       </p>
       <p class="settings-grid-desc">{{ item.description }}</p>
 
       @let policyItem = data.policies[item.type]!;
-      <div class="settings-grid-option h-16 overflow-y-auto">
+      <div class="settings-grid-option max-h-64 overflow-y-auto">
         @if (policyItem) {
           @for (policy of policyItem.policies; track policy.id) {
-            <button class="!p-0">{{ policy.name }}</button><br>
+            <div class="bg-neutral-800 rounded p-1 flex justify-between">
+             <span>
+                @if (policyItem.policies.length > 1){
+                  {{$index + 1}}.
+                }
+               {{ policy.name }}
+             </span>
+              <div class="flex items-center">
+                @if ($index > 0){
+                  <button class="button-small">
+                    <lucide-icon [name]="ChevronUp" (click)="moveUpInList(policyItem.policies,$index)"></lucide-icon>
+                  </button>
+                }
+                @if ($index < policyItem.policies.length-1) {
+                  <button class="button-small">
+                    <lucide-icon [name]="ChevronDown" (click)="moveDownInList(policyItem.policies,$index)"></lucide-icon>
+                  </button>
+                }
+                <button class="button-red button-small">
+                  <lucide-icon [name]="CircleX" (click)="policyItem.policies.splice($index,1)"></lucide-icon>
+                </button>
+              </div>
+            </div>
           }
         }
-        <button class="button-ghost !p-1 min-w-full" (click)="policyToAdd = item">+</button>
+        <button class="button-ghost !p-1 min-w-full flex items-center justify-center" (click)="permissionTypeToAdd = item.type">
+          <lucide-icon [name]="DiamondPlus"></lucide-icon>
+        </button>
       </div>
+      <div class="divider settings-grid-full"></div>
     }
   </div>
 }
 
-@if (policyToAdd) {
-  <app-popup [isOpen]="true" [closeButton]="true" (close)="policyToAdd = undefined">
+@if (permissionTypeToAdd) {
+  <app-popup [isOpen]="true" [closeButton]="true" (close)="permissionTypeToAdd = undefined">
     <h3>Select the Policy</h3>
     @for (policy of policies; track policy.id) {
-      <button (click)="addPolicyToPolicyItem(policyToAdd,policy)">
+      <button (click)="addPolicyToPolicyItem(permissionTypeToAdd,policy)">
         {{ policy.name }}
       </button>
       <br>

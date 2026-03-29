@@ -1,26 +1,19 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PolicyEditor, PolicyType} from '../../server/policy-editor/policy-editor';
-import {Popup} from '../../ui/popup/popup';
-import {KeyId, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
+import {BUTTON_EDIT} from '../../ui/popup/popup';
+import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO} from '../../../../api/webrtc-server';
 import {RestService} from '../../../services/rest-service';
 import {ButtonPanel, TabPanelEntry} from '../../ui/button-panel/button-panel';
-import {
-  ChannelAdministrationPanel
-} from '../../../pages/main/server/admin-panel/channel-administration-panel/channel-administration-panel';
-import {
-  GroupAdministrationPanel
-} from '../../../pages/main/server/admin-panel/group-administration-panel/group-administration-panel';
-import {
-  ServerAdministrationPanel
-} from '../../../pages/main/server/admin-panel/server-administration-panel/server-administration-panel';
-import {DiamondMinusIcon, HexagonIcon, IdCardLanyard, ServerCog} from 'lucide-angular';
+import {DiamondMinusIcon, HexagonIcon, LucideAngularModule, SaveIcon} from 'lucide-angular';
+import {ToastService, ToastType} from '../../../services/toast-service';
 
 @Component({
   selector: 'app-channel-editor',
   imports: [
     PolicyEditor,
     ButtonPanel,
+    LucideAngularModule,
   ],
   templateUrl: './channel-editor.html',
   styleUrl: './channel-editor.css',
@@ -45,7 +38,8 @@ export class ChannelEditor implements OnInit {
 
   channel: ChannelDTO | undefined;
 
-  constructor(private restService: RestService) {
+  constructor(private restService: RestService,
+              private toastService: ToastService) {
 
   }
 
@@ -55,4 +49,18 @@ export class ChannelEditor implements OnInit {
   }
 
   protected readonly PolicyType = PolicyType;
+  protected readonly BUTTON_EDIT = BUTTON_EDIT;
+  protected readonly SaveIcon = SaveIcon;
+
+  protected save() {
+    this.connection.rest.channelController.edit4(this.channelId,this.channel!)
+      .subscribe(channel => {
+          this.channel = channel;
+          this.toastService.create({
+            title:"Channel edited",
+            type: ToastType.Success
+          })
+        },
+        error=>this.restService.handleError(error));
+  }
 }
