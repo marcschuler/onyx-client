@@ -18,26 +18,23 @@
       <textarea class="input-invisible" [(ngModel)]="selectedPolicy.description"></textarea>
 
       <div class="">
-
-        <div class="grid grid-cols-3">
-          <select>
-            <option>Group</option>
-            <option>User</option>
-          </select>
-          <select>
-            <option>in</option>
-            <option>not in</option>
-            <option>in all</option>
-          </select>
-          <select multiple>
-            TODO
-          </select>
-        </div>
         @switch (selectedPolicy.type) {
-          @case (PolicyType.ROLE) {
+          @case ("ROLE") {
+            <div class="grid grid-cols-3">
+              <ui-multi-select [option]="['GROUP','USER']" [multi]="false" [(selected)]="selectedPolicyAsRole.operand">
 
+              </ui-multi-select>
+              <ui-multi-select [option]="['IN','NOT_IN','IN_ALL']"  [multi]="false" [(selected)]="selectedPolicyAsRole.operator">
+
+              </ui-multi-select>
+
+              <ui-multi-select [multi]="true" [(selected)]="selectedPolicyAsRole.ids">
+
+              </ui-multi-select>
+            </div>
           }
         }
+
         <br>
         <div class="text-right pt-4">
           <button class="button-line" (click)="updatePolicy(selectedPolicy)">Save</button>

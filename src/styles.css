@@ -86,6 +86,10 @@ button {
   @apply !p-1
 }
 
+.button-light{
+  @apply bg-neutral-200 text-neutral-800
+}
+
 .text-green-bold {
   @apply text-emerald-400
 }

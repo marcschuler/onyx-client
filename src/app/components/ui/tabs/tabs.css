@@ -1,0 +1,38 @@
+[ngTab] {
+  flex: 1;
+  outline: none;
+  padding: 0.75rem 0;
+  cursor: pointer;
+  text-align: center;
+}
+
+.sliding-window {
+  width: 300%;
+  display: flex;
+  transition: all 0.2s ease-in-out;
+}
+
+[ngTabList]:has([ngTab]:nth-child(1)[aria-selected='true']) ~ .sliding-window {
+  transform: translateX(0%);
+}
+[ngTabList]:has([ngTab]:nth-child(2)[aria-selected='true']) ~ .sliding-window {
+  transform: translateX(-33.333%);
+}
+[ngTabList]:has([ngTab]:nth-child(3)[aria-selected='true']) ~ .sliding-window {
+  transform: translateX(-66.666%);
+}
+
+[ngTabPanel] {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  min-height: 100px;
+  flex: 1;
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+[ngTabPanel]:focus {
+  outline-offset: -4px;
+  border-radius: 0.5rem;
+}

@@ -1,0 +1,18 @@
+<div ngTabs class="overflow-hidden min-w-full">
+  <div ngTabList selectionMode="follow" selectedTab="movie" class="p-0 flex list-none relative">
+
+    @for (tab of tabs; track tab){
+      <div ngTab [value]="tab" class="flex-1 p-1 cursor-pointer aria-selected:bg-neutral-700">{{ tab }}</div>
+    }
+
+  </div>
+  <div class="sliding-window">
+    @for (tab of tabs; track tab){
+    <div ngTabPanel [preserveContent]="true" value="movie">
+      <ng-template ngTabContent>
+        <ng-container *ngTemplateOutlet="getTemplate(tab)"></ng-container>
+      </ng-template>
+    </div>
+    }
+  </div>
+</div>
