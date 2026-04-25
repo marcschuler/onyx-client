@@ -7,16 +7,18 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SectionDTO } from './sectionDTO';
 import { MessageBody } from './messageBody';
 
 
-export interface JwtTokenMessage extends MessageBody { 
-    jwt: string;
-    readonly type: JwtTokenMessage.TypeEnum;
+export interface SectionCreateEvent extends MessageBody { 
+    section: SectionDTO;
+    order?: number;
+    readonly type: SectionCreateEvent.TypeEnum;
 }
-export namespace JwtTokenMessage {
+export namespace SectionCreateEvent {
     export const TypeEnum = {
-        JwtTokenMessage: 'JwtTokenMessage'
+        SectionCreateEvent: 'SectionCreateEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

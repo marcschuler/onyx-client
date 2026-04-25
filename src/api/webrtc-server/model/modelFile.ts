@@ -14,6 +14,7 @@ export interface ModelFile {
     id?: string;
     filename?: string;
     contentType?: string;
+    size?: number;
     hash?: Hash;
     created?: string;
 }

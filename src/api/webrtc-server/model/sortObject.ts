@@ -9,8 +9,9 @@
  */
 
 
-export interface ChannelReference { 
-    id?: string;
-    name?: string;
+export interface SortObject { 
+    empty?: boolean;
+    sorted?: boolean;
+    unsorted?: boolean;
 }
 

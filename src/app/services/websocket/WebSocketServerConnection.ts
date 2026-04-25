@@ -3,7 +3,7 @@ import {
   ChannelControllerService,
   ChatControllerService, GroupControllerService, PolicyControllerService, SectionControllerService,
   ServerControllerService,
-  ServerTreeChangeMessage, UserControllerService
+  ServerTreeChangeMessage, StorageControllerService, UserControllerService, UserSimpleDTO
 } from '../../../api/webrtc-server';
 import {IceServer} from '../../../api/webrtc-server/model/iceServer';
 import {ServerConnection} from '../server-loader-service';
@@ -16,8 +16,10 @@ export interface WebSocketServerConnection {
 
   data?: ServerTreeChangeMessage; //the server tree
   config: ServerConfig; //configuration settings for this server
-  clients: Client[]; //all clients
-  currentChannel?: ServerObjectId | undefined; //the current channel if existing
+  clients: Client[]; // a list of all clients on the server
+
+  me: Client;
+
   selectedChannel?: ServerObjectId | undefined; //the selected channel in UI if existing
 
   rest: RestConfiguration;
@@ -25,6 +27,7 @@ export interface WebSocketServerConnection {
 
 export interface RestConfiguration {
   readonly jwt?: string;
+  basePath: string;
   serverController: ServerControllerService;
   channelController: ChannelControllerService;
   chatController: ChatControllerService;
@@ -32,13 +35,15 @@ export interface RestConfiguration {
   userController: UserControllerService;
   groupController: GroupControllerService;
   policyController: PolicyControllerService;
+  storageController: StorageControllerService;
 }
 
 export interface Client {
   id: KeyId;
   publicKey: JsonWebKey;
   username: string;
-  channel: ServerObjectId;
+  channel: ServerObjectId | undefined;
+  details: UserSimpleDTO;
 }
 
 export interface ServerConfig {

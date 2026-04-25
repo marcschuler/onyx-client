@@ -17,9 +17,17 @@ import { Observable }                                        from 'rxjs';
 import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 
 // @ts-ignore
-import { MessageCreationDTO } from '../model/messageCreationDTO';
+import { FileMessageContentDTO } from '../model/fileMessageContentDTO';
+// @ts-ignore
+import { MarkdownMessageContentDTO } from '../model/markdownMessageContentDTO';
 // @ts-ignore
 import { MessageDTO } from '../model/messageDTO';
+// @ts-ignore
+import { MessageRequest } from '../model/messageRequest';
+// @ts-ignore
+import { PageMessageDTO } from '../model/pageMessageDTO';
+// @ts-ignore
+import { Pageable } from '../model/pageable';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -40,20 +48,20 @@ export class ChatControllerService extends BaseService {
     /**
      * @endpoint post /v0/chat/{id}/message
      * @param id 
-     * @param messageCreationDTO 
+     * @param fileMessageContentDTOMarkdownMessageContentDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public message(id: string, messageCreationDTO: MessageCreationDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MessageDTO>;
-    public message(id: string, messageCreationDTO: MessageCreationDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageDTO>>;
-    public message(id: string, messageCreationDTO: MessageCreationDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageDTO>>;
-    public message(id: string, messageCreationDTO: MessageCreationDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public message(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MessageDTO>;
+    public message(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageDTO>>;
+    public message(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageDTO>>;
+    public message(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling message.');
         }
-        if (messageCreationDTO === null || messageCreationDTO === undefined) {
-            throw new Error('Required parameter messageCreationDTO was null or undefined when calling message.');
+        if (fileMessageContentDTOMarkdownMessageContentDTO === null || fileMessageContentDTOMarkdownMessageContentDTO === undefined) {
+            throw new Error('Required parameter fileMessageContentDTOMarkdownMessageContentDTO was null or undefined when calling message.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -98,7 +106,7 @@ export class ChatControllerService extends BaseService {
         return this.httpClient.request<MessageDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: messageCreationDTO,
+                body: fileMessageContentDTOMarkdownMessageContentDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -110,19 +118,34 @@ export class ChatControllerService extends BaseService {
     }
 
     /**
-     * @endpoint get /v0/chat/{id}/message
+     * @endpoint get /v0/chat/{id}/messages
      * @param id 
+     * @param page 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public messages(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<MessageDTO>>;
-    public messages(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<MessageDTO>>>;
-    public messages(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<MessageDTO>>>;
-    public messages(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public messages(id: string, page: Pageable, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageMessageDTO>;
+    public messages(id: string, page: Pageable, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageMessageDTO>>;
+    public messages(id: string, page: Pageable, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageMessageDTO>>;
+    public messages(id: string, page: Pageable, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling messages.');
         }
+        if (page === null || page === undefined) {
+            throw new Error('Required parameter page was null or undefined when calling messages.');
+        }
+
+        let localVarQueryParameters = new OpenApiHttpParams(this.encoder);
+
+        localVarQueryParameters = this.addToHttpParams(
+            localVarQueryParameters,
+            'page',
+            <any>page,
+            QueryParamStyle.Form,
+            true,
+        );
+
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -152,11 +175,83 @@ export class ChatControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/message`;
+        let localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/messages`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<MessageDTO>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<PageMessageDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters.toHttpParams(),
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                ...(localVarTransferCache !== undefined ? { transferCache: localVarTransferCache } : {}),
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @endpoint get /v0/chat/{id}/messages/latest
+     * @param id 
+     * @param size 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     * @param options additional options
+     */
+    public messagesLatest(id: string, size?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageMessageDTO>;
+    public messagesLatest(id: string, size?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageMessageDTO>>;
+    public messagesLatest(id: string, size?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageMessageDTO>>;
+    public messagesLatest(id: string, size?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling messagesLatest.');
+        }
+
+        let localVarQueryParameters = new OpenApiHttpParams(this.encoder);
+
+        localVarQueryParameters = this.addToHttpParams(
+            localVarQueryParameters,
+            'size',
+            <any>size,
+            QueryParamStyle.Form,
+            true,
+        );
+
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (jwt-auth) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('jwt-auth', 'Authorization', localVarHeaders, 'Bearer ');
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/messages/latest`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<PageMessageDTO>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters.toHttpParams(),
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

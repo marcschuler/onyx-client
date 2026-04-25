@@ -7,18 +7,17 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageDTO } from './messageDTO';
 import { MessageBody } from './messageBody';
 
 
-export interface IncomeMessageEvent extends MessageBody { 
-    chatId: string;
-    message: MessageDTO;
-    readonly type: IncomeMessageEvent.TypeEnum;
+export interface SectionMoveEvent extends MessageBody { 
+    sectionId?: string;
+    order?: number;
+    readonly type: SectionMoveEvent.TypeEnum;
 }
-export namespace IncomeMessageEvent {
+export namespace SectionMoveEvent {
     export const TypeEnum = {
-        IncomeMessageEvent: 'IncomeMessageEvent'
+        SectionMoveEvent: 'SectionMoveEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

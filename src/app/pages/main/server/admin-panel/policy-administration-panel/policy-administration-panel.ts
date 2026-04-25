@@ -1,16 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {WebSocketServerConnection} from "../../../../../services/websocket/WebSocketServerConnection";
 import {IdCardLanyard, LucideAngularModule} from 'lucide-angular';
-import {PolicyPanel} from '../group-administration-panel/policy-panel/policy-panel';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {GroupDTO, PolicyDTO, RolePolicyDTO, UserSimpleDTO} from '../../../../../../api/webrtc-server';
 import {RestService} from '../../../../../services/rest-service';
 import {removeItemFromList} from '../../../../../util';
 import {PolicyType} from '../../../../../types';
 import {MultiSelect} from '../../../../../components/ui/multi-select/multi-select';
-import {Option} from '@angular/aria/listbox';
-import {Tabs} from '../../../../../components/ui/tabs/tabs';
-import {TabItem} from '../../../../../components/ui/tabs/tab-item';
 
 @Component({
   selector: 'app-policy-administration-panel',
@@ -19,9 +15,6 @@ import {TabItem} from '../../../../../components/ui/tabs/tab-item';
     ReactiveFormsModule,
     FormsModule,
     MultiSelect,
-    Option,
-    Tabs,
-    TabItem
   ],
   templateUrl: './policy-administration-panel.html',
   styleUrl: './policy-administration-panel.css',
@@ -36,7 +29,7 @@ export class PolicyAdministrationPanel implements OnInit {
   groups: GroupDTO[] | undefined;
   users: UserSimpleDTO[] | undefined;
 
-  get selectedPolicyAsRole(): RolePolicyDTO{
+  get selectedPolicyAsRole(): RolePolicyDTO {
     return this.selectedPolicy as RolePolicyDTO;
   }
 
@@ -50,7 +43,7 @@ export class PolicyAdministrationPanel implements OnInit {
 
     this.connection.rest.userController.users()
       .subscribe(users => this.users = users,
-        error=>this.restService.handleError(error));
+        error => this.restService.handleError(error));
 
     this.connection.rest.groupController.all()
       .subscribe(groups => this.groups = groups,
@@ -61,6 +54,11 @@ export class PolicyAdministrationPanel implements OnInit {
     this.connection.rest.policyController.create1({
       name: "Policy",
       description: undefined,
+      ids: new Set<string>(),
+      operator: "IN",
+      operand: "GROUP",
+      type: "ROLE",
+      id: ""
     }).subscribe(value => {
       this.policies?.push(value);
     }, error => this.restService.handleError(error))
@@ -71,8 +69,8 @@ export class PolicyAdministrationPanel implements OnInit {
 
   protected updatePolicy(policy: PolicyDTO) {
     this.connection.rest.policyController
-      .edit2(policy.id, policy)
-      .subscribe(value => {
+      .edit2(policy.id, policy as RolePolicyDTO)
+      .subscribe(_ => {
       }, error => this.restService.handleError(error))
   }
 
@@ -83,6 +81,4 @@ export class PolicyAdministrationPanel implements OnInit {
         removeItemFromList(this.policies!, policy);
       }, error => this.restService.handleError(error))
   }
-
-  protected readonly PolicyType = PolicyType;
 }

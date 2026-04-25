@@ -7,18 +7,16 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserSimpleDTO } from './userSimpleDTO';
 import { MessageBody } from './messageBody';
 
 
-export interface ClientChannelJoinMessage extends MessageBody { 
-    user: UserSimpleDTO;
-    channelId?: string;
-    readonly type: ClientChannelJoinMessage.TypeEnum;
+export interface JwtTokenEvent extends MessageBody { 
+    jwt: string;
+    readonly type: JwtTokenEvent.TypeEnum;
 }
-export namespace ClientChannelJoinMessage {
+export namespace JwtTokenEvent {
     export const TypeEnum = {
-        ClientChannelJoinMessage: 'ClientChannelJoinMessage'
+        JwtTokenEvent: 'JwtTokenEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

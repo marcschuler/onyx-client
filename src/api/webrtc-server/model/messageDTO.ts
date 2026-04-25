@@ -7,7 +7,7 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MarkdownMessageContentDTO } from './markdownMessageContentDTO';
+import { MessageRequest } from './messageRequest';
 import { UserSimpleDTO } from './userSimpleDTO';
 
 
@@ -15,6 +15,6 @@ export interface MessageDTO {
     id: string;
     timestamp: string;
     user: UserSimpleDTO;
-    content?: Array<MarkdownMessageContentDTO>;
+    content?: Array<MessageRequest>;
 }
 

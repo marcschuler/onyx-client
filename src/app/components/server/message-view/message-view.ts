@@ -1,28 +1,45 @@
-import {Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {LucideAngularModule, SendIcon} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {getChannelFromId} from '../../../services/Util';
 import {ToastService, ToastType} from '../../../services/toast-service';
 import {MessageHandler, WebSocketService} from '../../../services/websocket/web-socket-service';
-import {IncomeMessageEvent} from '../../../../api/webrtc-server';
 import {MessageDTO} from '../../../../api/webrtc-server/model/messageDTO';
 import {NOTIFICATION_MESSAGE_NEW, NotificationService} from '../../../services/notification.service';
 import {RestService} from '../../../services/rest-service';
 import {Message} from './message/message';
 import {MessageService} from '../../../services/message-service';
+import {
+  ChatMessageEvent,
+  FileDTO,
+  FileMessageContentDTO,
+  MarkdownMessageContentDTO
+} from '../../../../api/webrtc-server';
+import {FileUpload} from '../../ui/file-upload/file-upload';
 
 @Component({
   selector: 'app-message-view',
   imports: [
     FormsModule,
     LucideAngularModule,
-    Message
+    Message,
+    FileUpload
   ],
   templateUrl: './message-view.html',
   styleUrl: './message-view.css'
 })
-export class MessageView implements OnInit, OnDestroy, OnChanges {
+export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
   protected readonly SendIcon = SendIcon;
 
@@ -30,28 +47,19 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
   @Input() connection!: WebSocketServerConnection;
 
   messages: MessageDTO[] = [];
+  currentPage: number | undefined = undefined;
 
   message: string = "";
 
   @ViewChild('messageList') private messageListElement!: ElementRef;
 
-
-  incomeMessageHandler: MessageHandler<IncomeMessageEvent> = (event: IncomeMessageEvent, connection) => {
-    console.log("received new message " + JSON.stringify(event));
-    if (!this.connection.selectedChannel){
-      console.log("Ignoring message, no channel selected");
-      return;
+  @ViewChild('moreMessages') set moreMessagesElement(element: ElementRef) {
+    if (element) {
+      this.observeMessageList(element);
     }
-    const currentChatId = getChannelFromId(this.connection.selectedChannel,connection.data!.sections)?.chatId;
-    if (currentChatId != event.chatId){
-      console.log("Ignoring message, other chat selected (" + currentChatId + "!=" + event.chatId + ")");
-      return;
-    }
-    this.addMessageToList([event.message]);
-    if (event.message.user.id !== connection.identity.id)
-      this.notificationService.notify(NOTIFICATION_MESSAGE_NEW)
+  }
 
-  };
+  private moreMessagesObserver?: IntersectionObserver;
 
   constructor(private toastService: ToastService,
               private webSocketService: WebSocketService,
@@ -64,30 +72,61 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["channelId"]) {
       this.messages = [];
-      this.updateMessages();
+      this.initMessages();
     }
   }
 
-  updateMessages() {
-    const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
-    this.connection.rest.chatController.messages(channel!.chatId).subscribe(messages => {
+  observeMessageList(element: ElementRef) {
+    if (this.moreMessagesObserver) return;
+    this.moreMessagesObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          console.log("Loading older messages")
+          this.loadMessages(); // your function
+        }
+      });
+    }, {threshold: 0.1}); // 0.1 = 10% visible triggers it
 
-      if (messages == undefined || messages.length == undefined) {
-        console.warn("no messages received");
-        return;
-      }
-      console.log("Got " + messages.length + " messages in chat")
-      this.addMessageToList(messages);
-    }, error => this.restService.handleError(error))
+    this.moreMessagesObserver.observe(element.nativeElement);
   }
 
+  initMessages() {
+    const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
+    this.messages = [];
+    this.currentPage = undefined;
+    this.connection.rest.chatController.messagesLatest(channel!.chatId, 50).subscribe(messages => {
+      this.addMessageToList(messages.content || []);
+      this.currentPage = messages.pageable?.pageNumber || undefined;
+      console.log("message-view: Got newest " + messages.content?.length + " messages from " + messages.totalElements + " in chat")
+    }, error => this.restService.handleError(error));
+  }
+
+  protected loadMessages() {
+    if (this.currentPage == undefined || this.currentPage == 0) {
+      console.error("message-view: could not load more messages. Current page is " + this.currentPage);
+      return;
+    }
+    console.log("message-view: current page is " + this.currentPage + ". Loading page " + (this.currentPage - 1));
+    const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
+    this.connection.rest.chatController.messages(channel!.chatId, {
+      page: this.currentPage - 1,
+      size: 50
+    }).subscribe(messages => {
+      this.addMessageToList(messages.content || []);
+      this.currentPage = messages.pageable?.pageNumber || undefined;
+      console.log("message-view: Got newest " + messages.content?.length + " messages from " + messages.totalElements + " in chat")
+    }, error => this.restService.handleError(error));
+  }
+
+
   ngOnInit(): void {
-    this.webSocketService.addHandler(IncomeMessageEvent.TypeEnum.IncomeMessageEvent, this.incomeMessageHandler);
-    this.updateMessages();
+    this.webSocketService.addHandler(ChatMessageEvent.TypeEnum.ChatMessageEvent, this.incomeMessageHandler);
+    this.initMessages();
   }
 
   ngOnDestroy(): void {
     this.webSocketService.removeHandler(this.incomeMessageHandler);
+    this.moreMessagesObserver?.disconnect()
   }
 
   addMessageToList(messages: MessageDTO[]) {
@@ -95,7 +134,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
       this.messages.push(message);
     }
     //remove duplicates, e.g. from duplicate calls to updateMessages
-   this.messages = this.messages.filter(
+    this.messages = this.messages.filter(
       (item, index, self) => index === self.findIndex(i => i.id === item.id)
     );
 
@@ -123,21 +162,53 @@ export class MessageView implements OnInit, OnDestroy, OnChanges {
     }
     const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
     if (!channel) {
-      this.toastService.create({
-        title: 'Client Error',
-        message: 'Could not find the chat you are trying to send this message',
-        type: ToastType.Error,
-        duration: 5000
-      });
       return;
     }
     const message = this.messageService.convertLinksToMarkdownLinks(this.message);
-    console.log("sending message to channel/chat " + channel.id + "/" + channel.chatId);
+    console.log("message-view: sending message to channel/chat " + channel.id + "/" + channel.chatId);
     this.connection.rest.chatController.message(channel.chatId, {
-      markdown: message
-    }).subscribe(value => {
+      text: message,
+      type: "MARKDOWN"
+    } as MarkdownMessageContentDTO).subscribe(value => {
       this.message = "";
-      console.log("Message send");
     }, error => this.restService.handleError(error))
   }
+
+  protected onFileUpload($event: FileDTO) {
+    console.log("message-view: file was uploaded, crafting message")
+    const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
+    if (!channel) {
+      return;
+    }
+    this.connection.rest.chatController.message(channel.chatId, {
+      type: "FILE",
+      file: $event
+    } as FileMessageContentDTO)
+      .subscribe(_ => {
+        console.log("message-view: send file chat")
+        this.toastService.create({
+          title: "File uploaded to chat",
+          type: ToastType.Success
+        })
+      }, error => this.restService.handleError(error))
+  }
+
+  incomeMessageHandler: MessageHandler<ChatMessageEvent> = (event: ChatMessageEvent, connection) => {
+    console.log("message-view: received new message " + JSON.stringify(event));
+    if (!this.connection.selectedChannel) {
+      console.log("message-view: Ignoring message, no channel selected");
+      return;
+    }
+    const currentChatId = getChannelFromId(this.connection.selectedChannel, connection.data!.sections)?.chatId;
+    if (currentChatId != event.chatId) {
+      console.log("message-view: Ignoring message, other chat selected (" + currentChatId + "!=" + event.chatId + ")");
+      return;
+    }
+    this.addMessageToList([event.message]);
+    if (event.message.user.id !== connection.identity.id)
+      this.notificationService.notify(NOTIFICATION_MESSAGE_NEW)
+
+  };
+
+
 }

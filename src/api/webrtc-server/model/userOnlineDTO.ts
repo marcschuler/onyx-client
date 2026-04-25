@@ -7,9 +7,11 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserSimpleDTO } from './userSimpleDTO';
 
 
-export interface MessageBodyRequest { 
-    requestId?: string;
+export interface UserOnlineDTO { 
+    user: UserSimpleDTO;
+    channelId?: string;
 }
 

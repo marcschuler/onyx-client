@@ -11,13 +11,14 @@ import { UserSimpleDTO } from './userSimpleDTO';
 import { MessageBody } from './messageBody';
 
 
-export interface ClientChannelLeaveMessage extends MessageBody { 
+export interface ClientChannelJoinEvent extends MessageBody { 
     user: UserSimpleDTO;
-    readonly type: ClientChannelLeaveMessage.TypeEnum;
+    channelId?: string;
+    readonly type: ClientChannelJoinEvent.TypeEnum;
 }
-export namespace ClientChannelLeaveMessage {
+export namespace ClientChannelJoinEvent {
     export const TypeEnum = {
-        ClientChannelLeaveMessage: 'ClientChannelLeaveMessage'
+        ClientChannelJoinEvent: 'ClientChannelJoinEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

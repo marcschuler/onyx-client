@@ -16,9 +16,8 @@ import {InterfaceService} from '../../../../services/interface-service';
 import {FormsModule} from '@angular/forms';
 import {MessageView} from '../../../../components/server/message-view/message-view';
 import {ServerObjectId, WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
-import {ChannelDetailRequest, ChannelDetailResponse} from '../../../../../api/webrtc-server';
 import {ChannelDTO} from '../../../../../api/webrtc-server/model/channelDTO';
-import {NgClass, NgStyle} from '@angular/common';
+import {NgStyle} from '@angular/common';
 import {TrackType} from '../../../../services/peer/MediaTracker';
 
 @Component({
@@ -76,13 +75,9 @@ export class ChannelView implements AfterViewInit, OnChanges {
   }
 
   updateDetails() {
-    this.webSocketService.sendWithResponse(this.connection,
-      {
-        channelId: this.channelId,
-        type: ChannelDetailRequest.TypeEnum.ChannelDetailRequest,
-      } as ChannelDetailRequest, (event, connection) => {
-        const e = event as ChannelDetailResponse;
-        this.details = e.channel;
+    this.connection.rest.channelController.channel(this.channelId)
+      .subscribe(channel => {
+        this.details = channel;
       })
   }
 
@@ -133,7 +128,7 @@ export class ChannelView implements AfterViewInit, OnChanges {
   updateGridSize() {
     const titleHeight =
       this.titleContainer.nativeElement.getBoundingClientRect().height;
-    this.titleHeight =titleHeight;
+    this.titleHeight = titleHeight;
 
     if (!this.peerGridContainer)
       return;

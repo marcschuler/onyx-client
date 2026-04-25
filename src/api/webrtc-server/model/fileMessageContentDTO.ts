@@ -7,9 +7,11 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileDTO } from './fileDTO';
+import { MessageContentDTO } from './messageContentDTO';
 
 
-export interface MessageBodyResponse { 
-    respondsTo: string;
+export interface FileMessageContentDTO extends MessageContentDTO { 
+    file: FileDTO;
 }
 

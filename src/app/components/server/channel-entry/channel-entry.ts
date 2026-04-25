@@ -1,6 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {HexagonIcon, LogInIcon, LogOutIcon, LucideAngularModule} from "lucide-angular";
-import {ChannelDTO, ClientChannelChangeRequest} from '../../../../api/webrtc-server';
+import {
+  ChannelDTO,
+  ClientChannelJoinEvent,
+  ClientChannelJoinRequest,
+  ClientChannelLeaveRequest
+} from '../../../../api/webrtc-server';
 import {ServerObjectId, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {InterfaceService} from '../../../services/interface-service';
@@ -28,28 +33,28 @@ export class ChannelEntry {
   }
 
 
-  changeChannel(channel: ChannelDTO | undefined) {
-    console.log("Changing channel to " + (channel ? channel.name : "(none)"));
-    this.selectChannel(channel);
+  protected joinChannel(channel: ChannelDTO) {
+    console.log("trying to join channel", channel);
     this.webSocketService.send(this.connection, {
       channelId: (channel ? channel.id : undefined),
-      type: ClientChannelChangeRequest.TypeEnum.ClientChannelChangeRequest
-    } as ClientChannelChangeRequest);
+      type: ClientChannelJoinRequest.TypeEnum.ClientChannelJoinRequest
+    } as ClientChannelJoinRequest);
   }
 
-
-  protected selectChannel(channel: ChannelDTO | undefined) {
-    if (channel == undefined) {
-      console.log("Unselecting channel")
-      this.connection.selectedChannel = undefined;
-    } else {
-      console.log("Selecting channel " + channel.name)
-      this.connection.selectedChannel = channel.id as ServerObjectId;
-    }
+  protected leaveChannel() {
+    console.log("leaving channel");
+    this.webSocketService.send(this.connection, {
+      type: "ClientChannelLeaveRequest"
+    } as ClientChannelLeaveRequest)
   }
 
 
   protected readonly LogOutIcon = LogOutIcon;
   protected readonly HexagonIcon = HexagonIcon;
   protected readonly LogInIcon = LogInIcon;
+
+
+  protected selectChannel(channel: ChannelDTO) {
+    this.connection.selectedChannel = channel.id as ServerObjectId;
+  }
 }

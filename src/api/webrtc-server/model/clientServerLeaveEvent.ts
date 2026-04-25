@@ -7,18 +7,16 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ChannelDTO } from './channelDTO';
 import { MessageBody } from './messageBody';
 
 
-export interface ChannelDetailResponse extends MessageBody { 
-    respondsTo: string;
-    channel?: ChannelDTO;
-    readonly type: ChannelDetailResponse.TypeEnum;
+export interface ClientServerLeaveEvent extends MessageBody { 
+    userId: string;
+    readonly type: ClientServerLeaveEvent.TypeEnum;
 }
-export namespace ChannelDetailResponse {
+export namespace ClientServerLeaveEvent {
     export const TypeEnum = {
-        ChannelDetailResponse: 'ChannelDetailResponse'
+        ClientServerLeaveEvent: 'ClientServerLeaveEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

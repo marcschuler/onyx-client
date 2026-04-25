@@ -9,7 +9,9 @@
  */
 
 
-export interface UploadMediaRequest { 
-    file: Blob;
+export interface Pageable { 
+    page?: number;
+    size?: number;
+    sort?: Array<string>;
 }
 

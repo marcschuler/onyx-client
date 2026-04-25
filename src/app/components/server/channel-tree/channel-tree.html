@@ -7,21 +7,24 @@
       <h4 class="font-semibold pt-3">{{ section.name }}</h4>
       @for (channel of section.channels; track channel) {
         <app-channel-entry [channel]="channel" [connection]="connection"></app-channel-entry>
-        @for (user of channel.users; track user.id) {
-          <app-user-entry [user]="user" [connection]="connection"></app-user-entry>
+        @for (client of connection.clients; track client.id) {
+          @if (client.channel == channel.id) {
+            <app-user-entry [client]="client" [connection]="connection"></app-user-entry>
+          }
         }
       }
     </div>
   }
 
-  @if (connection.data.usersNotInChannel.length > 0) {
-    <div [class.pt-8]="!interfaceService.settings.compactMode" [class.pt-4]="interfaceService.settings.compactMode">
-      <h4 class="text-neutral-200 font-semibold">Idle</h4>
-      @for (user of connection.data.usersNotInChannel; track user.id) {
-        <app-user-entry [user]="user" [connection]="connection"></app-user-entry>
+
+  <div [class.pt-8]="!interfaceService.settings.compactMode" [class.pt-4]="interfaceService.settings.compactMode">
+    <h4 class="text-neutral-200 font-semibold">Idle</h4>
+    @for (client of connection.clients; track client.id) {
+      @if (client.channel == undefined) {
+        <app-user-entry [client]="client" [connection]="connection"></app-user-entry>
       }
-    </div>
-  }
+    }
+  </div>
 } @else {
   <app-spinner></app-spinner>
 }

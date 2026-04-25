@@ -7,23 +7,27 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserSimpleDTO } from './userSimpleDTO';
 import { MessageBody } from './messageBody';
 
 
-export interface KickMessage extends MessageBody { 
-    reason?: KickMessage.ReasonEnum;
-    readonly type: KickMessage.TypeEnum;
+export interface ClientKickEvent extends MessageBody { 
+    user: UserSimpleDTO;
+    reason: ClientKickEvent.ReasonEnum;
+    message?: string;
+    readonly type: ClientKickEvent.TypeEnum;
 }
-export namespace KickMessage {
+export namespace ClientKickEvent {
     export const ReasonEnum = {
         AlreadyConnected: 'ALREADY_CONNECTED',
         UnauthorizedRequest: 'UNAUTHORIZED_REQUEST',
         InternalError: 'INTERNAL_ERROR',
-        Banned: 'BANNED'
+        Banned: 'BANNED',
+        Other: 'OTHER'
     } as const;
     export type ReasonEnum = typeof ReasonEnum[keyof typeof ReasonEnum];
     export const TypeEnum = {
-        KickMessage: 'KickMessage'
+        ClientKickEvent: 'ClientKickEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

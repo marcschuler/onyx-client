@@ -7,12 +7,16 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserOnlineDTO } from './userOnlineDTO';
+import { UserSimpleDTO } from './userSimpleDTO';
 import { MessageBody } from './messageBody';
 
 
 export interface AuthSuccessMessage extends MessageBody { 
     message?: string;
     jwt: string;
+    me: UserSimpleDTO;
+    clients: Array<UserOnlineDTO>;
     readonly type: AuthSuccessMessage.TypeEnum;
 }
 export namespace AuthSuccessMessage {

@@ -17,9 +17,7 @@ import { Observable }                                        from 'rxjs';
 import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 
 // @ts-ignore
-import { Edit2200Response } from '../model/edit2200Response';
-// @ts-ignore
-import { PolicyWriteDTO } from '../model/policyWriteDTO';
+import { RolePolicyDTO } from '../model/rolePolicyDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -39,17 +37,17 @@ export class PolicyControllerService extends BaseService {
 
     /**
      * @endpoint post /v0/policy
-     * @param policyWriteDTO 
+     * @param rolePolicyDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public create1(policyWriteDTO: PolicyWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Edit2200Response>;
-    public create1(policyWriteDTO: PolicyWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Edit2200Response>>;
-    public create1(policyWriteDTO: PolicyWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Edit2200Response>>;
-    public create1(policyWriteDTO: PolicyWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (policyWriteDTO === null || policyWriteDTO === undefined) {
-            throw new Error('Required parameter policyWriteDTO was null or undefined when calling create1.');
+    public create1(rolePolicyDTO: RolePolicyDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<RolePolicyDTO>;
+    public create1(rolePolicyDTO: RolePolicyDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<RolePolicyDTO>>;
+    public create1(rolePolicyDTO: RolePolicyDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<RolePolicyDTO>>;
+    public create1(rolePolicyDTO: RolePolicyDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (rolePolicyDTO === null || rolePolicyDTO === undefined) {
+            throw new Error('Required parameter rolePolicyDTO was null or undefined when calling create1.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -91,10 +89,10 @@ export class PolicyControllerService extends BaseService {
 
         let localVarPath = `/v0/policy`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Edit2200Response>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<RolePolicyDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: policyWriteDTO,
+                body: rolePolicyDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -165,20 +163,20 @@ export class PolicyControllerService extends BaseService {
     /**
      * @endpoint put /v0/policy/{id}
      * @param id 
-     * @param policyWriteDTO 
+     * @param rolePolicyDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public edit2(id: string, policyWriteDTO: PolicyWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Edit2200Response>;
-    public edit2(id: string, policyWriteDTO: PolicyWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Edit2200Response>>;
-    public edit2(id: string, policyWriteDTO: PolicyWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Edit2200Response>>;
-    public edit2(id: string, policyWriteDTO: PolicyWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public edit2(id: string, rolePolicyDTO: RolePolicyDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<RolePolicyDTO>;
+    public edit2(id: string, rolePolicyDTO: RolePolicyDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<RolePolicyDTO>>;
+    public edit2(id: string, rolePolicyDTO: RolePolicyDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<RolePolicyDTO>>;
+    public edit2(id: string, rolePolicyDTO: RolePolicyDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling edit2.');
         }
-        if (policyWriteDTO === null || policyWriteDTO === undefined) {
-            throw new Error('Required parameter policyWriteDTO was null or undefined when calling edit2.');
+        if (rolePolicyDTO === null || rolePolicyDTO === undefined) {
+            throw new Error('Required parameter rolePolicyDTO was null or undefined when calling edit2.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -220,10 +218,10 @@ export class PolicyControllerService extends BaseService {
 
         let localVarPath = `/v0/policy/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Edit2200Response>('put', `${basePath}${localVarPath}`,
+        return this.httpClient.request<RolePolicyDTO>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: policyWriteDTO,
+                body: rolePolicyDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -240,9 +238,9 @@ export class PolicyControllerService extends BaseService {
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public policies(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<Edit2200Response>>;
-    public policies(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<Edit2200Response>>>;
-    public policies(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<Edit2200Response>>>;
+    public policies(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<RolePolicyDTO>>;
+    public policies(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<RolePolicyDTO>>>;
+    public policies(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<RolePolicyDTO>>>;
     public policies(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -275,7 +273,7 @@ export class PolicyControllerService extends BaseService {
 
         let localVarPath = `/v0/policy`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<Edit2200Response>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<RolePolicyDTO>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

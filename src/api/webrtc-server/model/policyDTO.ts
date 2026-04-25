@@ -10,9 +10,9 @@
 
 
 export interface PolicyDTO { 
+    id: string;
     name: string;
     description?: string;
-    id: string;
     type: string;
 }
 

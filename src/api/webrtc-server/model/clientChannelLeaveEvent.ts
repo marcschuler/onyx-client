@@ -7,16 +7,17 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserSimpleDTO } from './userSimpleDTO';
 import { MessageBody } from './messageBody';
 
 
-export interface ClientChannelChangeRequest extends MessageBody { 
-    channelId?: string;
-    readonly type: ClientChannelChangeRequest.TypeEnum;
+export interface ClientChannelLeaveEvent extends MessageBody { 
+    user: UserSimpleDTO;
+    readonly type: ClientChannelLeaveEvent.TypeEnum;
 }
-export namespace ClientChannelChangeRequest {
+export namespace ClientChannelLeaveEvent {
     export const TypeEnum = {
-        ClientChannelChangeRequest: 'ClientChannelChangeRequest'
+        ClientChannelLeaveEvent: 'ClientChannelLeaveEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

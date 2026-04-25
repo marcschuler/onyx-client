@@ -7,7 +7,6 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileDTO } from './fileDTO';
 import { GroupDTO } from './groupDTO';
 
 
@@ -15,7 +14,7 @@ export interface UserSimpleDTO {
     id: string;
     publicKey: { [key: string]: any; };
     username: string;
-    avatar?: FileDTO;
+    avatarId?: string;
     groups: Array<GroupDTO>;
 }
 

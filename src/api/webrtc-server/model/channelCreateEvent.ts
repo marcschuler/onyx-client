@@ -7,17 +7,19 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ChannelDTO } from './channelDTO';
 import { MessageBody } from './messageBody';
 
 
-export interface ChannelDetailRequest extends MessageBody { 
-    requestId?: string;
-    channelId?: string;
-    readonly type: ChannelDetailRequest.TypeEnum;
+export interface ChannelCreateEvent extends MessageBody { 
+    sectionId: string;
+    order: number;
+    channel: ChannelDTO;
+    readonly type: ChannelCreateEvent.TypeEnum;
 }
-export namespace ChannelDetailRequest {
+export namespace ChannelCreateEvent {
     export const TypeEnum = {
-        ChannelDetailRequest: 'ChannelDetailRequest'
+        ChannelCreateEvent: 'ChannelCreateEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

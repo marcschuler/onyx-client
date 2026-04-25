@@ -97,7 +97,7 @@ export class UsersPanel implements OnInit {
   protected readonly CircleSlash = CircleSlash;
 
   protected ban(user: UserExtendedDTO) {
-    this.connection.rest.userController.ban(user.id)
+    this.connection.rest.userController.ban(user.id,"") //TODO add reason
       .subscribe(value => {
         this.toastService.create({
           title: "User banned",

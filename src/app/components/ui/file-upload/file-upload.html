@@ -1,0 +1,31 @@
+<div
+  class="button-ghost rounded flex"
+  (click)="fileInput.click()"
+  (dragover)="onDragOver($event)"
+  (drop)="onDrop($event)"
+>
+
+  <!--@if (file){
+    <p class="pt-2 text-neutral-400 text-xs">
+      {{file.name}}
+    </p>
+  }-->
+
+  @if(uploadPercentage!==undefined){
+    <app-spinner></app-spinner>
+    <p class="text-xs">
+      {{uploadPercentage}}%
+    </p>
+  } @else {
+    <lucide-icon [name]="avatar? ImageUpIcon : FileUpIcon" class="w-[100%]"></lucide-icon>
+  }
+
+
+  <input
+    type="file"
+    (change)="onFileSelected($event)"
+    hidden
+    #fileInput
+  />
+
+</div>

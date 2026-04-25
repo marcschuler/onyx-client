@@ -9,17 +9,16 @@ import {
   AuthChallengeRequest,
   AuthChallengeResponse,
   AuthSuccessMessage,
-  ClientChannelJoinMessage,
-  ClientChannelLeaveMessage,
-  IceServerMessage, JwtTokenMessage,
-  KickMessage,
-  MessageBody,
-  MessageBodyRequest,
-  MessageBodyResponse,
-  MessageTypes, ServerControllerService,
+  ClientChangeEvent, ClientChannelJoinEvent, ClientChannelLeaveEvent, ClientServerJoinEvent, ClientServerLeaveEvent,
+  IceServerMessage, JwtTokenEvent,
+  MessageTypes,
   ServerTreeChangeMessage
 } from '../../../api/webrtc-server';
 import {RestService} from '../rest-service';
+import {MessageBody} from '../../../api/webrtc-server';
+import {KickedEvent} from '../../../api/webrtc-server';
+import {ClientKickEvent} from '../../../api/webrtc-server';
+import {clientWithId} from '../Util';
 
 @Injectable({
   providedIn: 'root'
@@ -32,19 +31,25 @@ export class WebSocketService {
 
   private messageHandlers: Map<MessageTypes, MessageHandler<any>[]> = new Map();
 
-  private responseCallbacks: Map<string, ResponseMessageHandler<any>> = new Map();
-
   constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService,
               private restService: RestService,
               private peerConnectionService: PeerConnectionService) {
     this.addHandler(AuthChallengeRequest.TypeEnum.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
     this.addHandler(AuthSuccessMessage.TypeEnum.AuthSuccessMessage, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessMessage, c));
     this.addHandler(ServerTreeChangeMessage.TypeEnum.ServerTreeChangeMessage, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeMessage, c))
-    this.addHandler(ClientChannelJoinMessage.TypeEnum.ClientChannelJoinMessage, (e, c) => this.onClientChannelJoinEvent(e as ClientChannelJoinMessage, c))
-    this.addHandler(ClientChannelLeaveMessage.TypeEnum.ClientChannelLeaveMessage, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveMessage, c));
+
+    this.addHandler(ClientServerJoinEvent.TypeEnum.ClientServerJoinEvent, (e, c) => this.onClientServerJoin(e as ClientServerJoinEvent, c));
+    this.addHandler(ClientServerLeaveEvent.TypeEnum.ClientServerLeaveEvent, (e, c) => this.onClientServerLeave(e as ClientServerLeaveEvent, c))
+
+    this.addHandler(ClientChannelJoinEvent.TypeEnum.ClientChannelJoinEvent, (e, c) => this.onClientChannelJoinEvent(e as ClientChannelJoinEvent, c))
+    this.addHandler(ClientChannelLeaveEvent.TypeEnum.ClientChannelLeaveEvent, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveEvent, c));
+
+    this.addHandler(ClientChangeEvent.TypeEnum.ClientChangeEvent,(e,c)=>this.onClientChange(e as ClientChangeEvent,c));
+    this.addHandler(KickedEvent.TypeEnum.KickedEvent, (e, c) => this.onKickMessage(e as KickedEvent, c));
+    this.addHandler(ClientKickEvent.TypeEnum.ClientKickEvent, (e, c) => this.onClientKickedMessage(e as ClientKickEvent, c));
+
     this.addHandler(IceServerMessage.TypeEnum.IceServerMessage, (e, c) => this.onIceServerData(e as IceServerMessage, c));
-    this.addHandler(KickMessage.TypeEnum.KickMessage, (e, c) => this.onKickMessage(e as KickMessage, c));
-    this.addHandler(JwtTokenMessage.TypeEnum.JwtTokenMessage, (e, c) => this.onJwtToken(e as JwtTokenMessage, c));
+    this.addHandler(JwtTokenEvent.TypeEnum.JwtTokenEvent, (e, c) => this.onJwtToken(e as JwtTokenEvent, c));
   }
 
 
@@ -72,6 +77,7 @@ export class WebSocketService {
         identity: identity,
         clients: [],
         config: {},
+        me: undefined as any as Client, // is hacky but the server promises to return a result
         rest: this.restService.createRestConfig(serverConnection.url, undefined)
       }
       webSocket.onopen = (_) => {
@@ -126,16 +132,10 @@ export class WebSocketService {
     this.connection = undefined;
   }
 
-  public send(connection: WebSocketServerConnection, event: MessageBody | MessageBodyRequest) {
+  public send(connection: WebSocketServerConnection, event: MessageBody) {
     if (this.LOG_MESSAGES)
       console.log("ws: sending data: " + JSON.stringify(event))
     connection.serverConnection.send(JSON.stringify(event));
-  }
-
-  public sendWithResponse<U extends MessageBodyResponse>(connection: WebSocketServerConnection, message: MessageBodyRequest, response: ResponseMessageHandler<U>) {
-    message.requestId = self.crypto.randomUUID();
-    this.responseCallbacks.set(message.requestId, response);
-    this.send(connection, message);
   }
 
   public addHandler<T extends MessageBody>(t: MessageTypes, handler: MessageHandler<T>) {
@@ -158,17 +158,6 @@ export class WebSocketService {
   }
 
   public async handleEvent(connection: WebSocketServerConnection, event: MessageBody) {
-    if ('respondsTo' in event) {
-      const eventResponse = event as MessageBodyResponse;
-      const responseHandler = this.responseCallbacks.get(eventResponse.respondsTo);
-      if (!responseHandler) {
-        console.warn("No response handler for " + JSON.stringify(eventResponse));
-        console.warn("Message was: " + JSON.stringify(event));
-      } else {
-        this.responseCallbacks.delete(eventResponse.respondsTo);
-        responseHandler(eventResponse, connection);
-      }
-    }
     const handler = this.messageHandlers.get(event.type as MessageTypes);
     if (!handler || handler.length == 0) {
       console.warn("No handler for message of type " + event.type + " exists. Ignoring");
@@ -198,10 +187,40 @@ export class WebSocketService {
   }
 
   private async onAuthSuccessEvent(event: AuthSuccessMessage, connection: WebSocketServerConnection) {
-    console.log("ws: server did welcome us - auth successfully")
+    console.log("ws: onAuthSuccess: server did welcome us - auth successfully")
     connection.state = ConnectionState.CONNECTED;
     this.connection = connection;
+    connection.me = {
+      id: event.me.id as KeyId,
+      channel: undefined,
+      username: event.me.username,
+      publicKey: event.me.publicKey,
+      details: event.me
+    }
+    this.addClient(connection, connection.me);
+    console.log("ws: onAuthSuccess: we are " + connection.me.id + " / " + connection.me.username)
+
+    event.clients.forEach((clientOnline) => {
+      const client = clientOnline.user;
+      console.log("ws: onAuthSuccess: client already online: " + client.id + " / " + client.username)
+      this.addClient(connection, {
+        id: client.id as KeyId,
+        channel: clientOnline.channelId as (ServerObjectId | undefined),
+        username: client.username,
+        publicKey: client.publicKey,
+        details: client
+      })
+    })
+
     connection.rest = this.restService.updateRestConfig(connection.rest, event.jwt);
+  }
+
+  private addClient(connection: WebSocketServerConnection, client: Client) {
+    if (clientWithId(connection.clients, client.id)) {
+      console.error("client with id " + client.id + " already exists");
+      return;
+    }
+    connection.clients.push(client);
   }
 
   private async onServerTreeChangeEvent(event: ServerTreeChangeMessage, connection: WebSocketServerConnection) {
@@ -209,55 +228,40 @@ export class WebSocketService {
   }
 
   private onIceServerData(event: IceServerMessage, connection: WebSocketServerConnection) {
-    console.log("ws: added " + event.iceServers.length + " ice servers");
+    console.log("ws: onIceServer: added " + event.iceServers.length + " ice servers");
     connection.config.iceServers = event.iceServers;
   }
 
-  private onClientChannelJoinEvent(event: ClientChannelJoinMessage, connection: WebSocketServerConnection) {
-    console.log("Client " + event.user.username + " changed channel to " + event.channelId)
-    const clients = connection.clients.filter(c => event.user.id == c.id);
-    let client: Client | undefined;
-    if (clients.length == 0) {
-      client = {
-        id: event.user.id as KeyId,
-        username: event.user.username,
-        publicKey: event.user.publicKey,
-        channel: event.channelId as ServerObjectId
-      };
-      connection.clients.push(client);
-    } else {
-      client = clients[0];
-      client.channel = event.channelId as ServerObjectId;
-    }
-    if (this.isMe(client, connection)) {
-      console.log("Our channel changed to " + client.channel)
-      connection.currentChannel = client.channel;
+  private onClientChannelJoinEvent(event: ClientChannelJoinEvent, connection: WebSocketServerConnection) {
+    console.log("ws: onClientChannelJoin: Client " + event.user.username + " changed channel to " + event.channelId)
+    const client = clientWithId(connection.clients, event.user.id);
+    client.channel = event.channelId as ServerObjectId;
+    if (client == connection.me) {
+      console.log("ws: onClientChannelJoin: Our channel changed to " + client.channel)
     }
     this.peerConnectionService.updatePeerConnections();
   }
 
 
-  private onClientChannelLeaveEvent(event: ClientChannelLeaveMessage, connection: WebSocketServerConnection) {
-    const clients = connection.clients.filter(c => event.user.id == c.id);
-    if (clients.length == 1) {
-      const index = connection.clients.indexOf(clients[0]);
-      connection.clients.splice(index, 1)
-      if (this.isMe(clients[0], connection)) {
-        console.log("Left our channel ")
-        connection.currentChannel = undefined;
-      }
-    } else {
-      console.error("Could not find client " + event.user + " that did leave the channel");
+  private onClientChannelLeaveEvent(event: ClientChannelLeaveEvent, connection: WebSocketServerConnection) {
+    console.log("ws: onClientChannelLeave: Client " + event.user.username + " left the channel")
+    const client = clientWithId(connection.clients, event.user.id);
+    client.channel = undefined;
+
+    if (client == connection.me) {
+      console.log("ws: onClientChannelLeave: Left our channel")
     }
 
     this.peerConnectionService.updatePeerConnections();
   }
 
-  public isMe(client: Client, connection: WebSocketServerConnection): Boolean {
-    return (client.username == connection.identity.username) //TODO check by key id - this is terrible
+  private onClientChange(event: ClientChangeEvent, connection: WebSocketServerConnection) {
+    console.log("ws: onClientChange: Details for client changed",event.user)
+    const client = clientWithId(connection.clients, event.user.id);
+    client.details = event.user;
   }
 
-  private onKickMessage(event: KickMessage, connection: WebSocketServerConnection) {
+  private onKickMessage(event: KickedEvent, connection: WebSocketServerConnection) {
     let message = "";
     switch (event.reason) {
       case "ALREADY_CONNECTED":
@@ -276,22 +280,52 @@ export class WebSocketService {
         message = "Unknown reason: " + event.reason;
         break;
     }
+    if (event.message)
+      message = event.message + " (" + message + ")";
+    console.log("You have been kicked. Reason: " + event.reason + ", Message: " + event.message)
     this.toastService.create({
       type: ToastType.Error,
       title: "Kicked from Server",
       message: message,
     })
-
   }
 
-  private onJwtToken(event: JwtTokenMessage, connection: WebSocketServerConnection) {
+  private onClientKickedMessage(event: ClientKickEvent, connection: WebSocketServerConnection) {
+    console.log("Client " + event.user.id + " has been kicked. Reason: " + event.reason + ", Message: " + event.message);
+    this.onClientServerLeave({
+      userId: event.user.id,
+      type: "ClientServerLeaveEvent"
+    }, connection)
+  }
+
+  private onJwtToken(event: JwtTokenEvent, connection: WebSocketServerConnection) {
     connection.rest = this.restService.updateRestConfig(connection.rest, event.jwt);
+    console.log("ws: onJwtToken: Received a new JWT token");
   }
 
+
+  private onClientServerJoin(event: ClientServerJoinEvent, connection: WebSocketServerConnection) {
+    const client = {
+      id: event.user.id as KeyId,
+      username: event.user.username,
+      publicKey: event.user.publicKey,
+      channel: undefined,
+      details: event.user
+    };
+    this.addClient(connection, client)
+    console.log("Client " + client.id + " joined the server")
+  }
+
+  private onClientServerLeave(event: ClientServerLeaveEvent, connection: WebSocketServerConnection) {
+    const index = connection.clients.findIndex(client => client.id == event.userId);
+    if (index == -1) {
+      console.error("WS: ClientLeaveEvent: Client " + event.userId + " disconnected but could not find client");
+      return;
+    }
+    console.log("Client " + event.userId + " has left the server");
+    connection.clients.splice(index, 1);
+  }
 
 }
 
 export type MessageHandler<T extends MessageBody> = (event: T, connection: WebSocketServerConnection) => void | any;
-
-export type ResponseMessageHandler<U extends MessageBodyResponse> = (event: U, connection: WebSocketServerConnection) => void | any;
-

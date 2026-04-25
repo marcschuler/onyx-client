@@ -2,6 +2,7 @@ import {SectionDTO} from '../../api/webrtc-server/model/sectionDTO';
 import {ChannelDTO} from '../../api/webrtc-server/model/channelDTO';
 
 import {version} from '../../../package.json'
+import {Client, KeyId, WebSocketServerConnection} from './websocket/WebSocketServerConnection';
 
 export function getChannelFromId(id: string, sections: SectionDTO[]): ChannelDTO | undefined {
   for (const s of sections) {
@@ -22,6 +23,15 @@ export function compareLists<T>(left:T[], right:T[]) {
     missingFromLeft: right.filter(item => !leftSet.has(item)),
     missingFromRight: left.filter(item => !rightSet.has(item))
   };
+}
+
+export function clientsInChannel(clients:Client[], channelId: KeyId | string | undefined){
+  return clients
+    .filter(c => c.id == channelId);
+}
+
+export function clientWithId(clients:Client[],clientId: string){
+  return clients.filter(c => c.id == clientId)[0];
 }
 
 

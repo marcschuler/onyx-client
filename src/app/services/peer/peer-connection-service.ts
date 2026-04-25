@@ -62,7 +62,7 @@ export class PeerConnectionService {
     }
 
     const clientsInChannel = new Set(this.webSocketService.connection.clients
-      .filter(c => c.channel == this.webSocketService.connection?.currentChannel) //only in same channel
+      .filter(c => c.channel == this.webSocketService.connection?.me.channel) //only in same channel
       .filter(c => c.id !== this.webSocketService.connection?.identity.id) //remove me
     );
     const clientsConnected = new Set(this.peers.map(peer => peer.client));

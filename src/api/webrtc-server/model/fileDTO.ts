@@ -11,10 +11,11 @@ import { HashDTO } from './hashDTO';
 
 
 export interface FileDTO { 
-    id?: string;
-    filename?: string;
-    contentType?: string;
-    hash?: HashDTO;
-    created?: string;
+    id: string;
+    filename: string;
+    contentType: string;
+    hash: HashDTO;
+    created: string;
+    size: number;
 }
 

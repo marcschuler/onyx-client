@@ -13,24 +13,35 @@
  * A list of all message types
  */
 export const MessageTypes = {
-    PeerAnswer: 'PeerAnswer',
-    ChannelDetailRequest: 'ChannelDetailRequest',
-    ClientChannelLeaveMessage: 'ClientChannelLeaveMessage',
-    ClientChannelChangeRequest: 'ClientChannelChangeRequest',
-    KickMessage: 'KickMessage',
-    JwtTokenMessage: 'JwtTokenMessage',
-    IceServerMessage: 'IceServerMessage',
-    PeerOfferForward: 'PeerOfferForward',
-    PeerOffer: 'PeerOffer',
+    JwtTokenEvent: 'JwtTokenEvent',
     PeerAnswerForward: 'PeerAnswerForward',
-    ServerTreeChangeMessage: 'ServerTreeChangeMessage',
+    ClientChannelLeaveRequest: 'ClientChannelLeaveRequest',
+    ClientChannelLeaveEvent: 'ClientChannelLeaveEvent',
+    SectionCreateEvent: 'SectionCreateEvent',
+    PeerOfferForward: 'PeerOfferForward',
+    PeerAnswer: 'PeerAnswer',
     AuthChallengeResponse: 'AuthChallengeResponse',
+    ChannelCreateEvent: 'ChannelCreateEvent',
+    ClientChannelJoinEvent: 'ClientChannelJoinEvent',
+    SectionChangeEvent: 'SectionChangeEvent',
+    ClientServerJoinEvent: 'ClientServerJoinEvent',
+    ChannelChangeEvent: 'ChannelChangeEvent',
+    IceServerMessage: 'IceServerMessage',
+    ClientChangeEvent: 'ClientChangeEvent',
     AuthChallengeRequest: 'AuthChallengeRequest',
-    IncomeMessageEvent: 'IncomeMessageEvent',
-    ClientChannelJoinMessage: 'ClientChannelJoinMessage',
     ErrorMessage: 'ErrorMessage',
+    ChannelDeleteEvent: 'ChannelDeleteEvent',
+    ClientChannelJoinRequest: 'ClientChannelJoinRequest',
+    SectionMoveEvent: 'SectionMoveEvent',
+    SectionDeleteEvent: 'SectionDeleteEvent',
     AuthSuccessMessage: 'AuthSuccessMessage',
-    ChannelDetailResponse: 'ChannelDetailResponse'
+    ClientServerLeaveEvent: 'ClientServerLeaveEvent',
+    PeerOffer: 'PeerOffer',
+    ClientKickEvent: 'ClientKickEvent',
+    KickedEvent: 'KickedEvent',
+    ChannelMoveEvent: 'ChannelMoveEvent',
+    ChatMessageEvent: 'ChatMessageEvent',
+    ServerTreeChangeMessage: 'ServerTreeChangeMessage'
 } as const;
 export type MessageTypes = typeof MessageTypes[keyof typeof MessageTypes];
 

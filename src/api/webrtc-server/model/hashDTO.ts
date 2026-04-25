@@ -10,8 +10,8 @@
 
 
 export interface HashDTO { 
-    type?: HashDTO.TypeEnum;
-    hash?: string;
+    type: HashDTO.TypeEnum;
+    hash: string;
 }
 export namespace HashDTO {
     export const TypeEnum = {

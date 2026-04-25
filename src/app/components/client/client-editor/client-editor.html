@@ -1,0 +1,24 @@
+<app-button-panel class="min-h-[90%]" [buttons]="[TAB_GENERAL]"
+                  [(selectedOption)]="selectedOption">
+  @switch (selectedOption) {
+    @case (TAB_GENERAL) {
+
+      <h3>Avatar</h3>
+      <div class="w-32">
+        @if (connection.me.details.avatarId){
+        <img [src]="connection.me.details.avatarId | storageFileURL: connection" class="w-32 h-32 rounded-t-xl object-cover">
+        } @else {
+          <div class="w-32 h-32 rounded-t-xl object-cover bg-neutral-400">
+            <p class="text-neutral-800 p-4 text-center">No avatar image provided :(</p>
+          </div>
+        }
+        <div class="flex gap-2">
+          <app-file-upload class="w-32" [connection]="connection" (uploaded)="onAvatarChange($event)" [avatar]="true"></app-file-upload>
+          <button class="py-0.5 button-red" (click)="deleteAvatar()">
+            <lucide-icon [name]="XIcon"></lucide-icon>
+          </button>
+        </div>
+      </div>
+    }
+  }
+</app-button-panel>

@@ -20,7 +20,7 @@
     <h4>Server Tree</h4>
     {{ webSocketService.connection.data | json }}
     <h4>Channel: Current / Selected</h4>
-    {{ webSocketService.connection.currentChannel  | json }}
+    {{ webSocketService.connection.me.channel  | json }}
     {{ webSocketService.connection.selectedChannel  | json }}
     <h4>Server Config</h4>
     {{ webSocketService.connection.config | json }}

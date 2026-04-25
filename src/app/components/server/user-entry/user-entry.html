@@ -2,21 +2,31 @@
      [class.p-2]="!interfaceService.settings.compactMode">
 
   <span>
-  <img
-    [src]="user.id | identicon: 32 | async"
-    [ngClass]="{
+    @if (client.details.avatarId) {
+        <img
+          [src]="client.details.avatarId | storageFileURL: connection"
+          [ngClass]="{
 'w-8 h-8': !interfaceService.settings.compactMode,
 'w-6 h-6': interfaceService.settings.compactMode}"
-    class="rounded inline"
-  />
+          class="rounded inline object-cover"
+        />
+    } @else {
+      <img
+        [src]="client.id | identicon: 32 | async"
+        [ngClass]="{
+'w-8 h-8': !interfaceService.settings.compactMode,
+'w-6 h-6': interfaceService.settings.compactMode}"
+        class="rounded inline"
+      />
+    }
 
-  <span class="pl-2" [ngClass]="[
-    user.id==connection.identity.id ? 'text-neutral-100' : ''
-  ]">{{ user.username }}</span>
+    <span class="pl-2" [ngClass]="[
+    client.id==connection.identity.id ? 'text-neutral-100' : ''
+  ]">{{ client.username }}</span>
 </span>
 
   <span class="justify-end text-neutral-700">
-    @for (group of user.groups; track group.id) {
+    @for (group of client.details.groups; track group.id) {
       @if (group.showInTree) {
         {{ group.name }} <!--TODO replace with icon when available -->
       }

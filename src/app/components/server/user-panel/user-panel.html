@@ -4,15 +4,20 @@
 'bg-yellow-600': webSocketService.connection && webSocketService.connection.state == ConnectionState.AUTHENTICATING
 }
 ">
+  @if(showClientEditor){
+    <app-popup [isOpen]="showClientEditor" [closeButton]="true" (close)="showClientEditor=false">
+      <app-client-editor [connection]="connection"></app-client-editor>
+    </app-popup>
+  }
 
   <div class="p-2 gap-2 grid grid-cols-[1fr_auto] w-full">
 
     <h3 class="p-2">
-      {{connection.identity.username}}
+      {{connection.me.username}}
     </h3>
-    <!--<button class="!bg-none !bg-transparent !p-0 right-0">
+    <button class="!bg-none !bg-transparent !p-0 right-0" (click)="showClientEditor=true">
       <lucide-icon [name]="SettingsIcon"></lucide-icon>
-    </button>-->
+    </button>
   </div>
 
 

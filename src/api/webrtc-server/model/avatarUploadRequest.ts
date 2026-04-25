@@ -9,7 +9,7 @@
  */
 
 
-export interface ServerWritableDTO { 
-    name: string;
+export interface AvatarUploadRequest { 
+    file: Blob;
 }
 
