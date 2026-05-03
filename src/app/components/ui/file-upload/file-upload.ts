@@ -22,6 +22,7 @@ export class FileUpload {
   @Input() connection!: WebSocketServerConnection;
 
   @Input() avatar: boolean = false;
+  @Input() ghost: boolean = true;
 
   @Output() uploaded = new EventEmitter<FileDTO>();
 

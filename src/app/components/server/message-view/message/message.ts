@@ -18,6 +18,7 @@ import {
 import {StorageFileURLPipe} from '../../../../pipes/avatar-pipe';
 import {FileSizePipe} from '../../../../pipes/file-size-pipe';
 import {fileMimetypeToIcon} from '../../../../mimetype-icons';
+import {FilePreview} from '../../../ui/file-preview/file-preview';
 
 @Component({
   selector: 'app-message',
@@ -30,7 +31,8 @@ import {fileMimetypeToIcon} from '../../../../mimetype-icons';
     Tooltip,
     LucideAngularModule,
     StorageFileURLPipe,
-    FileSizePipe
+    FileSizePipe,
+    FilePreview
   ],
   templateUrl: './message.html',
   styleUrl: './message.css',

@@ -56,7 +56,7 @@
             }
             @case ("FILE") {
               @let file = asTypeFile(content);
-              <lucide-icon [name]="fileMimetypeToIcon(file.file.contentType)" class="w-[100%]"></lucide-icon>
+              <app-file-preview [file]="file.file" [connection]="connection"></app-file-preview>
               <p> {{ file.file.filename }} </p>
               <p class="text-xs text-neutral-600">{{ file.file.size | fileSize }}</p>
               <a class="button button-small" [href]="file.file.id | storageFileURL:connection"

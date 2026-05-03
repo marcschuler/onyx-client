@@ -1,5 +1,6 @@
 <div
-  class="button-ghost rounded flex"
+  class="rounded flex"
+  [class.button-ghost]="ghost"
   (click)="fileInput.click()"
   (dragover)="onDragOver($event)"
   (drop)="onDrop($event)"

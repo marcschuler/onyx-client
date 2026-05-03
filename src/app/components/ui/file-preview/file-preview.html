@@ -1,0 +1,20 @@
+<div class="max-w-128 max-h-96 overflow-hidden">
+  @switch (fileType) {
+
+    @case (FileType.PDF) {
+      <embed [src]="file.id | storageFileURL:connection">
+    }
+    @case (FileType.IMAGE) {
+      <img [src]="file.id | storageFileURL:connection" class="object-contain max-h-96">
+    }
+    @case (FileType.AUDIO) {
+      <audio [src]="file.id | storageFileURL:connection" controls></audio>
+    }
+    @case (FileType.VIDEO) {
+      <video [src]="file.id | storageFileURL:connection" controls></video>
+    }
+    @default {
+      <lucide-icon [name]="fileMimetypeToIcon(file.contentType)" class="w-[100%] h-8"></lucide-icon>
+    }
+  }
+</div>
