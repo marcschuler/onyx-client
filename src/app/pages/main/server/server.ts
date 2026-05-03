@@ -12,7 +12,7 @@ import {
   ServerCog, ServerIcon,
   SettingsIcon
 } from 'lucide-angular';
-import {NgClass, NgStyle} from '@angular/common';
+import { NgStyle} from '@angular/common';
 import {InterfaceService} from '../../../services/interface-service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {Popup} from '../../../components/ui/popup/popup';
@@ -35,7 +35,6 @@ import {ServerLoaderService} from '../../../services/server-loader-service';
     ServerOverview,
     AdminPanel,
     UsersPanel,
-    NgClass
   ],
   templateUrl: './server.html',
   styleUrl: './server.css'

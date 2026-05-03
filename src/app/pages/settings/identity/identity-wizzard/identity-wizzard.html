@@ -8,25 +8,27 @@
   </div>
 
 
-  <h4>Your Key</h4>
-  @if (key) {
-    <div class="bg-neutral-800 rounded mx-4">
-      <app-key-visualizer [keyId]="key | keyID | async "></app-key-visualizer>
-      <button class="button-dark min-w-full !rounded-none"
-              (click)="createKey()">
-        <lucide-icon [name]="RotateCcw" class="w-4 h-4 m-auto"></lucide-icon>
-      </button>
-    </div>
-    <div class="text-neutral-400">
-      <p>
-        This is a visual representation of your Identity key.
-      </p>
-      <p>
-        It is unique to you and servers save your profile, groups and messages
-        based on this key.
-        Don't loose it and don't share it with anyone.
-      </p>
-    </div>
+  @if (showDots) {
+    <h4>Your Key</h4>
+    @if (key) {
+      <div class="bg-neutral-800 rounded mx-4">
+        <app-key-visualizer [keyId]="key | keyID | async "></app-key-visualizer>
+        <button class="button-dark min-w-full !rounded-none"
+                (click)="createKey()">
+          <lucide-icon [name]="RotateCcw" class="w-4 h-4 m-auto"></lucide-icon>
+        </button>
+      </div>
+      <div class="text-neutral-400">
+        <p>
+          This is a visual representation of your Identity key.
+        </p>
+        <p>
+          It is unique to you and servers save your profile, groups and messages
+          based on this key.
+          Don't loose it and don't share it with anyone.
+        </p>
+      </div>
+    }
   }
 
   <div class="p-4"></div>

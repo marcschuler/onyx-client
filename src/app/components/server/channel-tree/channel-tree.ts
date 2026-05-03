@@ -8,8 +8,6 @@ import { WebSocketServerConnection} from '../../../services/websocket/WebSocketS
 import {InterfaceService} from '../../../services/interface-service';
 import {UserEntry} from '../user-entry/user-entry';
 import {ChannelEntry} from '../channel-entry/channel-entry';
-import {clientsInChannel} from '../../../services/Util';
-import {ClientsInChannelPipe} from '../../../pipes/clients-in-channel-pipe';
 
 @Component({
   selector: 'app-channel-tree',
@@ -18,7 +16,6 @@ import {ClientsInChannelPipe} from '../../../pipes/clients-in-channel-pipe';
     Spinner,
     UserEntry,
     ChannelEntry,
-    ClientsInChannelPipe
   ],
   templateUrl: './channel-tree.html',
   styleUrl: './channel-tree.css'
@@ -31,6 +28,4 @@ export class ChannelTree {
               protected interfaceService: InterfaceService) {
 
   }
-
-  protected readonly clientsInChannel = clientsInChannel;
 }

@@ -23,7 +23,6 @@ import {ClientEditor} from '../../client/client-editor/client-editor';
     LucideAngularModule,
     NgClass,
     Popup,
-    Settings,
     ClientEditor
   ],
   templateUrl: './user-panel.html',

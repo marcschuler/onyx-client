@@ -3,7 +3,7 @@
 
     <div class="inline-block flex-col rounded align-top">
       @for (button of buttons; track button) {
-        <button class="button-dark !rounded-none min-w-full text-left!" (click)="select(button)"
+        <button class="button-dark rounded-xl min-w-full text-left!" (click)="select(button)"
                 [class.button-dark-selected]="selectedOption==button"
                 [disabled]="selectedOption==button">
           @if (button.icon) {

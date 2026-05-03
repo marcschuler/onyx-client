@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Identity, IdentityService} from '../../../../services/identity-service';
 import {FormsModule} from '@angular/forms';
 import {Spinner} from '../../../../components/ui/spinner/spinner';
@@ -28,6 +28,8 @@ export class IdentityWizzard {
 
   username: string = "";
   key: CryptoKeyPair | undefined;
+
+  @Input() showDots: boolean = true;
 
   @Output() identityCreated = new EventEmitter<Identity>();
 

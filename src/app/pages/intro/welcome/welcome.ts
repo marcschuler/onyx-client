@@ -2,19 +2,16 @@ import {Component} from '@angular/core';
 import {IdentityWizzard} from '../../settings/identity/identity-wizzard/identity-wizzard';
 import {
   Check,
-  EarthLockIcon,
-  GitPullRequest,
   Hand,
   LucideAngularModule,
   Server,
-  ServerIcon,
   ShieldUser
 } from 'lucide-angular';
 import {Identity, IdentityService} from '../../../services/identity-service';
 import {identifierName} from '@angular/compiler';
 import {NgClass} from '@angular/common';
-import {ServerConnection, ServerLoaderService} from '../../../services/server-loader-service';
-import {Route, Router} from '@angular/router';
+import { ServerLoaderService} from '../../../services/server-loader-service';
+import { Router} from '@angular/router';
 import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_SKIP, Popup} from '../../../components/ui/popup/popup';
 
 @Component({
@@ -40,7 +37,7 @@ export class Welcome {
     url: "https://onyx.karlthebee.de"
   },{
     name: "Local DEV Server",
-    description: "The local test server",
+    description: "A local test server",
     url: "http://localhost:8080"
   }]
 

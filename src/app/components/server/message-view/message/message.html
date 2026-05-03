@@ -17,7 +17,7 @@
                target="_blank">{{ file.file.filename }}</a>
           }
           @default {
-            <p class="text-red-40">The client does not unterstand this message. Please update your client or check
+            <p class="text-red-400">The client does not unterstand this message. Please update your client or check
               your server logs</p>
           }
         }
@@ -39,13 +39,16 @@
         <div class="mr-2 w-6"></div>
       }
 
-      <div class="bg-neutral-800 px-4 py-2.5 rounded w-fit">
+      <div class="bg-neutral-800 px-4 pb-2.5 pt-1 rounded w-fit relative">
         @if (useHeader) {
-          <p class="text-emerald-600 font-bold">
+          <p class="text-emerald-600 font-bold pb-1">
             {{ message.user.username }}
-            <span class="pl-8 text-sm text-right text-neutral-700"
+            <span class="text-sm text-right text-neutral-700"
                   [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</span>
           </p>
+        } @else {
+          <p class="text-sm text-right text-neutral-700"
+             [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</p>
         }
 
         @for (content of message.content; track content) {
@@ -63,8 +66,8 @@
                  target="_blank">Download</a>
             }
             @default {
-              <p class="text-red-40">The client does not unterstand this message. Please update your client or check
-                your server logs</p>
+              <p class="text-red-400">The client does not unterstand this message. Please update your client or check
+                your server logs.</p>
             }
           }
 

@@ -19,21 +19,20 @@
     </p>
   </div>
 
-  <div class="pb-8">
+  <div class="pt-4 px-4 pb-8 m-2 bg-neutral-800 rounded-xl">
     @switch (stage) {
       @case (WelcomeStage.IDENTITY) {
         <h2 class="pb-4 text-center">Create your Identity</h2>
-        <app-identity-wizzard (identityCreated)="onIdentity($event)"></app-identity-wizzard>
+        <app-identity-wizzard (identityCreated)="onIdentity($event)" [showDots]="false"></app-identity-wizzard>
       }
       @case (WelcomeStage.SERVER) {
-        <h2 class="pb-4 text-center">Community server</h2>
+        <h2 class="pb-4 text-center">Community Server</h2>
         <div class="mx-auto max-w-xl">
           <p>
-            You can select a few community server to start with.
+            You can start by selecting a few community servers.
           </p>
           <p>
-            This is completly optional. At any time you can
-            add your own server and delete these.
+            This step is optional. You can add or remove servers at any time.
           </p>
           @for (server of communityServer; track server) {
             <div class="p-4 rounded flex bg-neutral-800 hover-greenish w-full gap-4" [ngClass]="{
@@ -44,7 +43,7 @@
               <label class="flex">
                 <h2>{{ server.name }}</h2>
                 <p>{{ server.description }}</p>
-                <p class="text-neutral-400">URL: {{ server.url }}</p>
+                <p class="text-neutral-400">{{ server.url }}</p>
               </label>
             </div>
           }
@@ -60,6 +59,9 @@
       }
       @case (WelcomeStage.FINISHED) {
         <h2 class="pb-4 text-center">Done.</h2>
+        <p>
+          Some text
+        </p>
         <button class="float-right"
                 (click)="finish()"> Next
         </button>

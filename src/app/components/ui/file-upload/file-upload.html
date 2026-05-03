@@ -1,16 +1,10 @@
 <div
-  class="rounded flex"
+  class="rounded flex cursor-pointer"
   [class.button-ghost]="ghost"
   (click)="fileInput.click()"
   (dragover)="onDragOver($event)"
   (drop)="onDrop($event)"
 >
-
-  <!--@if (file){
-    <p class="pt-2 text-neutral-400 text-xs">
-      {{file.name}}
-    </p>
-  }-->
 
   @if(uploadPercentage!==undefined){
     <app-spinner></app-spinner>
