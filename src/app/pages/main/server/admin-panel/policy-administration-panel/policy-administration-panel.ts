@@ -51,7 +51,7 @@ export class PolicyAdministrationPanel implements OnInit {
   }
 
   protected addPolicy() {
-    this.connection.rest.policyController.create1({
+    this.connection.rest.policyController.create2({
       name: "Policy",
       description: undefined,
       ids: new Set<string>(),
@@ -69,14 +69,14 @@ export class PolicyAdministrationPanel implements OnInit {
 
   protected updatePolicy(policy: PolicyDTO) {
     this.connection.rest.policyController
-      .edit2(policy.id, policy as RolePolicyDTO)
+      .edit3(policy.id, policy as RolePolicyDTO)
       .subscribe(_ => {
       }, error => this.restService.handleError(error))
   }
 
   protected deletePolicy(policy: PolicyDTO) {
     this.connection.rest.policyController
-      .delete1(policy.id)
+      .delete2(policy.id)
       .subscribe(() => {
         removeItemFromList(this.policies!, policy);
       }, error => this.restService.handleError(error))

@@ -5,7 +5,7 @@ import {
   ChannelControllerService,
   ChatControllerService,
   Configuration, GroupControllerService, PolicyControllerService, SectionControllerService,
-  ServerControllerService, StorageControllerService, UserControllerService
+  ServerControllerService, ServerDescriptionControllerService, StorageControllerService, UserControllerService
 } from '../../api/webrtc-server';
 import {ToastService, ToastType} from './toast-service';
 
@@ -46,6 +46,7 @@ export class RestService {
       jwt: jwt,
       basePath: basePath,
       serverController: new ServerControllerService(this.http, basePath, config),
+      serverDescriptionController: new ServerDescriptionControllerService(this.http, basePath, config),
       chatController: new ChatControllerService(this.http, basePath, config),
       channelController: new ChannelControllerService(this.http, basePath, config),
       sectionController: new SectionControllerService(this.http, basePath, config),

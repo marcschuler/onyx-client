@@ -10,6 +10,7 @@ api/infoController.service.ts
 api/policyController.service.ts
 api/sectionController.service.ts
 api/serverController.service.ts
+api/serverDescriptionController.service.ts
 api/storageController.service.ts
 api/todoController.service.ts
 api/userController.service.ts
@@ -38,6 +39,7 @@ model/clientChannelLeaveRequest.ts
 model/clientKickEvent.ts
 model/clientServerJoinEvent.ts
 model/clientServerLeaveEvent.ts
+model/edit1Request.ts
 model/errorMessage.ts
 model/fileDTO.ts
 model/fileMessageContentDTO.ts
@@ -53,7 +55,6 @@ model/markdownMessageContentDTO.ts
 model/messageBody.ts
 model/messageContentDTO.ts
 model/messageDTO.ts
-model/messageRequest.ts
 model/messageTypes.ts
 model/modelFile.ts
 model/models.ts
@@ -75,6 +76,7 @@ model/sectionDeleteEvent.ts
 model/sectionExtendedDTO.ts
 model/sectionMoveEvent.ts
 model/sectionWriteDTO.ts
+model/serverChangeEvent.ts
 model/serverDTO.ts
 model/serverTreeChangeMessage.ts
 model/serverWriteDTO.ts

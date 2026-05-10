@@ -13,8 +13,8 @@ import { FileMessageContentDTO } from './fileMessageContentDTO';
 
 
 /**
- * @type MessageDTOContentInner
+ * @type Edit1Request
  * @export
  */
-export type MessageDTOContentInner = FileMessageContentDTO | MarkdownMessageContentDTO;
+export type Edit1Request = FileMessageContentDTO | MarkdownMessageContentDTO;
 

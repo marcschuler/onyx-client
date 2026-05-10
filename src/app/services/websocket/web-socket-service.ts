@@ -8,17 +8,17 @@ import {PeerConnectionService} from '../peer/peer-connection-service';
 import {
   AuthChallengeRequest,
   AuthChallengeResponse,
-  AuthSuccessMessage,
+  AuthSuccessMessage, ChannelDTO, ChannelMoveEvent,
   ClientChangeEvent, ClientChannelJoinEvent, ClientChannelLeaveEvent, ClientServerJoinEvent, ClientServerLeaveEvent,
   IceServerMessage, JwtTokenEvent,
-  MessageTypes,
+  MessageTypes, SectionDTO, ServerChangeEvent,
   ServerTreeChangeMessage
 } from '../../../api/webrtc-server';
 import {RestService} from '../rest-service';
 import {MessageBody} from '../../../api/webrtc-server';
 import {KickedEvent} from '../../../api/webrtc-server';
 import {ClientKickEvent} from '../../../api/webrtc-server';
-import {clientWithId} from '../Util';
+import {clientWithId, getChannelFromId, getSectionFromId, getSectionOfChannel} from '../Util';
 
 @Injectable({
   providedIn: 'root'
@@ -31,12 +31,15 @@ export class WebSocketService {
 
   private messageHandlers: Map<MessageTypes, MessageHandler<any>[]> = new Map();
 
-  constructor(private identityService: IdentityService, private cryptoService: CryptoService, private toastService: ToastService,
+  constructor(private cryptoService: CryptoService, private toastService: ToastService,
               private restService: RestService,
               private peerConnectionService: PeerConnectionService) {
     this.addHandler(AuthChallengeRequest.TypeEnum.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
     this.addHandler(AuthSuccessMessage.TypeEnum.AuthSuccessMessage, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessMessage, c));
     this.addHandler(ServerTreeChangeMessage.TypeEnum.ServerTreeChangeMessage, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeMessage, c))
+    this.addHandler(ServerChangeEvent.TypeEnum.ServerChangeEvent,(e,c)=>this.onServerChange(e as ServerChangeEvent, c));
+
+    this.addHandler(ChannelMoveEvent.TypeEnum.ChannelMoveEvent, (e, c) => this.onChannelMove(e as ChannelMoveEvent, c));
 
     this.addHandler(ClientServerJoinEvent.TypeEnum.ClientServerJoinEvent, (e, c) => this.onClientServerJoin(e as ClientServerJoinEvent, c));
     this.addHandler(ClientServerLeaveEvent.TypeEnum.ClientServerLeaveEvent, (e, c) => this.onClientServerLeave(e as ClientServerLeaveEvent, c))
@@ -44,7 +47,7 @@ export class WebSocketService {
     this.addHandler(ClientChannelJoinEvent.TypeEnum.ClientChannelJoinEvent, (e, c) => this.onClientChannelJoinEvent(e as ClientChannelJoinEvent, c))
     this.addHandler(ClientChannelLeaveEvent.TypeEnum.ClientChannelLeaveEvent, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveEvent, c));
 
-    this.addHandler(ClientChangeEvent.TypeEnum.ClientChangeEvent,(e,c)=>this.onClientChange(e as ClientChangeEvent,c));
+    this.addHandler(ClientChangeEvent.TypeEnum.ClientChangeEvent, (e, c) => this.onClientChange(e as ClientChangeEvent, c));
     this.addHandler(KickedEvent.TypeEnum.KickedEvent, (e, c) => this.onKickMessage(e as KickedEvent, c));
     this.addHandler(ClientKickEvent.TypeEnum.ClientKickEvent, (e, c) => this.onClientKickedMessage(e as ClientKickEvent, c));
 
@@ -227,6 +230,25 @@ export class WebSocketService {
     connection.data = event;
   }
 
+  private onServerChange(event:ServerChangeEvent, connection: WebSocketServerConnection) {
+    connection.data!.server = event.server;
+  }
+
+
+  private onChannelMove(event: ChannelMoveEvent, connection: WebSocketServerConnection) {
+    const channel = getChannelFromId(event.channelId, connection.data!.sections) as ChannelDTO;
+    const section = getSectionOfChannel(channel, connection.data!.sections) as SectionDTO;
+    const index = section.channels.indexOf(channel);
+
+    // remove from section
+    section.channels.splice(index, 1);
+
+    //insert into new position at (new) section
+    const newSection = event.sectionId ?
+      getSectionFromId(event.sectionId, connection.data!.sections) as SectionDTO : section;
+    newSection.channels.splice(event.order, 0, channel)
+  }
+
   private onIceServerData(event: IceServerMessage, connection: WebSocketServerConnection) {
     console.log("ws: onIceServer: added " + event.iceServers.length + " ice servers");
     connection.config.iceServers = event.iceServers;
@@ -256,7 +278,7 @@ export class WebSocketService {
   }
 
   private onClientChange(event: ClientChangeEvent, connection: WebSocketServerConnection) {
-    console.log("ws: onClientChange: Details for client changed",event.user)
+    console.log("ws: onClientChange: Details for client changed", event.user)
     const client = clientWithId(connection.clients, event.user.id);
     client.details = event.user;
   }

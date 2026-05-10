@@ -7,11 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MarkdownMessageContentDTO } from './markdownMessageContentDTO';
 
 
 export interface ServerWriteDTO { 
     name: string;
-    description: MarkdownMessageContentDTO;
 }
 

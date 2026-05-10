@@ -1,12 +1,47 @@
 @if (server) {
-  <div class="bg-neutral-800 rounded p-4">
+  <div>
     <h3>Server Name</h3>
-    <input [(ngModel)]="server.name">
+    <div class="bg-neutral-800 mx-4 p-4 rounded flex gap-2">
+      <input [(ngModel)]="server.name">
+      <button class="button-dark" (click)="saveServerInfo()">Save</button>
+    </div>
     <h3 class="pt-4"> Server Description </h3>
-    <textarea [(ngModel)]="server.description.text" class="min-h-48"></textarea>
+    <div class="p-4 " cdkDropList (cdkDropListDropped)="dropDecsription($event)">
+      @for (description of server.description; track description.id) {
+        <div class="flex bg-neutral-800 rounded p-2 my-2 gap-2" cdkDrag>
+
+          <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
+          @switch (description.type) {
+            @case ("MARKDOWN") {
+              @let markdown = asTypeMarkdown(description);
+              <textarea class="min-h-16" [(ngModel)]="markdown.text"></textarea> <!-- TODO -->
+            }
+            @case ("FILE") {
+              <!-- TODO -->
+            }
+            @default {
+              <p class="text-red-400">Your client does not unterstand this message. Please update your client or check
+                your server logs.</p>
+            }
+          }
+          <div>
+            <button class="button-dark w-24" (click)="save(description)">Save</button>
+            <button class="button-red w-24" (click)="delete(description)">Delete</button>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="grid grid-cols-2 gap-4 p-2">
+      <button class="" (click)="addMarkdown()">
+        +
+        <lucide-icon [name]="TextInitialIcon"></lucide-icon>
+      </button>
+      <button class="">
+        +
+        <app-file-upload></app-file-upload>
+      </button>
+    </div>
   </div>
-  <div class="h-16"></div>
-  <button class="right-2" (click)="saveServerInfo()">Save</button>
 } @else {
   <app-spinner></app-spinner>
 }

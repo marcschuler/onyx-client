@@ -46,7 +46,7 @@ export class GroupAdministrationPanel implements OnInit {
   }
 
   deleteGroup(group: GroupDTO) {
-    this.connection.rest.groupController.delete2(group.id).subscribe(value => {
+    this.connection.rest.groupController.delete3(group.id).subscribe(value => {
       this.toastService.create({
         type: ToastType.Success,
         title: 'Group ' + group.name + ' deleted'
@@ -56,7 +56,7 @@ export class GroupAdministrationPanel implements OnInit {
   }
 
   updateGroup(group: GroupDTO) {
-    this.connection.rest.groupController.edit3(group.id, group).subscribe(value => {
+    this.connection.rest.groupController.edit4(group.id, group).subscribe(value => {
       this.toastService.create({
         type: ToastType.Success,
         title: 'Group ' + value.name + ' updated'
@@ -67,7 +67,7 @@ export class GroupAdministrationPanel implements OnInit {
   protected readonly IdCardLanyard = IdCardLanyard;
 
   protected addGroup() {
-    this.connection.rest.groupController.create2({
+    this.connection.rest.groupController.create3({
       name: findFreeName("Group", (this.groups || []).map(g => g.name)),
       accessPowers: {},
       description: "",

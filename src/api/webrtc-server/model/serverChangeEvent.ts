@@ -7,18 +7,17 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ServerDTO } from './serverDTO';
 import { MessageBody } from './messageBody';
 
 
-export interface ChannelMoveEvent extends MessageBody { 
-    channelId: string;
-    order: number;
-    sectionId?: string;
-    readonly type: ChannelMoveEvent.TypeEnum;
+export interface ServerChangeEvent extends MessageBody { 
+    server: ServerDTO;
+    readonly type: ServerChangeEvent.TypeEnum;
 }
-export namespace ChannelMoveEvent {
+export namespace ServerChangeEvent {
     export const TypeEnum = {
-        ChannelMoveEvent: 'ChannelMoveEvent'
+        ServerChangeEvent: 'ServerChangeEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

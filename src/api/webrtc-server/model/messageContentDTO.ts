@@ -10,6 +10,7 @@
 
 
 export interface MessageContentDTO { 
+    readonly id?: string;
     type: string;
 }
 

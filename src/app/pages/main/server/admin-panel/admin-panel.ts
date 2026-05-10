@@ -6,7 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {Spinner} from '../../../../components/ui/spinner/spinner';
 import {ServerDTO} from '../../../../../api/webrtc-server/model/serverDTO';
 import {ToastService, ToastType} from '../../../../services/toast-service';
-import {ServerAdministrationPanel} from './server-administration-panel/server-administration-panel';
+import ServerAdministrationPanel from './server-administration-panel/server-administration-panel';
 import {ChannelAdministrationPanel} from './channel-administration-panel/channel-administration-panel';
 import {DiamondMinusIcon, HexagonIcon, IdCardLanyard, ServerCog} from 'lucide-angular';
 import {GroupAdministrationPanel} from './group-administration-panel/group-administration-panel';

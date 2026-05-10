@@ -1,0 +1,18 @@
+@switch (content.type) {
+  @case ("MARKDOWN") {
+    @let markdown = asTypeMarkdown(content);
+    <p [innerHTML]="markdown.text | markdown" class="break-all"></p>
+  }
+  @case ("FILE") {
+    @let file = asTypeFile(content);
+    <app-file-preview [file]="file.file" [connection]="connection"></app-file-preview>
+    <p> {{ file.file.filename }} </p>
+    <p class="text-xs text-neutral-600">{{ file.file.size | fileSize }}</p>
+    <a class="button button-small" [href]="file.file.id | storageFileURL:connection"
+       target="_blank">Download</a>
+  }
+  @default {
+    <p class="text-red-400">Your client does not unterstand this message. Please update your client or check
+      your server logs.</p>
+  }
+}

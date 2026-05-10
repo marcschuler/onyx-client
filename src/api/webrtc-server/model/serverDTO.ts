@@ -7,13 +7,13 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MarkdownMessageContentDTO } from './markdownMessageContentDTO';
+import { Edit1Request } from './edit1Request';
 
 
 export interface ServerDTO { 
     name: string;
-    description: MarkdownMessageContentDTO;
     id: string;
     publicKey: { [key: string]: any; };
+    description: Array<Edit1Request>;
 }
 

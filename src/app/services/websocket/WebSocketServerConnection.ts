@@ -2,10 +2,10 @@ import {Identity} from '../identity-service';
 import {
   ChannelControllerService,
   ChatControllerService, GroupControllerService, PolicyControllerService, SectionControllerService,
-  ServerControllerService,
+  ServerControllerService, ServerDescriptionControllerService,
   ServerTreeChangeMessage, StorageControllerService, UserControllerService, UserSimpleDTO
 } from '../../../api/webrtc-server';
-import {IceServer} from '../../../api/webrtc-server/model/iceServer';
+import {IceServer} from '../../../api/webrtc-server';
 import {ServerConnection} from '../server-loader-service';
 
 export interface WebSocketServerConnection {
@@ -29,6 +29,7 @@ export interface RestConfiguration {
   readonly jwt?: string;
   basePath: string;
   serverController: ServerControllerService;
+  serverDescriptionController: ServerDescriptionControllerService;
   channelController: ChannelControllerService;
   chatController: ChatControllerService;
   sectionController: SectionControllerService;
