@@ -1,23 +1,73 @@
-<div class="flex flex-2">
-  <div class="w-48">
+<div class="flex flex-col gap-2">
+  <div class="rounded-xl bg-neutral-800 p-1 flex gap-2">
     @for (group of groups; track group.id) {
-      <button class="min-w-48 button-dark button-no-round" [class.button-dark]="selectedGroup!=group" (click)="selectedGroup = group">{{ group.name }}</button><br>
-    }
-    <div class="text-right pt-2">
-      <button class="button-ghost min-w-48" (click)="addGroup()">+
-        <lucide-icon [name]="IdCardLanyard" class="inline"></lucide-icon>
+      <button [class.button-dark]="selectedGroup==group"
+              (click)="selectedGroup = group">{{ group.name }}
       </button>
-    </div>
+    }
+    <span class="border border-neutral-500 my-2"></span>
+    <button class="ml-4 button-dark"  (click)="addGroup()">+
+      <lucide-icon [name]="IdCardLanyard" class="inline h-4"></lucide-icon>
+    </button>
   </div>
 
   @if (selectedGroup) {
-    <div class="px-2 w-full">
-      <input class="text-h3 input-invisible" [(ngModel)]="selectedGroup.name">
-      <textarea class="input-invisible" [(ngModel)]="selectedGroup.description"></textarea>
+    <div class="px-2 w-full bg-neutral-800 p-2 rounded-xl">
 
-      <div class="settings-grid">
-        <p class="settings-grid-label-no-desc">Show in Tree</p>
-        <app-toggle [(value)]="selectedGroup.showInTree"></app-toggle>
+      <div class="settings-grid p-4">
+        <p class="settings-grid-label-no-desc">Name</p>
+        <input class="settings-grid-option" [(ngModel)]="selectedGroup.name">
+
+        <p class="settings-grid-label-no-desc">Description</p>
+        <textarea class="settings-grid-option" [(ngModel)]="selectedGroup.description"></textarea>
+
+
+        <p class="settings-grid-label">Show Label</p>
+        <p class="settings-grid-desc">The label will be displaced beside the user</p>
+        <app-toggle class="settings-grid-option" [(value)]="selectedGroup.label"></app-toggle>
+
+        <p class="settings-grid-label">Priority</p>
+        <p class="settings-grid-desc">If a user has multiple groups, this is the priority permissions are checked</p>
+        <input [(ngModel)]="selectedGroup.priority" type="number" min="0" max="9999">
+      </div>
+
+      <div>
+        <h2>Permissions</h2>
+        <div class="flex flex-col gap-2 pt-2 px-4">
+        @for (permission of selectedGroup.permissions; track permission) {
+          <div class="bg-neutral-900 p-4 rounded settings-grid">
+
+            <p class="settings-grid-label">Permissions</p>
+            <p class="settings-grid-desc">Select which kind of permission this group can perform</p>
+            <ui-multi-select class="settings-grid-option" [(selected)]="permission.permissions"
+                             placeholder="Select Permissions...">
+              @for (p of permissionsEnumValues; track p) {
+                <ui-select-item [label]="p" [value]="p"></ui-select-item>
+              }
+            </ui-multi-select>
+
+            <p class="settings-grid-label">Limit</p>
+            <p class="settings-grid-desc">Limits the permission to only apply for specific sections and channels.</p>
+            <div class="settings-grid-option">
+              <ui-multi-select [(selected)]="permission.limitedToSection" placeholder="Select Sections...">
+                @for (section of connection.data!.sections; track section) {
+                  <ui-select-item [label]="section.name" [value]="section.id"></ui-select-item>
+                }
+              </ui-multi-select>
+              <div class="h-0.5"></div>
+              <ui-multi-select placeholder="Select Channel...">
+
+              </ui-multi-select>
+            </div>
+
+            <p class="settings-grid-label">Disallow</p>
+            <p class="settings-grid-desc">Set the permission to specifically be not allowed for a user</p>
+            <app-toggle class="settings-grid-option" [(value)]="permission.negated"></app-toggle>
+            <button class="button-red button-small max-w-16" (click)="deletePermission(permission)">Delete</button>
+          </div>
+        }
+        </div>
+        <button class="button-dark mt-2" (click)="addPermission()">+ Perm</button>
       </div>
 
       <div class="">
@@ -33,7 +83,6 @@
           </select>-->
         </p>
         <br>
-        <app-policy-panel [group]="selectedGroup" [groups]="groups!" [connection]="connection"></app-policy-panel>
         <div class="text-right pt-4">
           <button class="button-line" (click)="updateGroup(selectedGroup)">Save</button>
           <button class="button-red" (click)="deleteGroup(selectedGroup)">Delete</button>

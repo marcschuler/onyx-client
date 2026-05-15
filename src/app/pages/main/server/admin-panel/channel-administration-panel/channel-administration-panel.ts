@@ -90,11 +90,10 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
   }
 
   protected createChannel(section: SectionDTO) {
-    this.connection.rest.channelController.create4({
+    this.connection.rest.channelController.create3({
       name: "Channel",
       sectionId: section.id,
       order: section.channels.length,
-      policies:{}
     }).subscribe(value => {
       this.toastService.create({
         title: "Channel created",
@@ -119,7 +118,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
       this.channelToEdit = undefined;
       return;
     }
-    this.connection.rest.channelController.edit5(this.channelToEdit!.id, event)
+    this.connection.rest.channelController.edit4(this.channelToEdit!.id, event)
       .subscribe(() => {
       }, error => this.restService.handleError(error), () => this.channelToEdit = undefined);
   }
@@ -136,7 +135,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
 
   protected deleteChannel(type: Button) {
     if (type == BUTTON_DELETE) {
-      this.connection.rest.channelController.delete4(this.channelToDelete!.id)
+      this.connection.rest.channelController.delete3(this.channelToDelete!.id)
         .subscribe(value => {
         }, error => this.restService.handleError(error))
     }

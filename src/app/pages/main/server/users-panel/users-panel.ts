@@ -81,7 +81,8 @@ export class UsersPanel implements OnInit {
       .subscribe(value => {
         user.groups = value;
         this.toastService.create({
-          title: "Group added to user " + user.username,
+          title: "Group added",
+          message: "'" + user.username + "' has group '" + group.name + "'",
           type: ToastType.Success
         })
       }, error => {

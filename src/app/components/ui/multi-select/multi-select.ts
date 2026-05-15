@@ -1,100 +1,119 @@
 import {
-  afterRenderEffect,
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  computed, effect, input,
-  Input, output,
-  viewChild,
-  viewChildren
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  QueryList, ContentChildren, AfterContentInit, HostListener, ElementRef,
 } from '@angular/core';
-import {Combobox, ComboboxInput, ComboboxPopupContainer} from '@angular/aria/combobox';
-import {Listbox, Option} from '@angular/aria/listbox';
-import {CdkConnectedOverlay} from '@angular/cdk/overlay';
 import {CdkListboxModule} from '@angular/cdk/listbox';
-import {ChevronDownIcon, LucideAngularModule, LucideIconData} from 'lucide-angular';
+import {ChevronDownIcon, ChevronUpIcon, LucideAngularModule} from 'lucide-angular';
+import {SelectItem} from './select-item/select-item';
 
 @Component({
   selector: 'ui-multi-select',
   imports: [
-    Combobox,
-    CdkConnectedOverlay,
-    ComboboxPopupContainer,
-    ComboboxInput,
-    Listbox,
     CdkListboxModule,
-    Option,
-    LucideAngularModule
+    LucideAngularModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './multi-select.html',
   styleUrl: './multi-select.css',
 })
-export class MultiSelect<T> {
+export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
 
-  @Input() labelEmpty: string = 'Select';
+  @Input() placeholder: string = 'Select';
   @Input() multi: boolean = true;
+  @Input() selected: any[] | any = [];
+  @Output() selectedChange = new EventEmitter<any[] | any>();
 
-  @Input() option!: SelectOptionOrString<T>[] | string[];
+  @ContentChildren(SelectItem) entries!: QueryList<SelectItem>;
 
-  selected = input<T[]|T>([]);
-  selectedChange = output<T[]|T>();
+  showOptions: boolean = false;
+  label: string = this.placeholder;
+  placeholderActive: boolean = false;
 
-  listbox = viewChild<Listbox<SelectOptionOrString<T>>>(Listbox);
-  options = viewChildren<Option<SelectOptionOrString<T>>>(Option);
-  combobox = viewChild<Combobox<string>>(Combobox);
 
-  displayIcon = computed(() => {
-    const values = this.listbox()?.values() || [];
-    return undefined
-  });
+  constructor(private el: ElementRef) {
+  }
 
-  /** The string that is displayed in the combobox. */
-  displayValue = computed(() => {
-    const values = this.listbox()?.values() || [];
-    if (values.length === 0) {
-      return this.labelEmpty;
-    }
-    if (values.length === 1) {
-      return values[0];
-    }
-    return `${values[0]} + ${values.length - 1} more`;
-  });
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.update();
+    },100);
+  }
 
-  constructor() {
-    // Scrolls to the active item when the active option changes.
-    // The slight delay here is to ensure animations are done before scrolling.
-    afterRenderEffect(() => {
-      const option = this.options().find((opt) => opt.active());
-      setTimeout(() => option?.element.scrollIntoView({block: 'nearest'}), 50);
+  ngOnChanges(changes: SimpleChanges<any>): void {
+    setTimeout(() => {
+      this.update();
     });
+  }
 
-    // Resets the listbox scroll position when the combobox is closed.
-    afterRenderEffect(() => {
-      if (!this.combobox()?.expanded()) {
-        setTimeout(() => this.listbox()?.element.scrollTo(0, 0), 150);
-      }
+  ngAfterContentInit(): void {
+    this.bindEntries();
+
+    this.entries.changes.subscribe(() => {
+      this.bindEntries();
     });
+  }
+
+
+  update() {
+    this.entries.forEach(entry => {
+      entry.selected = (this.selected.includes(entry.value));
+    })
+
+    this.label = this.entries.filter(entry => entry.selected)
+      .map(e => e.label)
+      .join(", ");
+    if (this.label == "") {
+      this.label = this.placeholder;
+      this.placeholderActive = true;
+    } else {
+      this.placeholderActive = false;
+    }
+  }
+
+  private bindEntries(): void {
+    this.entries.forEach(entry => {
+      entry.clicked.subscribe(value => {
+        this.onItemClicked(value);
+      });
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as Node;
+
+    const clickedInside = this.el.nativeElement.contains(target);
+
+    if (!clickedInside) {
+      this.showOptions = false;
+    }
+  }
+
+  private onItemClicked(value: string): void {
+    console.log(value);
+
+    const index = this.selected.indexOf(value);
+
+    if (index >= 0) {
+      this.selected.splice(index, 1);
+    } else {
+      this.selected.push(value);
+    }
+    if (!this.multi) {
+      this.showOptions = false;
+    }
+    this.update();
   }
 
 
   protected readonly ChevronDownIcon = ChevronDownIcon;
+  protected readonly ChevronUpIcon = ChevronUpIcon;
 
-
-
-  protected getId(option: SelectOptionOrString<T>) {
-    return (option as any).id ? (option as SelectOption<T>).id : option;
-  }
-
-  protected getLabel(option: SelectOptionOrString<T>): string {
-    return (option as any).id ? (option as SelectOption<T>).label : (option as string);
-  }
 }
-
-
-export interface SelectOption<T> {
-  id: T
-  label: string;
-  icon: LucideIconData | undefined;
-}
-
-type SelectOptionOrString<T> = SelectOption<T> | string;

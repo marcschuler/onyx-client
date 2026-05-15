@@ -3,6 +3,7 @@ import {ChannelDTO} from '../../api/webrtc-server/model/channelDTO';
 
 import {version} from '../../../package.json'
 import {Client, KeyId, WebSocketServerConnection} from './websocket/WebSocketServerConnection';
+import {SectionExtendedDTO} from '../../api/webrtc-server';
 
 export function getChannelFromId(id: string, sections: SectionDTO[]): ChannelDTO | undefined {
   for (const s of sections) {
@@ -26,7 +27,7 @@ export function getSectionOfChannel(channel: ChannelDTO, sections: SectionDTO[])
   return undefined;
 }
 
-export function getSectionFromId(id: string, sections: SectionDTO[]) {
+export function getSectionFromId<T extends SectionDTO | SectionExtendedDTO>(id: string, sections: T[]) {
   for (const s of sections) {
     if (s.id === id)
       return s;
@@ -42,6 +43,19 @@ export function compareLists<T>(left: T[], right: T[]) {
     missingFromLeft: right.filter(item => !leftSet.has(item)),
     missingFromRight: left.filter(item => !rightSet.has(item))
   };
+}
+
+/**
+ * Reorders an item from one list to another
+ * @param sourceList the source list
+ * @param item the item
+ * @param newIndex the new index at the target list1
+ * @param targetList the target list. Can be the same as the source list if simple reordering is wanted
+ */
+export function reorderListItem<T>(sourceList: T[], item: T, newIndex: number, targetList: T[] = sourceList): void {
+  const currentIndex = sourceList.indexOf(item);
+  sourceList.splice(currentIndex, 1);
+  targetList.splice(newIndex, 0, item);
 }
 
 /**

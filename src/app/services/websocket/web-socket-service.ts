@@ -11,14 +11,14 @@ import {
   AuthSuccessMessage, ChannelDTO, ChannelMoveEvent,
   ClientChangeEvent, ClientChannelJoinEvent, ClientChannelLeaveEvent, ClientServerJoinEvent, ClientServerLeaveEvent,
   IceServerMessage, JwtTokenEvent,
-  MessageTypes, SectionDTO, ServerChangeEvent,
+  MessageTypes, SectionCreateEvent, SectionDTO, SectionExtendedDTO, SectionMoveEvent, ServerChangeEvent,
   ServerTreeChangeMessage
 } from '../../../api/webrtc-server';
 import {RestService} from '../rest-service';
 import {MessageBody} from '../../../api/webrtc-server';
 import {KickedEvent} from '../../../api/webrtc-server';
 import {ClientKickEvent} from '../../../api/webrtc-server';
-import {clientWithId, getChannelFromId, getSectionFromId, getSectionOfChannel} from '../Util';
+import {clientWithId, getChannelFromId, getSectionFromId, getSectionOfChannel, reorderListItem} from '../Util';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +37,10 @@ export class WebSocketService {
     this.addHandler(AuthChallengeRequest.TypeEnum.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
     this.addHandler(AuthSuccessMessage.TypeEnum.AuthSuccessMessage, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessMessage, c));
     this.addHandler(ServerTreeChangeMessage.TypeEnum.ServerTreeChangeMessage, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeMessage, c))
-    this.addHandler(ServerChangeEvent.TypeEnum.ServerChangeEvent,(e,c)=>this.onServerChange(e as ServerChangeEvent, c));
+    this.addHandler(ServerChangeEvent.TypeEnum.ServerChangeEvent, (e, c) => this.onServerChange(e as ServerChangeEvent, c));
 
+    this.addHandler(SectionCreateEvent.TypeEnum.SectionCreateEvent,(e,c)=>this.onSectionCreate(e as SectionCreateEvent,c))
+    this.addHandler(SectionMoveEvent.TypeEnum.SectionMoveEvent, (e, c) => this.onSectionMove(e as SectionMoveEvent, c));
     this.addHandler(ChannelMoveEvent.TypeEnum.ChannelMoveEvent, (e, c) => this.onChannelMove(e as ChannelMoveEvent, c));
 
     this.addHandler(ClientServerJoinEvent.TypeEnum.ClientServerJoinEvent, (e, c) => this.onClientServerJoin(e as ClientServerJoinEvent, c));
@@ -230,23 +232,28 @@ export class WebSocketService {
     connection.data = event;
   }
 
-  private onServerChange(event:ServerChangeEvent, connection: WebSocketServerConnection) {
+  private onServerChange(event: ServerChangeEvent, connection: WebSocketServerConnection) {
     connection.data!.server = event.server;
+    console.log("server details changed fro " + event.server.name)
   }
 
+  private onSectionCreate(event: SectionCreateEvent, connection: WebSocketServerConnection) {
+    const section = event.section;
+    connection.data!.sections.splice(event.order,0, section);
+  }
+
+  private onSectionMove(event: SectionMoveEvent, connection: WebSocketServerConnection) {
+    const section = getSectionFromId(event.sectionId, connection.data!.sections) as SectionExtendedDTO;
+    reorderListItem(connection.data!.sections, section, event.order);
+  }
 
   private onChannelMove(event: ChannelMoveEvent, connection: WebSocketServerConnection) {
     const channel = getChannelFromId(event.channelId, connection.data!.sections) as ChannelDTO;
     const section = getSectionOfChannel(channel, connection.data!.sections) as SectionDTO;
-    const index = section.channels.indexOf(channel);
-
-    // remove from section
-    section.channels.splice(index, 1);
-
-    //insert into new position at (new) section
-    const newSection = event.sectionId ?
-      getSectionFromId(event.sectionId, connection.data!.sections) as SectionDTO : section;
-    newSection.channels.splice(event.order, 0, channel)
+    const newSection = event.sectionId
+      ? getSectionFromId(event.sectionId, connection.data!.sections) as SectionDTO
+      : section;
+    reorderListItem(section.channels, channel, event.order, newSection.channels);
   }
 
   private onIceServerData(event: IceServerMessage, connection: WebSocketServerConnection) {

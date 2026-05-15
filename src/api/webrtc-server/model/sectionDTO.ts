@@ -11,7 +11,7 @@ import { ChannelDTO } from './channelDTO';
 
 
 export interface SectionDTO { 
-    name: string;
+    readonly name: string;
     id: string;
     channels: Array<ChannelDTO>;
 }

@@ -10,11 +10,10 @@ import ServerAdministrationPanel from './server-administration-panel/server-admi
 import {ChannelAdministrationPanel} from './channel-administration-panel/channel-administration-panel';
 import {DiamondMinusIcon, HexagonIcon, IdCardLanyard, ServerCog} from 'lucide-angular';
 import {GroupAdministrationPanel} from './group-administration-panel/group-administration-panel';
-import {PolicyAdministrationPanel} from './policy-administration-panel/policy-administration-panel';
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [ButtonPanel, FormsModule, ServerAdministrationPanel, ChannelAdministrationPanel, GroupAdministrationPanel, PolicyAdministrationPanel],
+  imports: [ButtonPanel, FormsModule, ServerAdministrationPanel, ChannelAdministrationPanel, GroupAdministrationPanel],
   templateUrl: './admin-panel.html',
   standalone: true,
   styleUrl: './admin-panel.css'
@@ -40,11 +39,6 @@ export class AdminPanel implements OnInit, OnChanges {
     id: "groups",
     icon: IdCardLanyard,
     name: "Groups"
-  }
-  BUTTON_POLICY: TabPanelEntry = {
-    id: "policies",
-    icon: DiamondMinusIcon,
-    name: "Policies"
   }
 
   constructor(private restService: RestService,

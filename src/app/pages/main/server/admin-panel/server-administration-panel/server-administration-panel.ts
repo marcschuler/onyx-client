@@ -20,7 +20,6 @@ import {deleteInList} from '../../../../../services/Util';
     FormsModule,
     CdkDragHandle,
     LucideAngularModule,
-    FileUpload,
     CdkDrag,
     CdkDropList
   ],
@@ -31,7 +30,7 @@ class ServerAdministrationPanel {
 
   @Input() connection!: WebSocketServerConnection;
 
-  //TODO remove and access via connection.data.server? Is this here an advantag?
+  //TODO remove and access via connection.data.server? Is this here an advantage?
   server: ServerDTO | undefined;
 
   constructor(private restService: RestService,
@@ -72,7 +71,7 @@ class ServerAdministrationPanel {
     }
     this.connection.rest.serverController.edit(this.server.id, {
       name: this.server.name,
-    }).subscribe(server => {
+    } as ServerDTO).subscribe(server => {
       this.server = server;
       this.toastService.create({
         title: "Server updated",
@@ -87,6 +86,7 @@ class ServerAdministrationPanel {
       type: "MARKDOWN",
       text: "This is text."
     }).subscribe(description => {
+      console.log("created markdown description",description);
         this.server!.description.push(description);
       },
       error => this.restService.handleError(error));
@@ -114,7 +114,7 @@ class ServerAdministrationPanel {
     }
     this.connection.rest.serverDescriptionController.order(this.server!.id,description.id!, newOrder)
       .subscribe(() => {
-        
+
       }, error => this.restService.handleError(error));
 
   }

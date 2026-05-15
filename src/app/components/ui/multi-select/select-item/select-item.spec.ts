@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PolicyEditor } from './policy-editor';
+import { SelectItem } from './select-item';
 
-describe('PolicyEditor', () => {
-  let component: PolicyEditor;
-  let fixture: ComponentFixture<PolicyEditor>;
+describe('SelectItem', () => {
+  let component: SelectItem;
+  let fixture: ComponentFixture<SelectItem>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PolicyEditor]
+      imports: [SelectItem]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PolicyEditor);
+    fixture = TestBed.createComponent(SelectItem);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

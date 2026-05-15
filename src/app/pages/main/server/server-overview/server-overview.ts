@@ -6,7 +6,6 @@ import {MessageContent} from '../../../../components/chat/message-content/messag
 @Component({
   selector: 'app-server-overview',
   imports: [
-    MarkdownPipe,
     MessageContent
   ],
   templateUrl: './server-overview.html',

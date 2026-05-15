@@ -4,7 +4,7 @@
       (click)="connection.selectedChannel=undefined">{{ data.server.name }}</h3>
   @for (section of data.sections; track section) {
     <div>
-      <h4 class="font-semibold pt-3">{{ section.name }}</h4>
+      <h6 class="font-semibold text-neutral-500 pt-3">{{ section.name }}</h6>
       @for (channel of section.channels; track channel) {
         <app-channel-entry [channel]="channel" [connection]="connection"></app-channel-entry>
         @for (client of connection.clients; track client.id) {
@@ -18,7 +18,7 @@
 
 
   <div [class.pt-8]="!interfaceService.settings.compactMode" [class.pt-4]="interfaceService.settings.compactMode">
-    <h4 class="text-neutral-200 font-semibold">Idle</h4>
+    <h4 class="text-neutral-500 font-semibold">Idle</h4>
     @for (client of connection.clients; track client.id) {
       @if (client.channel == undefined) {
         <app-user-entry [client]="client" [connection]="connection"></app-user-entry>

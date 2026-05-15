@@ -7,13 +7,13 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SectionDTO } from './sectionDTO';
+import { SectionExtendedDTO } from './sectionExtendedDTO';
 import { MessageBody } from './messageBody';
 
 
 export interface SectionCreateEvent extends MessageBody { 
-    section: SectionDTO;
-    order?: number;
+    section: SectionExtendedDTO;
+    order: number;
     readonly type: SectionCreateEvent.TypeEnum;
 }
 export namespace SectionCreateEvent {

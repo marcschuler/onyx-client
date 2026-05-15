@@ -17,9 +17,9 @@ import { Observable }                                        from 'rxjs';
 import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 
 // @ts-ignore
-import { GroupDTO } from '../model/groupDTO';
+import { GroupCreateDTO } from '../model/groupCreateDTO';
 // @ts-ignore
-import { GroupWriteDTO } from '../model/groupWriteDTO';
+import { GroupDTO } from '../model/groupDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -93,17 +93,17 @@ export class GroupControllerService extends BaseService {
 
     /**
      * @endpoint post /v0/group
-     * @param groupWriteDTO 
+     * @param groupCreateDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public create3(groupWriteDTO: GroupWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupDTO>;
-    public create3(groupWriteDTO: GroupWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupDTO>>;
-    public create3(groupWriteDTO: GroupWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupDTO>>;
-    public create3(groupWriteDTO: GroupWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (groupWriteDTO === null || groupWriteDTO === undefined) {
-            throw new Error('Required parameter groupWriteDTO was null or undefined when calling create3.');
+    public create2(groupCreateDTO: GroupCreateDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupDTO>;
+    public create2(groupCreateDTO: GroupCreateDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupDTO>>;
+    public create2(groupCreateDTO: GroupCreateDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupDTO>>;
+    public create2(groupCreateDTO: GroupCreateDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (groupCreateDTO === null || groupCreateDTO === undefined) {
+            throw new Error('Required parameter groupCreateDTO was null or undefined when calling create2.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -148,7 +148,7 @@ export class GroupControllerService extends BaseService {
         return this.httpClient.request<GroupDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: groupWriteDTO,
+                body: groupCreateDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -166,12 +166,12 @@ export class GroupControllerService extends BaseService {
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public delete3(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public delete3(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public delete3(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public delete3(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public delete2(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public delete2(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public delete2(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public delete2(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling delete3.');
+            throw new Error('Required parameter id was null or undefined when calling delete2.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -219,20 +219,20 @@ export class GroupControllerService extends BaseService {
     /**
      * @endpoint put /v0/group/{id}
      * @param id 
-     * @param groupWriteDTO 
+     * @param groupDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public edit4(id: string, groupWriteDTO: GroupWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupDTO>;
-    public edit4(id: string, groupWriteDTO: GroupWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupDTO>>;
-    public edit4(id: string, groupWriteDTO: GroupWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupDTO>>;
-    public edit4(id: string, groupWriteDTO: GroupWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public edit3(id: string, groupDTO: GroupDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupDTO>;
+    public edit3(id: string, groupDTO: GroupDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupDTO>>;
+    public edit3(id: string, groupDTO: GroupDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupDTO>>;
+    public edit3(id: string, groupDTO: GroupDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling edit4.');
+            throw new Error('Required parameter id was null or undefined when calling edit3.');
         }
-        if (groupWriteDTO === null || groupWriteDTO === undefined) {
-            throw new Error('Required parameter groupWriteDTO was null or undefined when calling edit4.');
+        if (groupDTO === null || groupDTO === undefined) {
+            throw new Error('Required parameter groupDTO was null or undefined when calling edit3.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -277,7 +277,7 @@ export class GroupControllerService extends BaseService {
         return this.httpClient.request<GroupDTO>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: groupWriteDTO,
+                body: groupDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

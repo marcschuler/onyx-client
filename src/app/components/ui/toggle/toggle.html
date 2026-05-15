@@ -1,4 +1,6 @@
-<label class="switch">
-  <input type="checkbox" [(ngModel)]="value" (ngModelChange)="onChange($event)">
-  <span class="slider round"></span>
-</label>
+<div class="rounded max-w-16 h-8 border border-neutral-700  bg-animate-sky relative" [class.toggle-active]="value">
+  <input type="checkbox" class="w-full h-full opacity-0" [(ngModel)]="value" (ngModelChange)="onChange($event)">
+  <div class="absolute h-6 w-3 top-1  bg-neutral-200 transition-all rounded duration-300 pointer-events-none"
+       [style.left]="value?'46px':'2px'">
+  </div>
+</div>

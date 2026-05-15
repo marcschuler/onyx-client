@@ -20,8 +20,6 @@ import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 import { ChannelCreateDTO } from '../model/channelCreateDTO';
 // @ts-ignore
 import { ChannelDTO } from '../model/channelDTO';
-// @ts-ignore
-import { ChannelWriteDTO } from '../model/channelWriteDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -104,12 +102,12 @@ export class ChannelControllerService extends BaseService {
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public create4(channelCreateDTO: ChannelCreateDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ChannelDTO>;
-    public create4(channelCreateDTO: ChannelCreateDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ChannelDTO>>;
-    public create4(channelCreateDTO: ChannelCreateDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ChannelDTO>>;
-    public create4(channelCreateDTO: ChannelCreateDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public create3(channelCreateDTO: ChannelCreateDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ChannelDTO>;
+    public create3(channelCreateDTO: ChannelCreateDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ChannelDTO>>;
+    public create3(channelCreateDTO: ChannelCreateDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ChannelDTO>>;
+    public create3(channelCreateDTO: ChannelCreateDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (channelCreateDTO === null || channelCreateDTO === undefined) {
-            throw new Error('Required parameter channelCreateDTO was null or undefined when calling create4.');
+            throw new Error('Required parameter channelCreateDTO was null or undefined when calling create3.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -172,12 +170,12 @@ export class ChannelControllerService extends BaseService {
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public delete4(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public delete4(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public delete4(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public delete4(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public delete3(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public delete3(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public delete3(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public delete3(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling delete4.');
+            throw new Error('Required parameter id was null or undefined when calling delete3.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -225,20 +223,20 @@ export class ChannelControllerService extends BaseService {
     /**
      * @endpoint put /v0/channel/{id}
      * @param id 
-     * @param channelWriteDTO 
+     * @param channelDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public edit5(id: string, channelWriteDTO: ChannelWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ChannelDTO>;
-    public edit5(id: string, channelWriteDTO: ChannelWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ChannelDTO>>;
-    public edit5(id: string, channelWriteDTO: ChannelWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ChannelDTO>>;
-    public edit5(id: string, channelWriteDTO: ChannelWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public edit4(id: string, channelDTO: ChannelDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ChannelDTO>;
+    public edit4(id: string, channelDTO: ChannelDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ChannelDTO>>;
+    public edit4(id: string, channelDTO: ChannelDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ChannelDTO>>;
+    public edit4(id: string, channelDTO: ChannelDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling edit5.');
+            throw new Error('Required parameter id was null or undefined when calling edit4.');
         }
-        if (channelWriteDTO === null || channelWriteDTO === undefined) {
-            throw new Error('Required parameter channelWriteDTO was null or undefined when calling edit5.');
+        if (channelDTO === null || channelDTO === undefined) {
+            throw new Error('Required parameter channelDTO was null or undefined when calling edit4.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -283,7 +281,7 @@ export class ChannelControllerService extends BaseService {
         return this.httpClient.request<ChannelDTO>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: channelWriteDTO,
+                body: channelDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

@@ -11,8 +11,8 @@ import { MessageBody } from './messageBody';
 
 
 export interface SectionMoveEvent extends MessageBody { 
-    sectionId?: string;
-    order?: number;
+    sectionId: string;
+    order: number;
     readonly type: SectionMoveEvent.TypeEnum;
 }
 export namespace SectionMoveEvent {

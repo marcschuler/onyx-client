@@ -28,8 +28,10 @@
 
   <span class="justify-end text-neutral-700">
     @for (group of client.details.groups; track group.id) {
-      @if (group.showInTree) {
+      @if (group.label) {
+        <span class="border-neutral-700 border rounded p-0.5">
         {{ group.name }} <!--TODO replace with icon when available -->
+        </span>
       }
     }
   </span>

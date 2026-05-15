@@ -7,15 +7,18 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileDTO } from './fileDTO';
+import { PermissionDTO } from './permissionDTO';
 
 
 export interface GroupDTO { 
+    readonly id: string;
     name: string;
     description?: string;
-    icon?: any;
-    parentId?: string;
-    accessPowers: { [key: string]: number; };
-    showInTree: boolean;
-    id: string;
+    icon?: FileDTO;
+    inheritsFrom?: Array<GroupDTO>;
+    priority: number;
+    permissions?: Array<PermissionDTO>;
+    label: boolean;
 }
 

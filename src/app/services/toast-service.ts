@@ -11,7 +11,7 @@ export class ToastService {
     this.toasts.push(toast);
     setTimeout(() => {
       this.dismiss(toast)
-    }, toast.duration || 3000)
+    }, toast.duration || 5000)
   }
 
   dismiss(toast: ToastMessage) {

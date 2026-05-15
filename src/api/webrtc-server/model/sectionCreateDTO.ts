@@ -9,11 +9,7 @@
  */
 
 
-export interface ChannelDTO { 
-    readonly sectionId: string;
-    readonly order: number;
-    readonly name: string;
-    id: string;
-    chatId: string;
+export interface SectionCreateDTO { 
+    name: string;
 }
 

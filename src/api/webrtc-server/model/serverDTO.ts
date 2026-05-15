@@ -11,8 +11,8 @@ import { Edit1Request } from './edit1Request';
 
 
 export interface ServerDTO { 
+    readonly id: string;
     name: string;
-    id: string;
     publicKey: { [key: string]: any; };
     description: Array<Edit1Request>;
 }

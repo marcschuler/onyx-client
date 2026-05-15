@@ -17,9 +17,9 @@ import { Observable }                                        from 'rxjs';
 import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 
 // @ts-ignore
-import { SectionDTO } from '../model/sectionDTO';
+import { SectionCreateDTO } from '../model/sectionCreateDTO';
 // @ts-ignore
-import { SectionWriteDTO } from '../model/sectionWriteDTO';
+import { SectionDTO } from '../model/sectionDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -39,17 +39,17 @@ export class SectionControllerService extends BaseService {
 
     /**
      * @endpoint post /v0/section
-     * @param sectionWriteDTO 
+     * @param sectionCreateDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public create1(sectionWriteDTO: SectionWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
-    public create1(sectionWriteDTO: SectionWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
-    public create1(sectionWriteDTO: SectionWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
-    public create1(sectionWriteDTO: SectionWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (sectionWriteDTO === null || sectionWriteDTO === undefined) {
-            throw new Error('Required parameter sectionWriteDTO was null or undefined when calling create1.');
+    public create1(sectionCreateDTO: SectionCreateDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
+    public create1(sectionCreateDTO: SectionCreateDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
+    public create1(sectionCreateDTO: SectionCreateDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
+    public create1(sectionCreateDTO: SectionCreateDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (sectionCreateDTO === null || sectionCreateDTO === undefined) {
+            throw new Error('Required parameter sectionCreateDTO was null or undefined when calling create1.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -94,7 +94,7 @@ export class SectionControllerService extends BaseService {
         return this.httpClient.request<SectionDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: sectionWriteDTO,
+                body: sectionCreateDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -165,20 +165,20 @@ export class SectionControllerService extends BaseService {
     /**
      * @endpoint put /v0/section/{sectionId}
      * @param sectionId 
-     * @param sectionWriteDTO 
+     * @param sectionDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public edit2(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
-    public edit2(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
-    public edit2(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
-    public edit2(sectionId: string, sectionWriteDTO: SectionWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public edit2(sectionId: string, sectionDTO: SectionDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
+    public edit2(sectionId: string, sectionDTO: SectionDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
+    public edit2(sectionId: string, sectionDTO: SectionDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
+    public edit2(sectionId: string, sectionDTO: SectionDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (sectionId === null || sectionId === undefined) {
             throw new Error('Required parameter sectionId was null or undefined when calling edit2.');
         }
-        if (sectionWriteDTO === null || sectionWriteDTO === undefined) {
-            throw new Error('Required parameter sectionWriteDTO was null or undefined when calling edit2.');
+        if (sectionDTO === null || sectionDTO === undefined) {
+            throw new Error('Required parameter sectionDTO was null or undefined when calling edit2.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -223,7 +223,7 @@ export class SectionControllerService extends BaseService {
         return this.httpClient.request<SectionDTO>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: sectionWriteDTO,
+                body: sectionDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

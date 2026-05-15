@@ -11,7 +11,6 @@
 
 export interface ChannelCreateDTO { 
     name: string;
-    policies: { [key: string]: any; };
     sectionId: string;
     order: number;
 }

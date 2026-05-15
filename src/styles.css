@@ -16,7 +16,7 @@ label {
 }
 
 input {
-  @apply bg-neutral-900 border border-neutral-900 text-neutral-200 focus:text-neutral-100 text-sm rounded-lg focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5
+  @apply bg-neutral-900 border border-neutral-900 text-neutral-200 focus:text-neutral-100 text-sm rounded-lg focus:outline-none  focus:border-sky-800 block w-full px-2 py-2
 }
 
 input::placeholder {
@@ -44,6 +44,7 @@ textarea {
     disabled:bg-neutral-800 disabled:text-neutral-400 disabled:cursor-not-allowed;
   }
 }
+
 .button-selected {
   @apply bg-neutral-900
 }
@@ -84,11 +85,11 @@ textarea {
   @apply rounded-none
 }
 
-.button-small{
+.button-small {
   @apply !p-1
 }
 
-.button-light{
+.button-light {
   @apply bg-neutral-200 text-neutral-800
 }
 
@@ -153,6 +154,37 @@ select {
   @apply border-b-3 border-b-neutral-600 hover:border-b-neutral-300
 }
 
+/**
+CUSTOM SELECT COMPONENT
+ */
+.select-selected {
+  @apply border-sky-800
+}
+
+.select-placeholder {
+  @apply text-neutral-500
+}
+
+.select-item-selected {
+  @apply bg-sky-800
+}
+
+/**
+TOGGLE ELEMENT
+ */
+.toggle-active{
+  @apply bg-sky-800
+}
+
+
+/**
+GENERAL
+ */
+@layer components {
+  .bg-animate {
+    @apply bg-transparent transition-colors duration-500;
+  }
+}
 
 .wave-background {
   --mask: radial-gradient(34.4px at 50% calc(100% + 13.5px), #0000 calc(99% - 3px), #000 calc(101% - 3px) 99%, #0000 101%) calc(50% - 60px) calc(50% - 16.5px + .5px)/120px 33px,
@@ -196,11 +228,11 @@ UI Stuff
   @apply col-span-3
 }
 
-.settings-grid-full{
+.settings-grid-full {
   @apply col-span-12
 }
 
 
-.divider{
+.divider {
   @apply bg-neutral-600 w-full h-0.5
 }

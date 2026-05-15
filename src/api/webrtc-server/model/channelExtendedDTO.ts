@@ -11,8 +11,9 @@ import { UserSimpleDTO } from './userSimpleDTO';
 
 
 export interface ChannelExtendedDTO { 
-    name: string;
-    policies: { [key: string]: any; };
+    readonly sectionId: string;
+    readonly order: number;
+    readonly name: string;
     id: string;
     chatId: string;
     users: Array<UserSimpleDTO>;

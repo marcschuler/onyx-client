@@ -1,15 +1,9 @@
-<app-button-panel [buttons]="[BUTTON_GENERAL,BUTTON_POLICIES]" [(selectedOption)]="selectedOption">
+<app-button-panel [buttons]="[BUTTON_GENERAL]" [(selectedOption)]="selectedOption">
 
   @switch (selectedOption) {
     @case (BUTTON_GENERAL) {
       <input placeholder="name">
       <textarea placeholder="description"></textarea>
-    }
-    @case (BUTTON_POLICIES) {
-      @if (channel) {
-        <app-policy-editor [connection]="connection" [type]="PolicyType.CHANNEL" [data]="channel">
-        </app-policy-editor>
-      }
     }
   }
   <div>

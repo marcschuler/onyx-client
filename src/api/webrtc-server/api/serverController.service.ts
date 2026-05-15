@@ -18,8 +18,6 @@ import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 
 // @ts-ignore
 import { ServerDTO } from '../model/serverDTO';
-// @ts-ignore
-import { ServerWriteDTO } from '../model/serverWriteDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -40,20 +38,20 @@ export class ServerControllerService extends BaseService {
     /**
      * @endpoint put /v0/server/{serverId}
      * @param serverId 
-     * @param serverWriteDTO 
+     * @param serverDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public edit(serverId: string, serverWriteDTO: ServerWriteDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ServerDTO>;
-    public edit(serverId: string, serverWriteDTO: ServerWriteDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ServerDTO>>;
-    public edit(serverId: string, serverWriteDTO: ServerWriteDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ServerDTO>>;
-    public edit(serverId: string, serverWriteDTO: ServerWriteDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public edit(serverId: string, serverDTO: ServerDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ServerDTO>;
+    public edit(serverId: string, serverDTO: ServerDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ServerDTO>>;
+    public edit(serverId: string, serverDTO: ServerDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ServerDTO>>;
+    public edit(serverId: string, serverDTO: ServerDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (serverId === null || serverId === undefined) {
             throw new Error('Required parameter serverId was null or undefined when calling edit.');
         }
-        if (serverWriteDTO === null || serverWriteDTO === undefined) {
-            throw new Error('Required parameter serverWriteDTO was null or undefined when calling edit.');
+        if (serverDTO === null || serverDTO === undefined) {
+            throw new Error('Required parameter serverDTO was null or undefined when calling edit.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -98,7 +96,7 @@ export class ServerControllerService extends BaseService {
         return this.httpClient.request<ServerDTO>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: serverWriteDTO,
+                body: serverDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
