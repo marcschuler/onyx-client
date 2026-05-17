@@ -7,17 +7,16 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MessageBody } from './messageBody';
 
 
-export interface PermissionDTO { 
-    readonly id: string;
-    permissions: Array<PermissionDTO.PermissionsEnum>;
-    negated: boolean;
-    limitedToSection?: Array<string>;
-    limitedToChannel?: Array<string>;
+export interface NoPermissionMessage extends MessageBody { 
+    message?: string;
+    permissionType: NoPermissionMessage.PermissionTypeEnum;
+    readonly type: NoPermissionMessage.TypeEnum;
 }
-export namespace PermissionDTO {
-    export const PermissionsEnum = {
+export namespace NoPermissionMessage {
+    export const PermissionTypeEnum = {
         Server: 'SERVER',
         ServerJoin: 'SERVER_JOIN',
         ServerEdit: 'SERVER_EDIT',
@@ -49,7 +48,11 @@ export namespace PermissionDTO {
         Self: 'SELF',
         SelfAvatar: 'SELF_AVATAR'
     } as const;
-    export type PermissionsEnum = typeof PermissionsEnum[keyof typeof PermissionsEnum];
+    export type PermissionTypeEnum = typeof PermissionTypeEnum[keyof typeof PermissionTypeEnum];
+    export const TypeEnum = {
+        NoPermissionMessage: 'NoPermissionMessage'
+    } as const;
+    export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }
 
 

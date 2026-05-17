@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Client, ConnectionState, KeyId, ServerObjectId, WebSocketServerConnection} from './WebSocketServerConnection';
-import {Identity, IdentityService} from '../identity-service';
+import {Identity} from '../identity-service';
 import {ServerConnection} from '../server-loader-service';
 import {CryptoService} from '../crypto-service';
 import {ToastService, ToastType} from '../toast-service';
@@ -8,16 +8,29 @@ import {PeerConnectionService} from '../peer/peer-connection-service';
 import {
   AuthChallengeRequest,
   AuthChallengeResponse,
-  AuthSuccessMessage, ChannelDTO, ChannelMoveEvent,
-  ClientChangeEvent, ClientChannelJoinEvent, ClientChannelLeaveEvent, ClientServerJoinEvent, ClientServerLeaveEvent,
-  IceServerMessage, JwtTokenEvent,
-  MessageTypes, SectionCreateEvent, SectionDTO, SectionExtendedDTO, SectionMoveEvent, ServerChangeEvent,
+  AuthSuccessMessage,
+  ChannelDTO,
+  ChannelMoveEvent,
+  ClientChangeEvent,
+  ClientChannelJoinEvent,
+  ClientChannelLeaveEvent,
+  ClientKickEvent,
+  ClientServerJoinEvent,
+  ClientServerLeaveEvent,
+  IceServerMessage,
+  JwtTokenEvent,
+  KickedEvent,
+  MessageBody,
+  MessageTypes,
+  NoPermissionMessage,
+  SectionCreateEvent,
+  SectionDTO,
+  SectionExtendedDTO,
+  SectionMoveEvent,
+  ServerChangeEvent,
   ServerTreeChangeMessage
 } from '../../../api/webrtc-server';
 import {RestService} from '../rest-service';
-import {MessageBody} from '../../../api/webrtc-server';
-import {KickedEvent} from '../../../api/webrtc-server';
-import {ClientKickEvent} from '../../../api/webrtc-server';
 import {clientWithId, getChannelFromId, getSectionFromId, getSectionOfChannel, reorderListItem} from '../Util';
 
 @Injectable({
@@ -39,7 +52,7 @@ export class WebSocketService {
     this.addHandler(ServerTreeChangeMessage.TypeEnum.ServerTreeChangeMessage, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeMessage, c))
     this.addHandler(ServerChangeEvent.TypeEnum.ServerChangeEvent, (e, c) => this.onServerChange(e as ServerChangeEvent, c));
 
-    this.addHandler(SectionCreateEvent.TypeEnum.SectionCreateEvent,(e,c)=>this.onSectionCreate(e as SectionCreateEvent,c))
+    this.addHandler(SectionCreateEvent.TypeEnum.SectionCreateEvent, (e, c) => this.onSectionCreate(e as SectionCreateEvent, c))
     this.addHandler(SectionMoveEvent.TypeEnum.SectionMoveEvent, (e, c) => this.onSectionMove(e as SectionMoveEvent, c));
     this.addHandler(ChannelMoveEvent.TypeEnum.ChannelMoveEvent, (e, c) => this.onChannelMove(e as ChannelMoveEvent, c));
 
@@ -55,6 +68,9 @@ export class WebSocketService {
 
     this.addHandler(IceServerMessage.TypeEnum.IceServerMessage, (e, c) => this.onIceServerData(e as IceServerMessage, c));
     this.addHandler(JwtTokenEvent.TypeEnum.JwtTokenEvent, (e, c) => this.onJwtToken(e as JwtTokenEvent, c));
+
+    // error
+    this.addHandler(NoPermissionMessage.TypeEnum.NoPermissionMessage, (e, c) => this.onErrorNoPermission(e as NoPermissionMessage, c));
   }
 
 
@@ -239,7 +255,7 @@ export class WebSocketService {
 
   private onSectionCreate(event: SectionCreateEvent, connection: WebSocketServerConnection) {
     const section = event.section;
-    connection.data!.sections.splice(event.order,0, section);
+    connection.data!.sections.splice(event.order, 0, section);
   }
 
   private onSectionMove(event: SectionMoveEvent, connection: WebSocketServerConnection) {
@@ -353,6 +369,15 @@ export class WebSocketService {
     }
     console.log("Client " + event.userId + " has left the server");
     connection.clients.splice(index, 1);
+  }
+
+  private onErrorNoPermission(event: NoPermissionMessage, connection: WebSocketServerConnection) {
+    console.log("No permission for action", event);
+    this.toastService.create({
+      title: event.message ? event.message : "No Permission",
+      message: "You don't have permission for " + event.permissionType,
+      type: ToastType.Warning
+    });
   }
 
 }

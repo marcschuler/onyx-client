@@ -19,6 +19,13 @@
           </button>
         </div>
       </div>
+
+      <h3 class="pt-8">Invite Codes</h3>
+      <div class="flex">
+        <input class="!rounded-r-none input-" placeholder="Enter your invite code..." [(ngModel)]="inviteCode">
+        <button class="!rounded-l-none" (click)="sendInviteCode()">Send</button>
+      </div>
+
     }
   }
 </app-button-panel>

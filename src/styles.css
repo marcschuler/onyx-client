@@ -16,7 +16,7 @@ label {
 }
 
 input {
-  @apply bg-neutral-900 border border-neutral-900 text-neutral-200 focus:text-neutral-100 text-sm rounded-lg focus:outline-none  focus:border-sky-800 block w-full px-2 py-2
+  @apply bg-neutral-900 border border-neutral-700 text-neutral-200 focus:text-neutral-100 text-sm rounded-lg focus:outline-none  focus:border-sky-800 block w-full px-2 py-2
 }
 
 input::placeholder {

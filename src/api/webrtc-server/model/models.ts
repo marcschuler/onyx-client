@@ -34,6 +34,7 @@ export * from './messageBody';
 export * from './messageContentDTO';
 export * from './messageDTO';
 export * from './messageTypes';
+export * from './noPermissionMessage';
 export * from './pageMessageDTO';
 export * from './pageable';
 export * from './pageableObject';

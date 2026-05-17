@@ -54,6 +54,7 @@ model/messageContentDTO.ts
 model/messageDTO.ts
 model/messageTypes.ts
 model/models.ts
+model/noPermissionMessage.ts
 model/pageMessageDTO.ts
 model/pageable.ts
 model/pageableObject.ts

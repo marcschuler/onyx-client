@@ -35,6 +35,8 @@ export class ClientEditor {
 
   selectedOption!: TabPanelEntry;
 
+  inviteCode: string = "";
+
   constructor(private toastService: ToastService, private webSocketService: WebSocketService,
               private restService: RestService) {
 
@@ -47,8 +49,6 @@ export class ClientEditor {
     })
   }
 
-  protected readonly CheckIcon = CheckIcon;
-  protected readonly XIcon = XIcon;
 
   protected deleteAvatar() {
     this.connection.rest.userController.avatarDelete(this.connection.me.id)
@@ -59,4 +59,18 @@ export class ClientEditor {
         })
       }, error => this.restService.handleError(error))
   }
+
+  protected sendInviteCode() {
+    this.connection.rest.userController.invite(this.connection.me.id, this.inviteCode)
+      .subscribe(_ => {
+        this.toastService.create({
+          type: ToastType.Success,
+          title: "Invite Code used"
+        })
+        this.inviteCode = "";
+      }, error => this.restService.handleError(error))
+  }
+
+
+  protected readonly XIcon = XIcon;
 }
