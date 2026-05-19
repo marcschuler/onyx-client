@@ -1,10 +1,12 @@
 <div class="right-2 top-2 absolute">
+  @if (!connection.selectedChannel){
   <button class="button-dark" (click)="showAdminPanel=true">
     <lucide-icon [name]="ServerCog"></lucide-icon>
   </button>
   <button class="button-dark" (click)="showUsersPanel=true">
     <lucide-icon [name]="BookUser"></lucide-icon>
   </button>
+  }
   <button class="button-dark" (click)="closeConnection()">
     <lucide-icon [name]="LogOut"></lucide-icon>
   </button>

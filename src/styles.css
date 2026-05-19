@@ -186,23 +186,6 @@ GENERAL
   }
 }
 
-.wave-background {
-  --mask: radial-gradient(34.4px at 50% calc(100% + 13.5px), #0000 calc(99% - 3px), #000 calc(101% - 3px) 99%, #0000 101%) calc(50% - 60px) calc(50% - 16.5px + .5px)/120px 33px,
-  radial-gradient(34.4px at 50% -13.5px, #0000 calc(99% - 3px), #000 calc(101% - 3px) 99%, #0000 101%) 50% calc(50% + 16.5px)/120px 33px;
-  -webkit-mask: var(--mask);
-  mask: var(--mask);
-}
-
-.gradient-white-emerald {
-  background: #009966;
-  background: linear-gradient(90deg, rgba(0, 153, 102, 1) 50%, rgba(224, 224, 224, 1) 100%);
-}
-
-.gradient-white-emerald-5 {
-  background: #009966;
-  background: linear-gradient(90deg, rgba(0, 153, 102, .05) 50%, rgba(224, 224, 224, .05) 100%);
-}
-
 
 /**
 UI Stuff

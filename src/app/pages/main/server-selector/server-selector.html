@@ -7,14 +7,11 @@
   <app-settings></app-settings>
 </app-popup>
 
-<div class="fixed w-screen h-screen wave-background gradient-white-emerald-5 -z-10">
-
-</div>
-
 <div class="flex flex-col justify-center  items-center h-screen max-h-screen">
 
-  <div class="p-4">
-    <img src="/assets/logo/logo.svg" class="w-32">
+  <div class="p-4 text-center">
+    <img src="/assets/logo/logo.png" class="w-32">
+    <h1 style="letter-spacing: 20px" class="font-light">onyx</h1>
   </div>
 
   <div class="p-6 bg-neutral-800 rounded w-xl">
@@ -86,8 +83,8 @@
       <div class="p-8 border-b-neutral-600 border-b-1">
         Using Identity
         <select [(ngModel)]="identity">
-          @for (identity of identityService.identities; track identity.id){
-            <option [value]="identity">{{identity.username}}</option>
+          @for (identity of identityService.identities; track identity.id) {
+            <option [value]="identity">{{ identity.username }}</option>
           }
         </select>
       </div>
@@ -108,19 +105,19 @@
   @if (serverToEdit && serverToEditCopy) {
     <app-popup [isOpen]="true"
                [buttons]="[BUTTON_EDIT]" [closeButton]="true" (close)="closeEditDialog($event)">
-      <h3>Connection</h3>
+      <h3>Server</h3>
 
       <div class="pt-4">
-        <label>Server Name</label>
+        <label>Name</label>
         <input [(ngModel)]="serverToEditCopy.name" placeholder="No name">
-        <label>Server URL</label>
+        <label>URL</label>
         <input [(ngModel)]="serverToEditCopy.url">
       </div>
 
       <div class="pt-8">
         <label>Danger Zone</label>
-        <button class="button-dark button-red w-full" (click)="serverToDelete = true">
-          Delete Connection
+        <button class="button-dark button-red" (click)="serverToDelete = true">
+          Delete Server
         </button>
       </div>
 
