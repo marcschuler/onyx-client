@@ -13,8 +13,8 @@
           </div>
         }
         <div class="flex gap-2">
-          <app-file-upload class="w-32" [connection]="connection" (uploaded)="onAvatarChange($event)" [avatar]="true"></app-file-upload>
-          <button class="py-0.5 button-red" (click)="deleteAvatar()">
+          <app-file-upload class="w-32" [connection]="connection" (uploaded)="onAvatarChange($event)" [type]="UploadType.USER_AVATAR"></app-file-upload>
+          <button class="py-0.5 button-red" [disabled]="connection.me.details.avatarId==undefined" (click)="deleteAvatar()">
             <lucide-icon [name]="XIcon"></lucide-icon>
           </button>
         </div>

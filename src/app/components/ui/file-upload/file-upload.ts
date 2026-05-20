@@ -21,7 +21,7 @@ export class FileUpload {
 
   @Input() connection!: WebSocketServerConnection;
 
-  @Input() avatar: boolean = false;
+  @Input() type: UploadType = UploadType.DEFAULT;
   @Input() ghost: boolean = true;
 
   @Output() uploaded = new EventEmitter<FileDTO>();
@@ -49,13 +49,23 @@ export class FileUpload {
 
     let observable: Observable<HttpEvent<FileDTO>>;
 
-    if (this.avatar) {
-      observable = this.connection.rest.userController
-        .uploadMedia(this.connection.me.id, file, 'events', true);
-    } else {
-      observable = this.connection.rest.storageController
-        .uploadFile(file, 'events', true);
+    switch (this.type){
+      case UploadType.USER_AVATAR:
+        console.log("Uploading user avatar");
+        observable = this.connection.rest.userController
+          .avatarUpload(this.connection.me.id, file, 'events', true);
+        break;
+      case UploadType.SERVER_ICON:
+        console.log("Uploading server icon");
+        observable = this.connection.rest.serverController.iconUpload(this.connection.data!.server.id,file,'events',true);
+        break;
+      case UploadType.DEFAULT:
+        console.log("Uploading file");
+        observable = this.connection.rest.storageController
+          .uploadFile(file, 'events', true);
+        break;
     }
+
     observable.pipe(
       map(event => {
         switch (event.type) {
@@ -117,4 +127,11 @@ export class FileUpload {
 
   protected readonly FileUpIcon = FileUpIcon;
   protected readonly ImageUpIcon = ImageUpIcon;
+  protected readonly UploadType = UploadType;
+}
+
+export enum UploadType {
+  DEFAULT,
+  USER_AVATAR,
+  SERVER_ICON
 }

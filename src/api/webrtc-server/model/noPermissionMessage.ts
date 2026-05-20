@@ -11,8 +11,8 @@ import { MessageBody } from './messageBody';
 
 
 export interface NoPermissionMessage extends MessageBody { 
-    message?: string;
     permissionType: NoPermissionMessage.PermissionTypeEnum;
+    message?: string;
     readonly type: NoPermissionMessage.TypeEnum;
 }
 export namespace NoPermissionMessage {

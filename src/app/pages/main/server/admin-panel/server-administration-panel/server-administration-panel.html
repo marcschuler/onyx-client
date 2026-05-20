@@ -1,11 +1,31 @@
 @if (server) {
   <div>
-    <h3>Server Name</h3>
+    <h3>Name</h3>
     <div class="bg-neutral-800 mx-4 p-4 rounded flex">
       <input class="!rounded-r-none" [(ngModel)]="server.name">
       <button class="!rounded-l-none button-dark" (click)="saveServerInfo()">Save</button>
     </div>
-    <h3 class="pt-4"> Server Description </h3>
+
+    <h3>Icon</h3>
+    <div class="w-32">
+      @if (connection.data!.server.icon) {
+        <img [src]="connection.data!.server.icon | storageFileURL: connection"
+             class="w-32 h-32 rounded-t-xl object-cover">
+      } @else {
+        <div class="w-32 h-32 rounded-t-xl object-cover bg-neutral-400">
+          <p class="text-neutral-800 p-4 text-center">No server icon provided :(</p>
+        </div>
+      }
+      <div class="flex gap-2">
+        <app-file-upload class="w-32" [connection]="connection" (uploaded)="onIconChange($event)"
+                         [type]="UploadType.SERVER_ICON"></app-file-upload>
+        <button class="py-0.5 button-red" [disabled]="connection.me.details.avatarId==undefined" (click)="deleteIcon()">
+          <lucide-icon [name]="XIcon"></lucide-icon>
+        </button>
+      </div>
+    </div>
+
+    <h3 class="pt-4">Description</h3>
     <div class="p-4 " cdkDropList (cdkDropListDropped)="dropDecsription($event)">
       @for (description of server.description; track description.id) {
         <div class="flex bg-neutral-800 rounded p-2 my-2 gap-2" cdkDrag>

@@ -1,4 +1,5 @@
 import {
+  FileArchiveIcon,
   FileBracesCornerIcon, FileHeadphoneIcon,
   FileIcon,
   FileImageIcon,
@@ -13,9 +14,8 @@ const TYPES_TEXT = ['application/json',
   'text/plain']
 
 export function fileMimetypeToIcon(mimeType: string): LucideIconData {
-  if (mimeType == "application/pdf")
 
-  switch (mimeTypeToFileType(mimeType)){
+  switch (mimeTypeToFileType(mimeType)) {
     case FileType.VIDEO:
       return FileVideoCameraIcon;
     case FileType.IMAGE:
@@ -28,6 +28,9 @@ export function fileMimetypeToIcon(mimeType: string): LucideIconData {
       return FileBracesCornerIcon;
 
   }
+
+  if (mimeType == "application/zip")
+    return FileArchiveIcon;
 
   console.warn("Could not find icon for mimetype " + mimeType + " - defaulting icon")
   return FileIcon;

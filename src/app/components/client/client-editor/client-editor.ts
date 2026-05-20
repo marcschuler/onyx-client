@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ButtonPanel, TabPanelEntry} from "../../ui/button-panel/button-panel";
 import {General} from "../../../pages/settings/general/general";
 import {CheckIcon, LucideAngularModule, PersonStandingIcon, XIcon} from 'lucide-angular';
-import {FileUpload} from '../../ui/file-upload/file-upload';
+import {FileUpload, UploadType} from '../../ui/file-upload/file-upload';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 import {ToastService, ToastType} from '../../../services/toast-service';
@@ -73,4 +73,5 @@ export class ClientEditor {
 
 
   protected readonly XIcon = XIcon;
+  protected readonly UploadType = UploadType;
 }

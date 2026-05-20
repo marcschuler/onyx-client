@@ -1,6 +1,6 @@
 @if (connection.data) {
   @let data = connection.data;
-  <h3 class="font-bold pb-2 text-center w-full cursor-pointer"
+  <h3 class="font-bold pb-2 text-center w-full cursor-pointer text-nowrap"
       (click)="connection.selectedChannel=undefined">{{ data.server.name }}</h3>
   @for (section of data.sections; track section) {
     <div>

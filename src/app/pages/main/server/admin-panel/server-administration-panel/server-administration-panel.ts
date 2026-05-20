@@ -3,14 +3,15 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Spinner} from "../../../../../components/ui/spinner/spinner";
 import {RestService} from '../../../../../services/rest-service';
 import {ToastService, ToastType} from '../../../../../services/toast-service';
-import {Edit1Request, ServerDTO} from '../../../../../../api/webrtc-server';
+import {Edit1Request, FileDTO, ServerDTO} from '../../../../../../api/webrtc-server';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import {asTypeFile, asTypeMarkdown} from '../../../../../components/chat/message-content/message-content';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
-import {GripVertical, LucideAngularModule, TextInitialIcon} from 'lucide-angular';
-import {FileUpload} from '../../../../../components/ui/file-upload/file-upload';
+import {GripVertical, LucideAngularModule, TextInitialIcon, XIcon} from 'lucide-angular';
+import {FileUpload, UploadType} from '../../../../../components/ui/file-upload/file-upload';
 import {replaceInList} from '../../../../../util';
 import {deleteInList} from '../../../../../services/Util';
+import {StorageFileURLPipe} from '../../../../../pipes/avatar-pipe';
 
 @Component({
   selector: 'app-server-administration-panel',
@@ -21,7 +22,9 @@ import {deleteInList} from '../../../../../services/Util';
     CdkDragHandle,
     LucideAngularModule,
     CdkDrag,
-    CdkDropList
+    CdkDropList,
+    FileUpload,
+    StorageFileURLPipe
   ],
   templateUrl: './server-administration-panel.html',
   styleUrl: './server-administration-panel.css'
@@ -126,6 +129,20 @@ class ServerAdministrationPanel {
 
 
 
+  protected onIconChange(file: FileDTO) {
+    this.toastService.create({
+      message: "Server icon changed",
+      type: ToastType.Success
+    })
+  }
+
+  protected deleteIcon() {
+    this.connection.rest.serverController
+
+  }
+
+  protected readonly XIcon = XIcon;
+  protected readonly UploadType = UploadType;
 }
 
 export default ServerAdministrationPanel

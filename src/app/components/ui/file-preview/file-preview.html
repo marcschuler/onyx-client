@@ -1,9 +1,9 @@
 <div class="max-w-128 max-h-96 overflow-hidden">
   @switch (fileType) {
 
-    @case (FileType.PDF) {
-      <embed [src]="file.id | storageFileURL:connection">
-    }
+    <!--@case (FileType.PDF) {
+      <iframe [src]="file.id | storageFileURL:connection | sanitizeUrl" sandbox="allow-scripts allow-same-origin" class="max-h-96"></iframe>
+    }-->
     @case (FileType.IMAGE) {
       <img [src]="file.id | storageFileURL:connection" class="object-contain max-h-96">
     }

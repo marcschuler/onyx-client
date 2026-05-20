@@ -250,7 +250,7 @@ export class WebSocketService {
 
   private onServerChange(event: ServerChangeEvent, connection: WebSocketServerConnection) {
     connection.data!.server = event.server;
-    console.log("server details changed fro " + event.server.name)
+    console.log("server details changed",event.server)
   }
 
   private onSectionCreate(event: SectionCreateEvent, connection: WebSocketServerConnection) {

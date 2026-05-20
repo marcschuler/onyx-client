@@ -4,12 +4,14 @@ import {fileMimetypeToIcon, FileType, mimeTypeToFileType} from '../../../mimetyp
 import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {LucideAngularModule} from 'lucide-angular';
+import {SanitizeUrlPipe} from '../../../pipes/sanitize-url-pipe';
 
 @Component({
   selector: 'app-file-preview',
   imports: [
     StorageFileURLPipe,
-    LucideAngularModule
+    LucideAngularModule,
+    SanitizeUrlPipe
   ],
   templateUrl: './file-preview.html',
   styleUrl: './file-preview.css',

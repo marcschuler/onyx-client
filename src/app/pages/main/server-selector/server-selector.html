@@ -30,7 +30,12 @@
                 <app-spinner></app-spinner>
               }
               @case (ServerInfoState.SUCCESS) {
-                <lucide-icon [name]="ServerIcon" class="w-12 h-12"></lucide-icon>
+                @if (detail.success && detail.success[0] && detail.success[0].icon) {
+                  @let info = detail.success[0];
+                  <img class="min-w-12 max-w-12 h-12 object-cover rounded" [src]="info.icon | storageFileURL: undefined:s.url">
+                } @else {
+                  <lucide-icon [name]="ServerIcon" class="w-12 h-12"></lucide-icon>
+                }
               }
               @case (ServerInfoState.ERROR) {
                 <lucide-icon [name]="ServerOffIcon" class="w-12 h-12 text-red-600"></lucide-icon>

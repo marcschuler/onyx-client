@@ -8,11 +8,13 @@
  * Do not edit the class manually.
  */
 import { Edit1Request } from './edit1Request';
+import { FileDTO } from './fileDTO';
 
 
 export interface ServerDTO { 
     readonly id: string;
     name: string;
+    icon?: FileDTO;
     publicKey: { [key: string]: any; };
     description: Array<Edit1Request>;
 }

@@ -74,7 +74,7 @@ textarea {
 }
 
 .button-red {
-  @apply hover:bg-red-800 border-red-600 border-1 bg-red-800/10
+  @apply hover:bg-red-800 border-red-600 border-1 bg-red-800/10 disabled:bg-red-800/10 disabled:border-neutral-800/10
 }
 
 .button-ghost {

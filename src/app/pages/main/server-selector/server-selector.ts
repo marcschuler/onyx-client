@@ -22,6 +22,7 @@ import {ServerDTO} from '../../../../api/webrtc-server/model/serverDTO';
 import {RestService} from '../../../services/rest-service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {APP_VERSION} from '../../../services/Util';
+import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 
 @Component({
   selector: 'app-server-selector',
@@ -31,6 +32,7 @@ import {APP_VERSION} from '../../../services/Util';
     LucideAngularModule,
     Popup,
     Settings,
+    StorageFileURLPipe,
   ],
   templateUrl: './server-selector.html',
   styleUrl: './server-selector.css'
