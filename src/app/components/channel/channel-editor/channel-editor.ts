@@ -1,35 +1,25 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {BUTTON_EDIT} from '../../ui/popup/popup';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO} from '../../../../api/webrtc-server';
 import {RestService} from '../../../services/rest-service';
-import {ButtonPanel, TabPanelEntry} from '../../ui/button-panel/button-panel';
-import {DiamondMinusIcon, HexagonIcon, LucideAngularModule, SaveIcon} from 'lucide-angular';
+import {SplitPanel,} from '../../ui/split-panel/split-panel';
+import {HexagonIcon, LucideAngularModule, SaveIcon} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../services/toast-service';
+import {SplitPanelBar} from '../../ui/split-panel/split-panel-bar/split-panel-bar';
+import {SplitPanelButton} from '../../ui/split-panel/split-panel-button/split-panel-button';
 
 @Component({
   selector: 'app-channel-editor',
   imports: [
-    ButtonPanel,
+    SplitPanel,
     LucideAngularModule,
+    SplitPanelBar,
+    SplitPanelButton,
   ],
   templateUrl: './channel-editor.html',
   styleUrl: './channel-editor.css',
 })
 export class ChannelEditor implements OnInit {
-
-  protected selectedOption!: TabPanelEntry;
-
-  BUTTON_GENERAL: TabPanelEntry = {
-    id: "channel-general",
-    icon: HexagonIcon,
-    name: "General"
-  }
-  BUTTON_POLICIES: TabPanelEntry = {
-    id: "channel-policies",
-    icon: DiamondMinusIcon,
-    name: "Policies"
-  }
 
   @Input() connection!: WebSocketServerConnection;
   @Input() channelId!: string;
@@ -49,14 +39,16 @@ export class ChannelEditor implements OnInit {
   protected readonly SaveIcon = SaveIcon;
 
   protected save() {
-    this.connection.rest.channelController.edit4(this.channelId,this.channel!)
+    this.connection.rest.channelController.edit4(this.channelId, this.channel!)
       .subscribe(channel => {
           this.channel = channel;
           this.toastService.create({
-            title:"Channel edited",
+            title: "Channel edited",
             type: ToastType.Success
           })
         },
-        error=>this.restService.handleError(error));
+        error => this.restService.handleError(error));
   }
+
+  protected readonly HexagonIcon = HexagonIcon;
 }

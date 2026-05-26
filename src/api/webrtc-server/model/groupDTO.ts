@@ -18,6 +18,7 @@ export interface GroupDTO {
     icon?: FileDTO;
     inheritsFrom?: Array<GroupDTO>;
     priority: number;
+    defaultForNewUsers: boolean;
     permissions?: Array<PermissionDTO>;
     label: boolean;
 }

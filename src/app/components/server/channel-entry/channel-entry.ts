@@ -8,7 +8,7 @@ import {
 } from '../../../../api/webrtc-server';
 import {ServerObjectId, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
-import {InterfaceService} from '../../../services/interface-service';
+import {StorageService} from '../../../services/storage.service';
 import {ContextMenuService} from '../../../services/context-menu-service';
 import {NgClass} from '@angular/common';
 
@@ -27,7 +27,7 @@ export class ChannelEntry {
   @Input() connection!: WebSocketServerConnection;
 
   constructor(private webSocketService: WebSocketService,
-              protected interfaceService: InterfaceService,
+              protected interfaceService: StorageService,
               protected contextMenuService: ContextMenuService,) {
 
   }

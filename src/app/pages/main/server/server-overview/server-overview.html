@@ -1,11 +1,19 @@
-@if (connection.data) {
-  <h2 class="text-center p-8">{{ connection.data.server.name }}</h2>
+<div class="max-h-full overflow-auto">
+  @if (connection.data) {
+    <div class="flex flex-col gap-2 items-center pt-16">
+      @if (connection.data.server.icon) {
+        <app-preview-image [file]="connection.data.server.icon"
+                           [connection]="connection"></app-preview-image>
+      }
+      <h2>{{ connection.data.server.name }}</h2>
+    </div>
 
-  <div class="flex flex-col gap-2 justify-center  items-center">
-    @for (description of connection.data.server.description; track description) {
-      <div class="p-6 bg-neutral-800 rounded w-xl max-h-9/12">
-        <app-message-content [content]="description" [connection]="connection"></app-message-content>
-      </div>
-    }
-  </div>
-}
+    <div class="flex flex-col gap-2 justify-center  items-center pt-12">
+      @for (description of connection.data.server.description; track description) {
+        <div class="p-6 bg-neutral-800 rounded w-xl max-h-9/12">
+          <app-message-content [content]="description" [connection]="connection"></app-message-content>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -13,6 +13,7 @@ export interface MediaConnection {
   stream?: MediaStream;
 }
 
+// Connection states. The first are mirrored from webrtc stadnard
 export enum PeerConnectionState {
   WaitingForOffer, //waiting when nice client
   Offered, //offered the connection
@@ -22,7 +23,8 @@ export enum PeerConnectionState {
   Closed
 }
 
-export enum SecurityState{
+//TODO verify that the client is who the server proposes they are
+export enum SecurityState {
   UNTESTED,
   INVALID,
   SECURE

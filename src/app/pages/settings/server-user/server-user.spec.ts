@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientEditor } from './client-editor';
+import { ServerUser } from './server-user';
 
-describe('ClientEditor', () => {
-  let component: ClientEditor;
-  let fixture: ComponentFixture<ClientEditor>;
+describe('ServerUser', () => {
+  let component: ServerUser;
+  let fixture: ComponentFixture<ServerUser>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ClientEditor]
+      imports: [ServerUser]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ClientEditor);
+    fixture = TestBed.createComponent(ServerUser);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

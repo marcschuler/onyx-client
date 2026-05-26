@@ -3,13 +3,13 @@
 
   <span>
     @if (client.details.avatarId) {
-      <img
-        [src]="client.details.avatarId | storageFileURL: connection"
-        [ngClass]="{
+
+      <app-preview-image [file]="client.details.avatarId" [connection]="connection"
+                         imageClass="rounded inline object-cover w-6 h-6"
+                         [ngClass]="{
 'w-8 h-8': !interfaceService.settings.compactMode,
-'w-6 h-6': interfaceService.settings.compactMode}"
-        class="rounded inline object-cover"
-      />
+'w-6 h-6': interfaceService.settings.compactMode}">
+        </app-preview-image>
     } @else {
       <img
         [src]="client.id | identicon: 32 | async"

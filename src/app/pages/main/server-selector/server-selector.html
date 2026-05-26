@@ -32,13 +32,14 @@
               @case (ServerInfoState.SUCCESS) {
                 @if (detail.success && detail.success[0] && detail.success[0].icon) {
                   @let info = detail.success[0];
-                  <img class="min-w-12 max-w-12 h-12 object-cover rounded" [src]="info.icon | storageFileURL: undefined:s.url">
+                  <app-preview-image [file]="info.icon!" [basePath]="s.url" imageClass="min-w-12 w-12 h-12 object-cover rounded">
+                  </app-preview-image>
                 } @else {
-                  <lucide-icon [name]="ServerIcon" class="w-12 h-12"></lucide-icon>
+                  <lucide-icon [name]="ServerIcon" class="w-12 h-12 rounded-xl"></lucide-icon>
                 }
               }
               @case (ServerInfoState.ERROR) {
-                <lucide-icon [name]="ServerOffIcon" class="w-12 h-12 text-red-600"></lucide-icon>
+                <lucide-icon [name]="ServerOffIcon" class="min-w-12 min-h-12 text-red-600"></lucide-icon>
               }
             }
           </div>

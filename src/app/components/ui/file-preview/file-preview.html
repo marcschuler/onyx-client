@@ -5,13 +5,13 @@
       <iframe [src]="file.id | storageFileURL:connection | sanitizeUrl" sandbox="allow-scripts allow-same-origin" class="max-h-96"></iframe>
     }-->
     @case (FileType.IMAGE) {
-      <img [src]="file.id | storageFileURL:connection" class="object-contain max-h-96">
+    <app-preview-image [file]="file" [connection]="connection" imageClass="object-contain max-h-96"></app-preview-image>
     }
     @case (FileType.AUDIO) {
-      <audio [src]="file.id | storageFileURL:connection" controls></audio>
+      <audio [src]="file.id | storageFileURL:connection:undefined:undefined" controls></audio>
     }
     @case (FileType.VIDEO) {
-      <video [src]="file.id | storageFileURL:connection" controls></video>
+      <video [src]="file.id | storageFileURL:connection:undefined:undefined" controls></video>
     }
     @default {
       <lucide-icon [name]="fileMimetypeToIcon(file.contentType)" class="w-[100%] h-8"></lucide-icon>

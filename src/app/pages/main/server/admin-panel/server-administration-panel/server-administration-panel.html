@@ -1,22 +1,15 @@
 @if (server) {
-  <div>
-    <h3>Name</h3>
-    <div class="bg-neutral-800 mx-4 p-4 rounded flex">
-      <input class="!rounded-r-none" [(ngModel)]="server.name">
-      <button class="!rounded-l-none button-dark" (click)="saveServerInfo()">Save</button>
-    </div>
-
-    <h3>Icon</h3>
+  <div class="flex gap-4">
     <div class="w-32">
       @if (connection.data!.server.icon) {
-        <img [src]="connection.data!.server.icon | storageFileURL: connection"
-             class="w-32 h-32 rounded-t-xl object-cover">
+        <app-preview-image class="min-w-32 min-h-32 w-32 h-32 rounded-t-xl" [file]="connection.data!.server.icon" [connection]="connection">
+        </app-preview-image>
       } @else {
-        <div class="w-32 h-32 rounded-t-xl object-cover bg-neutral-400">
-          <p class="text-neutral-800 p-4 text-center">No server icon provided :(</p>
+        <div class="w-32 h-32 rounded-t-xl object-cover border-2 border-sky-900">
+          <p class="text-neutral-400 p-4 text-center">No server icon :(</p>
         </div>
       }
-      <div class="flex gap-2">
+      <div class="flex">
         <app-file-upload class="w-32" [connection]="connection" (uploaded)="onIconChange($event)"
                          [type]="UploadType.SERVER_ICON"></app-file-upload>
         <button class="py-0.5 button-red" [disabled]="connection.me.details.avatarId==undefined" (click)="deleteIcon()">
@@ -25,42 +18,51 @@
       </div>
     </div>
 
-    <h3 class="pt-4">Description</h3>
-    <div class="p-4 " cdkDropList (cdkDropListDropped)="dropDecsription($event)">
-      @for (description of server.description; track description.id) {
-        <div class="flex bg-neutral-800 rounded p-2 my-2 gap-2" cdkDrag>
+    <div class="max-w-128">
+      <h3>Name</h3>
+      <div class="flex w-full">
+        <input class="!rounded-r-none" [(ngModel)]="server.name">
+        <button class="!rounded-l-none" (click)="saveServerInfo()">Save</button>
+      </div>
+    </div>
+  </div>
 
-          <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
-          @switch (description.type) {
-            @case ("MARKDOWN") {
-              @let markdown = asTypeMarkdown(description);
-              <textarea class="min-h-16" [(ngModel)]="markdown.text"></textarea> <!-- TODO -->
-            }
-            @case ("FILE") {
-              <!-- TODO -->
-            }
-            @default {
-              <p class="text-red-400">Your client does not unterstand this message. Please update your client or check
-                your server logs.</p>
-            }
+
+  <h3 class="pt-8">Description</h3>
+  <div class="px-4 " cdkDropList (cdkDropListDropped)="dropDecsription($event)">
+    @for (description of server.description; track description.id) {
+      <div class="flex bg-neutral-800 rounded p-2 my-2 gap-2" cdkDrag>
+
+        <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
+        @switch (description.type) {
+          @case ("MARKDOWN") {
+            @let markdown = asTypeMarkdown(description);
+            <textarea class="min-h-16" [(ngModel)]="markdown.text"></textarea> <!-- TODO -->
           }
-          <div>
-            <button class="button-dark w-24" (click)="save(description)">Save</button>
-            <button class="button-red w-24" (click)="delete(description)">Delete</button>
-          </div>
+          @case ("FILE") {
+            <!-- TODO -->
+          }
+          @default {
+            <p class="text-red-400">Your client does not unterstand this message. Please update your client or check
+              your server logs.</p>
+          }
+        }
+        <div>
+          <button class="button-dark w-24" (click)="save(description)">Save</button>
+          <button class="button-red w-24" (click)="delete(description)">Delete</button>
         </div>
-      }
-    </div>
-    <div class="grid grid-cols-2 gap-4 p-2">
-      <button class="" (click)="addMarkdown()">
-        <lucide-icon class="pr-1" [name]="TextInitialIcon"></lucide-icon>
-        Add Markdown text
-      </button>
-      <!--<button class="">
-        +
-        <app-file-upload></app-file-upload>
-      </button>-->
-    </div>
+      </div>
+    }
+  </div>
+  <div class="grid grid-cols-2 gap-4 p-2">
+    <button class="" (click)="addMarkdown()">
+      <lucide-icon class="pr-1" [name]="TextInitialIcon"></lucide-icon>
+      Add Markdown text
+    </button>
+    <!--<button class="">
+      +
+      <app-file-upload></app-file-upload>
+    </button>-->
   </div>
 } @else {
   <app-spinner></app-spinner>

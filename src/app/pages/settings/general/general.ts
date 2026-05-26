@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {InterfaceService} from '../../../services/interface-service';
+import {StorageService} from '../../../services/storage.service';
 import {FormsModule} from '@angular/forms';
 import {Toggle} from '../../../components/ui/toggle/toggle';
 
@@ -14,6 +14,6 @@ import {Toggle} from '../../../components/ui/toggle/toggle';
 })
 export class General {
 
-  constructor(protected interfaceService: InterfaceService) {}
+  constructor(protected interfaceService: StorageService) {}
 
 }

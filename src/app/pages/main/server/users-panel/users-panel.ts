@@ -2,35 +2,44 @@ import {Component, Input, OnInit} from '@angular/core';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {GroupDTO, UserExtendedDTO} from '../../../../../api/webrtc-server';
 import {RestService} from '../../../../services/rest-service';
-import {ButtonPanel, TabPanelEntry} from '../../../../components/ui/button-panel/button-panel';
+import {SplitPanel, TabPanelEntry} from '../../../../components/ui/split-panel/split-panel';
 import {AsyncPipe, DatePipe} from '@angular/common';
 import {IdenticonPipe} from '../../../../pipes/identicon-pipe';
-import {Ban, CircleSlash, LucideAngularModule, UserCheck, UserMinus, UserPlus} from 'lucide-angular';
+import {
+  Ban,
+  CircleSlash,
+  LucideAngularModule,
+  UserCheck,
+  UserMinus,
+  UserMinusIcon,
+  UserPlus,
+  UsersIcon
+} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../../services/toast-service';
 import {replaceInList} from '../../../../util';
+import {SplitPanelBar} from '../../../../components/ui/split-panel/split-panel-bar/split-panel-bar';
+import {SplitPanelButton} from '../../../../components/ui/split-panel/split-panel-button/split-panel-button';
+import {SplitPanelSelector} from '../../../../directives/split-panel-selector';
 
 @Component({
   selector: 'app-users-panel',
   imports: [
-    ButtonPanel,
     AsyncPipe,
     IdenticonPipe,
     DatePipe,
-    LucideAngularModule
+    LucideAngularModule,
+    SplitPanel,
+    SplitPanelBar,
+    SplitPanelButton,
+    SplitPanelSelector
   ],
   templateUrl: './users-panel.html',
   styleUrl: './users-panel.css',
 })
 export class UsersPanel implements OnInit {
-  BUTTON_USER_LIST: TabPanelEntry = {
-    id: "USER_LIST",
-    name: "User List"
-  }
-
   @Input() connection!: WebSocketServerConnection;
 
   users: UserExtendedDTO[] | undefined;
-  selectedOption!: TabPanelEntry;
 
 
   groups: GroupDTO[] | undefined;
@@ -48,10 +57,6 @@ export class UsersPanel implements OnInit {
     }, error => this.restService.handleError(error))
   }
 
-  protected readonly UserExtendedDTO = UserExtendedDTO;
-  protected readonly UserCheck = UserCheck;
-  protected readonly UserMinus = UserMinus;
-  protected readonly UserPlus = UserPlus;
 
   protected changeGroupState(user: UserExtendedDTO, group: GroupDTO) {
     if (this.userHasGroup(user, group)) {
@@ -67,8 +72,9 @@ export class UsersPanel implements OnInit {
       .subscribe(value => {
         user.groups = value;
         this.toastService.create({
-          title: "Group removed from " + user.username,
-          type: ToastType.Success
+          title: "Group removed",
+          message: "'" + user.username + "' lost group '" + group.name + "'",
+          type: ToastType.Info
         })
       }, error => {
         this.restService.handleError(error)
@@ -98,7 +104,7 @@ export class UsersPanel implements OnInit {
   protected readonly CircleSlash = CircleSlash;
 
   protected ban(user: UserExtendedDTO) {
-    this.connection.rest.userController.ban(user.id,"") //TODO add reason
+    this.connection.rest.userController.ban(user.id, "") //TODO add reason
       .subscribe(value => {
         this.toastService.create({
           title: "User banned",
@@ -118,4 +124,9 @@ export class UsersPanel implements OnInit {
         replaceInList(this.users!, user, value);
       }, error => this.restService.handleError(error))
   }
+
+  protected readonly UsersIcon = UsersIcon;
+  protected readonly UserExtendedDTO = UserExtendedDTO;
+  protected readonly UserCheck = UserCheck;
+  protected readonly UserPlus = UserPlus;
 }

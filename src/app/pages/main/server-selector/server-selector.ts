@@ -23,6 +23,7 @@ import {RestService} from '../../../services/rest-service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {APP_VERSION} from '../../../services/Util';
 import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
+import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
 
 @Component({
   selector: 'app-server-selector',
@@ -33,6 +34,7 @@ import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
     Popup,
     Settings,
     StorageFileURLPipe,
+    PreviewImage,
   ],
   templateUrl: './server-selector.html',
   styleUrl: './server-selector.css'

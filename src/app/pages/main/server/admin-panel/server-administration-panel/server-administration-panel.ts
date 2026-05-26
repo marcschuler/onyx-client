@@ -12,6 +12,7 @@ import {FileUpload, UploadType} from '../../../../../components/ui/file-upload/f
 import {replaceInList} from '../../../../../util';
 import {deleteInList} from '../../../../../services/Util';
 import {StorageFileURLPipe} from '../../../../../pipes/avatar-pipe';
+import {PreviewImage} from '../../../../../components/ui/preview-image/preview-image';
 
 @Component({
   selector: 'app-server-administration-panel',
@@ -24,7 +25,8 @@ import {StorageFileURLPipe} from '../../../../../pipes/avatar-pipe';
     CdkDrag,
     CdkDropList,
     FileUpload,
-    StorageFileURLPipe
+    StorageFileURLPipe,
+    PreviewImage
   ],
   templateUrl: './server-administration-panel.html',
   styleUrl: './server-administration-panel.css'
@@ -69,7 +71,7 @@ class ServerAdministrationPanel {
 
   saveServerInfo() {
     if (!this.server) {
-      console.warn("No server dto avaiable - this should not happen");
+      console.warn("No server dto available - this should not happen");
       return;
     }
     this.connection.rest.serverController.edit(this.server.id, {

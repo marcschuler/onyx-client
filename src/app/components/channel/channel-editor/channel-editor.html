@@ -1,14 +1,14 @@
-<app-button-panel [buttons]="[BUTTON_GENERAL]" [(selectedOption)]="selectedOption">
-
-  @switch (selectedOption) {
-    @case (BUTTON_GENERAL) {
-      <input placeholder="name">
-      <textarea placeholder="description"></textarea>
-    }
-  }
+<ui-split-panel>
+  <ui-split-panel-bar>
+    <ui-split-panel-button [icon]="HexagonIcon">
+      General
+    </ui-split-panel-button>
+  </ui-split-panel-bar>
+  <input placeholder="name">
+  <textarea placeholder="description"></textarea>
   <div>
     <button (click)="save()">
       <lucide-icon [name]="SaveIcon"></lucide-icon>
     </button>
   </div>
-</app-button-panel>
+</ui-split-panel>

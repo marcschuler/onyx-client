@@ -43,6 +43,7 @@ export * from './peerAnswerForward';
 export * from './peerOffer';
 export * from './peerOfferForward';
 export * from './permissionDTO';
+export * from './previewFormat';
 export * from './sectionChangeEvent';
 export * from './sectionCreateDTO';
 export * from './sectionCreateEvent';

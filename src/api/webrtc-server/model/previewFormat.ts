@@ -9,9 +9,10 @@
  */
 
 
-export interface GroupCreateDTO { 
-    name: string;
-    description: string;
-    defaultForNewUsers: boolean;
-}
+export const PreviewFormat = {
+    J64: 'J64',
+    J256: 'J256',
+    J1024: 'J1024'
+} as const;
+export type PreviewFormat = typeof PreviewFormat[keyof typeof PreviewFormat];
 

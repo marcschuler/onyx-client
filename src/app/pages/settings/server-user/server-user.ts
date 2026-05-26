@@ -1,39 +1,30 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ButtonPanel, TabPanelEntry} from "../../ui/button-panel/button-panel";
-import {General} from "../../../pages/settings/general/general";
-import {CheckIcon, LucideAngularModule, PersonStandingIcon, XIcon} from 'lucide-angular';
-import {FileUpload, UploadType} from '../../ui/file-upload/file-upload';
+import {Component, Input} from '@angular/core';
+import {FileUpload, UploadType} from "../../../components/ui/file-upload/file-upload";
+import {FormsModule} from "@angular/forms";
+import {LucideAngularModule, XIcon} from "lucide-angular";
+import {StorageFileURLPipe} from "../../../pipes/avatar-pipe";
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 import {ToastService, ToastType} from '../../../services/toast-service';
-import {ClientChangeEvent, FileDTO} from '../../../../api/webrtc-server';
-import {FormsModule} from '@angular/forms';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {RestService} from '../../../services/rest-service';
+import {FileDTO} from '../../../../api/webrtc-server';
+import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
 
 @Component({
-  selector: 'app-client-editor',
+  selector: 'app-server-user',
   imports: [
-    ButtonPanel,
     FileUpload,
-    StorageFileURLPipe,
     FormsModule,
-    LucideAngularModule
+    LucideAngularModule,
+    StorageFileURLPipe,
+    PreviewImage
   ],
-  templateUrl: './client-editor.html',
-  styleUrl: './client-editor.css',
+  templateUrl: './server-user.html',
+  styleUrl: './server-user.css',
 })
-export class ClientEditor {
+export class ServerUser {
 
   @Input() connection!: WebSocketServerConnection;
-
-  TAB_GENERAL: TabPanelEntry = {
-    id: "General",
-    name: 'General',
-    icon: PersonStandingIcon
-  }
-
-  selectedOption!: TabPanelEntry;
 
   inviteCode: string = "";
 
@@ -70,7 +61,6 @@ export class ClientEditor {
         this.inviteCode = "";
       }, error => this.restService.handleError(error))
   }
-
 
   protected readonly XIcon = XIcon;
   protected readonly UploadType = UploadType;

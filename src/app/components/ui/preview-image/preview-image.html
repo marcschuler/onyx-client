@@ -1,0 +1,17 @@
+<picture>
+  <source
+    type="image/jpeg"
+    [srcset]="
+      (file | storageFileURL: connection:basePath:'J64') + ' 64w, ' +
+      (file | storageFileURL: connection:basePath:'J256') + ' 256w, ' +
+      (file | storageFileURL: connection:basePath:'J1024') + ' 1024w'
+    "
+    sizes="128px"
+  />
+
+  <img
+    [src]="file | storageFileURL: connection:basePath:undefined"
+    loading="lazy"
+    [ngClass]="imageClass"
+  />
+</picture>

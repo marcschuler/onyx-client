@@ -13,7 +13,7 @@ import {
   SettingsIcon
 } from 'lucide-angular';
 import { NgStyle} from '@angular/common';
-import {InterfaceService} from '../../../services/interface-service';
+import {StorageService} from '../../../services/storage.service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {Popup} from '../../../components/ui/popup/popup';
 import {Settings} from '../../settings/settings';
@@ -21,6 +21,7 @@ import {ServerOverview} from './server-overview/server-overview';
 import {AdminPanel} from './admin-panel/admin-panel';
 import {UsersPanel} from './users-panel/users-panel';
 import {ServerLoaderService} from '../../../services/server-loader-service';
+import {Tooltip} from '../../../directives/tooltip';
 
 @Component({
   selector: 'app-server',
@@ -35,6 +36,7 @@ import {ServerLoaderService} from '../../../services/server-loader-service';
     ServerOverview,
     AdminPanel,
     UsersPanel,
+    Tooltip,
   ],
   templateUrl: './server.html',
   styleUrl: './server.css'
@@ -53,7 +55,7 @@ export class Server {
   protected minimized = false;
 
   constructor(protected webSocketService: WebSocketService,
-              protected interfaceService: InterfaceService,
+              protected interfaceService: StorageService,
               protected serverLoaderService: ServerLoaderService) {
   }
 

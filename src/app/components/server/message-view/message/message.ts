@@ -5,7 +5,7 @@ import {WebSocketServerConnection} from '../../../../services/websocket/WebSocke
 import {IdenticonPipe} from '../../../../pipes/identicon-pipe';
 import {MarkdownPipe} from '../../../../pipes/markdown-pipe';
 import {UserDatePipe} from '../../../../pipes/user-date-pipe';
-import {InterfaceService} from '../../../../services/interface-service';
+import {StorageService} from '../../../../services/storage.service';
 import {Tooltip} from '../../../../directives/tooltip';
 import {
   LucideAngularModule
@@ -35,7 +35,7 @@ export class Message {
 
   @Input() connection!: WebSocketServerConnection;
 
-  constructor(protected interfaceService: InterfaceService) {
+  constructor(protected interfaceService: StorageService) {
   }
 
   protected readonly asTypeMarkdown = asTypeMarkdown;

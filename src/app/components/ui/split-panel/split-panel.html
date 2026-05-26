@@ -1,0 +1,14 @@
+<div class="flex gap-4">
+  <aside class="flex-1 bg-neutral-900 max-w-60">
+    <ng-content select="ui-split-panel-bar"></ng-content>
+  </aside>
+
+  <main #content class="flex-1 overflow-y-auto max-h-[70vh] pr-4" >
+    @if (header){
+      <h2 class="pb-2">{{selectedOption}}</h2>
+      <div class="border-t border-t-neutral-700 pb-4"></div>
+    }
+    <ng-content>
+    </ng-content>
+  </main>
+</div>

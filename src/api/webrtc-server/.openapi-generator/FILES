@@ -63,6 +63,7 @@ model/peerAnswerForward.ts
 model/peerOffer.ts
 model/peerOfferForward.ts
 model/permissionDTO.ts
+model/previewFormat.ts
 model/sectionChangeEvent.ts
 model/sectionCreateDTO.ts
 model/sectionCreateEvent.ts

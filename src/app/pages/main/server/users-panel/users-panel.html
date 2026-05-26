@@ -1,66 +1,74 @@
-<app-button-panel [buttons]="[BUTTON_USER_LIST]" [(selectedOption)]="selectedOption">
-  @switch (selectedOption) {
-    @case (BUTTON_USER_LIST) {
-      <div class="overflow-y-auto">
-        @for (user of users || []; track user) {
-          <div class="m-2 p-4 bg-neutral-900 rounded flex">
-            <img [src]="user.id | identicon | async" alt="Key ID: {{user.id}}"
-                 class="w-16 h-16 rounded">
-            <div class="pl-4 text-neutral-400">
-              <h4 class="text-neutral-200">{{ user.username }}</h4>
-              <p class="text-neutral-400">
-              <div class="grid grid-cols-12">
-                <p class="col-span-4">ID</p>
-                <p class="col-span-8">{{ user.id }}</p>
+<ui-split-panel>
+  <ui-split-panel-bar>
+    <ui-split-panel-button value="user" [icon]="UsersIcon">
+      User
+    </ui-split-panel-button>
+  </ui-split-panel-bar>
+  <div splitPanel="user" class="overflow-y-auto">
+    @for (user of users || []; track user) {
+      <div class="m-2 p-4 bg-neutral-900 rounded flex">
+        <img [src]="user.id | identicon | async" alt="Key ID: {{user.id}}"
+             class="w-16 h-16 rounded">
+        <div class="pl-4 text-neutral-400">
+          <h4 class="text-neutral-200">{{ user.username }}</h4>
+          <p class="text-neutral-400">
+          <div class="grid grid-cols-12">
+            <p class="col-span-4">ID</p>
+            <p class="col-span-8">{{ user.id }}</p>
 
-                <p class="col-span-4">Known Since</p>
-                <p class="col-span-8">{{ user.knownSince | date: 'medium' }}</p>
+            <p class="col-span-4">Known Since</p>
+            <p class="col-span-8">{{ user.knownSince | date: 'medium' }}</p>
 
-                <p class="col-span-4">Last Seen</p>
-                <p class="col-span-8">{{ user.lastSeen | date: 'medium' }}</p>
+            <p class="col-span-4">Last Seen</p>
+            <p class="col-span-8">{{ user.lastSeen | date: 'medium' }}</p>
 
-                <p class="col-span-4">State</p>
-                <p class="col-span-8">
-                  @switch (user.state) {
-                    @case (UserExtendedDTO.StateEnum.Active) {
-                      <lucide-icon [name]="UserCheck" class="inline  h-4"></lucide-icon> Active
-                    }
-                    @case (UserExtendedDTO.StateEnum.Banned) {
-                      <lucide-icon [name]="CircleSlash" class="inline h-4"></lucide-icon> Banned
-                    }
-                    @case (UserExtendedDTO.StateEnum.PendingAccess) {
-                      <lucide-icon [name]="UserPlus" class="inline h-4"></lucide-icon> Pending Access
-                    }
-                  }
-                </p>
-
-                <p class="col-span-4">Groups</p>
-                <p class="col-span-8">
-                    @for (group of groups; track group.id) {
-                      <button class="!p-2 mx-0.5"
-                              [class.button-selected-border]="!userHasGroup(user,group)" (click)="changeGroupState(user,group)">
-                        {{ group.name }}
-                      </button>
-                    }
-                </p>
-
-              <p class="col-span-4">Actions</p>
-              <p class="col-span-8">
-                @if (user.state == UserExtendedDTO.StateEnum.Banned) {
-                  <button class="!p-1" (click)="unban(user)"><lucide-icon [name]="CircleSlash" class="w-3 inline mr-1"></lucide-icon>Unban</button>
-                } @else {
-                  <button class="!p-1 button-red" (click)="ban(user)"><lucide-icon [name]="CircleSlash" class="w-3 inline mr-1"></lucide-icon>Ban</button>
+            <p class="col-span-4">State</p>
+            <p class="col-span-8">
+              @switch (user.state) {
+                @case (UserExtendedDTO.StateEnum.Active) {
+                  <lucide-icon [name]="UserCheck" class="inline  h-4"></lucide-icon> Active
                 }
-              </p>
+                @case (UserExtendedDTO.StateEnum.Banned) {
+                  <lucide-icon [name]="CircleSlash" class="inline h-4"></lucide-icon> Banned
+                }
+                @case (UserExtendedDTO.StateEnum.PendingAccess) {
+                  <lucide-icon [name]="UserPlus" class="inline h-4"></lucide-icon> Pending Access
+                }
+              }
+            </p>
 
-              </div>
-            </div>
+            <p class="col-span-4">Groups</p>
+            <p class="col-span-8">
+              @for (group of groups; track group.id) {
+                <button class="!p-2 mx-0.5"
+                        [class.button-selected-border]="!userHasGroup(user,group)"
+                        (click)="changeGroupState(user,group)">
+                  {{ group.name }}
+                </button>
+              }
+            </p>
+
+            <p class="col-span-4">Actions</p>
+            <p class="col-span-8">
+              @if (user.state == UserExtendedDTO.StateEnum.Banned) {
+                <button class="!p-1" (click)="unban(user)">
+                  <lucide-icon [name]="CircleSlash" class="w-3 inline mr-1"></lucide-icon>
+                  Unban
+                </button>
+              } @else {
+                <button class="!p-1 button-red" (click)="ban(user)">
+                  <lucide-icon [name]="CircleSlash" class="w-3 inline mr-1"></lucide-icon>
+                  Ban
+                </button>
+              }
+            </p>
+
           </div>
-          @if (!$last) {
-            <div class="border-neutral-800 border mx-16"></div>
-          }
-        }
+        </div>
       </div>
+      @if (!$last) {
+        <div class="border-neutral-800 border mx-16"></div>
+      }
     }
-  }
-</app-button-panel>
+  </div>
+</ui-split-panel>

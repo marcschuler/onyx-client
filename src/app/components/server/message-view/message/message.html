@@ -13,7 +13,7 @@
           }
           @case ("FILE") {
             @let file = asTypeFile(content);
-            <a class="underline" [href]="file.file.id | storageFileURL:connection"
+            <a class="underline" [href]="file.file.id | storageFileURL:connection:undefined"
                target="_blank">{{ file.file.filename }}</a>
           }
           @default {

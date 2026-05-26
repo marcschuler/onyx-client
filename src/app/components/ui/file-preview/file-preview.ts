@@ -5,13 +5,15 @@ import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {LucideAngularModule} from 'lucide-angular';
 import {SanitizeUrlPipe} from '../../../pipes/sanitize-url-pipe';
+import {PreviewImage} from '../preview-image/preview-image';
 
 @Component({
   selector: 'app-file-preview',
   imports: [
     StorageFileURLPipe,
     LucideAngularModule,
-    SanitizeUrlPipe
+    SanitizeUrlPipe,
+    PreviewImage
   ],
   templateUrl: './file-preview.html',
   styleUrl: './file-preview.css',

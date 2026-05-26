@@ -12,7 +12,7 @@ import {
 import {WebSocketService} from '../../../../services/websocket/web-socket-service';
 import {PeerConnectionService} from '../../../../services/peer/peer-connection-service';
 import {PeerView} from '../../../../components/server/peer-view/peer-view';
-import {InterfaceService} from '../../../../services/interface-service';
+import {StorageService} from '../../../../services/storage.service';
 import {FormsModule} from '@angular/forms';
 import {MessageView} from '../../../../components/server/message-view/message-view';
 import {ServerObjectId, WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
@@ -54,7 +54,7 @@ export class ChannelView implements AfterViewInit, OnChanges {
 
   constructor(protected webSocketService: WebSocketService,
               protected peerConnectionService: PeerConnectionService,
-              protected interfaceService: InterfaceService) {
+              protected interfaceService: StorageService) {
   }
 
   ngAfterViewInit(): void {

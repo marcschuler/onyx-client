@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ButtonPanel } from './button-panel';
+import { SplitPanel } from './split-panel';
 
-describe('ButtonPanel', () => {
-  let component: ButtonPanel;
-  let fixture: ComponentFixture<ButtonPanel>;
+describe('SplitPanelSelector', () => {
+  let component: SplitPanel;
+  let fixture: ComponentFixture<SplitPanel>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ButtonPanel]
+      imports: [SplitPanel]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ButtonPanel);
+    fixture = TestBed.createComponent(SplitPanel);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

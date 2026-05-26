@@ -1,16 +1,23 @@
-import {Component} from '@angular/core';
-import {Bug, FingerprintIcon, LucideAngularModule, Scale, SettingsIcon} from "lucide-angular";
-import {UserPanel} from "../../components/server/user-panel/user-panel";
+import {Component, Input} from '@angular/core';
+import {
+  BugIcon,
+  FingerprintIcon,
+  IdCardLanyardIcon,
+  LucideAngularModule,
+  ScaleIcon,
+  SettingsIcon
+} from "lucide-angular";
 import {FormsModule} from '@angular/forms';
-import {IdenticonPipe} from '../../pipes/identicon-pipe';
-import {AsyncPipe, DatePipe,} from '@angular/common';
-import {Popup} from '../../components/ui/popup/popup';
-import {RouterLink} from '@angular/router';
 import {Identity} from './identity/identity';
 import {Debug} from './debug/debug';
 import {Contributors} from './contributors/contributors';
-import {ButtonPanel, TabPanelEntry} from '../../components/ui/button-panel/button-panel';
+import {SplitPanel} from '../../components/ui/split-panel/split-panel';
 import {General} from './general/general';
+import {SplitPanelBar} from '../../components/ui/split-panel/split-panel-bar/split-panel-bar';
+import {SplitPanelButton} from '../../components/ui/split-panel/split-panel-button/split-panel-button';
+import {SplitPanelSelector} from '../../directives/split-panel-selector';
+import {WebSocketServerConnection} from '../../services/websocket/WebSocketServerConnection';
+import {ServerUser} from './server-user/server-user';
 
 @Component({
   selector: 'app-settings',
@@ -20,34 +27,26 @@ import {General} from './general/general';
     Identity,
     Debug,
     Contributors,
-    ButtonPanel,
-    General
+    SplitPanelSelector,
+    General,
+    SplitPanelBar,
+    SplitPanelButton,
+    SplitPanelSelector,
+    SplitPanelSelector,
+    SplitPanel,
+    ServerUser
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css'
 })
 export class Settings {
 
-  TAB_GENERAL: TabPanelEntry = {
-    id: "General",
-    name: 'General',
-    icon: SettingsIcon
-  };
-  TAB_IDENTITES: TabPanelEntry = {
-    id: "Identities",
-    name: 'Identities',
-    icon:FingerprintIcon
-  };
-  TAB_CONTRIBUTORS: TabPanelEntry = {
-    id: "Contributors",
-    name: 'Contributors & Licences',
-    icon: Scale
-  };
-  TAB_DEBUG: TabPanelEntry = {
-    id: "Debug",
-    name: 'Debug',
-    icon: Bug
-  }
+  @Input() connection?: WebSocketServerConnection;
 
-  selectedOption!: TabPanelEntry;
+
+  protected readonly SettingsIcon = SettingsIcon;
+  protected readonly FingerprintIcon = FingerprintIcon;
+  protected readonly ScaleIcon = ScaleIcon;
+  protected readonly BugIcon = BugIcon;
+  protected readonly IdCardLanyardIcon = IdCardLanyardIcon;
 }

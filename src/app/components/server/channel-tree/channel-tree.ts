@@ -5,7 +5,7 @@ import {
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {Spinner} from '../../ui/spinner/spinner';
 import { WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {InterfaceService} from '../../../services/interface-service';
+import {StorageService} from '../../../services/storage.service';
 import {UserEntry} from '../user-entry/user-entry';
 import {ChannelEntry} from '../channel-entry/channel-entry';
 
@@ -25,7 +25,7 @@ export class ChannelTree {
   @Input() connection!: WebSocketServerConnection;
 
   constructor(protected webSocketService: WebSocketService,
-              protected interfaceService: InterfaceService) {
+              protected interfaceService: StorageService) {
 
   }
 }

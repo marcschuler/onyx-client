@@ -1,7 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {
-  HexagonIcon,
-  LogInIcon,
   LucideAngularModule,
   MicIcon, MicOffIcon,
   ScreenShareIcon, ScreenShareOffIcon,
@@ -15,7 +13,6 @@ import {PeerConnectionService} from '../../../services/peer/peer-connection-serv
 import {TrackType} from '../../../services/peer/MediaTracker';
 import {Popup} from '../../ui/popup/popup';
 import {Settings} from '../../../pages/settings/settings';
-import {ClientEditor} from '../../client/client-editor/client-editor';
 
 @Component({
   selector: 'app-user-panel',
@@ -23,7 +20,7 @@ import {ClientEditor} from '../../client/client-editor/client-editor';
     LucideAngularModule,
     NgClass,
     Popup,
-    ClientEditor
+    Settings,
   ],
   templateUrl: './user-panel.html',
   styleUrl: './user-panel.css'

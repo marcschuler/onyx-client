@@ -1,15 +1,21 @@
-<app-button-panel [buttons]="[BUTTON_SERVER_ADMINISTRATION,BUTTON_CHANNEL_TREE,BUTTON_GROUP]" [(selectedOption)]="selectedOption">
+<ui-split-panel>
+  <ui-split-panel-bar>
+    <ui-split-panel-button [icon]="ServerCogIcon" value="Server Administration">
+      Server Administration
+    </ui-split-panel-button>
+    <ui-split-panel-button [icon]="HexagonIcon" value="Sections & Channel">
+      Sections & Channel
+    </ui-split-panel-button>
+    <ui-split-panel-button [icon]="IdCardLanyardIcon" value="Groups">
+      Groups
+    </ui-split-panel-button>
+  </ui-split-panel-bar>
 
-  @switch (selectedOption){
-    @case (BUTTON_SERVER_ADMINISTRATION){
-      <app-server-administration-panel [connection]="connection"></app-server-administration-panel>
-    }
-    @case (BUTTON_CHANNEL_TREE){
-      <app-channel-administration-panel [connection]="connection"></app-channel-administration-panel>
-    }
-    @case (BUTTON_GROUP){
-      <app-group-administration-panel [connection]="connection"></app-group-administration-panel>
-    }
-  }
-</app-button-panel>
+  <app-server-administration-panel [connection]="connection"
+                                   splitPanel="Server Administration"></app-server-administration-panel>
+  <app-channel-administration-panel [connection]="connection"
+                                    splitPanel="Sections & Channel"></app-channel-administration-panel>
+  <app-group-administration-panel [connection]="connection" splitPanel="Groups"></app-group-administration-panel>
+
+</ui-split-panel>
 

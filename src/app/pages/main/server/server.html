@@ -1,22 +1,16 @@
 <div class="right-2 top-2 absolute">
-  @if (!connection.selectedChannel){
-  <button class="button-dark" (click)="showAdminPanel=true">
-    <lucide-icon [name]="ServerCog"></lucide-icon>
-  </button>
-  <button class="button-dark" (click)="showUsersPanel=true">
-    <lucide-icon [name]="BookUser"></lucide-icon>
-  </button>
+  @if (!connection.selectedChannel) {
+    <button class="button-dark" (click)="showAdminPanel=true">
+      <lucide-icon [name]="ServerCog"></lucide-icon>
+    </button>
+    <button class="button-dark" (click)="showUsersPanel=true">
+      <lucide-icon [name]="BookUser"></lucide-icon>
+    </button>
   }
   <button class="button-dark" (click)="closeConnection()">
     <lucide-icon [name]="LogOut"></lucide-icon>
   </button>
-  <button class="button-dark" (click)="showSettings=true">
-    <lucide-icon [name]="SettingsIcon"></lucide-icon>
-  </button>
 </div>
-<app-popup [isOpen]="showSettings" [closeButton]="true" (close)="showSettings=false">
-  <app-settings></app-settings>
-</app-popup>
 @if (showAdminPanel) {
   <app-popup [isOpen]="showAdminPanel" [closeButton]="true" (close)="showAdminPanel=false">
     <app-admin-panel [connection]="connection"></app-admin-panel>
