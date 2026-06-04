@@ -4,7 +4,7 @@ import {
   FingerprintIcon,
   IdCardLanyardIcon,
   LucideAngularModule,
-  ScaleIcon,
+  ScaleIcon, ServerIcon,
   SettingsIcon
 } from "lucide-angular";
 import {FormsModule} from '@angular/forms';
@@ -18,6 +18,9 @@ import {SplitPanelButton} from '../../components/ui/split-panel/split-panel-butt
 import {SplitPanelSelector} from '../../directives/split-panel-selector';
 import {WebSocketServerConnection} from '../../services/websocket/WebSocketServerConnection';
 import {ServerUser} from './server-user/server-user';
+import {SplitPanelDivider} from '../../components/ui/split-panel/split-panel-divider/split-panel-divider';
+import {ServerLoaderService} from '../../services/server-loader-service';
+import {ServerEditor} from './server-editor/server-editor';
 
 @Component({
   selector: 'app-settings',
@@ -34,7 +37,9 @@ import {ServerUser} from './server-user/server-user';
     SplitPanelSelector,
     SplitPanelSelector,
     SplitPanel,
-    ServerUser
+    ServerUser,
+    SplitPanelDivider,
+    ServerEditor
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css'
@@ -43,10 +48,14 @@ export class Settings {
 
   @Input() connection?: WebSocketServerConnection;
 
+  constructor(protected serverLoaderService: ServerLoaderService) {
+  }
+
 
   protected readonly SettingsIcon = SettingsIcon;
   protected readonly FingerprintIcon = FingerprintIcon;
   protected readonly ScaleIcon = ScaleIcon;
   protected readonly BugIcon = BugIcon;
   protected readonly IdCardLanyardIcon = IdCardLanyardIcon;
+  protected readonly ServerIcon = ServerIcon;
 }

@@ -10,19 +10,16 @@ import {NgClass} from '@angular/common';
   styleUrl: './popup.css'
 })
 export class Popup {
-  @Input() isOpen = false;
+  @Input() isOpen = false; //TODO remove isOpen property?
   @Output() close = new EventEmitter<Button>();
 
   @Input() title?: string;
   @Input() content?: string;
   @Input() closeButton?: boolean;
 
-  @Input() buttons?: Button[];
+  @Input() fullHeight: boolean = false;
 
-  closeDialog() {
-    this.close.emit();
-    this.isOpen = false;
-  }
+  @Input() buttons?: Button[];
 
   getButtonClass(type: ButtonType) {
     switch (type) {

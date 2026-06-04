@@ -2,7 +2,6 @@ import {Component, Input} from '@angular/core';
 import {FileUpload, UploadType} from "../../../components/ui/file-upload/file-upload";
 import {FormsModule} from "@angular/forms";
 import {LucideAngularModule, XIcon} from "lucide-angular";
-import {StorageFileURLPipe} from "../../../pipes/avatar-pipe";
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ToastService, ToastType} from '../../../services/toast-service';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
@@ -16,7 +15,6 @@ import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
     FileUpload,
     FormsModule,
     LucideAngularModule,
-    StorageFileURLPipe,
     PreviewImage
   ],
   templateUrl: './server-user.html',

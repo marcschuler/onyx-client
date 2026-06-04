@@ -1,13 +1,19 @@
-<div class="justify-center">
+<div class="justify-center rounded-xl py-2 gap-4 flex flex-col">
   @for (identity of identityService.identities; track identity) {
-    <div class="bg-neutral-800 rounded">
-      <div class="flex ">
-        <img [src]="identity.id | identicon | async" alt="Key ID: {{identity.id}}"
-             class="w-16 h-16 rounded-tl">
-        <input class="text-h2 p-4" [ngModel]="identity.username">
+    <div class="bg-neutral-800 rounded p-2">
+
+      <div class="settings-grid max-w-128">
+        <p class="settings-grid-label-no-desc">Name</p>
+        <input class="settings-grid-option" disabled [ngModel]="identity.username">
+
+        <p class="settings-grid-label-no-desc">Created</p>
+        <p class="settings-grid-option">{{ identity.created | date: 'medium' }}</p>
+
+        <p class="settings-grid-label-no-desc">ID</p>
+        <p class="settings-grid-option">{{identity.id}}</p>
       </div>
       <div class="flex">
-        <p class="p-2 flex-3/5">Created: {{ identity.created | date: 'medium' }}</p>
+        <button class="button-dark" disabled>Save</button>
         <button class="right-2 bottom-2 button-red rounded-none" [disabled]="identityService.identities.length<2"
                 (click)="identityToDelete = identity">Delete
         </button>

@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
-import {AsyncPipe, DatePipe} from "@angular/common";
-import {IdenticonPipe} from "../../../pipes/identicon-pipe";
+import {DatePipe} from "@angular/common";
 import {Button, BUTTON_CANCEL, BUTTON_DELETE, Popup} from "../../../components/ui/popup/popup";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {RouterLink} from "@angular/router";
 import {IdentityService} from '../../../services/identity-service';
 import {Identity as IdentityDTO} from '../../../services/identity-service';
 import {IdentityWizzard} from './identity-wizzard/identity-wizzard';
@@ -11,9 +9,7 @@ import {IdentityWizzard} from './identity-wizzard/identity-wizzard';
 @Component({
   selector: 'app-identity',
   imports: [
-    AsyncPipe,
     DatePipe,
-    IdenticonPipe,
     Popup,
     ReactiveFormsModule,
     FormsModule,

@@ -10,19 +10,16 @@ import {
   LucideAngularModule,
   ServerIcon,
   ServerOffIcon,
-  SettingsIcon, Trash,
-  UserIcon
+  SettingsIcon
 } from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {Identity, IdentityService} from '../../../services/identity-service';
-import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_EDIT, ButtonType, Popup} from '../../../components/ui/popup/popup';
+import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_EDIT, Popup} from '../../../components/ui/popup/popup';
 import {Settings} from '../../settings/settings';
-import {KeyVisualizer} from '../../../components/ui/key-visualizer/key-visualizer';
 import {ServerDTO} from '../../../../api/webrtc-server/model/serverDTO';
 import {RestService} from '../../../services/rest-service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {APP_VERSION} from '../../../services/Util';
-import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
 
 @Component({
@@ -33,7 +30,6 @@ import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
     LucideAngularModule,
     Popup,
     Settings,
-    StorageFileURLPipe,
     PreviewImage,
   ],
   templateUrl: './server-selector.html',
@@ -53,9 +49,6 @@ export class ServerSelector implements OnInit, OnDestroy {
 
 
   selectedServer: ServerConnection | undefined;
-  serverToEdit: ServerConnection | undefined;
-  serverToDelete: boolean = false;
-  serverToEditCopy: ServerConnection | undefined;
 
   serverDetails: Map<ServerConnection, ServerInfoWithState> = new Map();
 
@@ -99,6 +92,7 @@ export class ServerSelector implements OnInit, OnDestroy {
 
   addAndConnectToCustomUrl() {
     const server = {
+      id: crypto.randomUUID(),
       url: this.customUrl
     };
     this.serverLoaderService.addServer(server)
@@ -130,31 +124,6 @@ export class ServerSelector implements OnInit, OnDestroy {
       .catch(e => this.selectedServer = undefined);
   }
 
-  protected editServer(s: ServerConnection) {
-    this.serverToEdit = s
-    this.serverToEditCopy = JSON.parse(JSON.stringify(s));
-  }
-
-  protected closeEditDialog(button: Button) {
-    if (button == BUTTON_EDIT && this.serverToEditCopy && this.serverToEdit) {
-      console.log("changing server data")
-      this.serverToEdit.url = this.serverToEditCopy.url;
-      this.serverToEdit.name = this.serverToEditCopy.name;
-      this.serverLoaderService.saveServer();
-    }
-    this.serverToEditCopy = undefined;
-    this.serverToEdit = undefined;
-  }
-
-  removeServer(s: ServerConnection, button: Button) {
-    this.serverToDelete = false;
-    if (!button || button == BUTTON_CANCEL) {
-      return;
-    }
-    this.serverToEdit = undefined;
-    this.serverLoaderService.removeServer(s);
-
-  }
 
   protected readonly ServerIcon = ServerIcon;
   protected readonly ServerInfoState = ServerInfoState;
@@ -162,11 +131,6 @@ export class ServerSelector implements OnInit, OnDestroy {
   protected readonly SettingsIcon = SettingsIcon;
   protected readonly ArrowBigRightDash = ArrowBigRightDash;
   protected readonly BUTTON_CANCEL = BUTTON_CANCEL;
-  protected readonly BUTTON_DELETE = BUTTON_DELETE;
-
-
-  protected readonly BUTTON_EDIT = BUTTON_EDIT;
-  protected readonly APP_VERSION = APP_VERSION;
 }
 
 export interface ServerInfoWithState {

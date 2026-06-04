@@ -11,6 +11,7 @@ import {
 import {LucideAngularModule, LucideIconData} from 'lucide-angular';
 import {SplitPanelBar} from './split-panel-bar/split-panel-bar';
 import {SplitPanelSelector} from '../../../directives/split-panel-selector';
+import {SplitPanelButtonEvent} from './split-panel-button/split-panel-button';
 
 @Component({
   selector: 'ui-split-panel',
@@ -29,44 +30,50 @@ export class SplitPanel implements AfterContentInit {
   @ViewChild('content') content!: ElementRef<HTMLElement>;
   @ContentChildren(SplitPanelSelector) contentRefs!: QueryList<SplitPanelSelector>;
 
-  selectedOption: string | undefined;
+  selectedOption: SplitPanelButtonEvent | undefined;
 
   ngAfterContentInit(): void {
-    this.leftBar.onClick.subscribe((value: string) => {
+    this.leftBar.onClick.subscribe((value: SplitPanelButtonEvent) => {
       this.selectOption(value);
     });
 
     if (this.default && this.buttonsHaveValue(this.default)) {
-      this.selectOption(this.default)
+      this.selectOption({
+        value: this.default,
+        name: this.default
+      })
     }
 
     const button = this.leftBar.buttons.get(0);
     if (button) {
-      this.selectOption(button.value)
+      this.selectOption({
+        name: button.name || button.value,
+        value: button.value
+      })
     } else {
       console.warn("No buttons in split panel");
     }
   }
 
 
-  selectOption(option: string) {
-    console.log("selecting " + option)
-    this.selectedOption = option;
+  selectOption(event: SplitPanelButtonEvent) {
+    console.log("selecting " + event)
+    this.selectedOption = event;
     this.leftBar.buttons.forEach(button => {
-      button.selected = (button.value == option);
+      button.selected = (button.value == event.value);
     })
-    this.setContentSlot(option);
+    this.setContentSlot(event);
   }
 
   private buttonsHaveValue(value: string) {
     return this.contentRefs.filter(child => child.splitPanel == value).length > 0;
   }
 
-  private setContentSlot(value: string) {
+  private setContentSlot(event: SplitPanelButtonEvent) {
     console.log("childs " + this.contentRefs.length)
     this.contentRefs.forEach(child => {
       const element = child.element.nativeElement;
-      const matches = child.splitPanel == value;
+      const matches = child.splitPanel == event.value;
       console.log("child matches?" + matches)
       element.style.display = matches ? '' : 'none'
     })

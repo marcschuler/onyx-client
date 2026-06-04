@@ -16,9 +16,18 @@ export class SplitPanelButton {
   @Input() icon: any;
 
   @Input() selected: boolean = false;
-  @Output() onClick = new EventEmitter<string>();
+  @Output() onClick = new EventEmitter<SplitPanelButtonEvent>();
 
   protected click() {
-    this.onClick.emit(this.value);
+    this.onClick.emit({
+      name: this.name || this.value,
+      value: this.value
+    });
   }
+}
+
+// the event that gets passed to split-panel. name may equal to value but can contain a user friendly name
+export interface SplitPanelButtonEvent{
+  name: string;
+  value: string;
 }

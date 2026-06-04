@@ -1,9 +1,7 @@
-@if (!showSettings) {
-  <button class="right-2 absolute top-2 button-dark" (click)="showSettings=true">
-    <lucide-icon [name]="SettingsIcon"></lucide-icon>
-  </button>
-}
-<app-popup [isOpen]="showSettings" [closeButton]="true" (close)="showSettings=false">
+<button class="right-2 absolute top-2 button-dark" (click)="showSettings=true">
+  <lucide-icon [name]="SettingsIcon"></lucide-icon>
+</button>
+<app-popup [isOpen]="showSettings" [closeButton]="true" (close)="showSettings=false" [fullHeight]="true">
   <app-settings></app-settings>
 </app-popup>
 
@@ -32,7 +30,8 @@
               @case (ServerInfoState.SUCCESS) {
                 @if (detail.success && detail.success[0] && detail.success[0].icon) {
                   @let info = detail.success[0];
-                  <app-preview-image [file]="info.icon!" [basePath]="s.url" imageClass="min-w-12 w-12 h-12 object-cover rounded">
+                  <app-preview-image [file]="info.icon!" [basePath]="s.url"
+                                     imageClass="min-w-12 w-12 h-12 object-cover rounded">
                   </app-preview-image>
                 } @else {
                   <lucide-icon [name]="ServerIcon" class="w-12 h-12 rounded-xl"></lucide-icon>
@@ -69,11 +68,7 @@
           </div>
 
           <div class="flex justify-end">
-            <button class=" button-dark !rounded-none !p-2" (click)="editServer(s)">
-              <lucide-icon [name]="SettingsIcon"></lucide-icon>
-            </button>
-
-            <button class="!rounded-l-none button-green" (click)="connect(s)" [disabled]="selectedServer">
+            <button class="!rounded-l-none button-onyx" (click)="connect(s)" [disabled]="selectedServer">
               @if (selectedServer == s) {
                 <app-spinner></app-spinner>
               } @else {
@@ -86,8 +81,8 @@
     </div>
 
     @if (serverLoaderService.connections.length != 0) {
-      <div class="p-8 border-b-neutral-600 border-b-1">
-        Using Identity
+      <div class="pl-2 py-2 border-b-neutral-600 border-b-1">
+        With Identity
         <select [(ngModel)]="identity">
           @for (identity of identityService.identities; track identity.id) {
             <option [value]="identity">{{ identity.username }}</option>
@@ -108,30 +103,4 @@
       <span class="text-red-400 p-1">{{ customUrlError }}</span>
     }
   </div>
-  @if (serverToEdit && serverToEditCopy) {
-    <app-popup [isOpen]="true"
-               [buttons]="[BUTTON_EDIT]" [closeButton]="true" (close)="closeEditDialog($event)">
-      <h3>Server</h3>
-
-      <div class="pt-4">
-        <label>Name</label>
-        <input [(ngModel)]="serverToEditCopy.name" placeholder="No name">
-        <label>URL</label>
-        <input [(ngModel)]="serverToEditCopy.url">
-      </div>
-
-      <div class="pt-8">
-        <label>Danger Zone</label>
-        <button class="button-dark button-red" (click)="serverToDelete = true">
-          Delete Server
-        </button>
-      </div>
-
-      <app-popup [isOpen]="serverToDelete" [buttons]="[BUTTON_CANCEL, BUTTON_DELETE]"
-                 title="Delete this connection?"
-                 (close)="removeServer(serverToEdit,$event)"
-                 [content]="'You can already create a new connection using this URL.'">
-      </app-popup>
-    </app-popup>
-  }
 </div>

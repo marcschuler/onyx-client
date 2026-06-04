@@ -48,6 +48,7 @@ export class ServerLoaderService {
 
 
 export interface ServerConnection {
+  id: string;
   url: string;
   name?: string;
 }

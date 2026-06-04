@@ -1,5 +1,5 @@
 import {Component, ContentChildren, EventEmitter, Output, QueryList} from '@angular/core';
-import {SplitPanelButton} from '../split-panel-button/split-panel-button';
+import {SplitPanelButton, SplitPanelButtonEvent} from '../split-panel-button/split-panel-button';
 
 @Component({
   selector: 'ui-split-panel-bar',
@@ -9,7 +9,7 @@ import {SplitPanelButton} from '../split-panel-button/split-panel-button';
 })
 export class SplitPanelBar {
 
-  @Output() onClick = new EventEmitter<string>();
+  @Output() onClick = new EventEmitter<SplitPanelButtonEvent>();
 
   @ContentChildren(SplitPanelButton) buttons!: QueryList<SplitPanelButton>;
 
@@ -22,7 +22,7 @@ export class SplitPanelBar {
   }
 
   private subscribe(button: SplitPanelButton) {
-    button.onClick.subscribe((value: string) => {
+    button.onClick.subscribe((value: SplitPanelButtonEvent) => {
       this.onClick.emit(value);
     });
   }

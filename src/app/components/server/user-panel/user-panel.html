@@ -1,11 +1,11 @@
 <div class="h-full  rounded-t-md" [ngClass]="{
-'bg-emerald-600': webSocketService.connection && webSocketService.connection.state == ConnectionState.CONNECTED,
+'bg-sky-600': webSocketService.connection && webSocketService.connection.state == ConnectionState.CONNECTED,
 'bg-red-600': !webSocketService.connection || webSocketService.connection.state == ConnectionState.ERROR || webSocketService.connection.state == ConnectionState.CLOSED,
 'bg-yellow-600': webSocketService.connection && webSocketService.connection.state == ConnectionState.AUTHENTICATING
 }
 ">
   @if (showClientEditor) {
-    <app-popup [isOpen]="showClientEditor" [closeButton]="true" (close)="showClientEditor=false">
+    <app-popup [isOpen]="showClientEditor" [closeButton]="true" (close)="showClientEditor=false" [fullHeight]="true">
       <app-settings [connection]="connection"></app-settings>
     </app-popup>
   }
