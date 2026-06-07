@@ -16,7 +16,7 @@ export interface PageMessageDTO {
     totalElements?: number;
     totalPages?: number;
     size?: number;
-    content?: MessageDTO[];
+    content?: Array<MessageDTO>;
     number?: number;
     sort?: SortObject;
     pageable?: PageableObject;

@@ -16,7 +16,7 @@ export interface AuthSuccessMessage extends MessageBody {
     message?: string;
     jwt: string;
     me: UserSimpleDTO;
-    clients: UserOnlineDTO[];
+    clients: Array<UserOnlineDTO>;
     readonly type: AuthSuccessMessage.TypeEnum;
 }
 export namespace AuthSuccessMessage {

@@ -13,6 +13,6 @@ import { ChannelExtendedDTO } from './channelExtendedDTO';
 export interface SectionExtendedDTO { 
     name: string;
     id: string;
-    channels: ChannelExtendedDTO[];
+    channels: Array<ChannelExtendedDTO>;
 }
 

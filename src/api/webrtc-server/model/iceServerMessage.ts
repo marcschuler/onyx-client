@@ -12,7 +12,7 @@ import { MessageBody } from './messageBody';
 
 
 export interface IceServerMessage extends MessageBody { 
-    iceServers: IceServer[];
+    iceServers: Array<IceServer>;
     readonly type: IceServerMessage.TypeEnum;
 }
 export namespace IceServerMessage {

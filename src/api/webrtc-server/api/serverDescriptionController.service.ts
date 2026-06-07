@@ -7,8 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+/* tslint:disable:no-unused-variable member-ordering */
 
-import { Injectable, inject }                      from '@angular/core';
+import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent, HttpContext 
         }       from '@angular/common/http';
@@ -33,13 +34,8 @@ import { BaseService } from '../api.base.service';
   providedIn: 'root'
 })
 export class ServerDescriptionControllerService extends BaseService {
-    protected httpClient = inject(HttpClient);
 
-
-    constructor() {
-        const basePath = inject(BASE_PATH, { optional: true });
-        const configuration = inject(Configuration, { optional: true });
-
+    constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
@@ -54,7 +50,7 @@ export class ServerDescriptionControllerService extends BaseService {
     public _delete(id: string, descriptionId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
     public _delete(id: string, descriptionId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
     public _delete(id: string, descriptionId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public _delete(id: string, descriptionId: string, observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public _delete(id: string, descriptionId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling _delete.');
         }
@@ -89,12 +85,12 @@ export class ServerDescriptionControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/description/${this.configuration.encodeParam({name: "descriptionId", value: descriptionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        let localVarPath = `/v0/server/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/description/${this.configuration.encodeParam({name: "descriptionId", value: descriptionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -115,7 +111,7 @@ export class ServerDescriptionControllerService extends BaseService {
     public create(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Edit1Request>;
     public create(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Edit1Request>>;
     public create(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Edit1Request>>;
-    public create(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public create(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling create.');
         }
@@ -160,13 +156,13 @@ export class ServerDescriptionControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/description`;
+        let localVarPath = `/v0/server/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/description`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Edit1Request>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: fileMessageContentDTOMarkdownMessageContentDTO,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -188,7 +184,7 @@ export class ServerDescriptionControllerService extends BaseService {
     public edit1(id: string, descriptionId: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Edit1Request>;
     public edit1(id: string, descriptionId: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Edit1Request>>;
     public edit1(id: string, descriptionId: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Edit1Request>>;
-    public edit1(id: string, descriptionId: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public edit1(id: string, descriptionId: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling edit1.');
         }
@@ -236,13 +232,13 @@ export class ServerDescriptionControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/description/${this.configuration.encodeParam({name: "descriptionId", value: descriptionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        let localVarPath = `/v0/server/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/description/${this.configuration.encodeParam({name: "descriptionId", value: descriptionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Edit1Request>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: fileMessageContentDTOMarkdownMessageContentDTO,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -264,7 +260,7 @@ export class ServerDescriptionControllerService extends BaseService {
     public order(id: string, descriptionId: string, newOrder: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
     public order(id: string, descriptionId: string, newOrder: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
     public order(id: string, descriptionId: string, newOrder: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public order(id: string, descriptionId: string, newOrder: number, observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public order(id: string, descriptionId: string, newOrder: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling order.');
         }
@@ -302,12 +298,12 @@ export class ServerDescriptionControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/description/${this.configuration.encodeParam({name: "descriptionId", value: descriptionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/order/${this.configuration.encodeParam({name: "newOrder", value: newOrder, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/v0/server/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/description/${this.configuration.encodeParam({name: "descriptionId", value: descriptionId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/order/${this.configuration.encodeParam({name: "newOrder", value: newOrder, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,

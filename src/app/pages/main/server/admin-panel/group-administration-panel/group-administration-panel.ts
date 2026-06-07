@@ -81,7 +81,8 @@ export class GroupAdministrationPanel implements OnInit {
     this.connection.rest.groupController.create2({
       name: findFreeName("Group", (this.groups || []).map(g => g.name)),
       description: "",
-      defaultForNewUsers: false
+      defaultForNewUsers: false,
+      label: false
     }).subscribe(value => {
       this.groups?.push(value);
       this.selectedGroup = value;
@@ -90,7 +91,7 @@ export class GroupAdministrationPanel implements OnInit {
 
   protected addPermission() {
     this.selectedGroup!.permissions!.push({
-      negated: false,
+      inverted: false,
       id: "",
       permissions: [],
       limitedToChannel: [],

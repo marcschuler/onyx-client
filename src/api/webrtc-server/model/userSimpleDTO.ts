@@ -12,9 +12,9 @@ import { GroupDTO } from './groupDTO';
 
 export interface UserSimpleDTO { 
     id: string;
-    publicKey: Record<string, any>;
+    publicKey: { [key: string]: any; };
     username: string;
     avatarId?: string;
-    groups: GroupDTO[];
+    groups: Array<GroupDTO>;
 }
 

@@ -13,5 +13,6 @@ export interface GroupCreateDTO {
     name: string;
     description: string;
     defaultForNewUsers: boolean;
+    label: boolean;
 }
 

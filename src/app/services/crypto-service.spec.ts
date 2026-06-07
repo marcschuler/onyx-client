@@ -22,6 +22,7 @@ describe('CryptoService', () => {
       id: await service.generateKeyId(keyPair.publicKey),
       username: "",
       keyPair: keyPair,
+      created: new Date(Date.now())
     };
   });
 

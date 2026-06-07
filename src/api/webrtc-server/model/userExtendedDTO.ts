@@ -12,10 +12,10 @@ import { GroupDTO } from './groupDTO';
 
 export interface UserExtendedDTO { 
     id: string;
-    publicKey: Record<string, any>;
+    publicKey: { [key: string]: any; };
     username: string;
     avatarId?: string;
-    groups: GroupDTO[];
+    groups: Array<GroupDTO>;
     state: UserExtendedDTO.StateEnum;
     knownSince: string;
     lastSeen?: string;

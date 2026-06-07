@@ -7,8 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+/* tslint:disable:no-unused-variable member-ordering */
 
-import { Injectable, inject }                      from '@angular/core';
+import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent, HttpContext 
         }       from '@angular/common/http';
@@ -41,13 +42,8 @@ import { BaseService } from '../api.base.service';
   providedIn: 'root'
 })
 export class TodoControllerService extends BaseService {
-    protected httpClient = inject(HttpClient);
 
-
-    constructor() {
-        const basePath = inject(BASE_PATH, { optional: true });
-        const configuration = inject(Configuration, { optional: true });
-
+    constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
@@ -60,7 +56,7 @@ export class TodoControllerService extends BaseService {
     public auth(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<AuthChallenge>;
     public auth(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AuthChallenge>>;
     public auth(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AuthChallenge>>;
-    public auth(observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public auth(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -90,12 +86,12 @@ export class TodoControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/auth`;
+        let localVarPath = `/v0/server/auth`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<AuthChallenge>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -114,7 +110,7 @@ export class TodoControllerService extends BaseService {
     public channelExtendedDTO(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<ChannelExtendedDTO>;
     public channelExtendedDTO(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ChannelExtendedDTO>>;
     public channelExtendedDTO(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ChannelExtendedDTO>>;
-    public channelExtendedDTO(observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public channelExtendedDTO(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -144,12 +140,12 @@ export class TodoControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/channelExtendedDTO`;
+        let localVarPath = `/v0/server/channelExtendedDTO`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ChannelExtendedDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -168,7 +164,7 @@ export class TodoControllerService extends BaseService {
     public iceServer(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<IceServer>;
     public iceServer(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<IceServer>>;
     public iceServer(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<IceServer>>;
-    public iceServer(observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public iceServer(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -198,12 +194,12 @@ export class TodoControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/iceServer`;
+        let localVarPath = `/v0/server/iceServer`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<IceServer>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -222,7 +218,7 @@ export class TodoControllerService extends BaseService {
     public sectionExtendedDTO(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<SectionExtendedDTO>;
     public sectionExtendedDTO(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionExtendedDTO>>;
     public sectionExtendedDTO(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionExtendedDTO>>;
-    public sectionExtendedDTO(observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public sectionExtendedDTO(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -252,12 +248,12 @@ export class TodoControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/sectionextendeddto`;
+        let localVarPath = `/v0/server/sectionextendeddto`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<SectionExtendedDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -276,7 +272,7 @@ export class TodoControllerService extends BaseService {
     public signedContent(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<SignedContent>;
     public signedContent(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SignedContent>>;
     public signedContent(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SignedContent>>;
-    public signedContent(observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public signedContent(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -306,12 +302,12 @@ export class TodoControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/signedContent`;
+        let localVarPath = `/v0/server/signedContent`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<SignedContent>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -330,7 +326,7 @@ export class TodoControllerService extends BaseService {
     public userOnline(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<UserOnlineDTO>;
     public userOnline(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserOnlineDTO>>;
     public userOnline(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserOnlineDTO>>;
-    public userOnline(observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public userOnline(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -360,12 +356,12 @@ export class TodoControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/useronline`;
+        let localVarPath = `/v0/server/useronline`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<UserOnlineDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -384,7 +380,7 @@ export class TodoControllerService extends BaseService {
     public userReference(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<UserSimpleDTO>;
     public userReference(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserSimpleDTO>>;
     public userReference(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserSimpleDTO>>;
-    public userReference(observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public userReference(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -414,12 +410,12 @@ export class TodoControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/userReference`;
+        let localVarPath = `/v0/server/userReference`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<UserSimpleDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -438,7 +434,7 @@ export class TodoControllerService extends BaseService {
     public userSimpleDTO(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<UserSimpleDTO>;
     public userSimpleDTO(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserSimpleDTO>>;
     public userSimpleDTO(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserSimpleDTO>>;
-    public userSimpleDTO(observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public userSimpleDTO(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -468,12 +464,12 @@ export class TodoControllerService extends BaseService {
             }
         }
 
-        const localVarPath = `/v0/server/usersimpledto`;
+        let localVarPath = `/v0/server/usersimpledto`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<UserSimpleDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: responseType_ as any,
+                responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
