@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {StorageService} from '../../../services/storage.service';
 import {FormsModule} from '@angular/forms';
 import {Toggle} from '../../../components/ui/toggle/toggle';
@@ -13,7 +13,6 @@ import {Toggle} from '../../../components/ui/toggle/toggle';
   styleUrl: './general.css',
 })
 export class General {
-
-  constructor(protected interfaceService: StorageService) {}
+  protected interfaceService = inject(StorageService);
 
 }

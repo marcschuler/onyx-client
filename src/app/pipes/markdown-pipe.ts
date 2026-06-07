@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform, SecurityContext} from '@angular/core';
+import { Pipe, PipeTransform, SecurityContext, inject } from '@angular/core';
 import {marked, RendererObject, Tokens} from 'marked';
 import {DomSanitizer} from '@angular/platform-browser';
 
@@ -6,10 +6,8 @@ import {DomSanitizer} from '@angular/platform-browser';
   name: 'markdown'
 })
 export class MarkdownPipe implements PipeTransform {
+  private sanitizer = inject(DomSanitizer);
 
-  constructor(private sanitizer: DomSanitizer) {
-
-  }
 
 
   transform(value: string): unknown {

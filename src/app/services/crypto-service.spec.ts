@@ -47,8 +47,8 @@ describe('CryptoService', () => {
 
   it('base64-converter',()=>{
     const str = "YWJjZGVm";
-    var buffer = service.base64ToArrayBuffer(str);
-    var base64 = service.arrayBufferToBase64(buffer);
+    const buffer = service.base64ToArrayBuffer(str);
+    const base64 = service.arrayBufferToBase64(buffer);
     expect(base64).toBe(str);
   })
 });

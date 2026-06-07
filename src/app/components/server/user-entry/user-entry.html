@@ -11,7 +11,7 @@
 'w-6 h-6': interfaceService.settings.compactMode}">
         </app-preview-image>
     } @else {
-      <img
+      <img alt="user avatar"
         [src]="client.id | identicon: 32 | async"
         [ngClass]="{
 'w-8 h-8': !interfaceService.settings.compactMode,
@@ -21,7 +21,7 @@
     }
 
     <span class="pl-2" [ngClass]="[
-    client.id==connection.identity.id ? 'text-neutral-100' : ''
+    client.id===connection.identity.id ? 'text-neutral-100' : ''
   ]">{{ client.username }}
     </span>
 </span>

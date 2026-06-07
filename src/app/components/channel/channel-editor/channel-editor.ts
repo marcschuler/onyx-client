@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO} from '../../../../api/webrtc-server';
 import {RestService} from '../../../services/rest-service';
@@ -20,16 +20,14 @@ import {SplitPanelButton} from '../../ui/split-panel/split-panel-button/split-pa
   styleUrl: './channel-editor.css',
 })
 export class ChannelEditor implements OnInit {
+  private restService = inject(RestService);
+  private toastService = inject(ToastService);
+
 
   @Input() connection!: WebSocketServerConnection;
   @Input() channelId!: string;
 
   channel: ChannelDTO | undefined;
-
-  constructor(private restService: RestService,
-              private toastService: ToastService) {
-
-  }
 
   ngOnInit(): void {
     this.connection.rest.channelController.channel(this.channelId)

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {JsonPipe} from '@angular/common';
 import {IdentityService} from '../../../services/identity-service';
@@ -14,11 +14,10 @@ import {APP_VERSION, isElectron} from '../../../services/Util';
   styleUrl: './debug.css'
 })
 export class Debug {
+  protected webSocketService = inject(WebSocketService);
+  protected peerConnectionService = inject(PeerConnectionService);
+  protected identityService = inject(IdentityService);
 
-  constructor(protected webSocketService: WebSocketService,
-              protected peerConnectionService: PeerConnectionService,
-              protected identityService: IdentityService,) {
-  }
 
   protected readonly APP_VERSION = APP_VERSION;
   protected readonly isElectron = isElectron;

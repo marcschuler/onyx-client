@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {
   LucideAngularModule,
 } from 'lucide-angular';
@@ -21,11 +21,9 @@ import {ChannelEntry} from '../channel-entry/channel-entry';
   styleUrl: './channel-tree.css'
 })
 export class ChannelTree {
+  protected webSocketService = inject(WebSocketService);
+  protected interfaceService = inject(StorageService);
+
 
   @Input() connection!: WebSocketServerConnection;
-
-  constructor(protected webSocketService: WebSocketService,
-              protected interfaceService: StorageService) {
-
-  }
 }

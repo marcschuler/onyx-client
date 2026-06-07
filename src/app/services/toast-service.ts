@@ -20,10 +20,6 @@ export class ToastService {
       1
     )
   }
-
-  createNetworkError(){
-
-  }
 }
 
 export interface ToastMessage {

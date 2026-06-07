@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import {RestService} from '../../../../../services/rest-service';
 import {ToastService, ToastType} from '../../../../../services/toast-service';
@@ -25,6 +25,9 @@ import {ChannelEditor} from '../../../../../components/channel/channel-editor/ch
   styleUrl: './channel-administration-panel.css'
 })
 export class ChannelAdministrationPanel implements OnInit, OnChanges {
+  private restService = inject(RestService);
+  private toastService = inject(ToastService);
+
 
   @Input() connection!: WebSocketServerConnection;
   @Input() serverTree!: ServerTreeChangeMessage;
@@ -37,10 +40,6 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
   protected sectionToEdit: SectionDTO | undefined;
 
   dropListSections: string[] = [];
-
-  constructor(private restService: RestService,
-              private toastService: ToastService) {
-  }
 
 
   ngOnChanges() {

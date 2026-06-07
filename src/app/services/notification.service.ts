@@ -11,6 +11,7 @@ export class NotificationService {
     audio.src = event.src;
     audio.load();
     audio.play().then(() => {
+      //do nothing
     }).catch(error => {
       console.error('Error playing sound ' + JSON.stringify(event), error);
     });

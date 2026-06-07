@@ -1,14 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, inject } from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {LucideAngularModule, SendIcon} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
@@ -40,6 +30,12 @@ import {FileUpload} from '../../ui/file-upload/file-upload';
   styleUrl: './message-view.css'
 })
 export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
+  private toastService = inject(ToastService);
+  private webSocketService = inject(WebSocketService);
+  private restService = inject(RestService);
+  private messageService = inject(MessageService);
+  private notificationService = inject(NotificationService);
+
 
   protected readonly SendIcon = SendIcon;
 
@@ -49,7 +45,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
   messages: MessageDTO[] = [];
   currentPage: number | undefined = undefined;
 
-  message: string = "";
+  message = "";
 
   @ViewChild('messageList') private messageListElement!: ElementRef;
 
@@ -60,14 +56,6 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
   }
 
   private moreMessagesObserver?: IntersectionObserver;
-
-  constructor(private toastService: ToastService,
-              private webSocketService: WebSocketService,
-              private restService: RestService,
-              private messageService: MessageService,
-              private notificationService: NotificationService) {
-
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["channelId"]) {
@@ -169,7 +157,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     this.connection.rest.chatController.message(channel.chatId, {
       text: message,
       type: "MARKDOWN"
-    } as MarkdownMessageContentDTO).subscribe(value => {
+    } as MarkdownMessageContentDTO).subscribe(() => {
       this.message = "";
     }, error => this.restService.handleError(error))
   }
@@ -184,7 +172,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
       type: "FILE",
       file: $event
     } as FileMessageContentDTO)
-      .subscribe(_ => {
+      .subscribe(() => {
         console.log("message-view: send file chat")
         this.toastService.create({
           title: "File uploaded to chat",

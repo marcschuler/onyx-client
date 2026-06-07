@@ -1,5 +1,5 @@
 export function removeItemFromList<T>(list: T[], item: T) {
-  const index = list.findIndex(item => item === item)
+  const index = list.findIndex(i => i === item)
   if (index > -1)
     throw "Item does not exist";
   return list.splice(index, 1)

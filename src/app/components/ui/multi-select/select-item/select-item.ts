@@ -13,7 +13,7 @@ export class SelectItem {
 
 
   //Parent controlled
-  @Input() selected: boolean = false;
+  @Input() selected = false;
   @Output() clicked = new EventEmitter<any>();
 
 

@@ -15,9 +15,9 @@ import { MessageBody } from './messageBody';
 
 export interface ServerTreeChangeMessage extends MessageBody { 
     server: ServerDTO;
-    sections: Array<SectionExtendedDTO>;
-    users: Array<UserSimpleDTO>;
-    usersNotInChannel: Array<UserSimpleDTO>;
+    sections: SectionExtendedDTO[];
+    users: UserSimpleDTO[];
+    usersNotInChannel: UserSimpleDTO[];
     readonly type: ServerTreeChangeMessage.TypeEnum;
 }
 export namespace ServerTreeChangeMessage {

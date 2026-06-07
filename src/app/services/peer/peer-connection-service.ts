@@ -1,4 +1,4 @@
-import {Injectable, Injector} from '@angular/core';
+import { Injectable, Injector, inject } from '@angular/core';
 import {PeerConnection, PeerConnectionState, SecurityState} from './PeerConnection';
 import {Client, ConnectionState, WebSocketServerConnection} from '../websocket/WebSocketServerConnection';
 import {WebSocketService} from '../websocket/web-socket-service';
@@ -15,6 +15,10 @@ import {getMediaTracker, TrackType} from './MediaTracker';
   providedIn: 'root'
 })
 export class PeerConnectionService {
+  private injector = inject(Injector);
+  private notificationService = inject(NotificationService);
+  private toastService = inject(ToastService);
+
 
   peers: PeerConnection[] = [];
 
@@ -37,9 +41,7 @@ export class PeerConnectionService {
 
   private webSocketService!: WebSocketService;
 
-  constructor(private injector: Injector,
-              private notificationService: NotificationService,
-              private toastService: ToastService) {
+  constructor() {
     setTimeout(() => {
       this.webSocketService = this.injector.get(WebSocketService);
       this.webSocketService.addHandler(PeerOfferForward.TypeEnum.PeerOfferForward, (e, c) => this.onPeerOfferForward(e as PeerOfferForward, c))

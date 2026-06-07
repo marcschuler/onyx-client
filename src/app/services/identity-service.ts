@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {CryptoService} from './crypto-service';
 import {ToastService, ToastType} from './toast-service';
@@ -9,13 +9,16 @@ import {CryptoKey, generateKeyPair, GenerateKeyPairResult, importJWK} from 'jose
   providedIn: 'root'
 })
 export class IdentityService {
+  private router = inject(Router);
+  private cryptoService = inject(CryptoService);
+  private toastService = inject(ToastService);
+
 
   private IDENTITY_STORE_KEY = "identities";
 
   identities: Identity[] = [];
 
-  constructor(private router: Router, private cryptoService: CryptoService,
-              private toastService: ToastService) {
+  constructor() {
     this.loadIdentities().then(() => {
       console.log("Loaded " + this.identities.length + " identities");
       if (this.identities.length == 0) {

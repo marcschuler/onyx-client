@@ -1,21 +1,23 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, firstValueFrom, throwError} from 'rxjs';
+import {catchError, throwError} from 'rxjs';
 import {ServerDTO} from '../../api/webrtc-server';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServerLoaderService {
+  private httpClient = inject(HttpClient);
+
 
   public connections: ServerConnection[] = [];
 
-  constructor(private httpClient: HttpClient) {
+  constructor() {
     this.loadServer();
   }
 
   private loadServer() {
-    var storedConnections = localStorage.getItem("serverConnections");
+    const storedConnections = localStorage.getItem("serverConnections");
     if (storedConnections)
       this.connections = (JSON.parse(storedConnections) as ServerConnection[]);
   }
@@ -26,7 +28,7 @@ export class ServerLoaderService {
   }
 
   removeServer(s: ServerConnection) {
-    var index = this.connections.indexOf(s);
+    const index = this.connections.indexOf(s);
     this.connections.splice(index,1);
     this.saveServer();
   }
@@ -36,7 +38,7 @@ export class ServerLoaderService {
   }
 
   public serverDetails(connection: ServerConnection): Promise<ServerDTO[]> {
-    // @ts-ignore
+    // @ts-expect-error somehow expects "undefined"
     return this.httpClient.get<ServerDTO[]>(connection.url + "/v0/info/server").pipe(
       catchError(err => {
         // Wrap into custom error object

@@ -29,9 +29,9 @@ export class KeyVisualizer implements OnInit, OnChanges {
       this.bits = undefined
       return;
     }
-    var base64 = btoa(keyId);
+    const base64 = btoa(keyId);
     const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-    var bits = [...bytes]
+    const bits = [...bytes]
       .map(b => b.toString(2).padStart(8, '0'))
       .flatMap(s => s.split(""))
       .map(s => s == "1")

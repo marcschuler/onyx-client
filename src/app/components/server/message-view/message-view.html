@@ -6,7 +6,7 @@
       </button>
     }
     @for (msg of messages; track msg) {
-      @let useHeader = ($index == 0 || messages[$index - 1].user.id != msg.user.id);
+      @let useHeader = ($index === 0 || messages[$index - 1].user.id !== msg.user.id);
       <app-message [message]="msg" [useHeader]="useHeader" [connection]="connection"></app-message>
     }
   </div>
@@ -24,7 +24,7 @@
     <div class="">
       <button
         (click)="sendMessage()"
-        class="" [disabled]="message.length==0">
+        class="" [disabled]="message.length===0">
         <lucide-icon [name]="SendIcon"></lucide-icon>
       </button>
     </div>

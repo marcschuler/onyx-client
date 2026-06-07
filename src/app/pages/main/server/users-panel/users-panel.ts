@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {GroupDTO, UserExtendedDTO} from '../../../../../api/webrtc-server';
 import {RestService} from '../../../../services/rest-service';
@@ -37,15 +37,15 @@ import {SplitPanelSelector} from '../../../../directives/split-panel-selector';
   styleUrl: './users-panel.css',
 })
 export class UsersPanel implements OnInit {
+  private restService = inject(RestService);
+  private toastService = inject(ToastService);
+
   @Input() connection!: WebSocketServerConnection;
 
   users: UserExtendedDTO[] | undefined;
 
 
   groups: GroupDTO[] | undefined;
-
-  constructor(private restService: RestService, private toastService: ToastService,) {
-  }
 
   ngOnInit(): void {
     this.connection.rest.userController.users()

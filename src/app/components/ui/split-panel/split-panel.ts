@@ -23,7 +23,7 @@ import {SplitPanelButtonEvent} from './split-panel-button/split-panel-button';
 })
 export class SplitPanel implements AfterContentInit {
 
-  @Input() header: boolean = true;
+  @Input() header = true;
   @Input() default?: string;
 
   @ContentChild(SplitPanelBar) leftBar!: SplitPanelBar;

@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  HostListener,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, SimpleChanges, ViewChild, inject } from '@angular/core';
 
 import {WebSocketService} from '../../../../services/websocket/web-socket-service';
 import {PeerConnectionService} from '../../../../services/peer/peer-connection-service';
@@ -32,6 +23,10 @@ import {TrackType} from '../../../../services/peer/MediaTracker';
   styleUrl: './channel-view.css'
 })
 export class ChannelView implements AfterViewInit, OnChanges {
+  protected webSocketService = inject(WebSocketService);
+  protected peerConnectionService = inject(PeerConnectionService);
+  protected interfaceService = inject(StorageService);
+
 
   @Input() connection!: WebSocketServerConnection;
   @Input() channelId!: ServerObjectId;
@@ -44,18 +39,13 @@ export class ChannelView implements AfterViewInit, OnChanges {
 
   details: ChannelDTO | undefined;
 
-  titleHeight: number = 0; //in px
+  titleHeight = 0; //in px
   gridCols = 2;
   gridRows = 2;
   gridColHeight = 128;
   gridColWidth = 128;
 
-  resizing: boolean = false;
-
-  constructor(protected webSocketService: WebSocketService,
-              protected peerConnectionService: PeerConnectionService,
-              protected interfaceService: StorageService) {
-  }
+  resizing = false;
 
   ngAfterViewInit(): void {
     this.updateDetails();

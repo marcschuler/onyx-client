@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {Spinner} from '../../../components/ui/spinner/spinner';
 import {
   ServerConnection,
@@ -36,6 +36,11 @@ import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
   styleUrl: './server-selector.css'
 })
 export class ServerSelector implements OnInit, OnDestroy {
+  protected serverLoaderService = inject(ServerLoaderService);
+  private webSocketService = inject(WebSocketService);
+  private restService = inject(RestService);
+  protected identityService = inject(IdentityService);
+
 
   CONNECTING_STATE: ServerInfoWithState = {
     error: undefined,
@@ -45,22 +50,21 @@ export class ServerSelector implements OnInit, OnDestroy {
 
   protected identity: Identity;
 
-  showSettings: boolean = false;
+  showSettings = false;
 
 
   selectedServer: ServerConnection | undefined;
 
-  serverDetails: Map<ServerConnection, ServerInfoWithState> = new Map();
+  serverDetails = new Map<ServerConnection, ServerInfoWithState>();
 
-  customUrl: string = "";
+  customUrl = "";
   customUrlError: string | undefined;
 
   private interval!: number;
 
-  constructor(protected serverLoaderService: ServerLoaderService,
-              private webSocketService: WebSocketService,
-              private restService: RestService,
-              protected identityService: IdentityService) {
+  constructor() {
+    const identityService = this.identityService;
+
     this.identity = identityService.defaultIdentity();
 
   }

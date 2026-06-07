@@ -12,7 +12,7 @@ import { MessageBody } from './messageBody';
 
 
 export interface AuthChallengeResponse extends MessageBody { 
-    publicKey: { [key: string]: object; };
+    publicKey: Record<string, object>;
     challenge: SignedContent;
     username: string;
     readonly type: AuthChallengeResponse.TypeEnum;

@@ -4,7 +4,6 @@ import {Directive, Input} from '@angular/core';
   selector: '[appTabItem]',
 })
 export class TabItem {
-  @Input('tabItem') value!: string;
-  constructor() { }
+  @Input() tabItem!: string;
 
 }

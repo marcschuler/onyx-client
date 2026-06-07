@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {HexagonIcon, LogInIcon, LogOutIcon, LucideAngularModule} from "lucide-angular";
 import {
   ChannelDTO,
@@ -22,15 +22,13 @@ import {NgClass} from '@angular/common';
   styleUrl: './channel-entry.css',
 })
 export class ChannelEntry {
+  private webSocketService = inject(WebSocketService);
+  protected interfaceService = inject(StorageService);
+  protected contextMenuService = inject(ContextMenuService);
+
 
   @Input() channel!: ChannelDTO;
   @Input() connection!: WebSocketServerConnection;
-
-  constructor(private webSocketService: WebSocketService,
-              protected interfaceService: StorageService,
-              protected contextMenuService: ContextMenuService,) {
-
-  }
 
 
   protected joinChannel(channel: ChannelDTO) {

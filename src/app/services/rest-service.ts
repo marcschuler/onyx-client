@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {RestConfiguration} from './websocket/WebSocketServerConnection';
 import {
@@ -13,12 +13,14 @@ import {ToastService, ToastType} from './toast-service';
   providedIn: 'root'
 })
 export class RestService {
+  private http = inject(HttpClient);
+  private toastService = inject(ToastService);
+
 
   // Error status code as emoji, inspired (or copied) from https://mastodon.social/@SusanPotter/109396561230136241
   statusCodeEmojis: string[] = [];
 
-  constructor(private http: HttpClient,
-              private toastService: ToastService) {
+  constructor() {
     this.statusCodeEmojis[0] = "🌏";
     this.statusCodeEmojis[400] = "👎";
     this.statusCodeEmojis[401] = "🔐";
@@ -71,7 +73,7 @@ export class RestService {
   }
 
   public buildErrorTitle(error: HttpErrorResponse): string {
-    var title = error.status + " " + error.statusText
+    let title = error.status + " " + error.statusText
     if (error.error && error.error.title) {
       title = error.error.title;
     }

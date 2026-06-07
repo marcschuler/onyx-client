@@ -15,7 +15,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "package": "electron-forge package",
-    "make": "npm run build && electron-forge make"
+    "make": "npm run build && electron-forge make",
+    "lint": "ng lint"
   },
   "prettier": {
     "printWidth": 100,
@@ -63,10 +64,13 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.11.1",
     "@electron-forge/plugin-fuses": "^7.11.1",
     "@electron/fuses": "^1.8.0",
+    "@eslint/js": "^10.0.1",
     "@types/jasmine": "~5.1.0",
+    "angular-eslint": "21.4.0",
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "electron": "^40.2.1",
+    "eslint": "^10.3.0",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -75,6 +79,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss": "^8.5.3",
     "typescript": "~5.9.2",
+    "typescript-eslint": "8.59.2",
     "wait-on": "^9.0.3"
   }
 }

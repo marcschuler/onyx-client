@@ -19,7 +19,7 @@ export class PreviewImage {
   @Input() basePath: string | undefined;
   @Input() file!: FileDTO | string;
 
-  @Input() imageClass: string  ="w-32 h-32 rounded-xl object-cover"
+  @Input() imageClass  ="w-32 h-32 rounded-xl object-cover"
 
   options!: FilePreviewOption[];
 
@@ -35,6 +35,11 @@ export class PreviewImage {
     });
   }
 
+  protected fileAlt() {
+    if (typeof this.file === 'string')
+      return this.file;
+    return this.file.filename;
+  }
 }
 
 interface FilePreviewOption {

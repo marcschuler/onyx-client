@@ -3,22 +3,22 @@
           D hover:text-neutral-100  hover:bg-neutral-800 animate-default group cursor-pointer"
   [class.p-2]="!interfaceService.settings.compactMode"
   [ngClass]="{
-          'border-l-emerald-600 border-l-3': connection.me.channel == channel.id,
-          'bg-neutral-800': connection.selectedChannel ==channel.id
+          'border-l-emerald-600 border-l-3': connection.me.channel === channel.id,
+          'bg-neutral-800': connection.selectedChannel === channel.id
   }" (click)="selectChannel(channel)">
   <div class=" w-full   rounded-l-md select-none text-nowrap" (contextmenu)="contextMenuService.openChannelContexMenu()">
     <lucide-icon class="inline-flex translate-y-0.5" [name]="HexagonIcon"></lucide-icon>
     {{ channel.name }}
 
   </div>
-  @if (connection.me.channel != channel.id) {
+  @if (connection.me.channel !== channel.id) {
     <button class="right-0 !p-1 !m-0 !bg-neutral-900 !hover:bg-neutral-800 rounded-r-md
                     opacity-0 pointer-events-none
                     group-hover:opacity-100 group-hover:pointer-events-auto
                     transition">
       <lucide-icon [name]="LogInIcon" (click)="joinChannel(channel)"></lucide-icon>
     </button>
-  } @else if (connection.me.channel == channel.id) {
+  } @else if (connection.me.channel === channel.id) {
     <button class="right-0 !p-1 !m-0 !bg-neutral-900 !hover:bg-neutral-800 rounded-r-md
                     opacity-0 pointer-events-none
                     group-hover:opacity-100 group-hover:pointer-events-auto

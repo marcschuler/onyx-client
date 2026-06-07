@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {
   LucideAngularModule,
   MicIcon, MicOffIcon,
@@ -26,15 +26,13 @@ import {Settings} from '../../../pages/settings/settings';
   styleUrl: './user-panel.css'
 })
 export class UserPanel {
+  protected webSocketService = inject(WebSocketService);
+  protected peerConnectionService = inject(PeerConnectionService);
+
 
   @Input() connection!: WebSocketServerConnection;
 
-  protected showClientEditor: boolean = false;
-
-
-  constructor(protected webSocketService:WebSocketService,
-              protected peerConnectionService: PeerConnectionService) {
-  }
+  protected showClientEditor = false;
 
   protected readonly ConnectionState = ConnectionState;
   protected readonly MicOffIcon = MicOffIcon;

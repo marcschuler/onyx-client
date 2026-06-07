@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {ServerSelector} from './server-selector/server-selector';
 import {WebSocketService} from '../../services/websocket/web-socket-service';
 import {Server} from './server/server';
@@ -14,8 +14,6 @@ import {Settings} from '../settings/settings';
   styleUrl: './main.css'
 })
 export class Main {
-
-  constructor(protected webSocketService: WebSocketService) {
-  }
+  protected webSocketService = inject(WebSocketService);
 
 }

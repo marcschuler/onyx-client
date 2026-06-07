@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {
   BugIcon,
   FingerprintIcon,
@@ -45,11 +45,10 @@ import {ServerEditor} from './server-editor/server-editor';
   styleUrl: './settings.css'
 })
 export class Settings {
+  protected serverLoaderService = inject(ServerLoaderService);
+
 
   @Input() connection?: WebSocketServerConnection;
-
-  constructor(protected serverLoaderService: ServerLoaderService) {
-  }
 
 
   protected readonly SettingsIcon = SettingsIcon;

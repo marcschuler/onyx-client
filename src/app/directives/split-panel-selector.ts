@@ -1,12 +1,12 @@
-import {Directive, ElementRef, Input} from '@angular/core';
+import { Directive, ElementRef, Input, inject } from '@angular/core';
 
 @Directive({
   selector: '[splitPanel]',
 })
 export class SplitPanelSelector {
+  element = inject<ElementRef<HTMLElement>>(ElementRef);
+
 
   @Input() splitPanel!: string;
-
-  constructor(public element: ElementRef<HTMLElement>) {}
 
 }

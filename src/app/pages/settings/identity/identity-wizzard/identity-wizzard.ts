@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import {Identity, IdentityService} from '../../../../services/identity-service';
 import {FormsModule} from '@angular/forms';
 import {Spinner} from '../../../../components/ui/spinner/spinner';
@@ -25,18 +25,21 @@ import {KeyVisualizer} from '../../../../components/ui/key-visualizer/key-visual
   styleUrl: './identity-wizzard.css'
 })
 export class IdentityWizzard {
+  protected identityService = inject(IdentityService);
+  private location = inject(Location);
+  private router = inject(Router);
 
-  username: string = "";
+
+  username = "";
   key: CryptoKeyPair | undefined;
 
-  @Input() showDots: boolean = true;
+  @Input() showDots = true;
 
   @Output() identityCreated = new EventEmitter<Identity>();
 
   identityWaiting: boolean | undefined = undefined;
 
-  constructor(protected identityService: IdentityService,
-              private location: Location, private router: Router) {
+  constructor() {
     this.createKey();
   }
 

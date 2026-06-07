@@ -50,7 +50,7 @@
 
             <p class="col-span-4">Actions</p>
             <p class="col-span-8">
-              @if (user.state == UserExtendedDTO.StateEnum.Banned) {
+              @if (user.state === UserExtendedDTO.StateEnum.Banned) {
                 <button class="!p-1" (click)="unban(user)">
                   <lucide-icon [name]="CircleSlash" class="w-3 inline mr-1"></lucide-icon>
                   Unban

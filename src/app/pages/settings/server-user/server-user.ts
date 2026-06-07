@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {FileUpload, UploadType} from "../../../components/ui/file-upload/file-upload";
 import {FormsModule} from "@angular/forms";
 import {LucideAngularModule, XIcon} from "lucide-angular";
@@ -21,15 +21,14 @@ import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
   styleUrl: './server-user.css',
 })
 export class ServerUser {
+  private toastService = inject(ToastService);
+  private webSocketService = inject(WebSocketService);
+  private restService = inject(RestService);
+
 
   @Input() connection!: WebSocketServerConnection;
 
-  inviteCode: string = "";
-
-  constructor(private toastService: ToastService, private webSocketService: WebSocketService,
-              private restService: RestService) {
-
-  }
+  inviteCode = "";
 
   protected onAvatarChange($event: FileDTO) {
     this.toastService.create({

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {WebSocketServerConnection} from "../../../../../services/websocket/WebSocketServerConnection";
 import {GroupDTO, PermissionDTO} from '../../../../../../api/webrtc-server';
 import {RestService} from '../../../../../services/rest-service';
@@ -24,6 +24,9 @@ import {SelectItem} from '../../../../../components/ui/multi-select/select-item/
   styleUrl: './group-administration-panel.css',
 })
 export class GroupAdministrationPanel implements OnInit {
+  private restService = inject(RestService);
+  private toastService = inject(ToastService);
+
 
   @Input() connection!: WebSocketServerConnection;
 
@@ -33,8 +36,7 @@ export class GroupAdministrationPanel implements OnInit {
 
   permissionsEnumValues: string[];
 
-  constructor(private restService: RestService,
-              private toastService: ToastService) {
+  constructor() {
     this.permissionsEnumValues = Object.values(PermissionsEnum);
   }
 

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_EDIT, Popup} from '../../../components/ui/popup/popup';
 import {ServerConnection, ServerLoaderService} from '../../../services/server-loader-service';
@@ -17,17 +17,16 @@ import {LucideAngularModule, ShredderIcon} from 'lucide-angular';
   styleUrl: './server-editor.css',
 })
 export class ServerEditor implements OnInit {
+  private serverLoaderService = inject(ServerLoaderService);
+  private toastService = inject(ToastService);
+
 
   @Input() serverConnection!: ServerConnection;
 
   name!: string | undefined;
   url!: string;
 
-  deletePopup: boolean = false;
-
-  constructor(private serverLoaderService: ServerLoaderService,
-              private toastService: ToastService,) {
-  }
+  deletePopup = false;
 
   ngOnInit(): void {
     this.name = this.serverConnection.name;

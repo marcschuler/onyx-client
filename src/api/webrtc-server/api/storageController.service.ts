@@ -7,9 +7,8 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-/* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
+import { Injectable, inject }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent, HttpContext 
         }       from '@angular/common/http';
@@ -30,8 +29,13 @@ import { BaseService } from '../api.base.service';
   providedIn: 'root'
 })
 export class StorageControllerService extends BaseService {
+    protected httpClient = inject(HttpClient);
 
-    constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
+
+    constructor() {
+        const basePath = inject(BASE_PATH, { optional: true });
+        const configuration = inject(Configuration, { optional: true });
+
         super(basePath, configuration);
     }
 
@@ -45,7 +49,7 @@ export class StorageControllerService extends BaseService {
     public file(fileId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream', context?: HttpContext, transferCache?: boolean}): Observable<string>;
     public file(fileId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
     public file(fileId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
-    public file(fileId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/octet-stream', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public file(fileId: string, observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/octet-stream', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (fileId === null || fileId === undefined) {
             throw new Error('Required parameter fileId was null or undefined when calling file.');
         }
@@ -78,12 +82,12 @@ export class StorageControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/storage/${this.configuration.encodeParam({name: "fileId", value: fileId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/download`;
+        const localVarPath = `/v0/storage/${this.configuration.encodeParam({name: "fileId", value: fileId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/download`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<string>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: responseType_ as any,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -104,7 +108,7 @@ export class StorageControllerService extends BaseService {
     public filePreview(fileId: string, format: 'J64' | 'J256' | 'J1024', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<string>;
     public filePreview(fileId: string, format: 'J64' | 'J256' | 'J1024', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
     public filePreview(fileId: string, format: 'J64' | 'J256' | 'J1024', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
-    public filePreview(fileId: string, format: 'J64' | 'J256' | 'J1024', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public filePreview(fileId: string, format: 'J64' | 'J256' | 'J1024', observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (fileId === null || fileId === undefined) {
             throw new Error('Required parameter fileId was null or undefined when calling filePreview.');
         }
@@ -140,12 +144,12 @@ export class StorageControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/storage/${this.configuration.encodeParam({name: "fileId", value: fileId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/preview/${this.configuration.encodeParam({name: "format", value: format, in: "path", style: "simple", explode: false, dataType: "'J64' | 'J256' | 'J1024'", dataFormat: undefined})}`;
+        const localVarPath = `/v0/storage/${this.configuration.encodeParam({name: "fileId", value: fileId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/preview/${this.configuration.encodeParam({name: "format", value: format, in: "path", style: "simple", explode: false, dataType: "'J64' | 'J256' | 'J1024'", dataFormat: undefined})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<string>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: responseType_ as any,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -165,7 +169,7 @@ export class StorageControllerService extends BaseService {
     public uploadFile(file: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<FileDTO>;
     public uploadFile(file: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<FileDTO>>;
     public uploadFile(file: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<FileDTO>>;
-    public uploadFile(file: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public uploadFile(file: Blob, observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (file === null || file === undefined) {
             throw new Error('Required parameter file was null or undefined when calling uploadFile.');
         }
@@ -195,7 +199,7 @@ export class StorageControllerService extends BaseService {
 
         let localVarFormParams: { append(param: string, value: any): any; };
         let localVarUseForm = false;
-        let localVarConvertFormParamsToString = false;
+        const localVarConvertFormParamsToString = false;
         // use FormData to transmit files using content-type "multipart/form-data"
         // see http://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
         localVarUseForm = canConsumeForm;
@@ -206,7 +210,7 @@ export class StorageControllerService extends BaseService {
         }
 
         if (file !== undefined) {
-            localVarFormParams = localVarFormParams.append('file', <any>file) as any || localVarFormParams;
+            localVarFormParams = localVarFormParams.append('file', (file as any)) as any || localVarFormParams;
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -220,13 +224,13 @@ export class StorageControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/storage/`;
+        const localVarPath = `/v0/storage/`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<FileDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
-                responseType: <any>responseType_,
+                responseType: responseType_ as any,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,

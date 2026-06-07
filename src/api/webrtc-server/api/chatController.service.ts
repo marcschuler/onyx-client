@@ -7,9 +7,8 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-/* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
+import { Injectable, inject }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent, HttpContext 
         }       from '@angular/common/http';
@@ -40,8 +39,13 @@ import { BaseService } from '../api.base.service';
   providedIn: 'root'
 })
 export class ChatControllerService extends BaseService {
+    protected httpClient = inject(HttpClient);
 
-    constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
+
+    constructor() {
+        const basePath = inject(BASE_PATH, { optional: true });
+        const configuration = inject(Configuration, { optional: true });
+
         super(basePath, configuration);
     }
 
@@ -56,7 +60,7 @@ export class ChatControllerService extends BaseService {
     public message(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MessageDTO>;
     public message(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MessageDTO>>;
     public message(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MessageDTO>>;
-    public message(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public message(id: string, fileMessageContentDTOMarkdownMessageContentDTO: FileMessageContentDTO | MarkdownMessageContentDTO, observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling message.');
         }
@@ -101,13 +105,13 @@ export class ChatControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/message`;
+        const localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/message`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<MessageDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: fileMessageContentDTOMarkdownMessageContentDTO,
-                responseType: <any>responseType_,
+                responseType: responseType_ as any,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -128,7 +132,7 @@ export class ChatControllerService extends BaseService {
     public messages(id: string, page: Pageable, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageMessageDTO>;
     public messages(id: string, page: Pageable, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageMessageDTO>>;
     public messages(id: string, page: Pageable, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageMessageDTO>>;
-    public messages(id: string, page: Pageable, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public messages(id: string, page: Pageable, observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling messages.');
         }
@@ -141,7 +145,7 @@ export class ChatControllerService extends BaseService {
         localVarQueryParameters = this.addToHttpParams(
             localVarQueryParameters,
             'page',
-            <any>page,
+            (page as any),
             QueryParamStyle.Form,
             true,
         );
@@ -175,13 +179,13 @@ export class ChatControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/messages`;
+        const localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/messages`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PageMessageDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters.toHttpParams(),
-                responseType: <any>responseType_,
+                responseType: responseType_ as any,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
@@ -202,7 +206,7 @@ export class ChatControllerService extends BaseService {
     public messagesLatest(id: string, size?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageMessageDTO>;
     public messagesLatest(id: string, size?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageMessageDTO>>;
     public messagesLatest(id: string, size?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageMessageDTO>>;
-    public messagesLatest(id: string, size?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public messagesLatest(id: string, size?: number, observe: any = 'body', reportProgress = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling messagesLatest.');
         }
@@ -212,7 +216,7 @@ export class ChatControllerService extends BaseService {
         localVarQueryParameters = this.addToHttpParams(
             localVarQueryParameters,
             'size',
-            <any>size,
+            (size as any),
             QueryParamStyle.Form,
             true,
         );
@@ -246,13 +250,13 @@ export class ChatControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/messages/latest`;
+        const localVarPath = `/v0/chat/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/messages/latest`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PageMessageDTO>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters.toHttpParams(),
-                responseType: <any>responseType_,
+                responseType: responseType_ as any,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,

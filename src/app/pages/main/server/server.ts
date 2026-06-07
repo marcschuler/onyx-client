@@ -1,4 +1,4 @@
-import {Component, HostListener, Input} from '@angular/core';
+import { Component, HostListener, Input, inject } from '@angular/core';
 import {ChannelTree} from '../../../components/server/channel-tree/channel-tree';
 import {UserPanel} from '../../../components/server/user-panel/user-panel';
 import {ChannelView} from './channel-view/channel-view';
@@ -42,6 +42,10 @@ import {Tooltip} from '../../../directives/tooltip';
   styleUrl: './server.css'
 })
 export class Server {
+  protected webSocketService = inject(WebSocketService);
+  protected interfaceService = inject(StorageService);
+  protected serverLoaderService = inject(ServerLoaderService);
+
 
   @Input() connection!: WebSocketServerConnection;
 
@@ -53,11 +57,6 @@ export class Server {
   private minWidth = 100;
   private maxWidth = 500;
   protected minimized = false;
-
-  constructor(protected webSocketService: WebSocketService,
-              protected interfaceService: StorageService,
-              protected serverLoaderService: ServerLoaderService) {
-  }
 
 
   startResizing($event: MouseEvent) {

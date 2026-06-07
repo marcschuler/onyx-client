@@ -14,7 +14,7 @@ export interface GroupWriteDTO {
     description?: string;
     icon?: any;
     parentId?: string;
-    accessPowers: { [key: string]: number; };
+    accessPowers: Record<string, number>;
     showInTree: boolean;
 }
 

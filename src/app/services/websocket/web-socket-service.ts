@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Client, ConnectionState, KeyId, ServerObjectId, WebSocketServerConnection} from './WebSocketServerConnection';
 import {Identity} from '../identity-service';
 import {ServerConnection} from '../server-loader-service';
@@ -37,16 +37,19 @@ import {clientWithId, getChannelFromId, getSectionFromId, getSectionOfChannel, r
   providedIn: 'root'
 })
 export class WebSocketService {
+  private cryptoService = inject(CryptoService);
+  private toastService = inject(ToastService);
+  private restService = inject(RestService);
+  private peerConnectionService = inject(PeerConnectionService);
 
-  LOG_MESSAGES: boolean = false;
+
+  LOG_MESSAGES = false;
 
   connection: WebSocketServerConnection | undefined;
 
-  private messageHandlers: Map<MessageTypes, MessageHandler<any>[]> = new Map();
+  private messageHandlers = new Map<MessageTypes, MessageHandler<any>[]>();
 
-  constructor(private cryptoService: CryptoService, private toastService: ToastService,
-              private restService: RestService,
-              private peerConnectionService: PeerConnectionService) {
+  constructor() {
     this.addHandler(AuthChallengeRequest.TypeEnum.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
     this.addHandler(AuthSuccessMessage.TypeEnum.AuthSuccessMessage, (e, c) => this.onAuthSuccessEvent(e as AuthSuccessMessage, c));
     this.addHandler(ServerTreeChangeMessage.TypeEnum.ServerTreeChangeMessage, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeMessage, c))
@@ -63,18 +66,18 @@ export class WebSocketService {
     this.addHandler(ClientChannelLeaveEvent.TypeEnum.ClientChannelLeaveEvent, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveEvent, c));
 
     this.addHandler(ClientChangeEvent.TypeEnum.ClientChangeEvent, (e, c) => this.onClientChange(e as ClientChangeEvent, c));
-    this.addHandler(KickedEvent.TypeEnum.KickedEvent, (e, c) => this.onKickMessage(e as KickedEvent, c));
+    this.addHandler(KickedEvent.TypeEnum.KickedEvent, (e) => this.onKickMessage(e as KickedEvent));
     this.addHandler(ClientKickEvent.TypeEnum.ClientKickEvent, (e, c) => this.onClientKickedMessage(e as ClientKickEvent, c));
 
     this.addHandler(IceServerMessage.TypeEnum.IceServerMessage, (e, c) => this.onIceServerData(e as IceServerMessage, c));
     this.addHandler(JwtTokenEvent.TypeEnum.JwtTokenEvent, (e, c) => this.onJwtToken(e as JwtTokenEvent, c));
 
     // error
-    this.addHandler(NoPermissionMessage.TypeEnum.NoPermissionMessage, (e, c) => this.onErrorNoPermission(e as NoPermissionMessage, c));
+    this.addHandler(NoPermissionMessage.TypeEnum.NoPermissionMessage, (e) => this.onErrorNoPermission(e as NoPermissionMessage));
   }
 
 
-  public connect(serverConnection: ServerConnection, identity: Identity, retries: number = 1): Promise<WebSocketServerConnection> {
+  public connect(serverConnection: ServerConnection, identity: Identity, retries = 1): Promise<WebSocketServerConnection> {
     if (retries < 0) {
       console.log("ws: no retries, disconnecting");
       if (this.connection)
@@ -83,7 +86,7 @@ export class WebSocketService {
       return Promise.reject("No more retries");
     }
     return new Promise((resolve, reject) => {
-      var url = serverConnection.url;
+      let url = serverConnection.url;
       url = url.replace("http://", "ws://")
         .replace("https://", "wss://");
       url += "/websocket";
@@ -101,7 +104,7 @@ export class WebSocketService {
         me: undefined as any as Client, // is hacky but the server promises to return a result
         rest: this.restService.createRestConfig(serverConnection.url, undefined)
       }
-      webSocket.onopen = (_) => {
+      webSocket.onopen = () => {
         console.log("ws: connected to server")
         retries = 4;
         resolve(connection);
@@ -118,7 +121,7 @@ export class WebSocketService {
         console.log("ws: reconnecting");
         this.peerConnectionService.updatePeerConnections();
         // setTimeout(() => {
-        let reason = "Reason: " + error;
+        const reason = "Reason: " + error;
         console.warn("Server closed connection:" + reason)
         this.toastService.create({
           title: "Server closed connection",
@@ -162,7 +165,7 @@ export class WebSocketService {
   public addHandler<T extends MessageBody>(t: MessageTypes, handler: MessageHandler<T>) {
     if (this.messageHandlers.get(t))
       console.warn("Message handler for " + t + " already exists, overwrite...")
-    let values = this.messageHandlers.get(t) || [];
+    const values = this.messageHandlers.get(t) || [];
     values.push(handler);
     this.messageHandlers.set(t, values);
   }
@@ -184,7 +187,7 @@ export class WebSocketService {
       console.warn("No handler for message of type " + event.type + " exists. Ignoring");
       console.warn("Message was: " + JSON.stringify(event));
     } else {
-      for (let h of handler) {
+      for (const h of handler) {
         try {
           h(event, connection);
         } catch (e) {
@@ -250,7 +253,7 @@ export class WebSocketService {
 
   private onServerChange(event: ServerChangeEvent, connection: WebSocketServerConnection) {
     connection.data!.server = event.server;
-    console.log("server details changed",event.server)
+    console.log("server details changed", event.server)
   }
 
   private onSectionCreate(event: SectionCreateEvent, connection: WebSocketServerConnection) {
@@ -306,8 +309,8 @@ export class WebSocketService {
     client.details = event.user;
   }
 
-  private onKickMessage(event: KickedEvent, connection: WebSocketServerConnection) {
-    let message = "";
+  private onKickMessage(event: KickedEvent) {
+    let message;
     switch (event.reason) {
       case "ALREADY_CONNECTED":
         message = "You are already connected with this identity";
@@ -371,7 +374,7 @@ export class WebSocketService {
     connection.clients.splice(index, 1);
   }
 
-  private onErrorNoPermission(event: NoPermissionMessage, connection: WebSocketServerConnection) {
+  private onErrorNoPermission(event: NoPermissionMessage) {
     console.log("No permission for action", event);
     this.toastService.create({
       title: event.message ? event.message : "No Permission",

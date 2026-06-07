@@ -1,4 +1,4 @@
-import {Directive, ElementRef, HostListener, Input} from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnDestroy, inject } from '@angular/core';
 import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
 import {Tooltip as TooltipComponent} from '../components/ui/tooltip/tooltip';
@@ -6,15 +6,13 @@ import {Tooltip as TooltipComponent} from '../components/ui/tooltip/tooltip';
 @Directive({
   selector: '[appTooltip]',
 })
-export class Tooltip {
+export class Tooltip implements OnDestroy {
+  private overlay = inject(Overlay);
+  private elementRef = inject(ElementRef);
+
 
   @Input('appTooltip') text!:string;
   private overlayRef?: OverlayRef;
-
-  constructor(
-    private overlay: Overlay,
-    private elementRef: ElementRef
-  ) {}
 
   @HostListener('mouseenter')
   show() {

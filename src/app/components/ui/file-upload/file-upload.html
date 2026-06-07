@@ -12,7 +12,7 @@
       {{ uploadPercentage }}%
     </p>
   } @else {
-    <lucide-icon [name]="(type==UploadType.DEFAULT)? FileUpIcon:ImageUpIcon" class="w-[100%]"></lucide-icon>
+    <lucide-icon [name]="(type===UploadType.DEFAULT)? FileUpIcon:ImageUpIcon" class="w-[100%]"></lucide-icon>
   }
 
 

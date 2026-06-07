@@ -1,7 +1,7 @@
 <div class="h-full  rounded-t-md" [ngClass]="{
-'bg-sky-600': webSocketService.connection && webSocketService.connection.state == ConnectionState.CONNECTED,
-'bg-red-600': !webSocketService.connection || webSocketService.connection.state == ConnectionState.ERROR || webSocketService.connection.state == ConnectionState.CLOSED,
-'bg-yellow-600': webSocketService.connection && webSocketService.connection.state == ConnectionState.AUTHENTICATING
+'bg-sky-600': webSocketService.connection && webSocketService.connection.state === ConnectionState.CONNECTED,
+'bg-red-600': !webSocketService.connection || webSocketService.connection.state === ConnectionState.ERROR || webSocketService.connection.state === ConnectionState.CLOSED,
+'bg-yellow-600': webSocketService.connection && webSocketService.connection.state === ConnectionState.AUTHENTICATING
 }
 ">
   @if (showClientEditor) {

@@ -15,6 +15,6 @@ export interface MessageDTO {
     id: string;
     timestamp: string;
     user: UserSimpleDTO;
-    content?: Array<Edit1Request>;
+    content?: Edit1Request[];
 }
 

@@ -15,7 +15,7 @@ export class SplitPanelButton {
   @Input() name?: string;
   @Input() icon: any;
 
-  @Input() selected: boolean = false;
+  @Input() selected = false;
   @Output() onClick = new EventEmitter<SplitPanelButtonEvent>();
 
   protected click() {

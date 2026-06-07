@@ -17,7 +17,7 @@ export class Popup {
   @Input() content?: string;
   @Input() closeButton?: boolean;
 
-  @Input() fullHeight: boolean = false;
+  @Input() fullHeight = false;
 
   @Input() buttons?: Button[];
 

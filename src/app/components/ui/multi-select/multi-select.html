@@ -1,7 +1,7 @@
 <div class="relative">
   <div class="p-2 min-w-8 border-neutral-700 hover:bg-neutral-800 border rounded flex w-full"
        [class.select-selected]="showOptions"
-       (click)="showOptions=!showOptions">
+       (click)="showOptions!==showOptions">
     <p class="flex-1 truncate" [class.select-placeholder]="placeholderActive">{{ label }}</p>
     @if (showOptions) {
       <lucide-icon class="w-3" [name]="ChevronUpIcon"></lucide-icon>

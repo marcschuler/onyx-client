@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import {FileUpIcon, ImageUpIcon, LucideAngularModule} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ToastService, ToastType} from '../../../services/toast-service';
@@ -18,21 +18,20 @@ import {Spinner} from '../spinner/spinner';
   styleUrl: './file-upload.css',
 })
 export class FileUpload {
+  private toastService = inject(ToastService);
+  private restService = inject(RestService);
+
 
   @Input() connection!: WebSocketServerConnection;
 
   @Input() type: UploadType = UploadType.DEFAULT;
-  @Input() ghost: boolean = true;
+  @Input() ghost = true;
 
   @Output() uploaded = new EventEmitter<FileDTO>();
 
   file: File | undefined;
 
   uploadPercentage: undefined | number = undefined;
-
-  constructor(private toastService: ToastService, private restService: RestService) {
-
-  }
 
 
   uploadFile(file: File) {

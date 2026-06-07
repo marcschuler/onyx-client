@@ -11,10 +11,10 @@
 
 export interface PermissionDTO { 
     readonly id: string;
-    permissions: Array<PermissionDTO.PermissionsEnum>;
+    permissions: PermissionDTO.PermissionsEnum[];
     negated: boolean;
-    limitedToSection?: Array<string>;
-    limitedToChannel?: Array<string>;
+    limitedToSection?: string[];
+    limitedToChannel?: string[];
 }
 export namespace PermissionDTO {
     export const PermissionsEnum = {

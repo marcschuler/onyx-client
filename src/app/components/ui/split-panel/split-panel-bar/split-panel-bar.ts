@@ -1,4 +1,4 @@
-import {Component, ContentChildren, EventEmitter, Output, QueryList} from '@angular/core';
+import {Component, ContentChildren, EventEmitter, Output, QueryList, AfterContentInit} from '@angular/core';
 import {SplitPanelButton, SplitPanelButtonEvent} from '../split-panel-button/split-panel-button';
 
 @Component({
@@ -7,7 +7,7 @@ import {SplitPanelButton, SplitPanelButtonEvent} from '../split-panel-button/spl
   templateUrl: './split-panel-bar.html',
   styleUrl: './split-panel-bar.css',
 })
-export class SplitPanelBar {
+export class SplitPanelBar implements AfterContentInit {
 
   @Output() onClick = new EventEmitter<SplitPanelButtonEvent>();
 

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {MessageDTO} from "../../../../../api/webrtc-server";
 import {AsyncPipe, NgClass} from '@angular/common';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
@@ -30,13 +30,12 @@ import {asTypeFile, asTypeMarkdown, MessageContent} from '../../../chat/message-
   styleUrl: './message.css',
 })
 export class Message {
+  protected interfaceService = inject(StorageService);
+
   @Input() message!: MessageDTO;
   @Input() useHeader!: boolean;
 
   @Input() connection!: WebSocketServerConnection;
-
-  constructor(protected interfaceService: StorageService) {
-  }
 
   protected readonly asTypeMarkdown = asTypeMarkdown;
   protected readonly asTypeFile = asTypeFile;

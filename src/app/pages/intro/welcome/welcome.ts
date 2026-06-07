@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {IdentityWizzard} from '../../settings/identity/identity-wizzard/identity-wizzard';
 import {
   Check,
@@ -26,10 +26,14 @@ import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_SKIP, Popup} from '../../..
   styleUrl: './welcome.css',
 })
 export class Welcome {
+  protected identityService = inject(IdentityService);
+  private router = inject(Router);
+  private serverLoaderService = inject(ServerLoaderService);
+
 
   stage: WelcomeStage = WelcomeStage.IDENTITY;
   identity: Identity | undefined;
-  warnDuplicate: boolean = false;
+  warnDuplicate = false;
 
   communityServer: { name: string, description: string, url: string }[] = [{
     name: "karlthebee ONYX Server",
@@ -43,8 +47,9 @@ export class Welcome {
 
   selectedCommunityServer: { name: string, description: string, url: string }[] = [];
 
-  constructor(protected identityService: IdentityService, private router: Router,
-              private serverLoaderService: ServerLoaderService) {
+  constructor() {
+    const identityService = this.identityService;
+
     if (identityService.identities.length>0){
       this.warnDuplicate= true;
     }

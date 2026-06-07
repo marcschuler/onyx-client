@@ -8,7 +8,7 @@
       </h2>
     </div>
   </div>
-  @let showTalkView = peerConnectionService.peers.length > 0 || (peerConnectionService.sharedStreams[TrackType.Microphone] != undefined || peerConnectionService.sharedStreams[TrackType.Camera] != undefined || peerConnectionService.sharedStreams[TrackType.Screen] != undefined);
+  @let showTalkView = peerConnectionService.peers.length > 0 || (peerConnectionService.sharedStreams[TrackType.Microphone] !== undefined || peerConnectionService.sharedStreams[TrackType.Camera] !== undefined || peerConnectionService.sharedStreams[TrackType.Screen] !== undefined);
   @if (showTalkView) {
     <!-- Talk View -->
     <div #talkView

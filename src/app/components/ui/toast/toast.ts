@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {ToastMessage, ToastService} from '../../../services/toast-service';
 import {NgClass} from '@angular/common';
 import {LucideAngularModule, XIcon} from 'lucide-angular';
@@ -13,8 +13,8 @@ import {LucideAngularModule, XIcon} from 'lucide-angular';
   styleUrl: './toast.css'
 })
 export class Toast {
+  protected toastService = inject(ToastService);
 
-  constructor(protected toastService: ToastService) {}
   dismiss(toast: ToastMessage) { this.toastService.dismiss(toast); }
 
   protected readonly XIcon = XIcon;

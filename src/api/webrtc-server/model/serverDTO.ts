@@ -15,7 +15,7 @@ export interface ServerDTO {
     readonly id: string;
     name: string;
     icon?: FileDTO;
-    publicKey: { [key: string]: any; };
-    description: Array<Edit1Request>;
+    publicKey: Record<string, any>;
+    description: Edit1Request[];
 }
 

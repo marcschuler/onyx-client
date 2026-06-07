@@ -16,6 +16,6 @@ export interface ChannelExtendedDTO {
     readonly name: string;
     id: string;
     chatId: string;
-    users: Array<UserSimpleDTO>;
+    users: UserSimpleDTO[];
 }
 

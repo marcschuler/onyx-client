@@ -16,10 +16,10 @@ export interface GroupDTO {
     name: string;
     description?: string;
     icon?: FileDTO;
-    inheritsFrom?: Array<GroupDTO>;
+    inheritsFrom?: GroupDTO[];
     priority: number;
     defaultForNewUsers: boolean;
-    permissions?: Array<PermissionDTO>;
+    permissions?: PermissionDTO[];
     label: boolean;
 }
 

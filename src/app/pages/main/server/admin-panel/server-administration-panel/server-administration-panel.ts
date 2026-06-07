@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Spinner} from "../../../../../components/ui/spinner/spinner";
 import {RestService} from '../../../../../services/rest-service';
@@ -31,16 +31,15 @@ import {PreviewImage} from '../../../../../components/ui/preview-image/preview-i
   templateUrl: './server-administration-panel.html',
   styleUrl: './server-administration-panel.css'
 })
-class ServerAdministrationPanel {
+class ServerAdministrationPanel implements OnChanges, OnInit {
+  private restService = inject(RestService);
+  private toastService = inject(ToastService);
+
 
   @Input() connection!: WebSocketServerConnection;
 
   //TODO remove and access via connection.data.server? Is this here an advantage?
   server: ServerDTO | undefined;
-
-  constructor(private restService: RestService,
-              private toastService: ToastService) {
-  }
 
 
   ngOnChanges() {
@@ -119,13 +118,12 @@ class ServerAdministrationPanel {
     }
     this.connection.rest.serverDescriptionController.order(this.server!.id,description.id!, newOrder)
       .subscribe(() => {
-
+        //nothing to do yet
       }, error => this.restService.handleError(error));
 
   }
 
   protected readonly asTypeMarkdown = asTypeMarkdown;
-  protected readonly asTypeFile = asTypeFile;
   protected readonly GripVertical = GripVertical;
   protected readonly TextInitialIcon = TextInitialIcon;
 
@@ -139,7 +137,13 @@ class ServerAdministrationPanel {
   }
 
   protected deleteIcon() {
-    this.connection.rest.serverController
+    this.connection.rest.serverController.iconDelete(this.server!.id)
+      .subscribe(_ => {
+        this.toastService.create({
+          message: "Server icon deleted",
+          type: ToastType.Success
+        })
+      },error=>this.restService.handleError(error));
 
   }
 

@@ -11,6 +11,7 @@
 
   <img
     [src]="file | storageFileURL: connection:basePath:undefined"
+    [alt]="fileAlt()"
     loading="lazy"
     [ngClass]="imageClass"
   />

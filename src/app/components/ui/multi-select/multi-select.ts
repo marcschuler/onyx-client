@@ -1,14 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-  QueryList, ContentChildren, AfterContentInit, HostListener, ElementRef,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, QueryList, ContentChildren, AfterContentInit, HostListener, ElementRef, inject } from '@angular/core';
 import {CdkListboxModule} from '@angular/cdk/listbox';
 import {ChevronDownIcon, ChevronUpIcon, LucideAngularModule} from 'lucide-angular';
 import {SelectItem} from './select-item/select-item';
@@ -24,21 +14,19 @@ import {SelectItem} from './select-item/select-item';
   styleUrl: './multi-select.css',
 })
 export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
+  private el = inject(ElementRef);
 
-  @Input() placeholder: string = 'Select';
-  @Input() multi: boolean = true;
+
+  @Input() placeholder = 'Select';
+  @Input() multi = true;
   @Input() selected: any[] | any = [];
   @Output() selectedChange = new EventEmitter<any[] | any>();
 
   @ContentChildren(SelectItem) entries!: QueryList<SelectItem>;
 
-  showOptions: boolean = false;
+  showOptions = false;
   label: string = this.placeholder;
-  placeholderActive: boolean = false;
-
-
-  constructor(private el: ElementRef) {
-  }
+  placeholderActive = false;
 
   ngAfterViewInit(): void {
     setTimeout(() => {
