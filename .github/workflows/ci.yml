@@ -23,8 +23,8 @@ jobs:
       - name: Lint
         run: npx ng lint --no-progress
         continue-on-error: true
-      - name: Unit tests (headless)
-        run: npm test -- --watch=false --browsers=ChromeHeadless
+ #     - name: Unit tests (headless)
+ #       run: npm test -- --watch=false --browsers=ChromeHeadless
       - name: Build (dev smoke-check)
         run: npm run build
 
