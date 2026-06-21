@@ -57,10 +57,9 @@ export class SplitPanel implements AfterContentInit {
 
 
   selectOption(event: SplitPanelButtonEvent) {
-    console.log("selecting " + event)
     this.selectedOption = event;
     this.leftBar.buttons.forEach(button => {
-      button.selected = (button.value == event.value);
+      button.onAnyButtonSelected(event)
     })
     this.setContentSlot(event);
   }

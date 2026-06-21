@@ -1,44 +1,31 @@
 <div class="flex flex-col gap-2">
-  <div class="rounded-xl bg-neutral-800 p-1 flex gap-2">
-    @for (group of groups; track group.id) {
-      <button [class.button-dark]="selectedGroup==group"
-              (click)="selectedGroup = group">{{ group.name }}
-      </button>
-    }
-    <span class="border border-neutral-500 my-2"></span>
-    <button class="ml-4 button-dark" (click)="addGroup()">+
-      <lucide-icon [name]="IdCardLanyard" class="inline h-4"></lucide-icon>
-    </button>
-  </div>
-
-  @if (selectedGroup) {
     <div class="px-2 w-full bg-neutral-800 p-2 rounded-xl">
 
       <div class="settings-grid p-4">
         <p class="settings-grid-label-no-desc">Name</p>
-        <input class="settings-grid-option" [(ngModel)]="selectedGroup.name">
+        <input class="settings-grid-option" [(ngModel)]="group.name">
 
         <p class="settings-grid-label-no-desc">Description</p>
-        <textarea class="settings-grid-option" [(ngModel)]="selectedGroup.description"></textarea>
+        <textarea class="settings-grid-option" [(ngModel)]="group.description"></textarea>
 
 
         <p class="settings-grid-label">Show Label</p>
         <p class="settings-grid-desc">The label will be displaced beside the user</p>
-        <app-toggle class="settings-grid-option" [(value)]="selectedGroup.label"></app-toggle>
+        <app-toggle class="settings-grid-option" [(value)]="group.label"></app-toggle>
 
         <p class="settings-grid-label">Default Group</p>
         <p class="settings-grid-desc">New users get this group by default</p>
-        <app-toggle class="settings-grid-option" [(value)]="selectedGroup.defaultForNewUsers"></app-toggle>
+        <app-toggle class="settings-grid-option" [(value)]="group.defaultForNewUsers"></app-toggle>
 
         <p class="settings-grid-label">Priority</p>
         <p class="settings-grid-desc">If a user has multiple groups, this is the priority permissions are checked</p>
-        <input [(ngModel)]="selectedGroup.priority" type="number" min="0" max="9999">
+        <input [(ngModel)]="group.priority" type="number" min="0" max="9999">
       </div>
 
       <div>
         <h2>Permissions</h2>
         <div class="flex flex-col gap-2 pt-2 px-4">
-          @for (permission of selectedGroup.permissions; track permission) {
+          @for (permission of group.permissions; track permission) {
             <div class="bg-neutral-900 p-4 rounded settings-grid">
 
               <p class="settings-grid-label">Permissions</p>
@@ -74,7 +61,7 @@
 
               <p class="settings-grid-label">Invert</p>
               <p class="settings-grid-desc">Set the permission to be not allowed for a user</p>
-              <app-toggle class="settings-grid-option" [(value)]="permission.negated"></app-toggle>
+              <app-toggle class="settings-grid-option" [(value)]="permission.inverted"></app-toggle>
               <button class="button-red button-small max-w-16" (click)="deletePermission(permission)">Delete</button>
             </div>
           }
@@ -96,10 +83,9 @@
         </p>
         <br>
         <div class="text-right pt-4">
-          <button class="button-line" (click)="updateGroup(selectedGroup)">Save</button>
-          <button class="button-red" (click)="deleteGroup(selectedGroup)">Delete</button>
+          <button class="button-line" (click)="updateGroup()">Save</button>
+          <button class="button-red" (click)="deleteGroup()">Delete</button>
         </div>
       </div>
     </div>
-  }
 </div>

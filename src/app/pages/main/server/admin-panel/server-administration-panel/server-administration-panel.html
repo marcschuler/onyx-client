@@ -21,8 +21,7 @@
     <div class="max-w-128">
       <h3>Name</h3>
       <div class="flex w-full">
-        <input class="!rounded-r-none" [(ngModel)]="server.name">
-        <button class="!rounded-l-none" (click)="saveServerInfo()">Save</button>
+        <input [(ngModel)]="server.name">
       </div>
     </div>
   </div>
@@ -48,8 +47,7 @@
           }
         }
         <div>
-          <button class="button-dark w-24" (click)="save(description)">Save</button>
-          <button class="button-red w-24" (click)="delete(description)">Delete</button>
+          <button class="button-red w-24" (click)="deleteDescription(description)">Delete</button>
         </div>
       </div>
     }
@@ -64,6 +62,7 @@
       <app-file-upload></app-file-upload>
     </button>-->
   </div>
+  <button (click)="saveServerInfo()">Save</button>
 } @else {
   <app-spinner></app-spinner>
 }

@@ -1,11 +1,11 @@
 <div class="h-screen">
   <div #title>
-    <div class="bg-neutral-900 p-4 rounded-br-xl">
-      <h2 class="font-semibold" [class.skeleton]="!details" [style.padding-left]="titleOffsetLeft?'40px':'0'">
+    <div class="bg-neutral-900 p-2 rounded-br-xl border-b border-neutral-600">
+      <h3 class="font-semibold" [class.skeleton]="!details" [style.padding-left]="titleOffsetLeft?'40px':'0'">
         @if (details) {
           {{ details.name }}
         }
-      </h2>
+      </h3>
     </div>
   </div>
   @let showTalkView = peerConnectionService.peers.length > 0 || (peerConnectionService.sharedStreams[TrackType.Microphone] !== undefined || peerConnectionService.sharedStreams[TrackType.Camera] !== undefined || peerConnectionService.sharedStreams[TrackType.Screen] !== undefined);

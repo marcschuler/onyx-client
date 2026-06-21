@@ -5,14 +5,6 @@
         <h3 class="p-2 relative">
           <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
           {{ section.name }}
-          <div class="absolute right-3 top-2">
-            <button class="!p-1" (click)="sectionToEdit=section">
-            Edit
-            </button>
-            <button class="!p-1 button-red" (click)="sectionToDelete=section">
-              Delete
-            </button>
-          </div>
         </h3>
         <div cdkDropList [id]="'droplist-section-' + section.id" [cdkDropListData]="section"
              [cdkDropListConnectedTo]="dropListSections"
@@ -21,14 +13,6 @@
             <div class="p-2 ml-4 m-1  rounded relative bg-neutral-900" cdkDrag>
               <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
               {{ channel.name }}
-              <div class="absolute right-2 top-2">
-                <button class="!p-1 button-dark" (click)="channelToEdit=channel">
-                 Edit
-                </button>
-                <button class="!p-1 button-red " (click)="channelToDelete=channel">
-                 Delete
-                </button>
-              </div>
             </div>
           }
         </div>

@@ -94,7 +94,9 @@ export class IdentityService {
     console.log("Saved new list of identites")
   }
 
-  defaultIdentity() {
+  async defaultIdentity() {
+    if (this.identities.length==0)
+      await this.loadIdentities();
     const identity = this.identities[0]; //TODO Could be reworked in the future - maybe last used identity?
     if (identity == undefined)
       console.warn("No default identity found - but requested");

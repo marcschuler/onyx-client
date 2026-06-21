@@ -7,6 +7,6 @@ export class SplitPanelSelector {
   element = inject<ElementRef<HTMLElement>>(ElementRef);
 
 
-  @Input() splitPanel!: string;
+  @Input() splitPanel!: any;
 
 }

@@ -1,0 +1,7 @@
+@if (section) {
+  <input placeholder="name" [(ngModel)]="section.name">
+  <div class="text-right pt-4">
+    <button class="button-line" (click)="save()">Save</button>
+    <button class="button-red" (click)="delete()">Delete</button>
+  </div>
+}

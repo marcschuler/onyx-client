@@ -1,12 +1,18 @@
-<button class="button-dark w-full" (click)="click()"
+<button class="button-dark overflow-x-clip" (click)="click()"
+        [class.w-56]="isChild"
+        [class.ml-4]="isChild"
+        [class.w-60]="!isChild"
         [class.button-dark-selected]="selected"
         [disabled]="selected">
   @if (icon) {
     <lucide-icon [name]="icon" class="inline pr-1"></lucide-icon>
     <span class="pl-2 border-l border-l-neutral-700"></span>
   }
-  @if (name){
-    <p>{{name}}</p>
-  }
-  <ng-content></ng-content>
+  {{ name || value }}
+
 </button>
+@if (selected || childSelected) {
+  <div class="overflow-y-auto">
+    <ng-content></ng-content>
+  </div>
+}

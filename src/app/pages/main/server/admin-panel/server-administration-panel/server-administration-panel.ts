@@ -3,15 +3,14 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Spinner} from "../../../../../components/ui/spinner/spinner";
 import {RestService} from '../../../../../services/rest-service';
 import {ToastService, ToastType} from '../../../../../services/toast-service';
-import {Edit1Request, FileDTO, ServerDTO} from '../../../../../../api/webrtc-server';
+import {FileDTO, MarkdownMessageContentDTO, MessageContentDTO, ServerDTO} from '../../../../../../api/webrtc-server';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
-import {asTypeFile, asTypeMarkdown} from '../../../../../components/chat/message-content/message-content';
+import { asTypeMarkdown} from '../../../../../components/chat/message-content/message-content';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
 import {GripVertical, LucideAngularModule, TextInitialIcon, XIcon} from 'lucide-angular';
 import {FileUpload, UploadType} from '../../../../../components/ui/file-upload/file-upload';
 import {replaceInList} from '../../../../../util';
 import {deleteInList} from '../../../../../services/Util';
-import {StorageFileURLPipe} from '../../../../../pipes/avatar-pipe';
 import {PreviewImage} from '../../../../../components/ui/preview-image/preview-image';
 
 @Component({
@@ -25,7 +24,6 @@ import {PreviewImage} from '../../../../../components/ui/preview-image/preview-i
     CdkDrag,
     CdkDropList,
     FileUpload,
-    StorageFileURLPipe,
     PreviewImage
   ],
   templateUrl: './server-administration-panel.html',
@@ -86,28 +84,11 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
   }
 
   protected addMarkdown() {
-    this.connection.rest.serverDescriptionController.create(this.server!.id, {
-      type: "MARKDOWN",
-      text: "This is text."
-    }).subscribe(description => {
-      console.log("created markdown description",description);
-        this.server!.description.push(description);
-      },
-      error => this.restService.handleError(error));
+    this.server!.description.push({
+      text:"",
+      type: "MARKDOWN"
+    } as MarkdownMessageContentDTO);
   }
-
-  protected save(description: Edit1Request) {
-    this.connection.rest.serverDescriptionController.edit1(this.server!.id, description.id!, description).subscribe(d => {
-      replaceInList(this.server!.description, description, d);
-    }, error => this.restService.handleError(error))
-  }
-
-  protected delete(description: Edit1Request) {
-    this.connection.rest.serverDescriptionController._delete(this.server!.id, description.id!).subscribe(_ => {
-      deleteInList(this.server!.description, description);
-    }, error => this.restService.handleError(error));
-  }
-
   protected dropDecsription(event: CdkDragDrop<any, any>) {
     const description = this.server?.description[event.previousIndex]!;
     const newOrder = event.currentIndex;
@@ -116,11 +97,6 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
       console.log("ignoring reordering")
       return;
     }
-    this.connection.rest.serverDescriptionController.order(this.server!.id,description.id!, newOrder)
-      .subscribe(() => {
-        //nothing to do yet
-      }, error => this.restService.handleError(error));
-
   }
 
   protected readonly asTypeMarkdown = asTypeMarkdown;
@@ -136,6 +112,10 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
     })
   }
 
+  protected deleteDescription(description: MessageContentDTO) {
+    deleteInList(this.server!.description,description);
+  }
+
   protected deleteIcon() {
     this.connection.rest.serverController.iconDelete(this.server!.id)
       .subscribe(_ => {
@@ -149,6 +129,8 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
 
   protected readonly XIcon = XIcon;
   protected readonly UploadType = UploadType;
+
+
 }
 
 export default ServerAdministrationPanel

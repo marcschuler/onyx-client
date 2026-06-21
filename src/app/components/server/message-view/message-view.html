@@ -6,8 +6,7 @@
       </button>
     }
     @for (msg of messages; track msg) {
-      @let useHeader = ($index === 0 || messages[$index - 1].user.id !== msg.user.id);
-      <app-message [message]="msg" [useHeader]="useHeader" [connection]="connection"></app-message>
+      <app-message [message]="msg" [lastMessage]="$index!=0?messages[$index]:undefined" [connection]="connection"></app-message>
     }
   </div>
 

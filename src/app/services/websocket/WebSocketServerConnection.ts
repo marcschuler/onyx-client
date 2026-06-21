@@ -2,7 +2,7 @@ import {Identity} from '../identity-service';
 import {
   ChannelControllerService,
   ChatControllerService, GroupControllerService, SectionControllerService,
-  ServerControllerService, ServerDescriptionControllerService,
+  ServerControllerService,
   ServerTreeChangeMessage, StorageControllerService, UserControllerService, UserSimpleDTO
 } from '../../../api/webrtc-server';
 import {IceServer} from '../../../api/webrtc-server';
@@ -29,7 +29,6 @@ export interface RestConfiguration {
   readonly jwt?: string;
   basePath: string;
   serverController: ServerControllerService;
-  serverDescriptionController: ServerDescriptionControllerService;
   channelController: ChannelControllerService;
   chatController: ChatControllerService;
   sectionController: SectionControllerService;

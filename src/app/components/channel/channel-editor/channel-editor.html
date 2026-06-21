@@ -1,14 +1,13 @@
-<ui-split-panel>
+<!--<ui-split-panel>
   <ui-split-panel-bar>
-    <ui-split-panel-button [icon]="HexagonIcon">
-      General
+    <ui-split-panel-button [icon]="HexagonIcon" value="General">
     </ui-split-panel-button>
-  </ui-split-panel-bar>
-  <input placeholder="name">
-  <textarea placeholder="description"></textarea>
-  <div>
-    <button (click)="save()">
-      <lucide-icon [name]="SaveIcon"></lucide-icon>
-    </button>
+  </ui-split-panel-bar>-->
+@if (channel) {
+  <input placeholder="name" [(ngModel)]="channel.name">
+  <div class="text-right pt-4">
+    <button class="button-line" (click)="save()">Save</button>
+    <button class="button-red" (click)="delete()">Delete</button>
   </div>
-</ui-split-panel>
+}
+<!--</ui-split-panel>-->

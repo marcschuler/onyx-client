@@ -8,7 +8,7 @@ import {PeerConnectionService} from '../peer/peer-connection-service';
 import {
   AuthChallengeRequest,
   AuthChallengeResponse,
-  AuthSuccessMessage,
+  AuthSuccessMessage, ChannelCreateEvent,
   ChannelDTO,
   ChannelMoveEvent,
   ClientChangeEvent,
@@ -55,6 +55,7 @@ export class WebSocketService {
     this.addHandler(ServerTreeChangeMessage.TypeEnum.ServerTreeChangeMessage, (e, c) => this.onServerTreeChangeEvent(e as ServerTreeChangeMessage, c))
     this.addHandler(ServerChangeEvent.TypeEnum.ServerChangeEvent, (e, c) => this.onServerChange(e as ServerChangeEvent, c));
 
+    this.addHandler(ChannelCreateEvent.TypeEnum.ChannelCreateEvent, (e, c) => this.onChannelCreate(e as ChannelCreateEvent, c));
     this.addHandler(SectionCreateEvent.TypeEnum.SectionCreateEvent, (e, c) => this.onSectionCreate(e as SectionCreateEvent, c))
     this.addHandler(SectionMoveEvent.TypeEnum.SectionMoveEvent, (e, c) => this.onSectionMove(e as SectionMoveEvent, c));
     this.addHandler(ChannelMoveEvent.TypeEnum.ChannelMoveEvent, (e, c) => this.onChannelMove(e as ChannelMoveEvent, c));
@@ -254,6 +255,19 @@ export class WebSocketService {
   private onServerChange(event: ServerChangeEvent, connection: WebSocketServerConnection) {
     connection.data!.server = event.server;
     console.log("server details changed", event.server)
+  }
+
+  private onChannelCreate(event: ChannelCreateEvent, connection: WebSocketServerConnection) {
+    const channel = event.channel;
+    const sectionId = event.sectionId;
+    getSectionFromId(sectionId, connection.data!.sections)?.channels.push({
+      id: channel.id,
+      chatId: channel.chatId,
+      sectionId: sectionId,
+      name: channel.name,
+      order: channel.order,
+      users: []
+    });
   }
 
   private onSectionCreate(event: SectionCreateEvent, connection: WebSocketServerConnection) {

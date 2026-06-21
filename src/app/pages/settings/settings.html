@@ -2,32 +2,26 @@
   <ui-split-panel-bar>
 
     <ui-split-panel-button value="General" [icon]="SettingsIcon">
-      General
     </ui-split-panel-button>
     <ui-split-panel-button value="Identities" [icon]="FingerprintIcon">
-      Identities
     </ui-split-panel-button>
-    <ui-split-panel-divider></ui-split-panel-divider>
-
     @if (connection) {
-      <ui-split-panel-button value="Your Account" [icon]="IdCardLanyardIcon">
-        Account on '{{ connection.data!.server.name }}'
+      <ui-split-panel-button value="Your Account" [name]="'Account on \'' + connection.data!.server.name + '\''"
+                             [icon]="IdCardLanyardIcon">
       </ui-split-panel-button>
-      <ui-split-panel-divider></ui-split-panel-divider>
     }
+    <ui-split-panel-divider></ui-split-panel-divider>
 
     @for (connection of serverLoaderService.connections; track connection) {
       <ui-split-panel-button [value]="'server-connection-' + connection.id"
-                             [name]="'Server \'' + (connection.name || connection.url) + '\''" [icon]="ServerIcon">
+                             [name]="(connection.name || connection.url)" [icon]="ServerIcon">
       </ui-split-panel-button>
     }
     <ui-split-panel-divider></ui-split-panel-divider>
 
-    <ui-split-panel-button value="License" [icon]="ScaleIcon">
-      Contributors & Licences
+    <ui-split-panel-button value="License" name="Contributors & Licences" [icon]="ScaleIcon">
     </ui-split-panel-button>
     <ui-split-panel-button value="Debug" [icon]="BugIcon">
-      Debug
     </ui-split-panel-button>
   </ui-split-panel-bar>
 

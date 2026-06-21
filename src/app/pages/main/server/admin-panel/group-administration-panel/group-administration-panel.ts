@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import {Component, Input, OnInit, inject, EventEmitter, Output} from '@angular/core';
 import {WebSocketServerConnection} from "../../../../../services/websocket/WebSocketServerConnection";
 import {GroupDTO, PermissionDTO} from '../../../../../../api/webrtc-server';
 import {RestService} from '../../../../../services/rest-service';
@@ -23,16 +23,15 @@ import {SelectItem} from '../../../../../components/ui/multi-select/select-item/
   templateUrl: './group-administration-panel.html',
   styleUrl: './group-administration-panel.css',
 })
-export class GroupAdministrationPanel implements OnInit {
+export class GroupAdministrationPanel {
   private restService = inject(RestService);
   private toastService = inject(ToastService);
 
 
   @Input() connection!: WebSocketServerConnection;
-
-  groups: GroupDTO[] | undefined;
-
-  selectedGroup: GroupDTO | undefined;
+  @Input() group!: GroupDTO;
+  @Input() groups!: GroupDTO[];
+  @Output() groupsChange = new EventEmitter<GroupDTO[]>();
 
   permissionsEnumValues: string[];
 
@@ -40,33 +39,22 @@ export class GroupAdministrationPanel implements OnInit {
     this.permissionsEnumValues = Object.values(PermissionsEnum);
   }
 
-  ngOnInit(): void {
-    this.connection.rest.groupController.all()
-      .subscribe(value => {
-        this.groups = value;
-        if (!this.selectedGroup && value.length > 0)
-          this.selectedGroup = value[0];
-      }, error => this.restService.handleError(error));
-  }
-
   groupFromParentId(id: string) {
-    return this.groups?.filter(g => g.id == id)[0];
+    //return this.groups?.filter(g => g.id == id)[0];
   }
 
-  deleteGroup(group: GroupDTO) {
-    this.connection.rest.groupController.delete2(group.id).subscribe(value => {
+  deleteGroup() {
+    this.connection.rest.groupController.delete1(this.group.id).subscribe(value => {
       this.toastService.create({
         type: ToastType.Success,
-        title: 'Group ' + group.name + ' deleted'
+        title: 'Group ' + this.group.name + ' deleted'
       })
-      this.groups?.splice(this.groups?.indexOf(group), 1)
-      if (group == this.selectedGroup)
-        this.selectedGroup = undefined;
+      this.groups?.splice(this.groups.indexOf(this.group), 1);
     }, error => this.restService.handleError(error));
   }
 
-  updateGroup(group: GroupDTO) {
-    this.connection.rest.groupController.edit3(group.id, group).subscribe(value => {
+  updateGroup() {
+    this.connection.rest.groupController.edit2(this.group.id, this.group).subscribe(value => {
       this.toastService.create({
         type: ToastType.Success,
         title: 'Group ' + value.name + ' updated'
@@ -77,7 +65,7 @@ export class GroupAdministrationPanel implements OnInit {
 
   protected readonly IdCardLanyard = IdCardLanyard;
 
-  protected addGroup() {
+  /*protected addGroup() {
     this.connection.rest.groupController.create2({
       name: findFreeName("Group", (this.groups || []).map(g => g.name)),
       description: "",
@@ -87,10 +75,10 @@ export class GroupAdministrationPanel implements OnInit {
       this.groups?.push(value);
       this.selectedGroup = value;
     }, error => this.restService.handleError(error));
-  }
+  } TODO */
 
   protected addPermission() {
-    this.selectedGroup!.permissions!.push({
+    this.group!.permissions!.push({
       inverted: false,
       id: "",
       permissions: [],
@@ -100,8 +88,7 @@ export class GroupAdministrationPanel implements OnInit {
   }
 
   protected deletePermission(permission: PermissionDTO) {
-    const index = this.selectedGroup!.permissions!.indexOf(permission);
-    this.selectedGroup!.permissions!.splice(index, 1);
-
+    const index = this.group!.permissions!.indexOf(permission);
+    this.group!.permissions!.splice(index, 1);
   }
 }

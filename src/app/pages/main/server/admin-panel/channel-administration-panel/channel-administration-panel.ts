@@ -64,7 +64,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
         console.log("ignoring reordering")
         return;
       }
-      this.connection.rest.channelController.order2(channel.id, newOrder)
+      this.connection.rest.channelController.order1(channel.id, newOrder)
         .subscribe(value => {
         }, error => this.restService.handleError(error))
     } else {
@@ -83,13 +83,13 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
       console.log("ignoring reordering")
       return;
     }
-    this.connection.rest.sectionController.order1(section.id, newOrder)
+    this.connection.rest.sectionController.order(section.id, newOrder)
       .subscribe(() => {
       }, error => this.restService.handleError(error));
   }
 
   protected createChannel(section: SectionDTO) {
-    this.connection.rest.channelController.create3({
+    this.connection.rest.channelController.create2({
       name: "Channel",
       sectionId: section.id,
       order: section.channels.length,
@@ -102,7 +102,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
   }
 
   protected createSection() {
-    this.connection.rest.sectionController.create1({
+    this.connection.rest.sectionController.create({
       name: "Section"
     }).subscribe(value => {
       this.toastService.create({
@@ -117,7 +117,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
       this.channelToEdit = undefined;
       return;
     }
-    this.connection.rest.channelController.edit4(this.channelToEdit!.id, event)
+    this.connection.rest.channelController.edit3(this.channelToEdit!.id, event)
       .subscribe(() => {
       }, error => this.restService.handleError(error), () => this.channelToEdit = undefined);
   }
@@ -127,14 +127,14 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
       this.sectionToDelete = undefined;
       return;
     }
-    this.connection.rest.sectionController.delete1(this.sectionToEdit!.id, event)
+    this.connection.rest.sectionController._delete(this.sectionToEdit!.id, event)
       .subscribe(() => {
       }, error => this.restService.handleError(error), () => this.sectionToEdit = undefined);
   }
 
   protected deleteChannel(type: Button) {
     if (type == BUTTON_DELETE) {
-      this.connection.rest.channelController.delete3(this.channelToDelete!.id)
+      this.connection.rest.channelController.delete2(this.channelToDelete!.id)
         .subscribe(value => {
         }, error => this.restService.handleError(error))
     }
@@ -143,7 +143,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
 
   protected deleteSection(type: Button) {
     if (type == BUTTON_DELETE) {
-      this.connection.rest.sectionController.delete1(this.sectionToDelete!.id)
+      this.connection.rest.sectionController._delete(this.sectionToDelete!.id)
         .subscribe(value => {
         }, error => this.restService.handleError(error))
     }

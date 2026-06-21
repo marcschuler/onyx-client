@@ -33,7 +33,7 @@ export class Message {
   protected interfaceService = inject(StorageService);
 
   @Input() message!: MessageDTO;
-  @Input() useHeader!: boolean;
+  @Input() lastMessage: MessageDTO | undefined;
 
   @Input() connection!: WebSocketServerConnection;
 

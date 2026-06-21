@@ -17,13 +17,13 @@ import { Observable }                                        from 'rxjs';
 import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 
 // @ts-ignore
-import { Edit1Request } from '../model/edit1Request';
-// @ts-ignore
 import { FileMessageContentDTO } from '../model/fileMessageContentDTO';
 // @ts-ignore
 import { MarkdownMessageContentDTO } from '../model/markdownMessageContentDTO';
 // @ts-ignore
 import { MessageDTO } from '../model/messageDTO';
+// @ts-ignore
+import { MessageRequest } from '../model/messageRequest';
 // @ts-ignore
 import { PageMessageDTO } from '../model/pageMessageDTO';
 // @ts-ignore

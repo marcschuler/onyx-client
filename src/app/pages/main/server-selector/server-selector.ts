@@ -14,12 +14,11 @@ import {
 } from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {Identity, IdentityService} from '../../../services/identity-service';
-import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_EDIT, Popup} from '../../../components/ui/popup/popup';
+import { BUTTON_CANCEL,  Popup} from '../../../components/ui/popup/popup';
 import {Settings} from '../../settings/settings';
 import {ServerDTO} from '../../../../api/webrtc-server/model/serverDTO';
 import {RestService} from '../../../services/rest-service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {APP_VERSION} from '../../../services/Util';
 import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
 
 @Component({
@@ -48,7 +47,7 @@ export class ServerSelector implements OnInit, OnDestroy {
     state: ServerInfoState.CONNECTING
   }
 
-  protected identity: Identity;
+  protected identity: Identity | undefined;
 
   showSettings = false;
 
@@ -65,7 +64,9 @@ export class ServerSelector implements OnInit, OnDestroy {
   constructor() {
     const identityService = this.identityService;
 
-    this.identity = identityService.defaultIdentity();
+    identityService.defaultIdentity().then(value => {
+      this.identity = value;
+    })
 
   }
 
@@ -123,7 +124,7 @@ export class ServerSelector implements OnInit, OnDestroy {
 
   connect(server: ServerConnection) {
     this.selectedServer = server;
-    this.webSocketService.connect(server, this.identity)
+    this.webSocketService.connect(server, this.identity!)
       .then(c => this.selectedServer = undefined)
       .catch(e => this.selectedServer = undefined);
   }

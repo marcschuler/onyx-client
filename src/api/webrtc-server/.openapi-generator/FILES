@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.base.service.ts
 api.module.ts
@@ -10,7 +9,6 @@ api/groupController.service.ts
 api/infoController.service.ts
 api/sectionController.service.ts
 api/serverController.service.ts
-api/serverDescriptionController.service.ts
 api/storageController.service.ts
 api/todoController.service.ts
 api/userController.service.ts
@@ -38,7 +36,6 @@ model/clientChannelLeaveRequest.ts
 model/clientKickEvent.ts
 model/clientServerJoinEvent.ts
 model/clientServerLeaveEvent.ts
-model/edit1Request.ts
 model/errorMessage.ts
 model/fileDTO.ts
 model/fileMessageContentDTO.ts
@@ -47,12 +44,14 @@ model/groupDTO.ts
 model/hashDTO.ts
 model/iceServer.ts
 model/iceServerMessage.ts
+model/inviteResponseDto.ts
 model/jwtTokenEvent.ts
 model/kickedEvent.ts
 model/markdownMessageContentDTO.ts
 model/messageBody.ts
 model/messageContentDTO.ts
 model/messageDTO.ts
+model/messageRequest.ts
 model/messageTypes.ts
 model/models.ts
 model/noPermissionMessage.ts

@@ -7,8 +7,8 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Edit1Request } from './edit1Request';
 import { FileDTO } from './fileDTO';
+import { MessageRequest } from './messageRequest';
 
 
 export interface ServerDTO { 
@@ -16,6 +16,6 @@ export interface ServerDTO {
     name: string;
     icon?: FileDTO;
     publicKey: { [key: string]: any; };
-    description: Array<Edit1Request>;
+    description: Array<MessageRequest>;
 }
 

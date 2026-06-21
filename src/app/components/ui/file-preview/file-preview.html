@@ -1,11 +1,12 @@
 <div class="max-w-128 max-h-96 overflow-hidden">
   @switch (fileType) {
 
-    <!--@case (FileType.PDF) {
+    <!--@case (FileType.PDF) { TODO does not work yet - seems like browser security prevents this
       <iframe [src]="file.id | storageFileURL:connection | sanitizeUrl" sandbox="allow-scripts allow-same-origin" class="max-h-96"></iframe>
     }-->
     @case (FileType.IMAGE) {
-    <app-preview-image [file]="file" [connection]="connection" imageClass="object-contain max-h-96"></app-preview-image>
+      <app-preview-image [file]="file" [connection]="connection"
+                         imageClass="object-contain max-h-96"></app-preview-image>
     }
     @case (FileType.AUDIO) {
       <audio [src]="file.id | storageFileURL:connection:undefined:undefined" controls></audio>

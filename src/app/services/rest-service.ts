@@ -5,7 +5,7 @@ import {
   ChannelControllerService,
   ChatControllerService,
   Configuration, GroupControllerService, SectionControllerService,
-  ServerControllerService, ServerDescriptionControllerService, StorageControllerService, UserControllerService
+  ServerControllerService, StorageControllerService, UserControllerService
 } from '../../api/webrtc-server';
 import {ToastService, ToastType} from './toast-service';
 
@@ -48,7 +48,6 @@ export class RestService {
       jwt: jwt,
       basePath: basePath,
       serverController: new ServerControllerService(this.http, basePath, config),
-      serverDescriptionController: new ServerDescriptionControllerService(this.http, basePath, config),
       chatController: new ChatControllerService(this.http, basePath, config),
       channelController: new ChannelControllerService(this.http, basePath, config),
       sectionController: new SectionControllerService(this.http, basePath, config),
@@ -63,7 +62,7 @@ export class RestService {
   }
 
   public handleError(error: HttpErrorResponse) {
-    console.error(JSON.stringify(error))
+    console.error("HTTP server returned an error",JSON.stringify(error))
 
     this.toastService.create({
       title: this.buildErrorTitle(error),
@@ -90,7 +89,7 @@ export class RestService {
     if (error.status == 0 || error.status == undefined) {
       return "No Connection to server";
     }
-    return error.error.detail || JSON.stringify(error.error);
+    return error.error.detail || error.error.title || JSON.stringify(error.error);
   }
 
 }

@@ -24,7 +24,6 @@
 
 
 <div class="min-h-screen flex">
-
   <button class="absolute left-2 top-2 z-10 !p-2" (click)="minimized=!minimized">
     @if (minimized) {
       <lucide-icon [name]="PanelLeftOpen" class="w-4"></lucide-icon>
@@ -34,34 +33,13 @@
   </button>
 
   @if (!minimized) {
-    <aside class="block min-h-screen shrink-0 bg-neutral-900 border-r-neutral-950 border-r-1"
+    <aside class="block min-h-screen mx-h-screen shrink-0 bg-neutral-900 border-r-neutral-950 border-r-1"
            [ngStyle]="{ width: interfaceService.settings.sidebarWidth + 'px' }">
-
-      <div class="flex flex-col h-screen">
-        <div class="flex-1">
-          <div class="flex">
-            <!-- TODO add server icon list on the left side
-            <div class="bg-neutral-900">
-              @for (server of serverLoaderService.connections; track server) {
-                <div class="w-8 h-8 "   [ngClass]="{
-          'rounded-xl bg-neutral-800': server == connection.serverConnections,
-  }">
-                  <lucide-icon [name]="ServerIcon" class=""></lucide-icon>
-
-                </div>
-              }
-              <button class="!p-0" (click)="minimized=!minimized">
-                @if (minimized) {
-                  <lucide-icon [name]="PanelLeftOpen" class="w-4"></lucide-icon>
-                } @else {
-                  <lucide-icon [name]="PanelLeftClose" class="w-4"></lucide-icon>
-                }
-              </button>
-            </div>-->
-            <app-channel-tree class="flex-1 p-2 overflow-y-auto" [connection]="connection"></app-channel-tree>
-          </div>
+      <div class="flex flex-col h-screen overflow-hidden">
+        <div class="flex-1 flex overflow-hidden min-h-0">
+          <app-channel-tree class="flex-1 p-2 overflow-y-auto" [connection]="connection"></app-channel-tree>
         </div>
-        <div class="flex justify-center ">
+        <div class="flex justify-center shrink-0">
           <div class="w-64">
             <app-user-panel [connection]="connection"></app-user-panel>
           </div>
@@ -74,7 +52,7 @@
     ></div>
   }
 
-  <main class="flex-1">
+  <main class="flex-1 max-h-screen">
     @if (connection.selectedChannel) {
       <app-channel-view [connection]="connection" [channelId]="connection.selectedChannel"
                         [titleOffsetLeft]="minimized"></app-channel-view>
