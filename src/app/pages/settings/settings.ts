@@ -21,6 +21,8 @@ import {ServerUser} from './server-user/server-user';
 import {SplitPanelDivider} from '../../components/ui/split-panel/split-panel-divider/split-panel-divider';
 import {ServerLoaderService} from '../../services/server-loader-service';
 import {ServerEditor} from './server-editor/server-editor';
+import {Popup} from '../../components/ui/popup/popup';
+import {ContextMenuService} from '../../services/context-menu-service';
 
 @Component({
   selector: 'app-settings',
@@ -39,13 +41,15 @@ import {ServerEditor} from './server-editor/server-editor';
     SplitPanel,
     ServerUser,
     SplitPanelDivider,
-    ServerEditor
+    ServerEditor,
+    Popup
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css'
 })
 export class Settings {
   protected serverLoaderService = inject(ServerLoaderService);
+  protected contextMenuService = inject(ContextMenuService);
 
 
   @Input() connection?: WebSocketServerConnection;

@@ -70,7 +70,7 @@
 </div>
 
 @if (warnDuplicate) {
-  <app-popup [isOpen]="true" title="You already set up your identity. Skip this?"
+  <app-popup title="You already set up your identity. Skip this?"
              [content]="'You already created a Identity. You can skip this part if you want to.'"
              [buttons]="[BUTTON_CANCEL,BUTTON_SKIP]"
              (close)="onWarnDuplicate($event)">

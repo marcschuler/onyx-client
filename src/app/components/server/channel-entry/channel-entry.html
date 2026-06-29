@@ -5,8 +5,9 @@
   [ngClass]="{
           'border-l-emerald-600 border-l-3': connection.me.channel === channel.id,
           'bg-neutral-800': connection.selectedChannel === channel.id
-  }" (click)="selectChannel(channel)">
-  <div class=" w-full   rounded-l-md select-none text-nowrap" (contextmenu)="contextMenuService.openChannelContexMenu()">
+  }" (click)="selectChannel(channel)"
+  (contextmenu)="contextMenuService.openChannelContextMenu(channel,connection,$event)">
+  <div class=" w-full   rounded-l-md select-none text-nowrap">
     <lucide-icon class="inline-flex translate-y-0.5" [name]="HexagonIcon"></lucide-icon>
     {{ channel.name }}
 

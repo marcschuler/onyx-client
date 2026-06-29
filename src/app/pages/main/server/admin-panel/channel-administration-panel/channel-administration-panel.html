@@ -1,23 +1,23 @@
 @if (connection.data) {
   <div cdkDropList (cdkDropListDropped)="dropSection($event)">
     @for (section of connection.data.sections; track section) {
-      <div class="p-2 bg-neutral-800 rounded m-1 border border-neutral-800" cdkDrag>
+      <div class="p-2 rounded m-1 border border-neutral-800" cdkDrag>
         <h3 class="p-2 relative">
           <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
           {{ section.name }}
         </h3>
         <div cdkDropList [id]="'droplist-section-' + section.id" [cdkDropListData]="section"
              [cdkDropListConnectedTo]="dropListSections"
-             class="min-h-8" (cdkDropListDropped)="dropChannel($event)">
+             class="min-h-8 " (cdkDropListDropped)="dropChannel($event)">
           @for (channel of section.channels; track channel) {
-            <div class="p-2 ml-4 m-1  rounded relative bg-neutral-900" cdkDrag>
+            <div class="p-2 ml-4 m-1  rounded relative bg-neutral-800" cdkDrag>
               <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
               {{ channel.name }}
             </div>
           }
         </div>
         <div class="px-4">
-          <button class="button-ghost min-w-full  !p-1 inline-block" (click)="createChannel(section)">
+          <button class="button-ghost min-w-full  !p-1 inline-block !bg-neutral-800" (click)="createChannel(section)">
             + Channel
           </button>
         </div>
@@ -30,36 +30,3 @@
     </button>
   </div>
 }
-
-@if (channelToEdit) {
-  <app-popup [isOpen]="true" (close)="channelToEdit=undefined" [closeButton]="true">
-    <app-channel-editor [connection]="connection" [channelId]="channelToEdit.id">
-
-    </app-channel-editor>
-  </app-popup>
-}
-
-@if (sectionToEdit) {
-  <app-name-description-popup [entity]="sectionToEdit"
-                              (entityChanges)="editSection($event)"></app-name-description-popup>
-}
-
-
-@if (channelToDelete) {
-  <app-popup [isOpen]="true" title="Delete this channel?"
-             [content]="'All messages on channel \'' + channelToDelete.name + '\' will be removed.'"
-             [buttons]="[BUTTON_CANCEL,BUTTON_DELETE]"
-             (close)="deleteChannel($event)">
-
-  </app-popup>
-}
-
-@if (sectionToDelete) {
-  <app-popup [isOpen]="true" title="Delete this section?"
-             [content]="'All channel and messages on section \'' + sectionToDelete.name + '\' will be removed.'"
-             [buttons]="[BUTTON_CANCEL,BUTTON_DELETE]"
-             (close)="deleteSection($event)">
-
-  </app-popup>
-}
-

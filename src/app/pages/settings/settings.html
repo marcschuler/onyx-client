@@ -1,44 +1,46 @@
-<ui-split-panel class="min-h-[90%]">
-  <ui-split-panel-bar>
-
-    <ui-split-panel-button value="General" [icon]="SettingsIcon">
-    </ui-split-panel-button>
-    <ui-split-panel-button value="Identities" [icon]="FingerprintIcon">
-    </ui-split-panel-button>
-    @if (connection) {
-      <ui-split-panel-button value="Your Account" [name]="'Account on \'' + connection.data!.server.name + '\''"
-                             [icon]="IdCardLanyardIcon">
+<app-popup [closeButton]="true" [fullHeight]="true" (close)="contextMenuService.closeContextMenu(this)">
+  <ui-split-panel class="min-h-[90%]">
+    <ui-split-panel-bar>
+      <ui-split-panel-button value="General" [icon]="SettingsIcon">
       </ui-split-panel-button>
+      <ui-split-panel-button value="Identities" [icon]="FingerprintIcon">
+      </ui-split-panel-button>
+      @if (connection) {
+        <ui-split-panel-button value="Your Account" [name]="'Account on \'' + connection.data!.server.name + '\''"
+                               [icon]="IdCardLanyardIcon">
+        </ui-split-panel-button>
+      }
+      <ui-split-panel-divider></ui-split-panel-divider>
+
+      @for (connection of serverLoaderService.connections; track connection) {
+        <ui-split-panel-button [value]="'server-connection-' + connection.id"
+                               [name]="(connection.name || connection.url)" [icon]="ServerIcon">
+        </ui-split-panel-button>
+      }
+      <ui-split-panel-divider></ui-split-panel-divider>
+
+      <ui-split-panel-button value="License" name="Contributors & Licences" [icon]="ScaleIcon">
+      </ui-split-panel-button>
+      <ui-split-panel-button value="Debug" [icon]="BugIcon">
+      </ui-split-panel-button>
+    </ui-split-panel-bar>
+
+    <app-general splitPanel="General"></app-general>
+    <app-identity splitPanel="Identities"></app-identity>
+
+    @if (connection) {
+      <app-server-user splitPanel="Your Account"
+                       [connection]="connection"></app-server-user>
     }
-    <ui-split-panel-divider></ui-split-panel-divider>
 
     @for (connection of serverLoaderService.connections; track connection) {
-      <ui-split-panel-button [value]="'server-connection-' + connection.id"
-                             [name]="(connection.name || connection.url)" [icon]="ServerIcon">
-      </ui-split-panel-button>
+      <app-server-editor [splitPanel]="'server-connection-' + connection.id"
+                         [serverConnection]="connection"></app-server-editor>
     }
-    <ui-split-panel-divider></ui-split-panel-divider>
 
-    <ui-split-panel-button value="License" name="Contributors & Licences" [icon]="ScaleIcon">
-    </ui-split-panel-button>
-    <ui-split-panel-button value="Debug" [icon]="BugIcon">
-    </ui-split-panel-button>
-  </ui-split-panel-bar>
+    <app-contributors splitPanel="License"></app-contributors>
+    <app-debug splitPanel="Debug"></app-debug>
 
-  <app-general splitPanel="General"></app-general>
-  <app-identity splitPanel="Identities"></app-identity>
+  </ui-split-panel>
 
-  @if (connection) {
-    <app-server-user splitPanel="Your Account"
-                     [connection]="connection"></app-server-user>
-  }
-
-  @for (connection of serverLoaderService.connections; track connection) {
-    <app-server-editor [splitPanel]="'server-connection-' + connection.id"
-                       [serverConnection]="connection"></app-server-editor>
-  }
-
-  <app-contributors splitPanel="License"></app-contributors>
-  <app-debug splitPanel="Debug"></app-debug>
-
-</ui-split-panel>
+</app-popup>

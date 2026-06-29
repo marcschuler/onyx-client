@@ -13,8 +13,8 @@ import { SortObject } from './sortObject';
 
 
 export interface PageMessageDTO { 
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     size?: number;
     content?: Array<MessageDTO>;
     number?: number;

@@ -32,11 +32,9 @@ import {Tooltip} from '../../../directives/tooltip';
     LucideAngularModule,
     NgStyle,
     Popup,
-    Settings,
     ServerOverview,
     AdminPanel,
     UsersPanel,
-    Tooltip,
   ],
   templateUrl: './server.html',
   styleUrl: './server.css'

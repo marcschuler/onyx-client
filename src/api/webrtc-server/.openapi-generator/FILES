@@ -46,6 +46,7 @@ model/iceServer.ts
 model/iceServerMessage.ts
 model/inviteResponseDto.ts
 model/jwtTokenEvent.ts
+model/kickRequestDTO.ts
 model/kickedEvent.ts
 model/markdownMessageContentDTO.ts
 model/messageBody.ts

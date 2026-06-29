@@ -1,5 +1,17 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {
+  Component,
+  ComponentRef,
+  ContentChild,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  TemplateRef
+} from '@angular/core';
 import {NgClass} from '@angular/common';
+import {ContextMenuService} from '../../../services/context-menu-service';
+import {Settings} from '../../../pages/settings/settings';
 
 @Component({
   selector: 'app-popup',
@@ -10,16 +22,20 @@ import {NgClass} from '@angular/common';
   styleUrl: './popup.css'
 })
 export class Popup {
-  @Input() isOpen = false; //TODO remove isOpen property?
+  protected contextMenuService = inject(ContextMenuService);
+
   @Output() close = new EventEmitter<Button>();
 
   @Input() title?: string;
   @Input() content?: string;
   @Input() closeButton?: boolean;
+  @Input() closeMenuOnClose: boolean = true;
 
   @Input() fullHeight = false;
 
   @Input() buttons?: Button[];
+
+  @ContentChild(Settings) contentComponent!: Settings;
 
   getButtonClass(type: ButtonType) {
     switch (type) {
@@ -33,8 +49,14 @@ export class Popup {
   }
 
   onButton(button: Button | undefined) {
+    if (button==undefined && this.closeMenuOnClose){
+      if (this.contentComponent==undefined){
+        console.warn("ui:popup: no content for popup but closeMenuOnClose is set")
+      }else{
+        this.contextMenuService.closeContextComponent(this.contentComponent);
+      }
+    }
     this.close.emit(button);
-    this.isOpen = false;
   }
 }
 

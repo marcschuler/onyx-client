@@ -1,21 +1,23 @@
-  <div class="pt-4">
-    <label>Name</label>
-    <input [(ngModel)]="name" placeholder="A custom server name">
-    <label>URL</label>
-    <input [(ngModel)]="url">
-  </div>
+<div class="pt-4">
+  <label>Name</label>
+  <input [(ngModel)]="name" placeholder="A custom server name">
+  <label>URL</label>
+  <input [(ngModel)]="url">
+</div>
 
-  <div class="flex justify-end pt-4">
-    <button (click)="save()">
-      Save
-    </button>
-    <button class="button-dark button-red" (click)="deletePopup = true">
-      Delete Server
-    </button>
-  </div>
+<div class="flex justify-end pt-4">
+  <button (click)="save()">
+    Save
+  </button>
+  <button class="button-dark button-red" (click)="deletePopup = true">
+    Delete Server
+  </button>
+</div>
 
-  <app-popup [isOpen]="deletePopup" [buttons]="[BUTTON_CANCEL, BUTTON_DELETE]"
+@if (deletePopup) {
+  <app-popup [buttons]="[BUTTON_CANCEL, BUTTON_DELETE]"
              title="Delete this connection?"
              (close)="remove($event)"
              content="The server does not delete your personal data like profile image or messages.">
   </app-popup>
+}

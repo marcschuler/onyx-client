@@ -27,10 +27,15 @@ export class SplitPanelButton {
     this.buttons.forEach(btn => this.subscribe(btn));
 
     this.buttons.changes.subscribe((list: QueryList<SplitPanelButton>) => {
-      list.forEach(btn => this.subscribe(btn));
+      list.forEach(btn => {
+        this.subscribe(btn);
+        btn.isChild = true;
+      });
     });
 
-    this.buttons.filter(button => button.isChild = true);
+    setTimeout(() => {
+      this.buttons.filter(button => button.isChild = true);
+    })
   }
 
   private subscribe(button: SplitPanelButton) {
@@ -42,7 +47,6 @@ export class SplitPanelButton {
   public onAnyButtonSelected(event: SplitPanelButtonEvent) {
     this.selected = event.value == this.value;
     this.childSelected = this.buttons.filter(b => event.value == b.value).length > 0;
-    console.log(this.value + " is selected?" + this.selected + "," + this.childSelected)
     this.buttons.forEach(button => button.onAnyButtonSelected(event));
   }
 

@@ -20,6 +20,7 @@ import {ServerDTO} from '../../../../api/webrtc-server/model/serverDTO';
 import {RestService} from '../../../services/rest-service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
+import {ContextMenuService} from '../../../services/context-menu-service';
 
 @Component({
   selector: 'app-server-selector',
@@ -27,8 +28,6 @@ import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
     Spinner,
     FormsModule,
     LucideAngularModule,
-    Popup,
-    Settings,
     PreviewImage,
   ],
   templateUrl: './server-selector.html',
@@ -39,6 +38,7 @@ export class ServerSelector implements OnInit, OnDestroy {
   private webSocketService = inject(WebSocketService);
   private restService = inject(RestService);
   protected identityService = inject(IdentityService);
+  protected contextMenuService = inject(ContextMenuService);
 
 
   CONNECTING_STATE: ServerInfoWithState = {
@@ -48,8 +48,6 @@ export class ServerSelector implements OnInit, OnDestroy {
   }
 
   protected identity: Identity | undefined;
-
-  showSettings = false;
 
 
   selectedServer: ServerConnection | undefined;

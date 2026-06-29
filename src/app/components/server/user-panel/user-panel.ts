@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 import {
   LucideAngularModule,
   MicIcon, MicOffIcon,
@@ -13,6 +13,7 @@ import {PeerConnectionService} from '../../../services/peer/peer-connection-serv
 import {TrackType} from '../../../services/peer/MediaTracker';
 import {Popup} from '../../ui/popup/popup';
 import {Settings} from '../../../pages/settings/settings';
+import {ContextMenuService} from '../../../services/context-menu-service';
 
 @Component({
   selector: 'app-user-panel',
@@ -32,7 +33,8 @@ export class UserPanel {
 
   @Input() connection!: WebSocketServerConnection;
 
-  protected showClientEditor = false;
+  constructor(protected contextMenuService: ContextMenuService) {
+  }
 
   protected readonly ConnectionState = ConnectionState;
   protected readonly MicOffIcon = MicOffIcon;

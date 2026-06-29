@@ -1,0 +1,9 @@
+<app-context-menu>
+  <p class="p-2 bg-neutral-900">
+    <lucide-icon [name]="HexagonIcon" class="inline pr-2"></lucide-icon>
+    {{channel.name}}
+  </p>
+  <app-context-menu-button [icon]="ChevronUpIcon">Move Up</app-context-menu-button>
+  <app-context-menu-button [icon]="ChevronDownIcon">Move Down</app-context-menu-button>
+  <app-context-menu-button>Edit</app-context-menu-button>
+</app-context-menu>

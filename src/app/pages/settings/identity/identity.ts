@@ -5,6 +5,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IdentityService} from '../../../services/identity-service';
 import {Identity as IdentityDTO} from '../../../services/identity-service';
 import {IdentityWizzard} from './identity-wizzard/identity-wizzard';
+import {SplitPanelDivider} from '../../../components/ui/split-panel/split-panel-divider/split-panel-divider';
 
 @Component({
   selector: 'app-identity',
@@ -13,7 +14,8 @@ import {IdentityWizzard} from './identity-wizzard/identity-wizzard';
     Popup,
     ReactiveFormsModule,
     FormsModule,
-    IdentityWizzard
+    IdentityWizzard,
+    SplitPanelDivider
   ],
   templateUrl: './identity.html',
   styleUrl: './identity.css'

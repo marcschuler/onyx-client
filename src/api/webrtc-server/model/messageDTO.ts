@@ -16,5 +16,6 @@ export interface MessageDTO {
     timestamp: string;
     user: UserSimpleDTO;
     content?: Array<MessageRequest>;
+    repliesTo?: MessageDTO;
 }
 

@@ -1,0 +1,14 @@
+<button cdkMenuItem class="w-full" (click)="onClick($event)">
+  @if (icon){
+    <lucide-icon class="w-5 pr-1"  [name]="icon"></lucide-icon>
+  }
+  @if (subMenu) {
+    <ng-template #contextSubMenu>
+      <div cdkMenu>
+        <button cdkMenuItem>Sub Action 1</button>
+        <button cdkMenuItem>Sub Action 2</button>
+      </div>
+    </ng-template>
+  }
+  <ng-content></ng-content>
+</button>

@@ -7,8 +7,6 @@ import {SectionDTO} from '../../../../../../api/webrtc-server/model/sectionDTO';
 import {CircleMinus, GripVertical, LucideAngularModule, Pencil} from 'lucide-angular';
 import {Button, BUTTON_CANCEL, BUTTON_DELETE, Popup} from '../../../../../components/ui/popup/popup';
 import {ChannelDTO, SectionExtendedDTO, ServerTreeChangeMessage} from '../../../../../../api/webrtc-server';
-import {NameDescriptionPopup} from './name-description-popup/name-description-popup';
-import {ChannelEditor} from '../../../../../components/channel/channel-editor/channel-editor';
 
 @Component({
   selector: 'app-channel-administration-panel',
@@ -16,10 +14,7 @@ import {ChannelEditor} from '../../../../../components/channel/channel-editor/ch
     CdkDropList,
     CdkDrag,
     LucideAngularModule,
-    Popup,
-    NameDescriptionPopup,
     CdkDragHandle,
-    ChannelEditor,
   ],
   templateUrl: './channel-administration-panel.html',
   styleUrl: './channel-administration-panel.css'
@@ -31,13 +26,6 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
 
   @Input() connection!: WebSocketServerConnection;
   @Input() serverTree!: ServerTreeChangeMessage;
-
-  protected channelToDelete: ChannelDTO | undefined;
-  protected channelToEdit: ChannelDTO | undefined;
-
-
-  protected sectionToDelete: SectionDTO | undefined;
-  protected sectionToEdit: SectionDTO | undefined;
 
   dropListSections: string[] = [];
 
@@ -112,52 +100,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
     }, error => this.restService.handleError(error))
   }
 
-  protected editChannel(event: any) {
-    if (event == undefined) {
-      this.channelToEdit = undefined;
-      return;
-    }
-    this.connection.rest.channelController.edit3(this.channelToEdit!.id, event)
-      .subscribe(() => {
-      }, error => this.restService.handleError(error), () => this.channelToEdit = undefined);
-  }
-
-  protected editSection(event: any) {
-    if (event == undefined) {
-      this.sectionToDelete = undefined;
-      return;
-    }
-    this.connection.rest.sectionController._delete(this.sectionToEdit!.id, event)
-      .subscribe(() => {
-      }, error => this.restService.handleError(error), () => this.sectionToEdit = undefined);
-  }
-
-  protected deleteChannel(type: Button) {
-    if (type == BUTTON_DELETE) {
-      this.connection.rest.channelController.delete2(this.channelToDelete!.id)
-        .subscribe(value => {
-        }, error => this.restService.handleError(error))
-    }
-    this.channelToDelete = undefined;
-  }
-
-  protected deleteSection(type: Button) {
-    if (type == BUTTON_DELETE) {
-      this.connection.rest.sectionController._delete(this.sectionToDelete!.id)
-        .subscribe(value => {
-        }, error => this.restService.handleError(error))
-    }
-    this.sectionToDelete = undefined;
-  }
-
-  protected readonly CircleMinus = CircleMinus;
   protected readonly BUTTON_CANCEL = BUTTON_CANCEL;
-  protected readonly BUTTON_DELETE = BUTTON_DELETE;
-
-
-  protected readonly Pencil = Pencil;
-
-
   protected readonly GripVertical = GripVertical;
 
 

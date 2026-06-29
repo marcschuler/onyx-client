@@ -1,0 +1,12 @@
+<app-context-menu>
+  <div class="bg-neutral-900">
+    <app-profile-image [connection]="connection" [client]="client" [size]="64"></app-profile-image>
+    <p class="px-2 py-1">{{ client.username }}</p>
+  </div>
+  <app-context-menu-button [icon]="CircleSlashedIcon" (click)="kickClientFromChannel()">Kick (channel)
+  </app-context-menu-button>
+  <app-context-menu-button [icon]="CircleSlashedIcon" (click)="kickClientFromServer()">Kick (server)
+  </app-context-menu-button>
+  <app-context-menu-button [icon]="UserXIcon">Ban</app-context-menu-button>
+  <app-context-menu-button [icon]="UserIcon">Information</app-context-menu-button>
+</app-context-menu>

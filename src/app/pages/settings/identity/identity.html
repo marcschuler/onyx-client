@@ -1,25 +1,17 @@
 <div class="justify-center rounded-xl py-2 gap-4 flex flex-col">
   @for (identity of identityService.identities; track identity) {
-    <div class="bg-neutral-800 rounded p-2">
-
-      <div class="settings-grid max-w-128">
-        <p class="settings-grid-label-no-desc">Name</p>
-        <input class="settings-grid-option" disabled [ngModel]="identity.username">
-
-        <p class="settings-grid-label-no-desc">Created</p>
-        <p class="settings-grid-option">{{ identity.created | date: 'medium' }}</p>
-
-        <p class="settings-grid-label-no-desc">ID</p>
-        <p class="settings-grid-option">{{identity.id}}</p>
-      </div>
-      <div class="flex">
-        <button class="button-dark" disabled>Save</button>
-        <button class="right-2 bottom-2 button-red rounded-none" [disabled]="identityService.identities.length<2"
-                (click)="identityToDelete = identity">Delete
-        </button>
-      </div>
-
+    <div>
+      <input class="settings-grid-option" disabled [ngModel]="identity.username">
+      <p class="text-neutral-500">ID: {{identity.id}}</p>
+      <p class="text-neutral-500">Created: {{ identity.created | date: 'medium' }}</p>
     </div>
+    <div class="flex">
+      <button class="button-dark" disabled>Save</button>
+      <button class="button-red rounded-none" [disabled]="identityService.identities.length<2"
+              (click)="identityToDelete = identity">Delete
+      </button>
+    </div>
+    <ui-split-panel-divider></ui-split-panel-divider>
   }
   <div class="p-4"></div>
   <h2>Create a new Identity</h2>
@@ -27,7 +19,7 @@
 </div>
 
 @if (identityToDelete) {
-  <app-popup [isOpen]="true" title="Delete your identity?"
+  <app-popup title="Delete your identity?"
              [content]="'All groups, ranks and archivements on all servers using the identity \'' + identityToDelete.username + '\' will be inaccessible.'"
              [buttons]="[BUTTON_CANCEL,BUTTON_DELETE]"
              (close)="closeIdentityDialog($event)"

@@ -12,12 +12,12 @@
   </button>
 </div>
 @if (showAdminPanel) {
-  <app-popup [isOpen]="showAdminPanel" [closeButton]="true" (close)="showAdminPanel=false">
+  <app-popup [closeButton]="true" (close)="showAdminPanel=false">
     <app-admin-panel [connection]="connection"></app-admin-panel>
   </app-popup>
 }
 @if (showUsersPanel) {
-  <app-popup [isOpen]="showUsersPanel" [closeButton]="true" (close)="showUsersPanel=false">
+  <app-popup [closeButton]="true" (close)="showUsersPanel=false">
     <app-users-panel [connection]="connection"></app-users-panel>
   </app-popup>
 }
