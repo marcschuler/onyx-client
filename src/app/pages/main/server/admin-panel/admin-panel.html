@@ -1,47 +1,49 @@
-<ui-split-panel>
-  <ui-split-panel-bar>
-    <ui-split-panel-button [icon]="ServerCogIcon" value="Server Administration">
-    </ui-split-panel-button>
-    <ui-split-panel-button [icon]="HexagonIcon" value="Sections & Channel">
-      @for (section of connection.data!.sections; track section.id) {
-        <ui-split-panel-button [value]="section.id" [name]="section.name">
-        </ui-split-panel-button>
-        @for (channel of section.channels; track channel.id) {
-          <ui-split-panel-button [icon]="HexagonIcon" [value]="channel.id" [name]="channel.name">
+<app-popup [closeButton]="true" [fullHeight]="true">
+  <ui-split-panel>
+    <ui-split-panel-bar>
+      <ui-split-panel-button [icon]="ServerCogIcon" value="Server Administration">
+      </ui-split-panel-button>
+      <ui-split-panel-button [icon]="HexagonIcon" value="Sections & Channel">
+        @for (section of connection.data!.sections; track section.id) {
+          <ui-split-panel-button [value]="section.id" [name]="section.name">
           </ui-split-panel-button>
+          @for (channel of section.channels; track channel.id) {
+            <ui-split-panel-button [icon]="HexagonIcon" [value]="channel.id" [name]="channel.name">
+            </ui-split-panel-button>
+          }
         }
+      </ui-split-panel-button>
+      <ui-split-panel-button [icon]="IdCardLanyardIcon" value="Groups">
+        @for (group of groups; track group.id) {
+          <ui-split-panel-button [value]="group" [name]="group.name"></ui-split-panel-button>
+        }
+      </ui-split-panel-button>
+    </ui-split-panel-bar>
+
+    <app-server-administration-panel [connection]="connection"
+                                     splitPanel="Server Administration"></app-server-administration-panel>
+
+
+    <app-channel-administration-panel [connection]="connection"
+                                      splitPanel="Sections & Channel"></app-channel-administration-panel>
+    @for (section of connection.data!.sections; track section.id) {
+      <app-section-editor [connection]="connection" [sectionId]="section.id"
+                          [splitPanel]="section.id"></app-section-editor>
+      @for (channel of section.channels; track channel.id) {
+        <app-channel-editor [connection]="connection" [channelId]="channel.id" [splitPanel]="channel.id">
+
+        </app-channel-editor>
       }
-    </ui-split-panel-button>
-    <ui-split-panel-button [icon]="IdCardLanyardIcon" value="Groups">
+    }
+
+
+    @if (groups) {
       @for (group of groups; track group.id) {
-        <ui-split-panel-button [value]="group" [name]="group.name"></ui-split-panel-button>
+        <app-group-administration-panel [connection]="connection" [splitPanel]="group" [group]="group"
+                                        [(groups)]="groups"
+        ></app-group-administration-panel>
       }
-    </ui-split-panel-button>
-  </ui-split-panel-bar>
-
-  <app-server-administration-panel [connection]="connection"
-                                   splitPanel="Server Administration"></app-server-administration-panel>
-
-
-  <app-channel-administration-panel [connection]="connection"
-                                    splitPanel="Sections & Channel"></app-channel-administration-panel>
-  @for (section of connection.data!.sections; track section.id) {
-    <app-section-editor [connection]="connection" [sectionId]="section.id" [splitPanel]="section.id"></app-section-editor>
-    @for (channel of section.channels; track channel.id) {
-      <app-channel-editor [connection]="connection" [channelId]="channel.id" [splitPanel]="channel.id">
-
-      </app-channel-editor>
     }
-  }
 
-
-  @if (groups) {
-    @for (group of groups; track group.id) {
-      <app-group-administration-panel [connection]="connection" [splitPanel]="group" [group]="group"
-                                      [(groups)]="groups"
-      ></app-group-administration-panel>
-    }
-  }
-
-</ui-split-panel>
-
+  </ui-split-panel>
+</app-popup>

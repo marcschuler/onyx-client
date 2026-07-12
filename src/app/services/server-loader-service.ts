@@ -54,3 +54,8 @@ export interface ServerConnection {
   url: string;
   name?: string;
 }
+
+export interface KnownUser{
+  friend: boolean;
+  customName: string;
+}

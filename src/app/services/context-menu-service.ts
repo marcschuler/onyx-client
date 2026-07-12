@@ -1,4 +1,4 @@
-import {ComponentRef, Injectable, Injector, runInInjectionContext, Type} from '@angular/core';
+import {ComponentRef, Injectable, InjectionToken, Injector, runInInjectionContext, Type} from '@angular/core';
 
 import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
@@ -9,6 +9,7 @@ import {ChannelDTO} from '../../api/webrtc-server';
 import {ChannelContextMenu} from '../components/channel/channel-context-menu/channel-context-menu';
 import {Settings} from '../pages/settings/settings';
 import {BiMap} from 'mnemonist';
+import {Popup} from '../components/ui/popup/popup';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,9 @@ export class ContextMenuService {
   public openSettingsMenu(connection: WebSocketServerConnection | undefined) {
     this.openPopup(Settings, {
       connection: connection,
+    }, {
+      closeButton: true,
+      fullHeight: true
     })
   }
 
@@ -51,48 +55,63 @@ export class ContextMenuService {
       scrollStrategy: this.overlay.scrollStrategies.close(),
       hasBackdrop: true,
     });
-    return this.openMenu(menu, component, inputs);
-  }
+    event.stopPropagation();
+    event.preventDefault();
 
-  public openPopup<T>(component: Type<T>, inputs?: Partial<T>) {
-    const menu = this.overlay.create({
-      positionStrategy: this.overlay.position().global()
-        .centerHorizontally()
-        .centerVertically(),
-      scrollStrategy: this.overlay.scrollStrategies.block(),
-      hasBackdrop: true,
-      width: '95vw',
-      height: '90vh',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      minWidth: '95vw',
-      minHeight: '90vh',
-    });
-    return this.openMenu(menu, component, inputs);
-  }
-
-
-  public openMenu<T>(menu: OverlayRef, component: Type<T>, inputs?: Partial<T>) {
     menu.backdropClick().subscribe(() => this.closeContextMenu(menu));
-    const menuStack = runInInjectionContext(this.injector, () => MenuStack.inline('vertical'));
-    const injector = Injector.create({
-      providers: [
-        {provide: MENU_STACK, useValue: menuStack},
-      ],
-      parent: this.injector,
-    });
-    const portal = new ComponentPortal(component, null, injector);
+    const portal = new ComponentPortal(component, null, this.buildInjector(menu));
     const componentRef = menu.attach(portal);
-
     this.popups.set(componentRef.instance, menu);
-    console.log("created popup", componentRef,menu)
+    console.log("ui:context: created menu")
 
     if (inputs) {
       Object.entries(inputs).forEach(([key, value]) => {
         componentRef.setInput(key, value);
       });
     }
-    return menu;
+    return {menu, componentRef};
+  }
+
+  public openPopup<T>(component: Type<T>, inputs?: Partial<T>, popupSettings?: PopupSettings) {
+    const menu = this.overlay.create({
+      positionStrategy: this.overlay.position().global()
+        .centerHorizontally()
+        .centerVertically(),
+      scrollStrategy: this.overlay.scrollStrategies.block(),
+      hasBackdrop: true,
+    });
+
+
+    menu.backdropClick().subscribe(() => this.closeContextMenu(menu));
+    const portal = new ComponentPortal(Popup, null, this.buildInjector(menu));
+    const componentRef = menu.attach(portal);
+    if (popupSettings)
+      Object.entries(popupSettings).forEach(([key, value]) => {
+        componentRef.setInput(key, value);
+      });
+
+    this.popups.set(componentRef.instance, menu);
+    console.log("ui:context: created menu")
+
+    componentRef.instance.attachComponent(component, inputs, this.buildInjector(menu));
+
+    return {menu, componentRef};
+  }
+
+  protected buildInjector(menu: OverlayRef) {
+    const menuStack = runInInjectionContext(this.injector, () => MenuStack.inline('vertical'));
+    return Injector.create({
+      providers: [
+        {provide: MENU_STACK, useValue: menuStack},
+        {
+          provide: POPUP_CONTEXT,
+          useValue: {
+            close: () => this.closeContextMenu(menu)
+          } as PopupControl,
+        },
+      ],
+      parent: this.injector,
+    });
   }
 
   public closeContextComponent(component: any) {
@@ -100,17 +119,29 @@ export class ContextMenuService {
       console.warn("ui:context: no overlay for component", component)
     }
     const overlay = this.popups.get(component) as OverlayRef;
+    console.log("ui:context: closing component")
     overlay.detach();
     overlay.dispose();
 
     this.popups.delete(component);
-    console.log("context: closed component")
   }
 
   public closeContextMenu(overlay: OverlayRef) {
     this.popups.inverse.delete(overlay);
-    console.log("context: closed overlay")
+    console.log("ui:context: closing overlay")
     overlay.detach();
     overlay.dispose();
   }
+}
+
+
+export const POPUP_CONTEXT = new InjectionToken<PopupControl>('POPUP_CLOSE');
+
+export interface PopupControl {
+  close: () => void;
+}
+
+export interface PopupSettings {
+  closeButton: boolean;
+  fullHeight: boolean;
 }

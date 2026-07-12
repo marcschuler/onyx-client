@@ -20,6 +20,10 @@ import {replaceInList} from '../../../../util';
 import {SplitPanelBar} from '../../../../components/ui/split-panel/split-panel-bar/split-panel-bar';
 import {SplitPanelButton} from '../../../../components/ui/split-panel/split-panel-button/split-panel-button';
 import {SplitPanelSelector} from '../../../../directives/split-panel-selector';
+import {Popup} from '../../../../components/ui/popup/popup';
+import {ProfileImage} from '../../../../components/client/profile-image/profile-image';
+import {MultiSelect} from '../../../../components/ui/multi-select/multi-select';
+import {SelectItem} from '../../../../components/ui/multi-select/select-item/select-item';
 
 @Component({
   selector: 'app-users-panel',
@@ -31,7 +35,11 @@ import {SplitPanelSelector} from '../../../../directives/split-panel-selector';
     SplitPanel,
     SplitPanelBar,
     SplitPanelButton,
-    SplitPanelSelector
+    SplitPanelSelector,
+    Popup,
+    ProfileImage,
+    MultiSelect,
+    SelectItem
   ],
   templateUrl: './users-panel.html',
   styleUrl: './users-panel.css',

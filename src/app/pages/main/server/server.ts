@@ -22,6 +22,7 @@ import {AdminPanel} from './admin-panel/admin-panel';
 import {UsersPanel} from './users-panel/users-panel';
 import {ServerLoaderService} from '../../../services/server-loader-service';
 import {Tooltip} from '../../../directives/tooltip';
+import {ContextMenuService} from '../../../services/context-menu-service';
 
 @Component({
   selector: 'app-server',
@@ -42,14 +43,10 @@ import {Tooltip} from '../../../directives/tooltip';
 export class Server {
   protected webSocketService = inject(WebSocketService);
   protected interfaceService = inject(StorageService);
-  protected serverLoaderService = inject(ServerLoaderService);
+  protected contextMenuService = inject(ContextMenuService);
 
 
   @Input() connection!: WebSocketServerConnection;
-
-  showSettings = false;
-  showAdminPanel = false;
-  showUsersPanel = false;
 
   private resizing = false;
   private minWidth = 100;
@@ -82,17 +79,27 @@ export class Server {
   }
 
 
-  protected readonly SettingsIcon = SettingsIcon;
-  protected readonly InfoIcon = InfoIcon;
-  protected readonly ServerCog = ServerCog;
-  protected readonly BookUser = BookUser;
-  protected readonly PanelLeftClose = PanelLeftClose;
-  protected readonly PanelLeftOpen = PanelLeftOpen;
-  protected readonly LogOut = LogOut;
 
   protected closeConnection() {
     this.webSocketService.closeConnection(this.connection);
   }
 
-  protected readonly ServerIcon = ServerIcon;
+
+  protected openAdminPanel() {
+    this.contextMenuService.openPopup(AdminPanel,{
+      connection: this.connection
+    })
+  }
+
+  protected openUserPanel() {
+    this.contextMenuService.openPopup(UsersPanel,{
+      connection: this.connection
+    })
+  }
+
+  protected readonly ServerCog = ServerCog;
+  protected readonly BookUser = BookUser;
+  protected readonly PanelLeftClose = PanelLeftClose;
+  protected readonly PanelLeftOpen = PanelLeftOpen;
+  protected readonly LogOut = LogOut;
 }

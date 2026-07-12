@@ -51,8 +51,8 @@ model/kickedEvent.ts
 model/markdownMessageContentDTO.ts
 model/messageBody.ts
 model/messageContentDTO.ts
+model/messageCreationDTO.ts
 model/messageDTO.ts
-model/messageRequest.ts
 model/messageTypes.ts
 model/models.ts
 model/noPermissionMessage.ts
@@ -74,6 +74,7 @@ model/sectionExtendedDTO.ts
 model/sectionMoveEvent.ts
 model/serverChangeEvent.ts
 model/serverDTO.ts
+model/serverDTODescriptionInner.ts
 model/serverTreeChangeMessage.ts
 model/signedContent.ts
 model/sortObject.ts

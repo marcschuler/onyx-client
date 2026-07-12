@@ -7,15 +7,11 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileDTO } from './fileDTO';
 import { ServerDTODescriptionInner } from './serverDTODescriptionInner';
 
 
-export interface ServerDTO { 
-    readonly id: string;
-    name: string;
-    icon?: FileDTO;
-    publicKey: { [key: string]: any; };
-    description: Array<ServerDTODescriptionInner>;
+export interface MessageCreationDTO { 
+    content: Array<ServerDTODescriptionInner>;
+    repliesTo?: string;
 }
 
