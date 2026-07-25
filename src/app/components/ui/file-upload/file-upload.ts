@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import {FileUpIcon, ImageUpIcon, LucideAngularModule} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {ToastService, ToastType} from '../../../services/toast-service';
+import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {RestService} from '../../../services/rest-service';
 import {filter, map, Observable} from 'rxjs';
 import {HttpEvent, HttpEventType} from '@angular/common/http';

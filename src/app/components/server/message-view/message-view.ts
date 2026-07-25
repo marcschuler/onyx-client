@@ -1,9 +1,19 @@
-import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  inject
+} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {LucideAngularModule, SendIcon} from 'lucide-angular';
+import {CornerDownRightIcon, CornerRightDownIcon, LucideAngularModule, SendIcon, XIcon} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {getChannelFromId} from '../../../services/Util';
-import {ToastService, ToastType} from '../../../services/toast-service';
+import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {MessageHandler, WebSocketService} from '../../../services/websocket/web-socket-service';
 import {MessageDTO} from '../../../../api/webrtc-server/model/messageDTO';
 import {NOTIFICATION_MESSAGE_NEW, NotificationService} from '../../../services/notification.service';
@@ -17,6 +27,7 @@ import {
   MarkdownMessageContentDTO
 } from '../../../../api/webrtc-server';
 import {FileUpload} from '../../ui/file-upload/file-upload';
+import {MessageContent} from '../../chat/message-content/message-content';
 
 @Component({
   selector: 'app-message-view',
@@ -24,7 +35,8 @@ import {FileUpload} from '../../ui/file-upload/file-upload';
     FormsModule,
     LucideAngularModule,
     Message,
-    FileUpload
+    FileUpload,
+    MessageContent
   ],
   templateUrl: './message-view.html',
   styleUrl: './message-view.css'
@@ -47,6 +59,8 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
   message = "";
 
+  reply: MessageDTO | undefined = undefined;
+
   @ViewChild('messageList') private messageListElement!: ElementRef;
 
   @ViewChild('moreMessages') set moreMessagesElement(element: ElementRef) {
@@ -60,6 +74,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["channelId"]) {
       this.messages = [];
+      this.reply = undefined;
       this.initMessages();
     }
   }
@@ -155,10 +170,17 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     const message = this.messageService.convertLinksToMarkdownLinks(this.message);
     console.log("message-view: sending message to channel/chat " + channel.id + "/" + channel.chatId);
     this.connection.rest.chatController.message(channel.chatId, {
-      text: message,
-      type: "MARKDOWN"
-    } as MarkdownMessageContentDTO).subscribe(() => {
+      repliesTo: this.reply ? this.reply.id : undefined,
+      content: [
+        {
+          text: message,
+          type: "MARKDOWN",
+          repliesTo: this.reply ? this.reply.id : undefined
+        } as MarkdownMessageContentDTO
+      ]
+    }).subscribe(() => {
       this.message = "";
+      this.reply = undefined;
     }, error => this.restService.handleError(error))
   }
 
@@ -169,15 +191,21 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
       return;
     }
     this.connection.rest.chatController.message(channel.chatId, {
-      type: "FILE",
-      file: $event
-    } as FileMessageContentDTO)
+      repliesTo: this.reply ? this.reply.id : undefined,
+      content: [
+        {
+          type: "FILE",
+          file: $event,
+        } as FileMessageContentDTO
+      ]
+    })
       .subscribe(() => {
         console.log("message-view: send file chat")
         this.toastService.create({
           title: "File uploaded to chat",
           type: ToastType.Success
         })
+        this.reply = undefined;
       }, error => this.restService.handleError(error))
   }
 
@@ -195,8 +223,14 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     this.addMessageToList([event.message]);
     if (event.message.user.id !== connection.identity.id)
       this.notificationService.notify(NOTIFICATION_MESSAGE_NEW)
-
   };
 
 
+  protected setReply($event: MessageDTO | undefined) {
+    this.reply = $event;
+    console.log("ui:message-view: replying to ", $event)
+  }
+
+  protected readonly CornerDownRightIcon = CornerDownRightIcon;
+  protected readonly XIcon = XIcon;
 }

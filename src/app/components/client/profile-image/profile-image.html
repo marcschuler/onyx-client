@@ -1,11 +1,10 @@
-@if (client.details.avatarId) {
-
-  <app-preview-image [file]="client.details.avatarId" [connection]="connection"
+@if (user.avatarId) {
+  <app-preview-image [file]="user.avatarId" [connection]="connection"
                      [imageClass]="'rounded inline object-cover w-' + size + ' h-' + size">
   </app-preview-image>
 } @else {
   <img alt="user avatar"
-       [src]="client.id | identicon: 32 | async"
+       [src]="user.id | identicon: 32 | async"
        class="rounded inline"
   />
 }

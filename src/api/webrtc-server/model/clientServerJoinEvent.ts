@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { UserSimpleDTO } from './userSimpleDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface ClientServerJoinEvent extends MessageBody { 
+export interface ClientServerJoinEvent { 
     user: UserSimpleDTO;
     readonly type: ClientServerJoinEvent.TypeEnum;
 }

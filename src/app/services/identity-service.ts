@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {CryptoService} from './crypto-service';
-import {ToastService, ToastType} from './toast-service';
+import {ToastService, ToastType} from './ui/toast-service';
 import {KeyId} from './websocket/WebSocketServerConnection';
 import {CryptoKey, generateKeyPair, GenerateKeyPairResult, importJWK} from 'jose';
 

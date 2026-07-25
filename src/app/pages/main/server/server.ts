@@ -22,7 +22,7 @@ import {AdminPanel} from './admin-panel/admin-panel';
 import {UsersPanel} from './users-panel/users-panel';
 import {ServerLoaderService} from '../../../services/server-loader-service';
 import {Tooltip} from '../../../directives/tooltip';
-import {ContextMenuService} from '../../../services/context-menu-service';
+import {ContextMenuService} from '../../../services/ui/context-menu-service';
 
 @Component({
   selector: 'app-server',

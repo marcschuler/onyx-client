@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {ToastMessage, ToastService} from '../../../services/toast-service';
+import {ToastMessage, ToastService} from '../../../services/ui/toast-service';
 import {NgClass} from '@angular/common';
 import {LucideAngularModule, XIcon} from 'lucide-angular';
 

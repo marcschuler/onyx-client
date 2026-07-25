@@ -3,7 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_EDIT, Popup} from '../../../components/ui/popup/popup';
 import {ServerConnection, ServerLoaderService} from '../../../services/server-loader-service';
 import {replaceInList} from '../../../util';
-import {ToastService, ToastType} from '../../../services/toast-service';
+import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {LucideAngularModule, ShredderIcon} from 'lucide-angular';
 
 @Component({

@@ -3,7 +3,7 @@ import {FileUpload, UploadType} from "../../../components/ui/file-upload/file-up
 import {FormsModule} from "@angular/forms";
 import {LucideAngularModule, XIcon} from "lucide-angular";
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {ToastService, ToastType} from '../../../services/toast-service';
+import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {RestService} from '../../../services/rest-service';
 import {FileDTO} from '../../../../api/webrtc-server';

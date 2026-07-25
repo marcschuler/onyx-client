@@ -5,7 +5,7 @@ import {ProfileImage} from "../../client/profile-image/profile-image";
 import {CornerDownRightIcon, XIcon} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {MessageDTO} from '../../../../api/webrtc-server';
-import {POPUP_CONTEXT} from '../../../services/context-menu-service';
+import {POPUP_CONTEXT} from '../../../services/ui/context-menu-service';
 
 @Component({
   selector: 'app-message-context-menu',

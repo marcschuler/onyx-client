@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface ClientServerLeaveEvent extends MessageBody { 
+export interface ClientServerLeaveEvent { 
     userId: string;
     readonly type: ClientServerLeaveEvent.TypeEnum;
 }

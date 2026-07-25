@@ -10,10 +10,9 @@
 import { ServerDTO } from './serverDTO';
 import { SectionExtendedDTO } from './sectionExtendedDTO';
 import { UserSimpleDTO } from './userSimpleDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface ServerTreeChangeMessage extends MessageBody { 
+export interface ServerTreeChangeMessage { 
     server: ServerDTO;
     sections: Array<SectionExtendedDTO>;
     users: Array<UserSimpleDTO>;

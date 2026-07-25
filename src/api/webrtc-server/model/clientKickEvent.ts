@@ -7,12 +7,10 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserSimpleDTO } from './userSimpleDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface ClientKickEvent extends MessageBody { 
-    user: UserSimpleDTO;
+export interface ClientKickEvent { 
+    userId: string;
     reason: ClientKickEvent.ReasonEnum;
     message?: string;
     readonly type: ClientKickEvent.TypeEnum;

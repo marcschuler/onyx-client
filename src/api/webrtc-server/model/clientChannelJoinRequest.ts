@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface ClientChannelJoinRequest extends MessageBody { 
+export interface ClientChannelJoinRequest { 
     channelId: string;
     readonly type: ClientChannelJoinRequest.TypeEnum;
 }

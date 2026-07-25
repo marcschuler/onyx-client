@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { IceServer } from './iceServer';
-import { MessageBody } from './messageBody';
 
 
-export interface IceServerMessage extends MessageBody { 
+export interface IceServerMessage { 
     iceServers: Array<IceServer>;
     readonly type: IceServerMessage.TypeEnum;
 }

@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { SectionDTO } from './sectionDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface SectionChangeEvent extends MessageBody { 
+export interface SectionChangeEvent { 
     channel: SectionDTO;
     readonly type: SectionChangeEvent.TypeEnum;
 }

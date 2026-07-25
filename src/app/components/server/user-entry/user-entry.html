@@ -3,7 +3,7 @@
      (contextmenu)="contextMenuService.openClientContextMenu(client,connection,$event)">
 
   <span>
-    <app-profile-image [connection]="connection" [client]="client"
+    <app-profile-image [connection]="connection" [user]="client.details"
                        [size]="interfaceService.settings.compactMode?6:8"></app-profile-image>
 
     <span class="pl-2" [ngClass]="[

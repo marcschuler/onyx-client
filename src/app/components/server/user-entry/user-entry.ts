@@ -6,7 +6,7 @@ import {StorageService} from '../../../services/storage.service';
 import {RestService} from '../../../services/rest-service';
 import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 import {PreviewImage} from '../../ui/preview-image/preview-image';
-import {ContextMenuService} from '../../../services/context-menu-service';
+import {ContextMenuService} from '../../../services/ui/context-menu-service';
 import {ProfileImage} from '../../client/profile-image/profile-image';
 
 @Component({

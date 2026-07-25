@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { ServerDTO } from './serverDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface ServerChangeEvent extends MessageBody { 
+export interface ServerChangeEvent { 
     server: ServerDTO;
     readonly type: ServerChangeEvent.TypeEnum;
 }

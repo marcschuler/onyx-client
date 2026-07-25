@@ -1,6 +1,6 @@
 import {Component, inject, Input} from '@angular/core';
 import {RestService} from '../../../services/rest-service';
-import {ToastService, ToastType} from '../../../services/toast-service';
+import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO, SectionDTO} from '../../../../api/webrtc-server';
 import {LucideAngularModule, SaveIcon} from 'lucide-angular';

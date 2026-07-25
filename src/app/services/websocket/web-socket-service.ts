@@ -3,7 +3,7 @@ import {Client, ConnectionState, KeyId, ServerObjectId, WebSocketServerConnectio
 import {Identity} from '../identity-service';
 import {ServerConnection} from '../server-loader-service';
 import {CryptoService} from '../crypto-service';
-import {ToastService, ToastType} from '../toast-service';
+import {ToastService, ToastType} from '../ui/toast-service';
 import {PeerConnectionService} from '../peer/peer-connection-service';
 import {
   AuthChallengeRequest,
@@ -20,7 +20,6 @@ import {
   IceServerMessage,
   JwtTokenEvent,
   KickedEvent,
-  MessageBody,
   MessageTypes,
   NoPermissionMessage,
   SectionCreateEvent,
@@ -32,6 +31,8 @@ import {
 } from '../../../api/webrtc-server';
 import {RestService} from '../rest-service';
 import {clientWithId, getChannelFromId, getSectionFromId, getSectionOfChannel, reorderListItem} from '../Util';
+import {MessageBody} from '../../../api/webrtc-server/model/messageBody';
+import {EventHandler} from '../../util';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,8 @@ export class WebSocketService {
   connection: WebSocketServerConnection | undefined;
 
   private messageHandlers = new Map<MessageTypes, MessageHandler<any>[]>();
+
+  public onServerClose: EventHandler<void> = new EventHandler();
 
   constructor() {
     this.addHandler(AuthChallengeRequest.TypeEnum.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
@@ -118,12 +121,11 @@ export class WebSocketService {
           .catch(e => console.error(e));
       };
 
-      const reconnect = (error: string) => {
-        console.log("ws: reconnecting");
+      const onServerClose = (error: string) => {
         this.peerConnectionService.updatePeerConnections();
         // setTimeout(() => {
         const reason = "Reason: " + error;
-        console.warn("Server closed connection:" + reason)
+        console.warn("ws: erver closed connection:" + reason)
         this.toastService.create({
           title: "Server closed connection",
           message: reason,
@@ -131,7 +133,8 @@ export class WebSocketService {
         })
         this.connection = undefined;
         reject(error);
-        //TODO does not work, every reconnect doubles the connections
+        this.onServerClose.emit();
+        //TODO recopnnecting does not work, every onServerClose doubles the connections
         // this.connect(serverConnection, identity, retries - 1);
         // }, 4000);
       }
@@ -139,14 +142,14 @@ export class WebSocketService {
       webSocket.onclose = () => {
         console.log('ws: Disconnected');
         connection.state = ConnectionState.CLOSED;
-        reconnect("Server closed connection");
+        onServerClose("Server closed connection");
 
       };
       webSocket.onerror = (error) => {
         console.error('ws: Error on connection', error);
         //TODO is connection closed? What is the state?
         connection.state = ConnectionState.ERROR;
-        reconnect("Connection error " + error.type);
+        onServerClose("Connection error " + error.type);
       };
     });
   }
@@ -295,8 +298,8 @@ export class WebSocketService {
   }
 
   private onClientChannelJoinEvent(event: ClientChannelJoinEvent, connection: WebSocketServerConnection) {
-    console.log("ws: onClientChannelJoin: Client " + event.user.username + " changed channel to " + event.channelId)
-    const client = clientWithId(connection.clients, event.user.id);
+    const client = clientWithId(connection.clients, event.userId);
+    console.log("ws: onClientChannelJoin: Client " + client.username + " changed channel to " + event.channelId)
     client.channel = event.channelId as ServerObjectId;
     if (client == connection.me) {
       console.log("ws: onClientChannelJoin: Our channel changed to " + client.channel)
@@ -306,8 +309,8 @@ export class WebSocketService {
 
 
   private onClientChannelLeaveEvent(event: ClientChannelLeaveEvent, connection: WebSocketServerConnection) {
-    console.log("ws: onClientChannelLeave: Client " + event.user.username + " left the channel")
-    const client = clientWithId(connection.clients, event.user.id);
+    const client = clientWithId(connection.clients, event.userId);
+    console.log("ws: onClientChannelLeave: Client " + client.username + " left the channel")
     client.channel = undefined;
 
     if (client == connection.me) {
@@ -353,9 +356,9 @@ export class WebSocketService {
   }
 
   private onClientKickedMessage(event: ClientKickEvent, connection: WebSocketServerConnection) {
-    console.log("Client " + event.user.id + " has been kicked. Reason: " + event.reason + ", Message: " + event.message);
+    console.log("Client " + event.userId + " has been kicked. Reason: " + event.reason + ", Message: " + event.message);
     this.onClientServerLeave({
-      userId: event.user.id,
+      userId: event.userId,
       type: "ClientServerLeaveEvent"
     }, connection)
   }

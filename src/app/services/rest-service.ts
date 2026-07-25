@@ -7,7 +7,7 @@ import {
   Configuration, GroupControllerService, SectionControllerService,
   ServerControllerService, StorageControllerService, UserControllerService
 } from '../../api/webrtc-server';
-import {ToastService, ToastType} from './toast-service';
+import {ToastService, ToastType} from './ui/toast-service';
 
 @Injectable({
   providedIn: 'root'

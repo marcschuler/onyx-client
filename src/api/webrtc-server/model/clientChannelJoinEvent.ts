@@ -7,13 +7,11 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserSimpleDTO } from './userSimpleDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface ClientChannelJoinEvent extends MessageBody { 
-    user: UserSimpleDTO;
-    channelId?: string;
+export interface ClientChannelJoinEvent { 
+    userId: string;
+    channelId: string;
     readonly type: ClientChannelJoinEvent.TypeEnum;
 }
 export namespace ClientChannelJoinEvent {

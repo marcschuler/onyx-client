@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface NoPermissionMessage extends MessageBody { 
+export interface NoPermissionMessage { 
     permissionType: NoPermissionMessage.PermissionTypeEnum;
     message?: string;
     readonly type: NoPermissionMessage.TypeEnum;

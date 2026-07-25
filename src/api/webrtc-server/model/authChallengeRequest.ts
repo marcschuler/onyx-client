@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { AuthChallenge } from './authChallenge';
-import { MessageBody } from './messageBody';
 
 
-export interface AuthChallengeRequest extends MessageBody { 
+export interface AuthChallengeRequest { 
     challenge: AuthChallenge;
     readonly type: AuthChallengeRequest.TypeEnum;
 }

@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { MessageDTO } from './messageDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface ChatMessageEvent extends MessageBody { 
+export interface ChatMessageEvent { 
     chatId: string;
     message: MessageDTO;
     readonly type: ChatMessageEvent.TypeEnum;

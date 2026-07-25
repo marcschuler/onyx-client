@@ -1,17 +1,14 @@
 import {
-  Component,
-  ComponentRef,
+  Component, ComponentRef,
   ContentChild,
-  ElementRef,
   EventEmitter,
-  inject,
+  inject, Injector,
   Input,
-  Output,
-  TemplateRef
+  Output, ViewChild, ViewContainerRef,
 } from '@angular/core';
 import {NgClass} from '@angular/common';
-import {ContextMenuService} from '../../../services/context-menu-service';
 import {Settings} from '../../../pages/settings/settings';
+import {POPUP_CONTEXT} from '../../../services/ui/context-menu-service';
 
 @Component({
   selector: 'app-popup',
@@ -22,7 +19,7 @@ import {Settings} from '../../../pages/settings/settings';
   styleUrl: './popup.css'
 })
 export class Popup {
-  protected contextMenuService = inject(ContextMenuService);
+  protected popupContext = inject(POPUP_CONTEXT);
 
   @Output() close = new EventEmitter<Button>();
 
@@ -35,7 +32,25 @@ export class Popup {
 
   @Input() buttons?: Button[];
 
-  @ContentChild(Settings) contentComponent!: Settings;
+  @ViewChild('vc', {read: ViewContainerRef, static: true})
+  vc!: ViewContainerRef;
+
+  childRef?: ComponentRef<any>;
+
+  attachComponent<T>(component: any, data: Partial<T> | undefined, injector: Injector) {
+    this.vc.clear();
+
+    this.childRef = this.vc.createComponent(component, {
+      injector: injector
+    });
+
+    if (data && this.childRef.instance) {
+      Object.assign(this.childRef.instance, data);
+    }
+
+    return this.childRef;
+  }
+
 
   getButtonClass(type: ButtonType) {
     switch (type) {
@@ -49,14 +64,15 @@ export class Popup {
   }
 
   onButton(button: Button | undefined) {
-    if (button==undefined && this.closeMenuOnClose){
-      if (this.contentComponent==undefined){
-        console.warn("ui:popup: no content for popup but closeMenuOnClose is set")
-      }else{
-        this.contextMenuService.closeContextComponent(this.contentComponent);
-      }
+    if (button == undefined && this.closeMenuOnClose) {
+      this.popupContext.close();
     }
     this.close.emit(button);
+  }
+
+  protected onOutOfBorder(event: MouseEvent) {
+    if (event.target === event.currentTarget)
+      this.popupContext.close();
   }
 }
 

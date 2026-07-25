@@ -4,7 +4,7 @@ import {ChannelDTO} from '../../../../api/webrtc-server';
 import {RestService} from '../../../services/rest-service';
 import {SplitPanel,} from '../../ui/split-panel/split-panel';
 import {HexagonIcon, LucideAngularModule, SaveIcon} from 'lucide-angular';
-import {ToastService, ToastType} from '../../../services/toast-service';
+import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {SplitPanelBar} from '../../ui/split-panel/split-panel-bar/split-panel-bar';
 import {SplitPanelButton} from '../../ui/split-panel/split-panel-button/split-panel-button';
 import {FormsModule} from '@angular/forms';

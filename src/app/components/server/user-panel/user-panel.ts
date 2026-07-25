@@ -13,7 +13,7 @@ import {PeerConnectionService} from '../../../services/peer/peer-connection-serv
 import {TrackType} from '../../../services/peer/MediaTracker';
 import {Popup} from '../../ui/popup/popup';
 import {Settings} from '../../../pages/settings/settings';
-import {ContextMenuService} from '../../../services/context-menu-service';
+import {ContextMenuService} from '../../../services/ui/context-menu-service';
 
 @Component({
   selector: 'app-user-panel',

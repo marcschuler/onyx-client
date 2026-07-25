@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface SectionMoveEvent extends MessageBody { 
+export interface SectionMoveEvent { 
     sectionId: string;
     order: number;
     readonly type: SectionMoveEvent.TypeEnum;

@@ -22,7 +22,7 @@ import {SplitPanelDivider} from '../../components/ui/split-panel/split-panel-div
 import {ServerLoaderService} from '../../services/server-loader-service';
 import {ServerEditor} from './server-editor/server-editor';
 import {Popup} from '../../components/ui/popup/popup';
-import {ContextMenuService} from '../../services/context-menu-service';
+import {ContextMenuService} from '../../services/ui/context-menu-service';
 
 @Component({
   selector: 'app-settings',
@@ -41,8 +41,7 @@ import {ContextMenuService} from '../../services/context-menu-service';
     SplitPanel,
     ServerUser,
     SplitPanelDivider,
-    ServerEditor,
-    Popup
+    ServerEditor
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css'

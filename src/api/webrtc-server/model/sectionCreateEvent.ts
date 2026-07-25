@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { SectionExtendedDTO } from './sectionExtendedDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface SectionCreateEvent extends MessageBody { 
+export interface SectionCreateEvent { 
     section: SectionExtendedDTO;
     order: number;
     readonly type: SectionCreateEvent.TypeEnum;

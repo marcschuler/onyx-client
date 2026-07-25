@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface ErrorMessage extends MessageBody { 
+export interface ErrorMessage { 
     message?: string;
     readonly type: ErrorMessage.TypeEnum;
 }

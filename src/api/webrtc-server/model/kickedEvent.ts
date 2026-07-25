@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface KickedEvent extends MessageBody { 
+export interface KickedEvent { 
     reason: KickedEvent.ReasonEnum;
     message?: string;
     readonly type: KickedEvent.TypeEnum;

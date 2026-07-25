@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface ChannelDeleteEvent extends MessageBody { 
+export interface ChannelDeleteEvent { 
     channelId: string;
     readonly type: ChannelDeleteEvent.TypeEnum;
 }

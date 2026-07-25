@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface SectionDeleteEvent extends MessageBody { 
+export interface SectionDeleteEvent { 
     sectionId: string;
     readonly type: SectionDeleteEvent.TypeEnum;
 }

@@ -2,7 +2,7 @@ import { Injectable, Injector, inject } from '@angular/core';
 import {PeerConnection, PeerConnectionState, SecurityState} from './PeerConnection';
 import {Client, ConnectionState, WebSocketServerConnection} from '../websocket/WebSocketServerConnection';
 import {WebSocketService} from '../websocket/web-socket-service';
-import {ToastService, ToastType} from '../toast-service';
+import {ToastService, ToastType} from '../ui/toast-service';
 import {PeerAnswer, PeerAnswerForward, PeerOffer, PeerOfferForward} from '../../../api/webrtc-server';
 import {
   NOTIFICATION_USER_JOINED_CHANNEL,

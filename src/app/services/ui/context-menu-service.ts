@@ -1,24 +1,35 @@
-import {ComponentRef, Injectable, InjectionToken, Injector, runInInjectionContext, Type} from '@angular/core';
+import {ComponentRef, inject, Injectable, InjectionToken, Injector, runInInjectionContext, Type} from '@angular/core';
 
 import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
-import {Client, WebSocketServerConnection} from './websocket/WebSocketServerConnection';
-import {ClientContextMenu} from '../components/client/client-context-menu/client-context-menu';
+import {Client, WebSocketServerConnection} from '../websocket/WebSocketServerConnection';
+import {ClientContextMenu} from '../../components/client/client-context-menu/client-context-menu';
 import {MENU_STACK, MenuStack} from '@angular/cdk/menu';
-import {ChannelDTO} from '../../api/webrtc-server';
-import {ChannelContextMenu} from '../components/channel/channel-context-menu/channel-context-menu';
-import {Settings} from '../pages/settings/settings';
+import {ChannelDTO} from '../../../api/webrtc-server';
+import {ChannelContextMenu} from '../../components/channel/channel-context-menu/channel-context-menu';
+import {Settings} from '../../pages/settings/settings';
 import {BiMap} from 'mnemonist';
-import {Popup} from '../components/ui/popup/popup';
+import {Popup} from '../../components/ui/popup/popup';
+import {WebSocketService} from '../websocket/web-socket-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContextMenuService {
 
+  overlay = inject(Overlay);
+  injector = inject(Injector);
+  webSocketService = inject(WebSocketService);
+
   private popups: BiMap<any, OverlayRef> = new BiMap();
 
-  constructor(private overlay: Overlay, private injector: Injector) {
+  constructor() {
+    this.webSocketService.onServerClose.subscriber().subscribe(()=>{
+      console.log("ui:context: closing " + this.popups.size + " popups because server connection closed");
+      this.popups.forEach(popup=>{
+        this.closeContextMenu(popup);
+      })
+    })
   }
 
   public openChannelContextMenu(channel: ChannelDTO, connection: WebSocketServerConnection, event: MouseEvent) {

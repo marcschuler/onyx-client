@@ -1,8 +1,13 @@
 @if (interfaceService.settings.legacyChat) {
-
-  <div class="font-mono pb-4">
+  <div class="font-mono pb-4" (contextmenu)="openReplyContextMenu($event)">
     <span class="text-neutral-600" [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</span>
     <span class="text-emerald-600 pl-2">{{ message.user.username }}</span>
+
+    @if (message.repliesTo) {
+      <div class="pl-8 opacity-50">
+      <app-message [message]="message.repliesTo" [connection]="connection"></app-message>
+    </div>
+    }
 
     <div class="pl-8">
       @for (content of message.content; track content) {
@@ -27,7 +32,7 @@
   </div>
 } @else {
   @let useHeader = lastMessage == undefined || lastMessage.user.id !== message.user.id;
-  <div class="pt-1" [ngClass]="{
+  <div class="pt-1" (contextmenu)="openReplyContextMenu($event)" [ngClass]="{
 'pt-1': !useHeader,
 'pt-3': useHeader}">
     <div class="flex">
@@ -47,6 +52,13 @@
         } @else {
           <p class="text-sm text-right text-neutral-700"
              [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</p>
+        }
+
+        @if (message.repliesTo) {
+          <div class="p-2 max-h-32 overflow-auto flex gap-2 border-b border-b-neutral-400">
+            <lucide-icon [name]="CornerDownRightIcon"></lucide-icon>
+            <app-message class="opacity-75" [message]="message.repliesTo" [connection]="connection"></app-message>
+          </div>
         }
 
         @for (content of message.content; track content) {

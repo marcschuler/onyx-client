@@ -15,7 +15,7 @@ import {
   UserPlus,
   UsersIcon
 } from 'lucide-angular';
-import {ToastService, ToastType} from '../../../../services/toast-service';
+import {ToastService, ToastType} from '../../../../services/ui/toast-service';
 import {replaceInList} from '../../../../util';
 import {SplitPanelBar} from '../../../../components/ui/split-panel/split-panel-bar/split-panel-bar';
 import {SplitPanelButton} from '../../../../components/ui/split-panel/split-panel-button/split-panel-button';

@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { UserSimpleDTO } from './userSimpleDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface ClientChangeEvent extends MessageBody { 
+export interface ClientChangeEvent { 
     user: UserSimpleDTO;
     readonly type: ClientChangeEvent.TypeEnum;
 }

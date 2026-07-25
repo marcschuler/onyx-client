@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { ChannelDTO } from './channelDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface ChannelChangeEvent extends MessageBody { 
+export interface ChannelChangeEvent { 
     channel: ChannelDTO;
     readonly type: ChannelChangeEvent.TypeEnum;
 }

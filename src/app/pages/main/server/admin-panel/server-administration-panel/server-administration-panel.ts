@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Spinner} from "../../../../../components/ui/spinner/spinner";
 import {RestService} from '../../../../../services/rest-service';
-import {ToastService, ToastType} from '../../../../../services/toast-service';
+import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
 import {FileDTO, MarkdownMessageContentDTO, MessageContentDTO, ServerDTO} from '../../../../../../api/webrtc-server';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import { asTypeMarkdown} from '../../../../../components/chat/message-content/message-content';

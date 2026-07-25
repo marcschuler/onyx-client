@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface ClientChannelLeaveRequest extends MessageBody { 
+export interface ClientChannelLeaveRequest { 
     readonly type: ClientChannelLeaveRequest.TypeEnum;
 }
 export namespace ClientChannelLeaveRequest {

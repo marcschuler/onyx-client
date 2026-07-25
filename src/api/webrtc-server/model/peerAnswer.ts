@@ -7,12 +7,11 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface PeerAnswer extends MessageBody { 
-    clientTo?: string;
-    answer?: any | null;
+export interface PeerAnswer { 
+    clientTo: string;
+    answer: any | null;
     readonly type: PeerAnswer.TypeEnum;
 }
 export namespace PeerAnswer {

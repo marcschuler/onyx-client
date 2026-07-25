@@ -3,7 +3,7 @@ import {SplitPanel} from '../../../../components/ui/split-panel/split-panel';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {RestService} from '../../../../services/rest-service';
 import {FormsModule} from '@angular/forms';
-import {ToastService} from '../../../../services/toast-service';
+import {ToastService} from '../../../../services/ui/toast-service';
 import ServerAdministrationPanel from './server-administration-panel/server-administration-panel';
 import {ChannelAdministrationPanel} from './channel-administration-panel/channel-administration-panel';
 import {

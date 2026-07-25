@@ -3,6 +3,7 @@ import {Client, WebSocketServerConnection} from '../../../services/websocket/Web
 import {AsyncPipe} from '@angular/common';
 import {IdenticonPipe} from '../../../pipes/identicon-pipe';
 import {PreviewImage} from '../../ui/preview-image/preview-image';
+import {UserExtendedDTO, UserSimpleDTO} from '../../../../api/webrtc-server';
 
 @Component({
   selector: 'app-profile-image',
@@ -16,7 +17,7 @@ import {PreviewImage} from '../../ui/preview-image/preview-image';
 })
 export class ProfileImage {
 
-  @Input() client!: Client;
+  @Input() user!: UserSimpleDTO | UserExtendedDTO;
   @Input() connection!: WebSocketServerConnection;
   @Input() size: number = 8;
 

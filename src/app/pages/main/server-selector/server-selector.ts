@@ -20,7 +20,7 @@ import {ServerDTO} from '../../../../api/webrtc-server/model/serverDTO';
 import {RestService} from '../../../services/rest-service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
-import {ContextMenuService} from '../../../services/context-menu-service';
+import {ContextMenuService} from '../../../services/ui/context-menu-service';
 
 @Component({
   selector: 'app-server-selector',

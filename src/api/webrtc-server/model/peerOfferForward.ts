@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface PeerOfferForward extends MessageBody { 
+export interface PeerOfferForward { 
     clientFrom: string;
     offer: any | null;
     readonly type: PeerOfferForward.TypeEnum;

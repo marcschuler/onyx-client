@@ -6,10 +6,24 @@
       </button>
     }
     @for (msg of messages; track msg) {
-      <app-message [message]="msg" [lastMessage]="$index!=0?messages[$index]:undefined" [connection]="connection"></app-message>
+      <app-message [message]="msg" [lastMessage]="$index!=0?messages[$index]:undefined" [connection]="connection"
+                   (onReply)="setReply($event)"></app-message>
     }
   </div>
 
+  @if (reply) {
+    <div class="bg-neutral-800 p-1 ">
+      <lucide-icon [name]="CornerDownRightIcon" class="inline h-4"></lucide-icon>
+      Reply to
+      <button class="button-small button-dark" (click)="setReply(undefined)">
+        <lucide-icon [name]="XIcon"></lucide-icon>
+      </button>
+      <div class="max-h-16 overflow-auto pl-2">
+        <app-message-content class="text-neutral-500" [connection]="connection"
+                             [content]="reply.content![0]"></app-message-content>
+      </div>
+    </div>
+  }
   <!-- Input row pinned to bottom -->
   <div class="border border-neutral-400 rounded-xl m-1 h-16 bg-neutral-800 flex items-center">
     <div class="p-1">
@@ -18,7 +32,7 @@
     </div>
 
     <textarea [(ngModel)]="message" (keydown.enter)="sendMessage()"
-           class="!bg-neutral-800 !border-0"
+              class="!bg-neutral-800 !border-0"
     ></textarea>
     <div class="">
       <button

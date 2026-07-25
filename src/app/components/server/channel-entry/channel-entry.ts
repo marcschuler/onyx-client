@@ -9,7 +9,7 @@ import {
 import {ServerObjectId, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {StorageService} from '../../../services/storage.service';
-import {ContextMenuService} from '../../../services/context-menu-service';
+import {ContextMenuService} from '../../../services/ui/context-menu-service';
 import {NgClass} from '@angular/common';
 
 @Component({

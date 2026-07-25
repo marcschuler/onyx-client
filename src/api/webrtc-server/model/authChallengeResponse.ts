@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { SignedContent } from './signedContent';
-import { MessageBody } from './messageBody';
 
 
-export interface AuthChallengeResponse extends MessageBody { 
+export interface AuthChallengeResponse { 
     publicKey: { [key: string]: object; };
     challenge: SignedContent;
     username: string;

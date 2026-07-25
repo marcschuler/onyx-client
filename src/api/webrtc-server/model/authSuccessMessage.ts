@@ -9,10 +9,9 @@
  */
 import { UserOnlineDTO } from './userOnlineDTO';
 import { UserSimpleDTO } from './userSimpleDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface AuthSuccessMessage extends MessageBody { 
+export interface AuthSuccessMessage { 
     message?: string;
     jwt: string;
     me: UserSimpleDTO;

@@ -7,10 +7,9 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageBody } from './messageBody';
 
 
-export interface ChannelMoveEvent extends MessageBody { 
+export interface ChannelMoveEvent { 
     channelId: string;
     order: number;
     sectionId?: string;

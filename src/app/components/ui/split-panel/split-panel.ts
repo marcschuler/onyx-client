@@ -51,12 +51,13 @@ export class SplitPanel implements AfterContentInit {
         value: button.value
       })
     } else {
-      console.warn("No buttons in split panel");
+      console.warn("ui:split-panel: No buttons in split panel");
     }
   }
 
 
   selectOption(event: SplitPanelButtonEvent) {
+    console.log("ui:split-panel: selecting button", event)
     this.selectedOption = event;
     this.leftBar.buttons.forEach(button => {
       button.onAnyButtonSelected(event)
@@ -69,11 +70,9 @@ export class SplitPanel implements AfterContentInit {
   }
 
   private setContentSlot(event: SplitPanelButtonEvent) {
-    console.log("childs " + this.contentRefs.length)
     this.contentRefs.forEach(child => {
       const element = child.element.nativeElement;
       const matches = child.splitPanel == event.value;
-      console.log("child matches?" + matches)
       element.style.display = matches ? '' : 'none'
     })
   }

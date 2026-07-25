@@ -8,10 +8,9 @@
  * Do not edit the class manually.
  */
 import { ChannelDTO } from './channelDTO';
-import { MessageBody } from './messageBody';
 
 
-export interface ChannelCreateEvent extends MessageBody { 
+export interface ChannelCreateEvent { 
     sectionId: string;
     order: number;
     channel: ChannelDTO;

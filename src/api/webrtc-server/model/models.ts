@@ -31,7 +31,6 @@ export * from './jwtTokenEvent';
 export * from './kickRequestDTO';
 export * from './kickedEvent';
 export * from './markdownMessageContentDTO';
-export * from './messageBody';
 export * from './messageContentDTO';
 export * from './messageCreationDTO';
 export * from './messageDTO';

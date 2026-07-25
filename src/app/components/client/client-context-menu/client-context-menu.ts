@@ -3,9 +3,10 @@ import {ContextMenu} from '../../ui/context/context-menu/context-menu';
 import {ContextMenuButton} from '../../ui/context/context-menu-button/context-menu-button';
 import {Client, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {CircleSlashedIcon, UserIcon, UserXIcon} from 'lucide-angular';
-import {ToastService, ToastType} from '../../../services/toast-service';
+import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {RestService} from '../../../services/rest-service';
 import {ProfileImage} from '../profile-image/profile-image';
+import {SlicePipe} from '@angular/common';
 
 @Component({
   selector: 'app-client-context-menu',
@@ -13,6 +14,7 @@ import {ProfileImage} from '../profile-image/profile-image';
     ContextMenu,
     ContextMenuButton,
     ProfileImage,
+    SlicePipe,
   ],
   templateUrl: './client-context-menu.html',
   styleUrl: './client-context-menu.css',
