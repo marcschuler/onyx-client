@@ -37,7 +37,7 @@ jobs:
         include:
           - os: windows-latest
             artifact: windows
-          - os: ubuntu-latest
+          - os: ubuntu-26.04
             artifact: linux
     runs-on: ${{ matrix.os }}
     steps:
@@ -49,13 +49,14 @@ jobs:
           node-version: "lts/*"
           cache: npm
       - name: Install Linux system deps
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-26.04'
         run: |
           sudo apt-get update -y
           sudo apt-get install -y \
-            libnss3-dev libatk1.0-0 libatk-bridge2.0-0 \
-            libcups2 libdrm2 libxkbcommon0 libxcomposite1 \
-            libxdamage1 libxrandr2 libgbm1 libasound2
+          fakeroot dpkg \
+          libnss3 libatk1.0-0t64 libatk-bridge2.0-0t64 \
+          libcups2t64 libdrm2 libxkbcommon0 libxcomposite1 \
+          libxdamage1 libxrandr2 libgbm1 libasound2t64
       - name: Install dependencies
         run: npm ci
       - name: Build production + package + make
