@@ -8,21 +8,42 @@
       </h3>
     </div>
   </div>
-  @let showTalkView = peerConnectionService.peers.length > 0 || (peerConnectionService.sharedStreams[TrackType.Microphone] !== undefined || peerConnectionService.sharedStreams[TrackType.Camera] !== undefined || peerConnectionService.sharedStreams[TrackType.Screen] !== undefined);
+  @let showTalkView = peerConnectionService.peers.length > 0 || (mediaService.sharedStreams[TrackType.Microphone] !== undefined || mediaService.sharedStreams[TrackType.Camera] !== undefined || mediaService.sharedStreams[TrackType.Screen] !== undefined);
   @if (showTalkView) {
     <!-- Talk View -->
     <div #talkView
          [ngStyle]="{ maxHeight: interfaceService.settings.channelSplitSize.peerView + 'vh',minHeight: interfaceService.settings.channelSplitSize.peerView + 'vh' }">
       <div #peerGrid class="flex flex-wrap items-stretch h-full items-center justify-center">
-        <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
-                       [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
-                       class="p-1"
-                       [localStream]="peerConnectionService.localStream" [connection]="connection"></app-peer-view>
-        @for (peer of peerConnectionService.peers; track peer) {
+        @if (mediaService.localStream.cameraMic) {
           <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
                          [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
                          class="p-1"
-                         [connection]="connection" [peer]="peer"></app-peer-view>
+                         [stream]="mediaService.localStream.cameraMic" [streamType]="'CAMERAMIC'"
+                         [connection]="connection"></app-peer-view>
+        }
+        @if (mediaService.localStream.screen) {
+          <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
+                         [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
+                         class="p-1"
+                         [stream]="mediaService.localStream.screen" [streamType]="'SCREEN'"
+                         [connection]="connection"></app-peer-view>
+        }
+
+        @for (peer of peerConnectionService.peers; track peer) {
+          @if (peer.streams.screen) {
+            <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
+                           [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
+                           class="p-1"
+                           [connection]="connection" [peer]="peer" [stream]="peer.streams.screen"
+                           [streamType]="'SCREEN'"></app-peer-view>
+          }
+          @if (peer.streams.cameraMic) {
+            <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
+                           [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
+                           class="p-1"
+                           [connection]="connection" [peer]="peer" [stream]="peer.streams.cameraMic"
+                           [streamType]="'CAMERAMIC'"></app-peer-view>
+          }
         }
       </div>
     </div>

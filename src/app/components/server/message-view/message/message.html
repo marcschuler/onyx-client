@@ -44,7 +44,7 @@
       }
       <div class="bg-neutral-800 px-4 pb-2.5 pt-1 rounded w-fit relative min-w-48">
         @if (useHeader) {
-          <p class="text-emerald-600 font-bold pb-1">
+          <p class="text-sky-00 font-bold pb-1">
             {{ message.user.username }}
             <span class="text-sm text-right text-neutral-700"
                   [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</span>
@@ -55,9 +55,9 @@
         }
 
         @if (message.repliesTo) {
-          <div class="p-2 max-h-32 overflow-auto flex gap-2 border-b border-b-neutral-400">
+          <div class="p-2 max-h-72 overflow-auto flex gap-2">
             <lucide-icon [name]="CornerDownRightIcon"></lucide-icon>
-            <app-message class="opacity-75" [message]="message.repliesTo" [connection]="connection"></app-message>
+            <app-message class="border-l-2 border-l-sky-600 pl-2" [message]="message.repliesTo" [connection]="connection"></app-message>
           </div>
         }
 

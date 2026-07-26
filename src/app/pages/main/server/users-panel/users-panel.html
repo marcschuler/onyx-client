@@ -12,51 +12,12 @@
         <p class="col-span-2 font-bold">Last seen</p>
         <p class="col-span-2 font-bold">Groups</p>
         <p class="col-span-1 font-bold">Actions</p>
-
-        @for (user of users || []; track user) {
-          <p class="col-span-2">
-            <app-profile-image [connection]="connection" [size]="4" [user]="user"></app-profile-image>
-            {{ user.username }}
-            <br>
-          </p>
-          <p class="col-span-1">
-            @switch (user.state) {
-              @case (UserExtendedDTO.StateEnum.Active) {
-                <lucide-icon [name]="UserCheck" class="inline  h-4"></lucide-icon> Active
-              }
-              @case (UserExtendedDTO.StateEnum.Banned) {
-                <lucide-icon [name]="CircleSlash" class="inline h-4"></lucide-icon> Banned
-              }
-              @case (UserExtendedDTO.StateEnum.PendingAccess) {
-                <lucide-icon [name]="UserPlus" class="inline h-4"></lucide-icon> Pending Access
-              }
-            }
-          </p>
-          <p class="col-span-2">{{ user.knownSince | date: 'medium' }}</p>
-          <p class="col-span-2">{{ user.lastSeen | date: 'medium' }}</p>
-
-          <p class="col-span-2">
-            <ui-multi-select [(selected)]="user.groups">
-              @for (group of groups; track group.id) {
-                <ui-select-item [label]="group.name" [value]="group.id"></ui-select-item>
-              }
-            </ui-multi-select>
-          </p>
-          <p class="col-span-1">
-            @if (user.state === UserExtendedDTO.StateEnum.Banned) {
-              <button class="!p-1" (click)="unban(user)">
-                <lucide-icon [name]="CircleSlash" class="w-3 inline mr-1"></lucide-icon>
-                Unban
-              </button>
-            } @else {
-              <button class="!p-1 button-red" (click)="ban(user)">
-                <lucide-icon [name]="CircleSlash" class="w-3 inline mr-1"></lucide-icon>
-                Ban
-              </button>
-            }
-          </p>
-        }
       </div>
+      @if (users && groups) {
+        @for (user of users; track user) {
+          <app-user-entry [user]="user" [users]="users" [groups]="groups" [connection]="connection"></app-user-entry>
+        }
+      }
     </div>
   </ui-split-panel>
 </app-popup>

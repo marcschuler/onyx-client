@@ -8,8 +8,9 @@ import {FormsModule} from '@angular/forms';
 import {MessageView} from '../../../../components/server/message-view/message-view';
 import {ServerObjectId, WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO} from '../../../../../api/webrtc-server/model/channelDTO';
-import {NgStyle} from '@angular/common';
+import {JsonPipe, NgStyle} from '@angular/common';
 import {TrackType} from '../../../../services/peer/MediaTracker';
+import {MediaService} from '../../../../services/peer/media-service';
 
 @Component({
   selector: 'app-channel-view',
@@ -18,6 +19,7 @@ import {TrackType} from '../../../../services/peer/MediaTracker';
     FormsModule,
     MessageView,
     NgStyle,
+    JsonPipe,
   ],
   templateUrl: './channel-view.html',
   styleUrl: './channel-view.css'
@@ -25,6 +27,7 @@ import {TrackType} from '../../../../services/peer/MediaTracker';
 export class ChannelView implements AfterViewInit, OnChanges {
   protected webSocketService = inject(WebSocketService);
   protected peerConnectionService = inject(PeerConnectionService);
+  protected mediaService = inject(MediaService);
   protected interfaceService = inject(StorageService);
 
 

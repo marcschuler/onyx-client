@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {ContextMenuService} from './context-menu-service';
 import {APP_VERSION} from '../Util';
+import {DebugService} from '../debug-service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class MenuService {
   };
 
   private contextMenuService = inject(ContextMenuService);
+  private debugService = inject(DebugService);
 
   menu: MenuItem[] = [
     {
@@ -51,6 +53,12 @@ export class MenuService {
         role: 'forceReload'
       }, {
         role: 'toggleDevTools'
+      }, {
+        id: 'help-toggle-debug-views',
+        label: 'Toggle Debug Views',
+        click: () => {
+          this.debugService.debug = !this.debugService.debug;
+        }
       }, this.MENU_SEPARATOR, {
         label: 'onyx v' + APP_VERSION,
       }]

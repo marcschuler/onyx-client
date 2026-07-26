@@ -58,6 +58,7 @@ export * from './serverDTODescriptionInner';
 export * from './serverTreeChangeMessage';
 export * from './signedContent';
 export * from './sortObject';
+export * from './trackMetadataMessage';
 export * from './userExtendedDTO';
 export * from './userOnlineDTO';
 export * from './userSimpleDTO';

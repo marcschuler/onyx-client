@@ -10,7 +10,7 @@
 
     <div class="flex flex-col gap-2 justify-center  items-center pt-12">
       @for (description of connection.data.server.description; track description) {
-        <div class="p-6 bg-neutral-800 rounded max-h-9/12">
+        <div class="p-6 bg-neutral-800 rounded w-9/12">
           <app-message-content [content]="description" [connection]="connection"></app-message-content>
         </div>
       }

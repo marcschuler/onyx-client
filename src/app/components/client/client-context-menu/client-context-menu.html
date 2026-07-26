@@ -2,10 +2,10 @@
   <div class="bg-neutral-900">
     <app-profile-image [connection]="connection" [user]="client.details" [size]="64"></app-profile-image>
     <p class="px-2 py-1">{{ client.username }}</p>
-    <p class="text-neutral-400 text-sm">ID: {{client.id | slice: 0:18}}...</p>
+    <p class="text-neutral-400 text-sm">ID: {{ client.id | slice: 0:18 }}...</p>
   </div>
-  <app-context-menu-button [icon]="CircleSlashedIcon" (click)="kickClientFromChannel()">Kick (channel)
-  </app-context-menu-button>
+    <app-context-menu-button [icon]="CircleSlashedIcon" [disabled]="!client.channel" (click)="kickClientFromChannel()">Kick (channel)
+    </app-context-menu-button>
   <app-context-menu-button [icon]="CircleSlashedIcon" (click)="kickClientFromServer()">Kick (server)
   </app-context-menu-button>
   <app-context-menu-button [icon]="UserXIcon">Ban</app-context-menu-button> <!-- TODO -->

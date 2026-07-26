@@ -1,4 +1,19 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, QueryList, ContentChildren, AfterContentInit, HostListener, ElementRef, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  QueryList,
+  ContentChildren,
+  AfterContentInit,
+  HostListener,
+  ElementRef,
+  inject, ChangeDetectorRef
+} from '@angular/core';
 import {CdkListboxModule} from '@angular/cdk/listbox';
 import {ChevronDownIcon, ChevronUpIcon, LucideAngularModule} from 'lucide-angular';
 import {SelectItem} from './select-item/select-item';
@@ -15,12 +30,15 @@ import {SelectItem} from './select-item/select-item';
 })
 export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
   private el = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
 
 
   @Input() placeholder = 'Select';
   @Input() multi = true;
   @Input() selected: any[] | any = [];
   @Output() selectedChange = new EventEmitter<any[] | any>();
+  @Output() onAdded = new EventEmitter<any>();
+  @Output() onRemoved = new EventEmitter<any>();
 
   @ContentChildren(SelectItem) entries!: QueryList<SelectItem>;
 
@@ -29,15 +47,11 @@ export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
   placeholderActive = false;
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.update();
-    },100);
+    this.update();
   }
 
   ngOnChanges(changes: SimpleChanges<any>): void {
-    setTimeout(() => {
-      this.update();
-    });
+    this.update();
   }
 
   ngAfterContentInit(): void {
@@ -50,6 +64,8 @@ export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
 
 
   update() {
+    if (!this.entries)
+      return;
     this.entries.forEach(entry => {
       entry.selected = (this.selected.includes(entry.value));
     })
@@ -63,6 +79,8 @@ export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
     } else {
       this.placeholderActive = false;
     }
+    //i don't know why but without the explicit call the component only visibly updates for first draw when a user clicks on the ui
+    this.cdr.markForCheck();
   }
 
   private bindEntries(): void {
@@ -85,14 +103,16 @@ export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
   }
 
   private onItemClicked(value: string): void {
-    console.log(value);
-
     const index = this.selected.indexOf(value);
 
     if (index >= 0) {
       this.selected.splice(index, 1);
+      console.log("ui: multi-select: disabled option " + value)
+      this.onRemoved.emit(value);
     } else {
       this.selected.push(value);
+      console.log("ui: multi-select: enabled option " + value)
+      this.onAdded.emit(value);
     }
     if (!this.multi) {
       this.showOptions = false;

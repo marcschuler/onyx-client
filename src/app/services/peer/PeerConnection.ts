@@ -1,17 +1,28 @@
 import {Client} from '../websocket/WebSocketServerConnection';
 
-export interface PeerConnection extends MediaConnection {
+
+export interface PeerConnection {
   connection: RTCPeerConnection; // underlaying RTC connection
   state: PeerConnectionState; // our connection state
-  dataChannel: RTCDataChannel; //the data channel for further communication
 
   securityState: SecurityState;
+
+  client: Client;
+  streams: PeerStreams;
+  dataStream: DataStream;
 }
 
-export interface MediaConnection {
-  client: Client;
-  stream?: MediaStream;
+export interface PeerStreams{
+  cameraMic?: MediaStream;
+  screen?: MediaStream;
+  unknownStreams: MediaStream;
 }
+
+export interface DataStream{
+  channel?: RTCDataChannel; //the data channel for further communication
+  messageQueue: any[];
+}
+
 
 // Connection states. The first are mirrored from webrtc stadnard
 export enum PeerConnectionState {

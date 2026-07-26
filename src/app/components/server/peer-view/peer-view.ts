@@ -8,11 +8,15 @@ import {
 } from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
+import {TrackMetadataMessage} from '../../../../api/webrtc-server';
+import {DebugService} from '../../../services/debug-service';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-peer-view',
   imports: [
-    LucideAngularModule
+    LucideAngularModule,
+    JsonPipe
   ],
   templateUrl: './peer-view.html',
   styleUrl: './peer-view.css'
@@ -20,11 +24,12 @@ import {ContextMenuService} from '../../../services/ui/context-menu-service';
 export class PeerView {
 
   @Input() peer: PeerConnection | undefined;
-
-  @Input() localStream: MediaStream | undefined;
+  @Input() stream!: MediaStream;
+  @Input() streamType: TrackMetadataMessage.LabelEnum | undefined;
   @Input() connection!: WebSocketServerConnection;
 
   protected contextMenuService = inject(ContextMenuService);
+  protected debugService = inject(DebugService);
 
   protected readonly PeerConnectionState = PeerConnectionState;
   protected readonly LoaderIcon = LoaderIcon;

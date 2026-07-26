@@ -3,8 +3,16 @@ bg-neutral-800 rounded w-full h-full" (contextmenu)="openClientContextMenu($even
 
   <div class="flex-1 flex h-full">
 
-    @if ((localStream && localStream.getTracks().length > 0) || (peer && peer.stream && peer.stream.getTracks().length > 0)) {
-      @let stream = localStream ? localStream : peer?.stream;
+    @if (stream && stream.getTracks().length > 0) {
+      @if (debugService.debug) {
+        <p class="absolute">
+          A/V Track count: {{ stream?.getVideoTracks()?.length }}/{{ stream?.getVideoTracks()?.length }}
+          <br>
+          Stream Label: {{streamType?streamType:'unknown!'}}
+          <br>
+          ID: {{stream.id}}
+        </p>
+      }
       <video controls autoplay class="object-contain  w-full h-full" [srcObject]="stream"></video>
     } @else {
     }
@@ -13,10 +21,10 @@ bg-neutral-800 rounded w-full h-full" (contextmenu)="openClientContextMenu($even
     <div class="bg-neutral-800/50 w-full bg-opacity-20 text-neutral-200 text-right p-2 rounded">
 
       <span>
-        @if (peer){
+        @if (peer) {
           {{ peer.client.username }}
         } @else {
-          {{connection.identity.username}}
+          {{ connection.identity.username }}
         }
 
         @if (peer) {

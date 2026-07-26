@@ -14,6 +14,7 @@ import {TrackType} from '../../../services/peer/MediaTracker';
 import {Popup} from '../../ui/popup/popup';
 import {Settings} from '../../../pages/settings/settings';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
+import {MediaService} from '../../../services/peer/media-service';
 
 @Component({
   selector: 'app-user-panel',
@@ -28,7 +29,7 @@ import {ContextMenuService} from '../../../services/ui/context-menu-service';
 })
 export class UserPanel {
   protected webSocketService = inject(WebSocketService);
-  protected peerConnectionService = inject(PeerConnectionService);
+  protected mediaService = inject(MediaService);
 
 
   @Input() connection!: WebSocketServerConnection;

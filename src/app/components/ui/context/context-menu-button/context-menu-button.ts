@@ -18,6 +18,7 @@ export class ContextMenuButton {
   @Input() subMenu: boolean = false;
 
   @Output() click: EventEmitter<PointerEvent> = new EventEmitter();
+  @Input() disabled!: boolean;
 
   protected onClick($event: PointerEvent) {
     this.click.emit($event);

@@ -77,6 +77,7 @@ model/serverDTODescriptionInner.ts
 model/serverTreeChangeMessage.ts
 model/signedContent.ts
 model/sortObject.ts
+model/trackMetadataMessage.ts
 model/userExtendedDTO.ts
 model/userOnlineDTO.ts
 model/userSimpleDTO.ts

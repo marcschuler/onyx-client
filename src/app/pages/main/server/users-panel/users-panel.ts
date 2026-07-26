@@ -24,6 +24,7 @@ import {Popup} from '../../../../components/ui/popup/popup';
 import {ProfileImage} from '../../../../components/client/profile-image/profile-image';
 import {MultiSelect} from '../../../../components/ui/multi-select/multi-select';
 import {SelectItem} from '../../../../components/ui/multi-select/select-item/select-item';
+import {UserEntry} from './user-entry/user-entry';
 
 @Component({
   selector: 'app-users-panel',
@@ -39,7 +40,8 @@ import {SelectItem} from '../../../../components/ui/multi-select/select-item/sel
     Popup,
     ProfileImage,
     MultiSelect,
-    SelectItem
+    SelectItem,
+    UserEntry
   ],
   templateUrl: './users-panel.html',
   styleUrl: './users-panel.css',
@@ -108,33 +110,7 @@ export class UsersPanel implements OnInit {
     return user.groups.some(g => g.id === group.id);
   }
 
-  protected readonly Ban = Ban;
-  protected readonly CircleSlash = CircleSlash;
 
-  protected ban(user: UserExtendedDTO) {
-    this.connection.rest.userController.ban(user.id, "") //TODO add reason
-      .subscribe(value => {
-        this.toastService.create({
-          title: "User banned",
-          type: ToastType.Success
-        })
-        replaceInList(this.users!, user, value);
-      }, error => this.restService.handleError(error))
-  }
-
-  protected unban(user: UserExtendedDTO) {
-    this.connection.rest.userController.unban(user.id)
-      .subscribe(value => {
-        this.toastService.create({
-          title: "User set to active",
-          type: ToastType.Success
-        })
-        replaceInList(this.users!, user, value);
-      }, error => this.restService.handleError(error))
-  }
 
   protected readonly UsersIcon = UsersIcon;
-  protected readonly UserExtendedDTO = UserExtendedDTO;
-  protected readonly UserCheck = UserCheck;
-  protected readonly UserPlus = UserPlus;
 }
