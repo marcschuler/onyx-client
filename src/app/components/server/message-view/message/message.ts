@@ -1,5 +1,5 @@
 import {Component, Input, inject, Output, EventEmitter} from '@angular/core';
-import {MessageDTO} from "../../../../../api/webrtc-server";
+import {MessageDTO} from "../../../../../api/onyx-server";
 import {AsyncPipe, NgClass} from '@angular/common';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {IdenticonPipe} from '../../../../pipes/identicon-pipe';

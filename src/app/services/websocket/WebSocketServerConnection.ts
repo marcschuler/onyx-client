@@ -4,8 +4,8 @@ import {
   ChatControllerService, GroupControllerService, SectionControllerService,
   ServerControllerService,
   ServerTreeChangeMessage, StorageControllerService, UserControllerService, UserSimpleDTO
-} from '../../../api/webrtc-server';
-import {IceServer} from '../../../api/webrtc-server';
+} from '../../../api/onyx-server';
+import {IceServer} from '../../../api/onyx-server';
 import {ServerConnection} from '../server-loader-service';
 
 export interface WebSocketServerConnection {

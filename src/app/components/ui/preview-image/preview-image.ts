@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {FileDTO, PreviewFormat} from '../../../../api/webrtc-server';
+import {FileDTO, PreviewFormat} from '../../../../api/onyx-server';
 import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {NgClass} from '@angular/common';

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FileDTO} from '../../../../api/webrtc-server';
+import {FileDTO} from '../../../../api/onyx-server';
 import {fileMimetypeToIcon, FileType, mimeTypeToFileType} from '../../../mimetype-icons';
 import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';

@@ -2,7 +2,7 @@ import {Component, inject, Input} from '@angular/core';
 import {RestService} from '../../../services/rest-service';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {ChannelDTO, SectionDTO} from '../../../../api/webrtc-server';
+import {ChannelDTO, SectionDTO} from '../../../../api/onyx-server';
 import {LucideAngularModule, SaveIcon} from 'lucide-angular';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 

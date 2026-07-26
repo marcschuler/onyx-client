@@ -6,7 +6,7 @@ import {
   ChatControllerService,
   Configuration, GroupControllerService, SectionControllerService,
   ServerControllerService, StorageControllerService, UserControllerService
-} from '../../api/webrtc-server';
+} from '../../api/onyx-server';
 import {ToastService, ToastType} from './ui/toast-service';
 
 @Injectable({

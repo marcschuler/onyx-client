@@ -24,7 +24,7 @@ export interface DataStream{
 }
 
 
-// Connection states. The first are mirrored from webrtc stadnard
+// Connection states. The first are mirrored from webrtc standard
 export enum PeerConnectionState {
   WaitingForOffer, //waiting when nice client
   Offered, //offered the connection

@@ -16,7 +16,7 @@ import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {Identity, IdentityService} from '../../../services/identity-service';
 import { BUTTON_CANCEL,  Popup} from '../../../components/ui/popup/popup';
 import {Settings} from '../../settings/settings';
-import {ServerDTO} from '../../../../api/webrtc-server/model/serverDTO';
+import {ServerDTO} from '../../../../api/onyx-server/model/serverDTO';
 import {RestService} from '../../../services/rest-service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {PreviewImage} from '../../../components/ui/preview-image/preview-image';

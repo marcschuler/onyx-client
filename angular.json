@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "webrtc-client": {
+    "onyx-client": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -56,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "webrtc-client:build:production"
+              "buildTarget": "onyx-client:build:production"
             },
             "development": {
-              "buildTarget": "webrtc-client:build:development"
+              "buildTarget": "onyx-client:build:development"
             }
           },
           "defaultConfiguration": "development"

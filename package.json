@@ -1,8 +1,8 @@
 {
-  "name": "webrtc-client",
+  "name": "onyx-client",
   "version": "0.0.1",
   "author": "Marc",
-  "description": "WebRTC app",
+  "description": "onyx client",
   "license": "GPL-3.0",
   "main": "src/electron/main.js",
   "scripts": {

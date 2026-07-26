@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, signal} from '@angular/core';
-import {MarkdownMessageContentDTO} from '../../../../../../../api/webrtc-server';
+import {MarkdownMessageContentDTO} from '../../../../../../../api/onyx-server';
 import {
   Button,
   BUTTON_CANCEL,

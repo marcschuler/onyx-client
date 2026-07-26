@@ -7,7 +7,7 @@ import {StorageService} from '../../../../services/storage.service';
 import {FormsModule} from '@angular/forms';
 import {MessageView} from '../../../../components/server/message-view/message-view';
 import {ServerObjectId, WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
-import {ChannelDTO} from '../../../../../api/webrtc-server/model/channelDTO';
+import {ChannelDTO} from '../../../../../api/onyx-server/model/channelDTO';
 import {JsonPipe, NgStyle} from '@angular/common';
 import {TrackType} from '../../../../services/peer/MediaTracker';
 import {MediaService} from '../../../../services/peer/media-service';

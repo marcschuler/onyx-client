@@ -15,7 +15,7 @@ import {GroupAdministrationPanel} from './group-administration-panel/group-admin
 import {SplitPanelBar} from '../../../../components/ui/split-panel/split-panel-bar/split-panel-bar';
 import {SplitPanelButton} from '../../../../components/ui/split-panel/split-panel-button/split-panel-button';
 import {SplitPanelSelector} from '../../../../directives/split-panel-selector';
-import {GroupDTO} from '../../../../../api/webrtc-server';
+import {GroupDTO} from '../../../../../api/onyx-server';
 import {ChannelEditor} from '../../../../components/channel/channel-editor/channel-editor';
 import {SectionEditor} from '../../../../components/section/section-editor/section-editor';
 import {Popup} from '../../../../components/ui/popup/popup';

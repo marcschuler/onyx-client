@@ -20,7 +20,7 @@ function createWindow() {
     process.env.ELECTRON_START_URL ||
     (process.env.NODE_ENV === 'development' ?
         'http://localhost:4200' :
-        `file://${path.join(__dirname, '../../dist/webrtc-client/browser/index.html')}`
+        `file://${path.join(__dirname, '../../dist/onyx-client/browser/index.html')}`
     )
   ;
 

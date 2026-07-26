@@ -1,7 +1,7 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {WebSocketServerConnection} from '../services/websocket/WebSocketServerConnection';
 import {generateIdenteapot} from '@teapotlabs/identeapots';
-import {FileDTO, PreviewFormat} from '../../api/webrtc-server';
+import {FileDTO, PreviewFormat} from '../../api/onyx-server';
 
 @Pipe({
   name: 'storageFileURL',

@@ -5,7 +5,7 @@ import {
   ClientChannelJoinEvent,
   ClientChannelJoinRequest,
   ClientChannelLeaveRequest
-} from '../../../../api/webrtc-server';
+} from '../../../../api/onyx-server';
 import {ServerObjectId, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {StorageService} from '../../../services/storage.service';

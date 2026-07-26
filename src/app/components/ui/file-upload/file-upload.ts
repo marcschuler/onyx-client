@@ -5,7 +5,7 @@ import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {RestService} from '../../../services/rest-service';
 import {filter, map, Observable} from 'rxjs';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
-import {FileDTO} from '../../../../api/webrtc-server';
+import {FileDTO} from '../../../../api/onyx-server';
 import {Spinner} from '../spinner/spinner';
 
 @Component({

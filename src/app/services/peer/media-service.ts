@@ -5,7 +5,7 @@ import {NotificationService} from '../notification.service';
 
 import {getMediaTracker, TrackType} from './MediaTracker';
 import {PeerConnectionService} from './peer-connection-service';
-import {TrackMetadataMessage} from '../../../api/webrtc-server';
+import {TrackMetadataMessage} from '../../../api/onyx-server';
 
 @Injectable({
   providedIn: 'root',

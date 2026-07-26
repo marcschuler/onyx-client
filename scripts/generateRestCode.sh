@@ -7,7 +7,7 @@ OPENAPI_VERSION="7.21.0"
 JAR_FILE="/tmp/openapi-generator-${OPENAPI_VERSION}.jar"
 OPENAPI_URL="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/${OPENAPI_VERSION}/openapi-generator-cli-${OPENAPI_VERSION}.jar"
 
-OUT_DIR="src/api/webrtc-server"
+OUT_DIR="src/api/onyx-server"
 SPEC_URL="http://localhost:8080/openapi"
 
 echo "Downloading OpenAPI Generator ${OPENAPI_VERSION}..."

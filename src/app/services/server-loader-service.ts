@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, throwError} from 'rxjs';
-import {ServerDTO} from '../../api/webrtc-server';
+import {ServerDTO} from '../../api/onyx-server';
 
 @Injectable({
   providedIn: 'root'

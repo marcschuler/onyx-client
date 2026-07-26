@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, inject, EventEmitter, Output} from '@angular/core';
 import {WebSocketServerConnection} from "../../../../../services/websocket/WebSocketServerConnection";
-import {GroupDTO, PermissionDTO} from '../../../../../../api/webrtc-server';
+import {GroupDTO, PermissionDTO} from '../../../../../../api/onyx-server';
 import {RestService} from '../../../../../services/rest-service';
 import {FormsModule} from '@angular/forms';
 import {IdCardLanyard, LucideAngularModule} from 'lucide-angular';

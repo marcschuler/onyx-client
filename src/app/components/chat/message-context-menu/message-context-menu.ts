@@ -4,7 +4,7 @@ import {ContextMenuButton} from "../../ui/context/context-menu-button/context-me
 import {ProfileImage} from "../../client/profile-image/profile-image";
 import {CornerDownRightIcon, XIcon} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {MessageDTO} from '../../../../api/webrtc-server';
+import {MessageDTO} from '../../../../api/onyx-server';
 import {POPUP_CONTEXT} from '../../../services/ui/context-menu-service';
 
 @Component({

@@ -3,10 +3,10 @@ import {WebSocketServerConnection} from '../../../../../services/websocket/WebSo
 import {RestService} from '../../../../../services/rest-service';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
-import {SectionDTO} from '../../../../../../api/webrtc-server/model/sectionDTO';
+import {SectionDTO} from '../../../../../../api/onyx-server/model/sectionDTO';
 import {CircleMinus, GripVertical, LucideAngularModule, Pencil} from 'lucide-angular';
 import {Button, BUTTON_CANCEL, BUTTON_DELETE, Popup} from '../../../../../components/ui/popup/popup';
-import {ChannelDTO, SectionExtendedDTO, ServerTreeChangeMessage} from '../../../../../../api/webrtc-server';
+import {ChannelDTO, SectionExtendedDTO, ServerTreeChangeMessage} from '../../../../../../api/onyx-server';
 
 @Component({
   selector: 'app-channel-administration-panel',

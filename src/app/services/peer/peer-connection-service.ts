@@ -9,7 +9,7 @@ import {
   PeerOffer,
   PeerOfferForward,
   TrackMetadataMessage
-} from '../../../api/webrtc-server';
+} from '../../../api/onyx-server';
 import {
   NOTIFICATION_USER_JOINED_CHANNEL,
   NOTIFICATION_USER_LEFT_CHANNEL,

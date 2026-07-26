@@ -6,7 +6,7 @@ import {WebSocketServerConnection} from '../../../services/websocket/WebSocketSe
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {RestService} from '../../../services/rest-service';
-import {FileDTO} from '../../../../api/webrtc-server';
+import {FileDTO} from '../../../../api/onyx-server';
 import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
 
 @Component({

@@ -3,7 +3,7 @@ import {Client, WebSocketServerConnection} from '../../../services/websocket/Web
 import {AsyncPipe} from '@angular/common';
 import {IdenticonPipe} from '../../../pipes/identicon-pipe';
 import {PreviewImage} from '../../ui/preview-image/preview-image';
-import {UserExtendedDTO, UserSimpleDTO} from '../../../../api/webrtc-server';
+import {UserExtendedDTO, UserSimpleDTO} from '../../../../api/onyx-server';
 
 @Component({
   selector: 'app-profile-image',

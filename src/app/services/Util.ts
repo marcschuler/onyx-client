@@ -1,9 +1,9 @@
-import {SectionDTO} from '../../api/webrtc-server/model/sectionDTO';
-import {ChannelDTO} from '../../api/webrtc-server/model/channelDTO';
+import {SectionDTO} from '../../api/onyx-server/model/sectionDTO';
+import {ChannelDTO} from '../../api/onyx-server/model/channelDTO';
 
 import {version} from '../../../package.json'
 import {Client, KeyId, WebSocketServerConnection} from './websocket/WebSocketServerConnection';
-import {SectionExtendedDTO} from '../../api/webrtc-server';
+import {SectionExtendedDTO} from '../../api/onyx-server';
 
 export function getChannelFromId(id: string, sections: SectionDTO[]): ChannelDTO | undefined {
   for (const s of sections) {

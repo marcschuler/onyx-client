@@ -15,7 +15,7 @@ import {WebSocketServerConnection} from '../../../services/websocket/WebSocketSe
 import {getChannelFromId} from '../../../services/Util';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {MessageHandler, WebSocketService} from '../../../services/websocket/web-socket-service';
-import {MessageDTO} from '../../../../api/webrtc-server/model/messageDTO';
+import {MessageDTO} from '../../../../api/onyx-server/model/messageDTO';
 import {NOTIFICATION_MESSAGE_NEW, NotificationService} from '../../../services/notification.service';
 import {RestService} from '../../../services/rest-service';
 import {Message} from './message/message';
@@ -25,7 +25,7 @@ import {
   FileDTO,
   FileMessageContentDTO,
   MarkdownMessageContentDTO
-} from '../../../../api/webrtc-server';
+} from '../../../../api/onyx-server';
 import {FileUpload} from '../../ui/file-upload/file-upload';
 import {MessageContent} from '../../chat/message-content/message-content';
 

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, inject} from '@angular/core';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {ChannelDTO} from '../../../../api/webrtc-server';
+import {ChannelDTO} from '../../../../api/onyx-server';
 import {RestService} from '../../../services/rest-service';
 import {SplitPanel,} from '../../ui/split-panel/split-panel';
 import {HexagonIcon, LucideAngularModule, SaveIcon} from 'lucide-angular';

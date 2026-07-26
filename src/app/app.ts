@@ -10,7 +10,7 @@ import {MenuService} from './services/ui/menu-service';
   styleUrl: './app.css'
 })
 export class App implements OnInit{
-  protected readonly title = signal('webrtc-client');
+  protected readonly title = signal('onyx');
   private menuService = inject(MenuService);
 
   ngOnInit(): void {

@@ -8,7 +8,7 @@ import {
 } from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
-import {TrackMetadataMessage} from '../../../../api/webrtc-server';
+import {TrackMetadataMessage} from '../../../../api/onyx-server';
 import {DebugService} from '../../../services/debug-service';
 import {JsonPipe} from '@angular/common';
 

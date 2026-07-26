@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
-import {GroupDTO, UserExtendedDTO} from '../../../../../api/webrtc-server';
+import {GroupDTO, UserExtendedDTO} from '../../../../../api/onyx-server';
 import {RestService} from '../../../../services/rest-service';
 import {SplitPanel, TabPanelEntry} from '../../../../components/ui/split-panel/split-panel';
 import {AsyncPipe, DatePipe} from '@angular/common';

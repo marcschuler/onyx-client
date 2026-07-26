@@ -28,10 +28,10 @@ import {
   SectionMoveEvent,
   ServerChangeEvent,
   ServerTreeChangeMessage
-} from '../../../api/webrtc-server';
+} from '../../../api/onyx-server';
 import {RestService} from '../rest-service';
 import {clientWithId, getChannelFromId, getSectionFromId, getSectionOfChannel, reorderListItem} from '../Util';
-import {MessageBody} from '../../../api/webrtc-server/model/messageBody';
+import {MessageBody} from '../../../api/onyx-server/model/messageBody';
 import {EventHandler} from '../../util';
 
 @Injectable({

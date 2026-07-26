@@ -5,7 +5,7 @@ import {ComponentPortal} from '@angular/cdk/portal';
 import {Client, WebSocketServerConnection} from '../websocket/WebSocketServerConnection';
 import {ClientContextMenu} from '../../components/client/client-context-menu/client-context-menu';
 import {MENU_STACK, MenuStack} from '@angular/cdk/menu';
-import {ChannelDTO} from '../../../api/webrtc-server';
+import {ChannelDTO} from '../../../api/onyx-server';
 import {ChannelContextMenu} from '../../components/channel/channel-context-menu/channel-context-menu';
 import {Settings} from '../../pages/settings/settings';
 import {BiMap} from 'mnemonist';
