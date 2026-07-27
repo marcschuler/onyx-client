@@ -6,8 +6,6 @@ bg-neutral-800 rounded w-full h-full" (contextmenu)="openClientContextMenu($even
     @if (stream && stream.getTracks().length > 0) {
       @if (debugService.debug) {
         <p class="absolute">
-          A/V Track count: {{ stream?.getVideoTracks()?.length }}/{{ stream?.getVideoTracks()?.length }}
-          <br>
           Stream Label: {{streamType?streamType:'unknown!'}}
           <br>
           ID: {{stream.id}}

@@ -2,45 +2,27 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {GroupDTO, UserExtendedDTO} from '../../../../../api/onyx-server';
 import {RestService} from '../../../../services/rest-service';
-import {SplitPanel, TabPanelEntry} from '../../../../components/ui/split-panel/split-panel';
-import {AsyncPipe, DatePipe} from '@angular/common';
-import {IdenticonPipe} from '../../../../pipes/identicon-pipe';
+import {SplitPanel} from '../../../../components/ui/split-panel/split-panel';
 import {
-  Ban,
-  CircleSlash,
   LucideAngularModule,
-  UserCheck,
-  UserMinus,
-  UserMinusIcon,
-  UserPlus,
   UsersIcon
 } from 'lucide-angular';
 import {ToastService, ToastType} from '../../../../services/ui/toast-service';
-import {replaceInList} from '../../../../util';
 import {SplitPanelBar} from '../../../../components/ui/split-panel/split-panel-bar/split-panel-bar';
 import {SplitPanelButton} from '../../../../components/ui/split-panel/split-panel-button/split-panel-button';
 import {SplitPanelSelector} from '../../../../directives/split-panel-selector';
-import {Popup} from '../../../../components/ui/popup/popup';
-import {ProfileImage} from '../../../../components/client/profile-image/profile-image';
-import {MultiSelect} from '../../../../components/ui/multi-select/multi-select';
-import {SelectItem} from '../../../../components/ui/multi-select/select-item/select-item';
 import {UserEntry} from './user-entry/user-entry';
+import {Popup} from '../../../../components/ui/popup/popup';
 
 @Component({
   selector: 'app-users-panel',
   imports: [
-    AsyncPipe,
-    IdenticonPipe,
-    DatePipe,
     LucideAngularModule,
     SplitPanel,
     SplitPanelBar,
     SplitPanelButton,
     SplitPanelSelector,
     Popup,
-    ProfileImage,
-    MultiSelect,
-    SelectItem,
     UserEntry
   ],
   templateUrl: './users-panel.html',

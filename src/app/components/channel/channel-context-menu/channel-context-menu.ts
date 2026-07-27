@@ -1,11 +1,10 @@
 import {Component, inject, Input} from '@angular/core';
 import {ContextMenu} from "../../ui/context/context-menu/context-menu";
 import {ContextMenuButton} from "../../ui/context/context-menu-button/context-menu-button";
-import {ProfileImage} from "../../client/profile-image/profile-image";
 import {ChannelDTO} from '../../../../api/onyx-server';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ChevronDownIcon, ChevronUpIcon, HexagonIcon, LucideAngularModule} from 'lucide-angular';
-import {ContextMenuService, POPUP_CONTEXT, PopupControl} from '../../../services/ui/context-menu-service';
+import {ContextMenuService, POPUP_CONTEXT} from '../../../services/ui/context-menu-service';
 import {ChannelEditor} from '../channel-editor/channel-editor';
 
 @Component({
@@ -13,7 +12,6 @@ import {ChannelEditor} from '../channel-editor/channel-editor';
   imports: [
     ContextMenu,
     ContextMenuButton,
-    ProfileImage,
     LucideAngularModule
   ],
   templateUrl: './channel-context-menu.html',

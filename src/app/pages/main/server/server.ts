@@ -5,23 +5,18 @@ import {ChannelView} from './channel-view/channel-view';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {
   BookUser,
-  InfoIcon, LogOut,
+  LogOut,
   LucideAngularModule,
   PanelLeftClose,
   PanelLeftOpen,
-  ServerCog, ServerIcon,
-  SettingsIcon
+  ServerCog,
 } from 'lucide-angular';
 import { NgStyle} from '@angular/common';
 import {StorageService} from '../../../services/storage.service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {Popup} from '../../../components/ui/popup/popup';
-import {Settings} from '../../settings/settings';
 import {ServerOverview} from './server-overview/server-overview';
 import {AdminPanel} from './admin-panel/admin-panel';
 import {UsersPanel} from './users-panel/users-panel';
-import {ServerLoaderService} from '../../../services/server-loader-service';
-import {Tooltip} from '../../../directives/tooltip';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
 
 @Component({
@@ -32,10 +27,7 @@ import {ContextMenuService} from '../../../services/ui/context-menu-service';
     ChannelView,
     LucideAngularModule,
     NgStyle,
-    Popup,
     ServerOverview,
-    AdminPanel,
-    UsersPanel,
   ],
   templateUrl: './server.html',
   styleUrl: './server.css'

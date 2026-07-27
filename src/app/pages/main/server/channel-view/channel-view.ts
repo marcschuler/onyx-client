@@ -8,7 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {MessageView} from '../../../../components/server/message-view/message-view';
 import {ServerObjectId, WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO} from '../../../../../api/onyx-server/model/channelDTO';
-import {JsonPipe, NgStyle} from '@angular/common';
+import {NgStyle} from '@angular/common';
 import {TrackType} from '../../../../services/peer/MediaTracker';
 import {MediaService} from '../../../../services/peer/media-service';
 
@@ -19,7 +19,6 @@ import {MediaService} from '../../../../services/peer/media-service';
     FormsModule,
     MessageView,
     NgStyle,
-    JsonPipe,
   ],
   templateUrl: './channel-view.html',
   styleUrl: './channel-view.css'

@@ -2,13 +2,13 @@
   @for (identity of identityService.identities; track identity) {
     <div>
       <input class="settings-grid-option" disabled [ngModel]="identity.username">
-      <p class="text-neutral-500">ID: {{identity.id}}</p>
+      <p class="text-neutral-500">ID: {{ identity.id }}</p>
       <p class="text-neutral-500">Created: {{ identity.created | date: 'medium' }}</p>
     </div>
     <div class="flex">
       <button class="button-dark" disabled>Save</button>
       <button class="button-red rounded-none" [disabled]="identityService.identities.length<2"
-              (click)="identityToDelete = identity">Delete
+              (click)="openIdentityDeleteDialog(identity)">Delete
       </button>
     </div>
     <ui-split-panel-divider></ui-split-panel-divider>
@@ -17,13 +17,3 @@
   <h2>Create a new Identity</h2>
   <app-identity-wizzard></app-identity-wizzard>
 </div>
-
-@if (identityToDelete) {
-  <app-popup title="Delete your identity?"
-             [content]="'All groups, ranks and archivements on all servers using the identity \'' + identityToDelete.username + '\' will be inaccessible.'"
-             [buttons]="[BUTTON_CANCEL,BUTTON_DELETE]"
-             (close)="closeIdentityDialog($event)"
-  >
-
-  </app-popup>
-}

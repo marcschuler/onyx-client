@@ -31,7 +31,6 @@ import {
 } from '../../../api/onyx-server';
 import {RestService} from '../rest-service';
 import {clientWithId, getChannelFromId, getSectionFromId, getSectionOfChannel, reorderListItem} from '../Util';
-import {MessageBody} from '../../../api/onyx-server/model/messageBody';
 import {EventHandler} from '../../util';
 
 @Injectable({
@@ -403,3 +402,7 @@ export class WebSocketService {
 }
 
 export type MessageHandler<T extends MessageBody> = (event: T, connection: WebSocketServerConnection) => void | any;
+
+export interface MessageBody {
+  type: MessageTypes
+}

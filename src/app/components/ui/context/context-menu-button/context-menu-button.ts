@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CdkMenuItem, CdkMenuTrigger} from '@angular/cdk/menu';
+import {CdkMenuItem} from '@angular/cdk/menu';
 import {LucideAngularModule} from 'lucide-angular';
 
 @Component({
@@ -7,7 +7,6 @@ import {LucideAngularModule} from 'lucide-angular';
   imports: [
     CdkMenuItem,
     LucideAngularModule,
-    CdkMenuTrigger
   ],
   templateUrl: './context-menu-button.html',
   styleUrl: './context-menu-button.css',

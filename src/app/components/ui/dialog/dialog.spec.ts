@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NameDescriptionPopup } from './name-description-popup';
+import { Dialog } from './dialog';
 
-describe('NameDescriptionPopup', () => {
-  let component: NameDescriptionPopup;
-  let fixture: ComponentFixture<NameDescriptionPopup>;
+describe('Dialog', () => {
+  let component: Dialog;
+  let fixture: ComponentFixture<Dialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NameDescriptionPopup]
+      imports: [Dialog]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NameDescriptionPopup);
+    fixture = TestBed.createComponent(Dialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

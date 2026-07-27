@@ -4,9 +4,8 @@ import {RestService} from '../../../../../services/rest-service';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
 import {SectionDTO} from '../../../../../../api/onyx-server/model/sectionDTO';
-import {CircleMinus, GripVertical, LucideAngularModule, Pencil} from 'lucide-angular';
-import {Button, BUTTON_CANCEL, BUTTON_DELETE, Popup} from '../../../../../components/ui/popup/popup';
-import {ChannelDTO, SectionExtendedDTO, ServerTreeChangeMessage} from '../../../../../../api/onyx-server';
+import { GripVertical, LucideAngularModule} from 'lucide-angular';
+import { SectionExtendedDTO, ServerTreeChangeMessage} from '../../../../../../api/onyx-server';
 
 @Component({
   selector: 'app-channel-administration-panel',
@@ -100,7 +99,6 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
     }, error => this.restService.handleError(error))
   }
 
-  protected readonly BUTTON_CANCEL = BUTTON_CANCEL;
   protected readonly GripVertical = GripVertical;
 
 

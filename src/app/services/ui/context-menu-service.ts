@@ -11,6 +11,7 @@ import {Settings} from '../../pages/settings/settings';
 import {BiMap} from 'mnemonist';
 import {Popup} from '../../components/ui/popup/popup';
 import {WebSocketService} from '../websocket/web-socket-service';
+import {Dialog, DialogData} from '../../components/ui/dialog/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -24,11 +25,18 @@ export class ContextMenuService {
   private popups: BiMap<any, OverlayRef> = new BiMap();
 
   constructor() {
-    this.webSocketService.onServerClose.subscriber().subscribe(()=>{
+    this.webSocketService.onServerClose.subscriber().subscribe(() => {
       console.log("ui:context: closing " + this.popups.size + " popups because server connection closed");
-      this.popups.forEach(popup=>{
+      this.popups.forEach(popup => {
         this.closeContextMenu(popup);
       })
+    })
+  }
+
+  public openDialog(dialogData: DialogData) {
+    this.openPopup(Dialog, dialogData, {
+      closeButton: false,
+      fullHeight: false
     })
   }
 

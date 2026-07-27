@@ -1,18 +1,17 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {IdentityWizzard} from '../../settings/identity/identity-wizzard/identity-wizzard';
 import {
   Check,
-  Hand,
   LucideAngularModule,
   Server,
   ShieldUser
 } from 'lucide-angular';
 import {Identity, IdentityService} from '../../../services/identity-service';
-import {identifierName} from '@angular/compiler';
 import {NgClass} from '@angular/common';
-import { ServerLoaderService} from '../../../services/server-loader-service';
-import { Router} from '@angular/router';
-import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_SKIP, Popup} from '../../../components/ui/popup/popup';
+import {ServerLoaderService} from '../../../services/server-loader-service';
+import {Router} from '@angular/router';
+import {ContextMenuService} from '../../../services/ui/context-menu-service';
+import {BUTTON_CANCEL, BUTTON_SKIP} from '../../../components/ui/dialog/dialog';
 
 @Component({
   selector: 'app-welcome',
@@ -20,7 +19,6 @@ import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_SKIP, Popup} from '../../..
     IdentityWizzard,
     LucideAngularModule,
     NgClass,
-    Popup
   ],
   templateUrl: './welcome.html',
   styleUrl: './welcome.css',
@@ -29,17 +27,17 @@ export class Welcome {
   protected identityService = inject(IdentityService);
   private router = inject(Router);
   private serverLoaderService = inject(ServerLoaderService);
+  private contextMenuService = inject(ContextMenuService);
 
 
   stage: WelcomeStage = WelcomeStage.IDENTITY;
   identity: Identity | undefined;
-  warnDuplicate = false;
 
   communityServer: { name: string, description: string, url: string }[] = [{
     name: "karlthebee ONYX Server",
     description: "Developer Server",
     url: "https://onyx.karlthebee.de"
-  },{
+  }, {
     name: "Local DEV Server",
     description: "A local test server",
     url: "http://localhost:8080"
@@ -50,8 +48,15 @@ export class Welcome {
   constructor() {
     const identityService = this.identityService;
 
-    if (identityService.identities.length>0){
-      this.warnDuplicate= true;
+    if (identityService.identities.length > 0) {
+      this.contextMenuService.openDialog({
+        title: 'You already set up your identity. Skip this?',
+        content: 'You already created a Identity. You can skip this part if you want to.',
+        buttons: [
+          BUTTON_CANCEL,
+          BUTTON_SKIP.asCallback(() => this.finish())
+        ]
+      })
     }
   }
 
@@ -72,14 +77,6 @@ export class Welcome {
     this.identity = identity;
   }
 
-  protected onWarnDuplicate($event: Button) {
-    if ($event==BUTTON_SKIP){
-      this.finish();
-    }else{
-      this.warnDuplicate = false;
-    }
-  }
-
   protected finish() {
     this.selectedCommunityServer.forEach(server => {
       this.serverLoaderService.addServer({
@@ -92,17 +89,8 @@ export class Welcome {
   }
 
   protected readonly ShieldUser = ShieldUser;
-  protected readonly Hand = Hand;
   protected readonly Check = Check;
   protected readonly WelcomeStage = WelcomeStage;
-  protected readonly identifierName = identifierName;
-
-
-
-
-  protected readonly BUTTON_CANCEL = BUTTON_CANCEL;
-  protected readonly BUTTON_DELETE = BUTTON_DELETE;
-  protected readonly BUTTON_SKIP = BUTTON_SKIP;
 
 
   protected readonly Server = Server;

@@ -1,0 +1,24 @@
+<div>
+  @if (title) {
+    <h2 class="text-xl font-semibold mb-4">{{ title }}</h2>
+  }
+  @if (content) {
+    <p class="text-neutral-500 mb-6">{{ content }} </p>
+  }
+  @if (closeButton) {
+    <button class="absolute right-2 top-2 button-light" (click)="onButtonClick(undefined)">✕</button>
+  }
+
+  <ng-content></ng-content>
+
+  @if (buttons) {
+    <div class="flex justify-end gap-2">
+      @for (button of buttons; track button) {
+        <button [ngClass]="button.cssClass || 'button-dark'"
+                (click)="onButtonClick(button)">{{ button.text }}
+        </button>
+      }
+    </div>
+  }
+
+</div>

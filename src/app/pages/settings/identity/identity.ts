@@ -1,17 +1,17 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {DatePipe} from "@angular/common";
-import {Button, BUTTON_CANCEL, BUTTON_DELETE, Popup} from "../../../components/ui/popup/popup";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IdentityService} from '../../../services/identity-service';
-import {Identity as IdentityDTO} from '../../../services/identity-service';
 import {IdentityWizzard} from './identity-wizzard/identity-wizzard';
 import {SplitPanelDivider} from '../../../components/ui/split-panel/split-panel-divider/split-panel-divider';
+import {ContextMenuService} from '../../../services/ui/context-menu-service';
+import {BUTTON_CANCEL, BUTTON_DELETE} from '../../../components/ui/dialog/dialog';
+import {Identity as Ident} from '../../../services/identity-service'
 
 @Component({
   selector: 'app-identity',
   imports: [
     DatePipe,
-    Popup,
     ReactiveFormsModule,
     FormsModule,
     IdentityWizzard,
@@ -22,19 +22,16 @@ import {SplitPanelDivider} from '../../../components/ui/split-panel/split-panel-
 })
 export class Identity {
   protected identityService = inject(IdentityService);
+  private contextMenuService = inject(ContextMenuService);
 
-
-  protected readonly BUTTON_CANCEL = BUTTON_CANCEL;
-  protected readonly BUTTON_DELETE = BUTTON_DELETE;
-
-
-  identityToDelete?: IdentityDTO;
-
-  closeIdentityDialog(type: Button) {
-    if (type == BUTTON_DELETE) {
-      this.identityService.delete(this.identityToDelete!);
-    }
-    this.identityToDelete = undefined;
+  protected openIdentityDeleteDialog(identity: Ident) {
+    this.contextMenuService.openDialog({
+      title: 'Delete your identity?',
+      content: 'All groups, ranks and archivements on all servers using the identity ' + identity.username + ' will be inaccessible.',
+      buttons: [
+        BUTTON_CANCEL,
+        BUTTON_DELETE.asCallback(() => this.identityService.delete(identity))
+      ]
+    })
   }
-
 }

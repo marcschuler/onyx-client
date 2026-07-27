@@ -1,16 +1,16 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import {Component, Input, OnInit, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {Button, BUTTON_CANCEL, BUTTON_DELETE, BUTTON_EDIT, Popup} from '../../../components/ui/popup/popup';
+import {Popup} from '../../../components/ui/popup/popup';
 import {ServerConnection, ServerLoaderService} from '../../../services/server-loader-service';
-import {replaceInList} from '../../../util';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
-import {LucideAngularModule, ShredderIcon} from 'lucide-angular';
+import {LucideAngularModule} from 'lucide-angular';
+import {ContextMenuService} from '../../../services/ui/context-menu-service';
+import {BUTTON_CANCEL, BUTTON_DELETE} from '../../../components/ui/dialog/dialog';
 
 @Component({
   selector: 'app-server-editor',
   imports: [
     FormsModule,
-    Popup,
     LucideAngularModule
   ],
   templateUrl: './server-editor.html',
@@ -19,14 +19,13 @@ import {LucideAngularModule, ShredderIcon} from 'lucide-angular';
 export class ServerEditor implements OnInit {
   private serverLoaderService = inject(ServerLoaderService);
   private toastService = inject(ToastService);
+  private contextMenuService = inject(ContextMenuService);
 
 
   @Input() serverConnection!: ServerConnection;
 
   name!: string | undefined;
   url!: string;
-
-  deletePopup = false;
 
   ngOnInit(): void {
     this.name = this.serverConnection.name;
@@ -47,12 +46,17 @@ export class ServerEditor implements OnInit {
     this.serverLoaderService.saveServer();
   }
 
-  remove(button: Button) {
-    if (button == BUTTON_DELETE)
-      this.serverLoaderService.removeServer(this.serverConnection);
-    this.deletePopup = false;
+  protected openDeletePopup() {
+    this.contextMenuService.openDialog({
+      title: 'Delete this connection?',
+      buttons: [
+        BUTTON_CANCEL,
+        BUTTON_DELETE.asCallback(() => {
+          console.log("Deleting server", this.serverConnection);
+          this.serverLoaderService.removeServer(this.serverConnection);
+        })
+      ],
+      content: 'The server does not delete your personal data like profile image or messages.'
+    })
   }
-
-  protected readonly BUTTON_CANCEL = BUTTON_CANCEL;
-  protected readonly BUTTON_DELETE = BUTTON_DELETE;
 }

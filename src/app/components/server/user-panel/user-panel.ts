@@ -9,10 +9,7 @@ import {
 import {NgClass} from '@angular/common';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {ConnectionState, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {PeerConnectionService} from '../../../services/peer/peer-connection-service';
 import {TrackType} from '../../../services/peer/MediaTracker';
-import {Popup} from '../../ui/popup/popup';
-import {Settings} from '../../../pages/settings/settings';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
 import {MediaService} from '../../../services/peer/media-service';
 
@@ -21,8 +18,6 @@ import {MediaService} from '../../../services/peer/media-service';
   imports: [
     LucideAngularModule,
     NgClass,
-    Popup,
-    Settings,
   ],
   templateUrl: './user-panel.html',
   styleUrl: './user-panel.css'

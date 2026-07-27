@@ -2,20 +2,14 @@ import {Component, Input, OnInit, inject} from '@angular/core';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO} from '../../../../api/onyx-server';
 import {RestService} from '../../../services/rest-service';
-import {SplitPanel,} from '../../ui/split-panel/split-panel';
 import {HexagonIcon, LucideAngularModule, SaveIcon} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
-import {SplitPanelBar} from '../../ui/split-panel/split-panel-bar/split-panel-bar';
-import {SplitPanelButton} from '../../ui/split-panel/split-panel-button/split-panel-button';
 import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-channel-editor',
   imports: [
-    SplitPanel,
     LucideAngularModule,
-    SplitPanelBar,
-    SplitPanelButton,
     FormsModule,
   ],
   templateUrl: './channel-editor.html',

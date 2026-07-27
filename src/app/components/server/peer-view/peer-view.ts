@@ -10,13 +10,11 @@ import {WebSocketServerConnection} from '../../../services/websocket/WebSocketSe
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
 import {TrackMetadataMessage} from '../../../../api/onyx-server';
 import {DebugService} from '../../../services/debug-service';
-import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-peer-view',
   imports: [
     LucideAngularModule,
-    JsonPipe
   ],
   templateUrl: './peer-view.html',
   styleUrl: './peer-view.css'

@@ -4,7 +4,6 @@ import {fileMimetypeToIcon, FileType, mimeTypeToFileType} from '../../../mimetyp
 import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {LucideAngularModule} from 'lucide-angular';
-import {SanitizeUrlPipe} from '../../../pipes/sanitize-url-pipe';
 import {PreviewImage} from '../preview-image/preview-image';
 
 @Component({
@@ -12,7 +11,6 @@ import {PreviewImage} from '../preview-image/preview-image';
   imports: [
     StorageFileURLPipe,
     LucideAngularModule,
-    SanitizeUrlPipe,
     PreviewImage
   ],
   templateUrl: './file-preview.html',
