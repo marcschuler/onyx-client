@@ -36,6 +36,8 @@
       }
     }
 
+    <app-groups-administration-panel [connection]="connection" (onGroupCreated)="updateGroups()"
+                                     splitPanel="Groups"></app-groups-administration-panel>
 
     @if (groups) {
       @for (group of groups; track group.id) {

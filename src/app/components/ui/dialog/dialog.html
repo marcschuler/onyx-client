@@ -12,7 +12,7 @@
   <ng-content></ng-content>
 
   @if (buttons) {
-    <div class="flex justify-end gap-2">
+    <div class="flex justify-end gap-2 border-t border-t-neutral-400 pt-2">
       @for (button of buttons; track button) {
         <button [ngClass]="button.cssClass || 'button-dark'"
                 (click)="onButtonClick(button)">{{ button.text }}

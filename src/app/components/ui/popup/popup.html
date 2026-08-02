@@ -1,5 +1,8 @@
 <div
   class="fixed inset-0 z-50 items-center justify-center bg-black/50 p-16" (click)="onOutOfBorder($event)">
+  <button class="absolute right-2 top-2 max-w-16" (click)="closePopup()">
+    <lucide-icon [name]="XIcon"></lucide-icon>
+  </button>
   <div
     class="bg-neutral-900 rounded-lg shadow-xl w-full p-6 relative" [class.h-full]="fullHeight">
     <ng-content></ng-content>

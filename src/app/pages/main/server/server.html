@@ -14,7 +14,7 @@
 
 
 <div class="min-h-screen flex">
-  <button class="absolute left-2 top-2 z-10 !p-2" (click)="minimized=!minimized">
+  <button class="absolute left-2 top-2 z-10 !p-2 max-w-8" (click)="minimized=!minimized">
     @if (minimized) {
       <lucide-icon [name]="PanelLeftOpen" class="w-4"></lucide-icon>
     } @else {

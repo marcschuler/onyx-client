@@ -41,7 +41,7 @@ export class Server {
   @Input() connection!: WebSocketServerConnection;
 
   private resizing = false;
-  private minWidth = 100;
+  private minWidth = 150;
   private maxWidth = 500;
   protected minimized = false;
 

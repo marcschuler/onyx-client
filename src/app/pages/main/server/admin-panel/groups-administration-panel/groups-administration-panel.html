@@ -1,0 +1,6 @@
+<h3>Create new Group</h3>
+
+<div class="flex">
+  <input class="!rounded-r-none" [(ngModel)]="groupName">
+  <button class="!rounded-l-none" (click)="createGroup()" [disabled]="groupName.length<3">Create</button>
+</div>

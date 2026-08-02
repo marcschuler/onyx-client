@@ -6,10 +6,13 @@ import {
   Output, ViewChild, ViewContainerRef,
 } from '@angular/core';
 import {POPUP_CONTEXT} from '../../../services/ui/context-menu-service';
+import {LucideAngularModule, XIcon} from 'lucide-angular';
 
 @Component({
   selector: 'app-popup',
-  imports: [ ],
+  imports: [
+    LucideAngularModule
+  ],
   templateUrl: './popup.html',
   styleUrl: './popup.css'
 })
@@ -45,7 +48,14 @@ export class Popup {
 
   protected onOutOfBorder(event: MouseEvent) {
     if (event.target === event.currentTarget)
-      this.popupContext.close();
+      this.closePopup()
   }
+
+  protected closePopup(){
+    this.popupContext.close();
+    this.close.emit();
+  }
+
+  protected readonly XIcon = XIcon;
 }
 

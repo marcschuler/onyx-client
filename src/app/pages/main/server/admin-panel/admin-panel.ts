@@ -19,17 +19,17 @@ import {GroupDTO} from '../../../../../api/onyx-server';
 import {ChannelEditor} from '../../../../components/channel/channel-editor/channel-editor';
 import {SectionEditor} from '../../../../components/section/section-editor/section-editor';
 import {Popup} from '../../../../components/ui/popup/popup';
+import {GroupsAdministrationPanel} from './groups-administration-panel/groups-administration-panel';
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [SplitPanel, FormsModule, ServerAdministrationPanel, ChannelAdministrationPanel, GroupAdministrationPanel, SplitPanelBar, SplitPanelButton, SplitPanelSelector, ChannelEditor, SectionEditor, Popup],
+  imports: [SplitPanel, FormsModule, ServerAdministrationPanel, ChannelAdministrationPanel, GroupAdministrationPanel, SplitPanelBar, SplitPanelButton, SplitPanelSelector, ChannelEditor, SectionEditor, Popup, GroupsAdministrationPanel],
   templateUrl: './admin-panel.html',
   standalone: true,
   styleUrl: './admin-panel.css'
 })
 export class AdminPanel implements OnInit {
   private restService = inject(RestService);
-  private toastService = inject(ToastService);
 
 
   @Input() connection!: WebSocketServerConnection;
@@ -38,6 +38,10 @@ export class AdminPanel implements OnInit {
 
 
   ngOnInit(): void {
+   this.updateGroups();
+  }
+
+  protected updateGroups() {
     this.connection.rest.groupController.all()
       .subscribe(value => {
         this.groups = value;
