@@ -13,9 +13,11 @@ export interface PeerConnection {
 }
 
 export interface PeerStreams{
-  cameraMic?: MediaStream;
-  screen?: MediaStream;
-  unknownStreams: MediaStream;
+  cameraMic?: MediaStream; // camera + microphone stream
+  screen?: MediaStream; // screen stream
+  unknownStreams: MediaStream; // streams we don't know where they are belonging to
+
+  talking: boolean;
 }
 
 export interface DataStream{

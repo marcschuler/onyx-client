@@ -1,4 +1,4 @@
-<div class="max-w-128 max-h-96 overflow-hidden">
+<div class="max-w-256 max-h-96 overflow-hidden rounded-xl">
   @switch (fileType) {
 
     <!--@case (FileType.PDF) { TODO does not work yet - seems like browser security prevents this
@@ -6,7 +6,7 @@
     }-->
     @case (FileType.IMAGE) {
       <app-preview-image [file]="file" [connection]="connection"
-                         imageClass="object-contain max-h-96"></app-preview-image>
+                         imageClass="object-contain min-h-48 max-h-96"></app-preview-image>
     }
     @case (FileType.AUDIO) {
       <audio [src]="file.id | storageFileURL:connection:undefined:undefined" controls></audio>

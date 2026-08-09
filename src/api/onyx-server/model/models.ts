@@ -34,6 +34,7 @@ export * from './markdownMessageContentDTO';
 export * from './messageContentDTO';
 export * from './messageCreationDTO';
 export * from './messageDTO';
+export * from './messageDeleteEvent';
 export * from './messageTypes';
 export * from './noPermissionMessage';
 export * from './pageMessageDTO';

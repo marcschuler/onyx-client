@@ -1,5 +1,5 @@
 import {Injectable, Injector, inject} from '@angular/core';
-import {PeerConnection, PeerConnectionState, PeerStreams, SecurityState} from './PeerConnection';
+import {PeerConnection, PeerConnectionState, SecurityState} from './PeerConnection';
 import {Client, ConnectionState, WebSocketServerConnection} from '../websocket/WebSocketServerConnection';
 import {WebSocketService} from '../websocket/web-socket-service';
 import {ToastService, ToastType} from '../ui/toast-service';
@@ -15,7 +15,6 @@ import {
   NOTIFICATION_USER_LEFT_CHANNEL,
   NotificationService
 } from '../notification.service';
-import {TrackType} from './MediaTracker';
 import {MediaService} from './media-service';
 import {removeItemFromList} from '../../util';
 
@@ -40,6 +39,10 @@ export class PeerConnectionService {
       this.webSocketService.addHandler(PeerOfferForward.TypeEnum.PeerOfferForward, (e, c) => this.onPeerOfferForward(e as PeerOfferForward, c))
       this.webSocketService.addHandler(PeerAnswerForward.TypeEnum.PeerAnswerForward, (e, c) => this.onPeerAnswerForward(e as PeerAnswerForward, c))
     }, 50);
+
+    setInterval(() => {
+      this.pollAudioLevels();
+    }, 250)
   }
 
 
@@ -102,7 +105,8 @@ export class PeerConnectionService {
       state: PeerConnectionState.WaitingForOffer,
       securityState: SecurityState.UNTESTED,
       streams: {
-        unknownStreams: new MediaStream()
+        unknownStreams: new MediaStream(),
+        talking: false
       },
       dataStream: {
         messageQueue: []
@@ -326,6 +330,28 @@ export class PeerConnectionService {
     })
   }
 
+  private pollAudioLevels() {
+    this.peers.forEach(peer => {
+      peer.streams.talking = false;
+      const stream = peer.streams.cameraMic;
+      if (!stream)
+        return;
+      if (stream.getAudioTracks().length == 0)
+        return;
+      const track = stream.getTracks()[0];
+      peer.connection.getStats(track).then(stats => {
+        stats.forEach(stat => {
+          if (stat.type === 'inbound-rtp' && stat.kind === 'audio') {
+            const level = (stat as unknown as RTCInboundRtpStreamStats).audioLevel;
+            peer.streams.talking = level !== undefined && level >= AUDIO_SPEAKING_LEVEL;
+            console.log("peer: audio: level for peer " + peer.client.username + " is " + level);
+          }
+        })
+
+      })
+    })
+  }
+
 
   /*
       Peer Offers + Answers messages
@@ -483,3 +509,4 @@ export class PeerConnectionService {
 }
 
 export const DATACHANNEL = "data-control";
+const AUDIO_SPEAKING_LEVEL = .025;

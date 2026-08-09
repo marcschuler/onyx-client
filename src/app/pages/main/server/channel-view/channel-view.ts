@@ -11,6 +11,7 @@ import {ChannelDTO} from '../../../../../api/onyx-server/model/channelDTO';
 import {NgStyle} from '@angular/common';
 import {TrackType} from '../../../../services/peer/MediaTracker';
 import {MediaService} from '../../../../services/peer/media-service';
+import {HexagonIcon, LucideAngularModule} from 'lucide-angular';
 
 @Component({
   selector: 'app-channel-view',
@@ -19,6 +20,7 @@ import {MediaService} from '../../../../services/peer/media-service';
     FormsModule,
     MessageView,
     NgStyle,
+    LucideAngularModule,
   ],
   templateUrl: './channel-view.html',
   styleUrl: './channel-view.css'
@@ -95,8 +97,6 @@ export class ChannelView implements AfterViewInit, OnChanges {
     if (newHeightVh < 10) newHeightVh = 10;
     if (newHeightVh > 90) newHeightVh = 90;
 
-    //console.log("new height is " + newHeightVh + "vh")
-
 
     this.interfaceService.settings.channelSplitSize.peerView = newHeightVh;
     this.updateGridSize();
@@ -164,4 +164,5 @@ export class ChannelView implements AfterViewInit, OnChanges {
   }
 
   protected readonly TrackType = TrackType;
+  protected readonly HexagonIcon = HexagonIcon;
 }

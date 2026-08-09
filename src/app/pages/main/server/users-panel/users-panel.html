@@ -1,23 +1,21 @@
-<app-popup [closeButton]="true" [fullHeight]="true">
-  <ui-split-panel>
-    <ui-split-panel-bar>
-      <ui-split-panel-button value="user" name="User" [icon]="UsersIcon">
-      </ui-split-panel-button>
-    </ui-split-panel-bar>
-    <div splitPanel="user" class="min-w-172 gap-2">
-      <div class="grid grid-cols-10">
-        <p class="col-span-2 font-bold">Username</p>
-        <p class="col-span-1 font-bold">State</p>
-        <p class="col-span-2 font-bold">Known since</p>
-        <p class="col-span-2 font-bold">Last seen</p>
-        <p class="col-span-2 font-bold">Groups</p>
-        <p class="col-span-1 font-bold">Actions</p>
-      </div>
-      @if (users && groups) {
-        @for (user of users; track user) {
-          <app-user-entry [user]="user" [users]="users" [groups]="groups" [connection]="connection"></app-user-entry>
-        }
-      }
+<ui-split-panel>
+  <ui-split-panel-bar>
+    <ui-split-panel-button value="user" name="User" [icon]="UsersIcon">
+    </ui-split-panel-button>
+  </ui-split-panel-bar>
+  <div splitPanel="user" class="min-w-172 gap-2">
+    <div class="grid grid-cols-10">
+      <p class="col-span-2 font-bold">Username</p>
+      <p class="col-span-1 font-bold">State</p>
+      <p class="col-span-2 font-bold">Known since</p>
+      <p class="col-span-2 font-bold">Last seen</p>
+      <p class="col-span-2 font-bold">Groups</p>
+      <p class="col-span-1 font-bold">Actions</p>
     </div>
-  </ui-split-panel>
-</app-popup>
+    @if (users && groups) {
+      @for (user of users; track user) {
+        <app-user-entry [user]="user" [users]="users" [groups]="groups" [connection]="connection"></app-user-entry>
+      }
+    }
+  </div>
+</ui-split-panel>

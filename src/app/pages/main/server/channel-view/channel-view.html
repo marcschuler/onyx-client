@@ -3,6 +3,7 @@
     <div class="bg-neutral-900 p-2 rounded-br-xl border-b border-neutral-600">
       <h3 class="font-semibold" [class.skeleton]="!details" [style.padding-left]="titleOffsetLeft?'40px':'0'">
         @if (details) {
+          <lucide-icon [name]="HexagonIcon" class="inline pr-1"></lucide-icon>
           {{ details.name }}
         }
       </h3>

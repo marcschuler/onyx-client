@@ -34,6 +34,7 @@ export class SplitPanel implements AfterContentInit {
 
   ngAfterContentInit(): void {
     this.leftBar.onClick.subscribe((value: SplitPanelButtonEvent) => {
+      console.log("ui: split-panel: button clicked")
       this.selectOption(value);
     });
 
@@ -76,10 +77,4 @@ export class SplitPanel implements AfterContentInit {
       element.style.display = matches ? '' : 'none'
     })
   }
-}
-
-export interface TabPanelEntry {
-  id: string;
-  icon?: LucideIconData;
-  name: string;
 }

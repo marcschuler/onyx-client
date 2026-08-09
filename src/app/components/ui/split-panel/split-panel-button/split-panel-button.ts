@@ -29,12 +29,11 @@ export class SplitPanelButton {
     this.buttons.changes.subscribe((list: QueryList<SplitPanelButton>) => {
       list.forEach(btn => {
         this.subscribe(btn);
-        btn.isChild = true;
       });
     });
 
     setTimeout(() => {
-      this.buttons.filter(button => button.isChild = true);
+      this.buttons.forEach(button => button.isChild = true);
     })
   }
 

@@ -10,9 +10,9 @@ import {
   inject
 } from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {CornerDownRightIcon, CornerRightDownIcon, LucideAngularModule, SendIcon, XIcon} from 'lucide-angular';
+import {CornerDownRightIcon, LucideAngularModule, SendIcon, XIcon} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {getChannelFromId} from '../../../services/Util';
+import {deleteInList, getChannelFromId} from '../../../services/Util';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {MessageHandler, WebSocketService} from '../../../services/websocket/web-socket-service';
 import {MessageDTO} from '../../../../api/onyx-server/model/messageDTO';
@@ -22,12 +22,15 @@ import {Message} from './message/message';
 import {MessageService} from '../../../services/message-service';
 import {
   ChatMessageEvent,
-  FileDTO,
-  FileMessageContentDTO,
-  MarkdownMessageContentDTO
+  FileDTO, FileMessageContentDTO,
+  MarkdownMessageContentDTO, MessageDeleteEvent, ServerDTODescriptionInner
 } from '../../../../api/onyx-server';
 import {FileUpload} from '../../ui/file-upload/file-upload';
 import {MessageContent} from '../../chat/message-content/message-content';
+import {Chip} from '../../ui/chip/chip';
+import {PreviewImage} from '../../ui/preview-image/preview-image';
+import {removeItemFromList} from '../../../util';
+import {mimeTypeHasImagePreview} from '../../../mimetype-icons';
 
 @Component({
   selector: 'app-message-view',
@@ -36,7 +39,9 @@ import {MessageContent} from '../../chat/message-content/message-content';
     LucideAngularModule,
     Message,
     FileUpload,
-    MessageContent
+    MessageContent,
+    Chip,
+    PreviewImage
   ],
   templateUrl: './message-view.html',
   styleUrl: './message-view.css'
@@ -56,6 +61,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
   messages: MessageDTO[] = [];
   currentPage: number | undefined = undefined;
+  attachments: FileDTO[] = [];
 
   message = "";
 
@@ -123,12 +129,13 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
 
   ngOnInit(): void {
-    this.webSocketService.addHandler(ChatMessageEvent.TypeEnum.ChatMessageEvent, this.incomeMessageHandler);
+    this.webSocketService.addHandler(ChatMessageEvent.TypeEnum.ChatMessageEvent, this.onNewMessage);
+    this.webSocketService.addHandler(MessageDeleteEvent.TypeEnum.MessageDeleteEvent, this.onMessageDelete);
     this.initMessages();
   }
 
   ngOnDestroy(): void {
-    this.webSocketService.removeHandler(this.incomeMessageHandler);
+    this.webSocketService.removeHandler(this.onNewMessage);
     this.moreMessagesObserver?.disconnect()
   }
 
@@ -154,7 +161,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     if (event && !event.shiftKey) {
       event.preventDefault();
     }
-    if (this.message.length == 0) {
+    if (this.message.length == 0 && this.attachments.length == 0) {
       this.toastService.create({
         title: "Empty message",
         message: "The message cannot be empty",
@@ -167,49 +174,45 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     if (!channel) {
       return;
     }
+
+    const content: ServerDTODescriptionInner[] = [];
+
+    this.attachments.forEach(attachment => {
+      content.push({
+        type: "FILE",
+        file: attachment,
+      } as FileMessageContentDTO)
+    })
+
     const message = this.messageService.convertLinksToMarkdownLinks(this.message);
-    console.log("message-view: sending message to channel/chat " + channel.id + "/" + channel.chatId);
+    if (this.message.length != 0)
+      content.push({
+        text: message,
+        type: "MARKDOWN",
+        repliesTo: this.reply ? this.reply.id : undefined
+      } as MarkdownMessageContentDTO);
+
+    console.log("message-view: sending message to channel/chat " + channel.id + "/" + channel.chatId, content);
     this.connection.rest.chatController.message(channel.chatId, {
       repliesTo: this.reply ? this.reply.id : undefined,
-      content: [
-        {
-          text: message,
-          type: "MARKDOWN",
-          repliesTo: this.reply ? this.reply.id : undefined
-        } as MarkdownMessageContentDTO
-      ]
+      content: content
     }).subscribe(() => {
       this.message = "";
+      this.attachments = [];
       this.reply = undefined;
     }, error => this.restService.handleError(error))
   }
 
-  protected onFileUpload($event: FileDTO) {
-    console.log("message-view: file was uploaded, crafting message")
-    const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
-    if (!channel) {
-      return;
-    }
-    this.connection.rest.chatController.message(channel.chatId, {
-      repliesTo: this.reply ? this.reply.id : undefined,
-      content: [
-        {
-          type: "FILE",
-          file: $event,
-        } as FileMessageContentDTO
-      ]
-    })
-      .subscribe(() => {
-        console.log("message-view: send file chat")
-        this.toastService.create({
-          title: "File uploaded to chat",
-          type: ToastType.Success
-        })
-        this.reply = undefined;
-      }, error => this.restService.handleError(error))
+  protected onAttachmentUploaded($event: FileDTO) {
+    console.log("message-view: file was uploaded, adding attachment")
+    this.attachments.push($event);
   }
 
-  incomeMessageHandler: MessageHandler<ChatMessageEvent> = (event: ChatMessageEvent, connection) => {
+  protected removeAttachment(attachment: FileDTO) {
+    removeItemFromList(this.attachments, attachment);
+  }
+
+  onNewMessage: MessageHandler<ChatMessageEvent> = (event: ChatMessageEvent, connection) => {
     console.log("message-view: received new message " + JSON.stringify(event));
     if (!this.connection.selectedChannel) {
       console.log("message-view: Ignoring message, no channel selected");
@@ -225,6 +228,16 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
       this.notificationService.notify(NOTIFICATION_MESSAGE_NEW)
   };
 
+  onMessageDelete: MessageHandler<MessageDeleteEvent> = (event: MessageDeleteEvent, connection: WebSocketServerConnection) => {
+    const message = this.messages.find(msg => msg.id === event.id);
+    if (message) {
+      console.log("message-view: message in view deleted", message);
+      deleteInList(this.messages, message);
+    } else {
+      console.log("message-view: message deleted but not in view", event);
+    }
+  }
+
 
   protected setReply($event: MessageDTO | undefined) {
     this.reply = $event;
@@ -233,4 +246,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
   protected readonly CornerDownRightIcon = CornerDownRightIcon;
   protected readonly XIcon = XIcon;
+
+
+  protected readonly mimeTypeHasImagePreview = mimeTypeHasImagePreview;
 }

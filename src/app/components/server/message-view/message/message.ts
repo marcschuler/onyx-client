@@ -1,5 +1,5 @@
 import {Component, Input, inject, Output, EventEmitter} from '@angular/core';
-import {MessageDTO} from "../../../../../api/onyx-server";
+import {MarkdownMessageContentDTO, MessageDTO} from "../../../../../api/onyx-server";
 import {AsyncPipe, NgClass} from '@angular/common';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {IdenticonPipe} from '../../../../pipes/identicon-pipe';
@@ -45,7 +45,7 @@ export class Message {
   protected readonly asTypeMarkdown = asTypeMarkdown;
   protected readonly asTypeFile = asTypeFile;
 
-  protected openReplyContextMenu(event: MouseEvent) {
+  protected openMessageContextMenu(event: MouseEvent) {
     const menu = this.contextMenuService.openContextMenu(MessageContextMenu, event, {
       connection: this.connection,
       message: this.message,

@@ -14,14 +14,6 @@
 
 
 <div class="min-h-screen flex">
-  <button class="absolute left-2 top-2 z-10 !p-2 max-w-8" (click)="minimized=!minimized">
-    @if (minimized) {
-      <lucide-icon [name]="PanelLeftOpen" class="w-4"></lucide-icon>
-    } @else {
-      <lucide-icon [name]="PanelLeftClose" class="w-4"></lucide-icon>
-    }
-  </button>
-
   @if (!minimized) {
     <aside class="block min-h-screen mx-h-screen shrink-0 bg-neutral-900 border-r-neutral-950 border-r-1"
            [ngStyle]="{ width: interfaceService.settings.sidebarWidth + 'px' }">
@@ -41,6 +33,17 @@
       (mousedown)="startResizing($event)"
     ></div>
   }
+
+  <span class="group relative p-1 max-w-8"
+        [ngStyle]="{ width: (minimized? interfaceService.settings.sidebarWidth:0) + 'px' }">
+    <button class="absolut hoverable button-small" (click)="minimized=!minimized">
+      @if (minimized) {
+        <lucide-icon [name]="PanelLeftOpen" class="w-4"></lucide-icon>
+      } @else {
+        <lucide-icon [name]="PanelLeftClose" class="w-4"></lucide-icon>
+      }
+    </button>
+  </span>
 
   <main class="flex-1 max-h-screen">
     @if (connection.selectedChannel) {

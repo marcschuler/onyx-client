@@ -52,6 +52,7 @@ model/markdownMessageContentDTO.ts
 model/messageContentDTO.ts
 model/messageCreationDTO.ts
 model/messageDTO.ts
+model/messageDeleteEvent.ts
 model/messageTypes.ts
 model/models.ts
 model/noPermissionMessage.ts

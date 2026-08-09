@@ -17,5 +17,6 @@ export interface MessageDTO {
     user: UserSimpleDTO;
     content: Array<ServerDTODescriptionInner>;
     repliesTo?: MessageDTO;
+    chatId: string;
 }
 

@@ -5,11 +5,17 @@
   }
   @case ("FILE") {
     @let file = asTypeFile(content);
-    <app-file-preview [file]="file.file" [connection]="connection"></app-file-preview>
-    <p> {{ file.file.filename }} </p>
-    <p class="text-xs text-neutral-600">{{ file.file.size | fileSize }}</p>
-    <a class="button button-small" [href]="file.file.id | storageFileURL:connection"
-       target="_blank">Download</a>
+    <div class="relative group">
+      <app-file-preview [file]="file.file" [connection]="connection"></app-file-preview>
+      <div class="absolute bottom-0 w-full bg-neutral-800/80 hoverable p-1 justify-center">
+        <p> {{ file.file.filename }} </p>
+        <p class="text-xs text-neutral-300">{{ file.file.size | fileSize }}</p>
+        <a class="button button-small w-full" [href]="file.file.id | storageFileURL:connection"
+           target="_blank">Download</a>
+      </div>
+
+    </div>
+
   }
   @default {
     <p class="text-red-400">Your client does not unterstand this message. Please update your client or check

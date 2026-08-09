@@ -21,7 +21,8 @@ export class MediaService {
    * No more then the three defined TrackTypes are allowed concurrently.
    */
   localStream: PeerStreams = {
-    unknownStreams: new MediaStream()
+    unknownStreams: new MediaStream(),
+    talking: false
   };
 
   /**

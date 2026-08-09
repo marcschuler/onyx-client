@@ -33,6 +33,7 @@ export const MessageTypes = {
     IceServerMessage: 'IceServerMessage',
     JwtTokenEvent: 'JwtTokenEvent',
     KickedEvent: 'KickedEvent',
+    MessageDeleteEvent: 'MessageDeleteEvent',
     NoPermissionMessage: 'NoPermissionMessage',
     PeerAnswer: 'PeerAnswer',
     PeerAnswerForward: 'PeerAnswerForward',

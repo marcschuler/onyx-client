@@ -1,5 +1,7 @@
 <div class="border-2 relative items-center border-neutral-800 hover:border-neutral-200
-bg-neutral-800 rounded w-full h-full" (contextmenu)="openClientContextMenu($event)">
+bg-neutral-800 rounded w-full h-full"
+     [class.border-sky-400]="peer && peer.streams.talking"
+     (contextmenu)="openClientContextMenu($event)">
 
   <div class="flex-1 flex h-full">
 

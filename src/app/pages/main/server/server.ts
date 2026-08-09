@@ -86,6 +86,9 @@ export class Server {
   protected openUserPanel() {
     this.contextMenuService.openPopup(UsersPanel,{
       connection: this.connection
+    },{
+      fullHeight: true,
+      closeButton: true
     })
   }
 

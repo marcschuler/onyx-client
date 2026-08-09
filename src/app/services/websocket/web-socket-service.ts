@@ -47,6 +47,7 @@ export class WebSocketService {
 
   connection: WebSocketServerConnection | undefined;
 
+  //TODO move to connection.messageHandlers to make it independent of the connection
   private messageHandlers = new Map<MessageTypes, MessageHandler<any>[]>();
 
   public onServerClose: EventHandler<void> = new EventHandler();
@@ -124,14 +125,14 @@ export class WebSocketService {
         this.peerConnectionService.updatePeerConnections();
         // setTimeout(() => {
         const reason = "Reason: " + error;
-        console.warn("ws: erver closed connection:" + reason)
+        console.warn("ws: server closed connection:" + reason)
         this.toastService.create({
           title: "Server closed connection",
           message: reason,
           type: ToastType.Error,
         })
-        this.connection = undefined;
         reject(error);
+        this.connection = undefined;
         this.onServerClose.emit();
         //TODO recopnnecting does not work, every onServerClose doubles the connections
         // this.connect(serverConnection, identity, retries - 1);
@@ -171,6 +172,7 @@ export class WebSocketService {
     const values = this.messageHandlers.get(t) || [];
     values.push(handler);
     this.messageHandlers.set(t, values);
+    return handler;
   }
 
   removeHandler<T extends MessageBody>(handler: MessageHandler<T>) {

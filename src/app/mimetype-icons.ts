@@ -56,6 +56,10 @@ export function mimeTypeToFileType(mimeType: string): FileType | undefined {
   return undefined;
 }
 
+export function mimeTypeHasImagePreview(mimeType: string){
+  return mimeTypeToFileType(mimeType) ===  FileType.IMAGE;
+}
+
 export enum FileType {
   TEXT,
   IMAGE,

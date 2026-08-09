@@ -37,8 +37,8 @@ export class PreviewImage {
 
   protected fileAlt() {
     if (typeof this.file === 'string')
-      return this.file;
-    return this.file.filename;
+      return "Image preview for a file with ID " + this.file;
+    return "File with name " + this.file.filename;
   }
 }
 

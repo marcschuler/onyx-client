@@ -36,11 +36,11 @@
         @switch (description.type) {
           @case ("MARKDOWN") {
             @let markdown = asTypeMarkdown(description);
-            <textarea class="min-h-16" [(ngModel)]="markdown.text"></textarea> <!-- TODO -->
+            <textarea class="min-h-32" [(ngModel)]="markdown.text"></textarea> <!-- TODO -->
           }
-          @case ("FILE") {
-            <!-- TODO -->
-          }
+          <!-- @case ("FILE") {
+              TODO
+          }-->
           @default {
             <p class="text-red-400">Your client does not unterstand this message. Please update your client or check
               your server logs.</p>

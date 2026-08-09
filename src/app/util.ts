@@ -1,9 +1,11 @@
-import {Observable, Subject, Subscription} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 export function removeItemFromList<T>(list: T[], item: T) {
   const index = list.findIndex(i => i === item)
-  if (index > -1)
+  if (index === -1){
+    console.error("Item does not exist in list", list, item)
     throw "Item does not exist";
+  }
   return list.splice(index, 1)
 }
 

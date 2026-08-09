@@ -10,9 +10,6 @@
   </div>
 
   <div class="p-6 bg-neutral-800 rounded w-xl">
-    @if (serverLoaderService.connections.length != 0) {
-      <h3>Server Browser</h3>
-    }
     <div class="overflow-y-auto max-h-96">
 
       @for (s of serverLoaderService.connections; track s) {
@@ -65,7 +62,8 @@
           </div>
 
           <div class="flex justify-end">
-            <button class="!rounded-l-none button-onyx" (click)="connect(s)" [disabled]="selectedServer">
+            <!-- TODO pt-6 is a bad way to center it -->
+            <button class="!rounded-l-none button-onyx pt-6" (click)="connect(s)" [disabled]="selectedServer">
               @if (selectedServer == s) {
                 <app-spinner></app-spinner>
               } @else {
