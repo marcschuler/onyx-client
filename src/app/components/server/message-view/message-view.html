@@ -9,6 +9,13 @@
       <app-message [message]="msg" [lastMessage]="$index!=0?messages[$index]:undefined" [connection]="connection"
                    (onReply)="setReply($event)"></app-message>
     }
+    @if (messages.length == 0) {
+      <div class="text-center text-neutral-400">
+        <p><lucide-icon [name]="GhostIcon" class="mx-auto h-32 w-32"></lucide-icon></p>
+        <h1>nothing here</h1>
+      </div>
+    }
+
   </div>
 
   @if (reply) {
@@ -43,7 +50,8 @@
     </div>
     <div class="flex">
       <div class="p-1">
-        <app-file-upload class="w-8 !hover:bg-neutral-800" [connection]="connection" (uploaded)="onAttachmentUploaded($event)"
+        <app-file-upload class="w-8 !hover:bg-neutral-800" [connection]="connection"
+                         (uploaded)="onAttachmentUploaded($event)"
                          [ghost]="false"></app-file-upload>
       </div>
 

@@ -1,0 +1,10 @@
+<h1>{{ client.username }}</h1>
+<h3>Groups</h3>
+<ul>
+  @for (group of client.details.groups; track group.id) {
+    <li>{{ group.name }}</li>
+  }
+</ul>
+
+<h3>Identity</h3>
+<p>{{ client.publicKey | json}}</p>

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Popup} from '../../../components/ui/popup/popup';
-import {ServerConnection, ServerLoaderService} from '../../../services/server-loader-service';
+import {ServerDetails, ServerLoaderService} from '../../../services/server-loader-service';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {LucideAngularModule} from 'lucide-angular';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
@@ -22,7 +22,7 @@ export class ServerEditor implements OnInit {
   private contextMenuService = inject(ContextMenuService);
 
 
-  @Input() serverConnection!: ServerConnection;
+  @Input() serverConnection!: ServerDetails;
 
   name!: string | undefined;
   url!: string;

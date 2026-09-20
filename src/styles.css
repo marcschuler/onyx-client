@@ -92,6 +92,10 @@ textarea {
 .button-small {
   @apply !p-1
 }
+.button-mini {
+  @apply !p-0
+}
+
 
 .button-light {
   @apply bg-neutral-200 text-neutral-800
@@ -218,6 +222,14 @@ UI Stuff
 
 .settings-grid-full {
   @apply col-span-12
+}
+
+
+/**
+ HOVER
+ */
+.hoverable{
+  @apply opacity-0 group-hover:opacity-100 transition-opacity
 }
 
 

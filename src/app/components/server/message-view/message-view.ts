@@ -10,7 +10,7 @@ import {
   inject
 } from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {CornerDownRightIcon, LucideAngularModule, SendIcon, XIcon} from 'lucide-angular';
+import {CornerDownRightIcon, GhostIcon, LucideAngularModule, SendIcon, XIcon} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {deleteInList, getChannelFromId} from '../../../services/Util';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
@@ -249,4 +249,5 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
 
   protected readonly mimeTypeHasImagePreview = mimeTypeHasImagePreview;
+  protected readonly GhostIcon = GhostIcon;
 }

@@ -72,26 +72,6 @@ export class Server {
 
 
 
-  protected closeConnection() {
-    this.webSocketService.closeConnection(this.connection);
-  }
-
-
-  protected openAdminPanel() {
-    this.contextMenuService.openPopup(AdminPanel,{
-      connection: this.connection
-    })
-  }
-
-  protected openUserPanel() {
-    this.contextMenuService.openPopup(UsersPanel,{
-      connection: this.connection
-    },{
-      fullHeight: true,
-      closeButton: true
-    })
-  }
-
   protected readonly ServerCog = ServerCog;
   protected readonly BookUser = BookUser;
   protected readonly PanelLeftClose = PanelLeftClose;

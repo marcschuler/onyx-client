@@ -2,7 +2,7 @@ import {SectionDTO} from '../../api/onyx-server/model/sectionDTO';
 import {ChannelDTO} from '../../api/onyx-server/model/channelDTO';
 
 import {version} from '../../../package.json'
-import {Client, KeyId, WebSocketServerConnection} from './websocket/WebSocketServerConnection';
+import {Client, KeyId} from './websocket/WebSocketServerConnection';
 import {SectionExtendedDTO} from '../../api/onyx-server';
 
 export function getChannelFromId(id: string, sections: SectionDTO[]): ChannelDTO | undefined {

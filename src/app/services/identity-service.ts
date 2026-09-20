@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {CryptoService} from './crypto-service';
 import {ToastService, ToastType} from './ui/toast-service';
@@ -43,7 +43,7 @@ export class IdentityService {
   }
 
   public async generateKey() {
-   return await generateKeyPair('EdDSA', {
+    return await generateKeyPair('EdDSA', {
       crv: 'Ed25519',
       extractable: true
     });
@@ -54,6 +54,7 @@ export class IdentityService {
     const storedIdentities = localStorage.getItem(this.IDENTITY_STORE_KEY);
     if (!storedIdentities)
       return;
+    const identities = [];
     const stored = (JSON.parse(storedIdentities) as StoredIdentity[]);
     for (const i of stored) {
       try {
@@ -65,7 +66,7 @@ export class IdentityService {
           keyPair: {privateKey: privateKey, publicKey: publicKey},
           created: new Date(i.created)
         };
-        this.identities.push(identity);
+        identities.push(identity);
         console.log("loaded identity " + identity.username + " ( " + identity.id + ")")
       } catch (e) {
         console.error("Could not load identity " + JSON.stringify(i) + "," + e)
@@ -76,8 +77,9 @@ export class IdentityService {
           duration: 3000
         })
       }
-
     }
+    this.identities = identities;
+    console.log("loaded " + this.identities.length + " identities");
   }
 
   private async saveIdentities() {
@@ -91,11 +93,11 @@ export class IdentityService {
       } as StoredIdentity);
     }
     localStorage.setItem(this.IDENTITY_STORE_KEY, JSON.stringify(stored));
-    console.log("Saved new list of identites")
+    console.log("Saved " + this.identities.length + " identites")
   }
 
   async defaultIdentity() {
-    if (this.identities.length==0)
+    if (this.identities.length == 0)
       await this.loadIdentities();
     const identity = this.identities[0]; //TODO Could be reworked in the future - maybe last used identity?
     if (identity == undefined)

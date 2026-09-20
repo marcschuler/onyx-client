@@ -1,18 +1,3 @@
-<div class="right-2 top-2 absolute">
-  @if (!connection.selectedChannel) {
-    <button class="button-dark" (click)="openAdminPanel()">
-      <lucide-icon [name]="ServerCog"></lucide-icon>
-    </button>
-    <button class="button-dark" (click)="openUserPanel()">
-      <lucide-icon [name]="BookUser"></lucide-icon>
-    </button>
-  }
-  <button class="button-dark" (click)="closeConnection()">
-    <lucide-icon [name]="LogOut"></lucide-icon>
-  </button>
-</div>
-
-
 <div class="min-h-screen flex">
   @if (!minimized) {
     <aside class="block min-h-screen mx-h-screen shrink-0 bg-neutral-900 border-r-neutral-950 border-r-1"

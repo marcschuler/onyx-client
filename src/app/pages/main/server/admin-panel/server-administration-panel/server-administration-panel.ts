@@ -1,16 +1,22 @@
-import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
+import {Component, Input, OnChanges, OnInit, inject} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Spinner} from "../../../../../components/ui/spinner/spinner";
 import {RestService} from '../../../../../services/rest-service';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
-import {FileDTO, MarkdownMessageContentDTO, MessageContentDTO, ServerDTO} from '../../../../../../api/onyx-server';
+import {
+  FileDTO,
+  MarkdownMessageContentDTO,
+  MessageContentDTO, SectionDTO,
+  SectionExtendedDTO,
+  ServerDTO
+} from '../../../../../../api/onyx-server';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
-import { asTypeMarkdown} from '../../../../../components/chat/message-content/message-content';
+import {asTypeMarkdown} from '../../../../../components/chat/message-content/message-content';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
 import {GripVertical, LucideAngularModule, TextInitialIcon, XIcon} from 'lucide-angular';
 import {FileUpload, UploadType} from '../../../../../components/ui/file-upload/file-upload';
 import {replaceInList} from '../../../../../util';
-import {deleteInList} from '../../../../../services/Util';
+import {deleteInList, reorderListItem} from '../../../../../services/Util';
 import {PreviewImage} from '../../../../../components/ui/preview-image/preview-image';
 
 @Component({
@@ -73,6 +79,7 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
     }
     this.connection.rest.serverController.edit(this.server.id, {
       name: this.server.name,
+      description: this.server.description
     } as ServerDTO).subscribe(server => {
       this.server = server;
       this.toastService.create({
@@ -85,25 +92,22 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
 
   protected addMarkdown() {
     this.server!.description.push({
-      text:"",
+      text: "",
       type: "MARKDOWN"
     } as MarkdownMessageContentDTO);
   }
-  protected dropDecsription(event: CdkDragDrop<any, any>) {
-    const description = this.server?.description[event.previousIndex]!;
+
+  protected dropDescription(event: CdkDragDrop<any, any>) {
+    const description = this.server!.description[event.previousIndex]!;
     const newOrder = event.currentIndex;
-    console.log("moved description " + description.id +" from " + event.previousIndex + " -> " + event.currentIndex);
-    if (event.currentIndex == event.previousIndex) {
-      console.log("ignoring reordering")
-      return;
-    }
+    console.log("moved description " + description.id + " from " + event.previousIndex + " -> " + event.currentIndex);
+    reorderListItem(this.server!.description, description, newOrder, this.server!.description);
   }
+
 
   protected readonly asTypeMarkdown = asTypeMarkdown;
   protected readonly GripVertical = GripVertical;
   protected readonly TextInitialIcon = TextInitialIcon;
-
-
 
   protected onIconChange(file: FileDTO) {
     this.toastService.create({
@@ -113,7 +117,7 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
   }
 
   protected deleteDescription(description: MessageContentDTO) {
-    deleteInList(this.server!.description,description);
+    deleteInList(this.server!.description, description);
   }
 
   protected deleteIcon() {
@@ -123,7 +127,7 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
           message: "Server icon deleted",
           type: ToastType.Success
         })
-      },error=>this.restService.handleError(error));
+      }, error => this.restService.handleError(error));
 
   }
 

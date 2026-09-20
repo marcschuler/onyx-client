@@ -6,10 +6,10 @@ import {
   ServerTreeChangeMessage, StorageControllerService, UserControllerService, UserSimpleDTO
 } from '../../../api/onyx-server';
 import {IceServer} from '../../../api/onyx-server';
-import {ServerConnection} from '../server-loader-service';
+import {ServerDetails} from '../server-loader-service';
 
 export interface WebSocketServerConnection {
-  serverConnections: ServerConnection;
+  serverConnections: ServerDetails;
   state: ConnectionState; // the current state of connection
   identity: Identity; // the used identity
   serverConnection: WebSocket; // the websocket connection

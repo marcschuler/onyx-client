@@ -3,7 +3,7 @@
           D hover:text-neutral-100  hover:bg-neutral-800 animate-default group cursor-pointer"
   [class.p-2]="!interfaceService.settings.compactMode"
   [ngClass]="{
-          'border-l-emerald-600 border-l-3': connection.me.channel === channel.id,
+          'border-l-sky-600 border-l-3': connection.me.channel === channel.id,
           'bg-neutral-800': connection.selectedChannel === channel.id
   }" (click)="selectChannel(channel)"
   (contextmenu)="contextMenuService.openChannelContextMenu(channel,connection,$event)">

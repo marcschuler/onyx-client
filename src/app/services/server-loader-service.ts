@@ -10,7 +10,7 @@ export class ServerLoaderService {
   private httpClient = inject(HttpClient);
 
 
-  public connections: ServerConnection[] = [];
+  public connections: ServerDetails[] = [];
 
   constructor() {
     this.loadServer();
@@ -19,15 +19,15 @@ export class ServerLoaderService {
   private loadServer() {
     const storedConnections = localStorage.getItem("serverConnections");
     if (storedConnections)
-      this.connections = (JSON.parse(storedConnections) as ServerConnection[]);
+      this.connections = (JSON.parse(storedConnections) as ServerDetails[]);
   }
 
-  public addServer(server: ServerConnection) {
+  public addServer(server: ServerDetails) {
     this.connections.push(server);
     this.saveServer()
   }
 
-  removeServer(s: ServerConnection) {
+  removeServer(s: ServerDetails) {
     const index = this.connections.indexOf(s);
     this.connections.splice(index,1);
     this.saveServer();
@@ -37,7 +37,7 @@ export class ServerLoaderService {
     localStorage.setItem("serverConnections", JSON.stringify(this.connections));
   }
 
-  public serverDetails(connection: ServerConnection): Promise<ServerDTO[]> {
+  public serverDetails(connection: ServerDetails): Promise<ServerDTO[]> {
     // @ts-expect-error somehow expects "undefined"
     return this.httpClient.get<ServerDTO[]>(connection.url + "/v0/info/server").pipe(
       catchError(err => {
@@ -49,7 +49,7 @@ export class ServerLoaderService {
 }
 
 
-export interface ServerConnection {
+export interface ServerDetails {
   id: string;
   url: string;
   name?: string;

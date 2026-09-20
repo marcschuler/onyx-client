@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {ServerSelector} from './server-selector/server-selector';
+import {Welcome} from './welcome/welcome';
 import {WebSocketService} from '../../services/websocket/web-socket-service';
 import {Server} from './server/server';
 import {Settings} from '../settings/settings';
@@ -7,7 +7,7 @@ import {Settings} from '../settings/settings';
 @Component({
   selector: 'app-main',
   imports: [
-    ServerSelector,
+    Welcome,
     Server,
   ],
   templateUrl: './main.html',

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import {ContextMenu} from '../../ui/context/context-menu/context-menu';
 import {ContextMenuButton} from '../../ui/context/context-menu-button/context-menu-button';
 import {Client, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
@@ -7,6 +7,8 @@ import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {RestService} from '../../../services/rest-service';
 import {ProfileImage} from '../profile-image/profile-image';
 import {SlicePipe} from '@angular/common';
+import {ContextMenuService} from '../../../services/ui/context-menu-service';
+import {ClientAbout} from '../client-about/client-about';
 
 @Component({
   selector: 'app-client-context-menu',
@@ -24,8 +26,9 @@ export class ClientContextMenu {
   @Input() client!: Client;
   @Input() connection!: WebSocketServerConnection;
 
-  constructor(private toastService: ToastService, private restService: RestService) {
-  }
+  private toastService = inject(ToastService);
+  private restService = inject(RestService);
+  private contextMenuService = inject(ContextMenuService);
 
   protected kickClientFromChannel() {
     this.connection.rest.userController.kickFromChannel(this.client.id, {})
@@ -47,8 +50,17 @@ export class ClientContextMenu {
       }, error => this.restService.handleError(error));
   }
 
+  protected openAboutPage() {
+    this.contextMenuService.openPopup(ClientAbout,{
+      client: this.client
+    })
+  }
+
+
 
   protected readonly CircleSlashedIcon = CircleSlashedIcon;
   protected readonly UserXIcon = UserXIcon;
   protected readonly UserIcon = UserIcon;
+
+
 }

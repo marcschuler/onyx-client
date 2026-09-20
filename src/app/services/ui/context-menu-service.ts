@@ -59,7 +59,8 @@ export class ContextMenuService {
       connection: connection,
     }, {
       closeButton: true,
-      fullHeight: true
+      fullHeight: true,
+      singleton: true
     })
   }
 
@@ -92,6 +93,9 @@ export class ContextMenuService {
   }
 
   public openPopup<T>(component: Type<T>, inputs?: Partial<T>, popupSettings?: PopupSettings) {
+    if (popupSettings && popupSettings.singleton){
+      //TODO return if already existing
+    }
     const menu = this.overlay.create({
       positionStrategy: this.overlay.position().global()
         .centerHorizontally()
@@ -163,4 +167,5 @@ export interface PopupControl {
 export interface PopupSettings {
   closeButton: boolean;
   fullHeight: boolean;
+  singleton?: boolean;
 }

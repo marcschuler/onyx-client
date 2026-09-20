@@ -1,7 +1,7 @@
 import {Injectable, inject} from '@angular/core';
 import {Client, ConnectionState, KeyId, ServerObjectId, WebSocketServerConnection} from './WebSocketServerConnection';
 import {Identity} from '../identity-service';
-import {ServerConnection} from '../server-loader-service';
+import {ServerDetails} from '../server-loader-service';
 import {CryptoService} from '../crypto-service';
 import {ToastService, ToastType} from '../ui/toast-service';
 import {PeerConnectionService} from '../peer/peer-connection-service';
@@ -81,7 +81,7 @@ export class WebSocketService {
   }
 
 
-  public connect(serverConnection: ServerConnection, identity: Identity, retries = 1): Promise<WebSocketServerConnection> {
+  public connect(serverConnection: ServerDetails, identity: Identity, retries = 1): Promise<WebSocketServerConnection> {
     if (retries < 0) {
       console.log("ws: no retries, disconnecting");
       if (this.connection)
