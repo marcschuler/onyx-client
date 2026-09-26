@@ -18,10 +18,10 @@ import {NgClass} from '@angular/common';
     LucideAngularModule,
     NgClass
   ],
-  templateUrl: './channel-entry.html',
-  styleUrl: './channel-entry.css',
+  templateUrl: './server-tree.html',
+  styleUrl: './server-tree.css',
 })
-export class ChannelEntry {
+export class ServerTree {
   private webSocketService = inject(WebSocketService);
   protected interfaceService = inject(StorageService);
   protected contextMenuService = inject(ContextMenuService);

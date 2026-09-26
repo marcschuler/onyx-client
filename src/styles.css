@@ -58,6 +58,10 @@ textarea {
 }
 
 .button-onyx{
+  @apply bg-neutral-900 disabled:border-neutral-800 disabled:opacity-70 hover:bg-neutral-800 border-2 border-neutral-900  hover:border-sky-950 rounded
+}
+
+.button-main{
   @apply bg-sky-600 hover:bg-sky-400
 }
 

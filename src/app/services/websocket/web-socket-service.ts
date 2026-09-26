@@ -96,6 +96,7 @@ export class WebSocketService {
       url += "/websocket";
 
       console.log("ws: Connecting to " + url)
+      var connected = false;
       const webSocket = new WebSocket(url);
 
       const connection: WebSocketServerConnection = {
@@ -108,7 +109,12 @@ export class WebSocketService {
         me: undefined as any as Client, // is hacky but the server promises to return a result
         rest: this.restService.createRestConfig(serverConnection.url, undefined)
       }
+      setTimeout(()=>{ // websocket gives no timeout on connection so tracing manually
+        if (!connected)
+          webSocket.close();
+      },8000);
       webSocket.onopen = () => {
+        connected = true;
         console.log("ws: connected to server")
         retries = 4;
         resolve(connection);

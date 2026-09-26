@@ -7,7 +7,7 @@ import {Spinner} from '../../ui/spinner/spinner';
 import { WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {StorageService} from '../../../services/storage.service';
 import {UserEntry} from '../user-entry/user-entry';
-import {ChannelEntry} from '../channel-entry/channel-entry';
+import {ServerTree} from '../server-tree/server-tree';
 
 @Component({
   selector: 'app-channel-tree',
@@ -15,7 +15,7 @@ import {ChannelEntry} from '../channel-entry/channel-entry';
     LucideAngularModule,
     Spinner,
     UserEntry,
-    ChannelEntry,
+    ServerTree,
   ],
   templateUrl: './channel-tree.html',
   styleUrl: './channel-tree.css'

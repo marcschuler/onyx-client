@@ -1,48 +1,42 @@
-<div
-  class="bg-neutral-900 hover:bg-neutral-800 border-2 border-neutral-900  hover:border-sky-950 rounded gap-6 grid grid-cols-[auto_1fr_auto] w-full my-2 cursor-pointer"
-  (click)="connect()">
-  @let detail = state;
-  <div class="p-4 w-12 h-12 rounded">
-    @switch (detail.state) {
+<button class="button-onyx flex w-full !p-2"
+        (click)="connect()" [disabled]="selectedServer">
+  <div class="rounded">
+    @switch (state) {
       @case (ServerInfoState.CONNECTING) {
         <app-spinner></app-spinner>
       }
       @case (ServerInfoState.SUCCESS) {
-        @if (detail.success && detail.success[0] && detail.success[0].icon) {
-          @let info = detail.success[0];
+        @if (success && success.icon) {
+          @let info = success;
           <app-preview-image [file]="info.icon!" [basePath]="server.url"
-                             imageClass="min-w-12 w-12 h-12 object-cover rounded">
+                             imageClass="min-w-16 w-16 h-16 object-cover rounded">
           </app-preview-image>
         } @else {
-          <lucide-icon [name]="ServerIcon" class="w-12 h-12 rounded-xl"></lucide-icon>
+          <lucide-icon [name]="ServerIcon" class="w-16 h-16 rounded-xl"></lucide-icon>
         }
       }
       @case (ServerInfoState.ERROR) {
-        <lucide-icon [name]="ServerOffIcon" class="min-w-12 min-h-12 text-red-600"></lucide-icon>
+        <lucide-icon [name]="ServerOffIcon" class="w-16 h-16 text-red-600 opacity-50"></lucide-icon>
       }
     }
   </div>
 
-  <div class="p-4">
-    @switch (detail.state) {
+  <div class="items-center flex-1 flex flex-col">
+    @switch (state) {
       @case (ServerInfoState.CONNECTING) {
-        <p class="w-72 font-bold"></p>
-        <span class="text-neutral-400">{{ server.name || server.url }}</span>
+        <h3 class="font-bold !p-0"></h3>
+        <p class="text-neutral-400">{{ server.name || server.url }}</p>
       }
       @case (ServerInfoState.SUCCESS) {
-        @if (detail.success && detail.success[0]) {
-          @let info = detail.success[0];
-          <p class="w-72 font-bold">{{ info.name }}</p>
-          <span class="text-neutral-400">{{ server.name || server.url }}</span>
-        } @else {
-          <p class="w-72 font-bold">{{ server.name || server.url }}</p>
-          <span class="text-red-400 line-clamp-2">Server gave invalid response</span>
+        @if (success) {
+          @let info = success;
+          <h3 class="font-bold !p-0">{{ info.name }}</h3>
+          <p class="text-neutral-400">{{ server.name || server.url }}</p>
         }
-
       }
       @case (ServerInfoState.ERROR) {
+        <h3 class="text-red-400 !p-0">{{ error }}</h3>
         <p class="w-64 font-bold">{{ server.name || server.url }}</p>
-        <span class="text-red-400 line-clamp-2">{{ detail.error }}</span>
       }
     }
   </div>
@@ -50,4 +44,4 @@
   @if (selectedServer == server) {
     <app-spinner></app-spinner>
   }
-</div>
+</button>

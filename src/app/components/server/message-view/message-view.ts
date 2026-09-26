@@ -63,6 +63,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
   currentPage: number | undefined = undefined;
   attachments: FileDTO[] = [];
 
+  messageAsMarkdown = false;
   message = "";
 
   reply: MessageDTO | undefined = undefined;

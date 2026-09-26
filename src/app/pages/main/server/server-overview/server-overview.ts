@@ -46,9 +46,5 @@ export class ServerOverview {
       closeButton: true
     })
   }
-
-  protected readonly ServerCog = ServerCog;
-  protected readonly ServerCogIcon = ServerCogIcon;
-  protected readonly BookUserIcon = BookUserIcon;
   protected readonly LogOutIcon = LogOutIcon;
 }

@@ -25,11 +25,10 @@ export class ServerEntry implements OnInit, OnDestroy {
   @Input() selectedServer: ServerDetails | undefined;
   @Output() onSelection = new EventEmitter<ServerDetails>();
 
-  protected state: ServerInfoWithState = {
-    error: undefined,
-    success: undefined,
-    state: ServerInfoState.CONNECTING
-  };
+  state: ServerInfoState = ServerInfoState.CONNECTING;
+  success: ServerDTO | undefined;
+  error: string | undefined;
+
   private interval!: number;
 
   ngOnInit(): void {
@@ -50,31 +49,23 @@ export class ServerEntry implements OnInit, OnDestroy {
   updateDetails() {
     this.serverLoaderService.serverDetails(this.server)
       .then(serverDetail => {
-        this.state = {
-          state: ServerInfoState.SUCCESS,
-          error: undefined,
-          success: serverDetail
-        };
+        if (serverDetail.length != 1) {
+          console.error("Received unexpected server length", serverDetail);
+        }
+        this.state = ServerInfoState.SUCCESS;
+        this.error = undefined;
+        this.success = serverDetail[0]
       })
       .catch(error => {
-        this.state = {
-          state: ServerInfoState.ERROR,
-          success: undefined,
-          error: this.restService.buildErrorMessage(error)
-        }
+        this.state = ServerInfoState.ERROR;
+        this.success = undefined;
+        this.error = this.restService.buildErrorMessage(error)
       })
   }
 
   protected readonly ServerInfoState = ServerInfoState;
   protected readonly ServerIcon = ServerIcon;
   protected readonly ServerOffIcon = ServerOffIcon;
-  protected readonly ArrowBigRightDash = ArrowBigRightDash;
-}
-
-export interface ServerInfoWithState {
-  state: ServerInfoState;
-  success: ServerDTO[] | undefined;
-  error: string | undefined;
 }
 
 export enum ServerInfoState {

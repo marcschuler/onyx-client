@@ -2,6 +2,10 @@ import {inject, Injectable} from '@angular/core';
 import {ContextMenuService} from './context-menu-service';
 import {APP_VERSION} from '../Util';
 import {DebugService} from '../debug-service';
+import {UsersPanel} from '../../pages/main/server/users-panel/users-panel';
+import {WebSocketService} from '../websocket/web-socket-service';
+import {ToastService, ToastType} from './toast-service';
+import {AdminPanel} from '../../pages/main/server/admin-panel/admin-panel';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +18,8 @@ export class MenuService {
 
   private contextMenuService = inject(ContextMenuService);
   private debugService = inject(DebugService);
+  private webSocketService = inject(WebSocketService);
+  private toastService = inject(ToastService);
 
   menu: MenuItem[] = [
     {
@@ -33,14 +39,45 @@ export class MenuService {
           this.contextMenuService.openSettingsMenu(undefined);
         }
       }, this.MENU_SEPARATOR,
-        {
-          label: 'Account on TODO'//TODO: account settings
-        },
+        /*{
+          label: 'Account on TODO'
+        },*/
         this.MENU_SEPARATOR,
         {
-          label: 'Server Settings (TODO)' //TODO: account settings
+          id: 'server-settings',
+          label: 'Server Settings',
+          click: () => {
+            if (this.webSocketService.connection) {
+              this.contextMenuService.openPopup(AdminPanel, {
+                connection: this.webSocketService.connection
+              })
+            } else {
+              this.toastService.create({
+                title: "Not connected",
+                message: "You need to connect to a server first",
+                type: ToastType.Warning
+              })
+            }
+          }
         }, {
-          label: 'User List (TODO)' //TODO: account settings
+          id: 'user-management',
+          label: 'User Management',
+          click: () => {
+            if (this.webSocketService.connection) {
+              this.contextMenuService.openPopup(UsersPanel, {
+                connection: this.webSocketService.connection
+              }, {
+                fullHeight: true,
+                closeButton: true
+              })
+            } else {
+              this.toastService.create({
+                title: "Not connected",
+                message: "You need to connect to a server first",
+                type: ToastType.Warning
+              })
+            }
+          }
         }
 
       ]

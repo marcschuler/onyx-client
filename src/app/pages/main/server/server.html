@@ -21,7 +21,7 @@
 
   <span class="group relative p-1 max-w-8"
         [ngStyle]="{ width: (minimized? interfaceService.settings.sidebarWidth:0) + 'px' }">
-    <button class="absolut hoverable button-small" (click)="minimized=!minimized">
+    <button class="absolute top-64 hoverable button-small" (click)="minimized=!minimized"> <!-- TODO center vertically not with top-64 -->
       @if (minimized) {
         <lucide-icon [name]="PanelLeftOpen" class="w-4"></lucide-icon>
       } @else {

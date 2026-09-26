@@ -1,23 +1,15 @@
-<div class="max-h-full overflow-auto">
-  <div class="bg-neutral-900 px-4 py-2 flex gap-8">
-    @if (!connection.selectedChannel) {
-      <button class="button-small" (click)="openAdminPanel()">
-        <lucide-icon [name]="ServerCogIcon"></lucide-icon>
-      </button>
-      <button class="button-small" (click)="openUserPanel()">
-        <lucide-icon [name]="BookUserIcon"></lucide-icon>
-      </button>
-    }
-    <button class="button-small" (click)="closeConnection()">
-      <lucide-icon [name]="LogOutIcon"></lucide-icon>
-    </button>
-  </div>
+<div class="max-h-full overflow-auto relative">
 
+  <button (click)="closeConnection()" class="absolute right-4 top-4">
+    <lucide-icon [name]="LogOutIcon" class="pr-1"></lucide-icon>
+    Leave Server
+  </button>
 
   @if (connection.data) {
-    <div class="flex flex-col gap-2 items-center pt-16">
+    <div class="flex flex-col gap-2 items-center pt-8">
       @if (connection.data.server.icon) {
         <app-preview-image [file]="connection.data.server.icon"
+                           imageClass="w-48 h-48 object-cover rounded-xl"
                            [connection]="connection"></app-preview-image>
       }
       <h2>{{ connection.data.server.name }}</h2>
