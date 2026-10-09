@@ -1,7 +1,7 @@
 import {Component, Input, inject, Output, EventEmitter} from '@angular/core';
 import {WebSocketServerConnection} from "../../../../../services/websocket/WebSocketServerConnection";
 import {GroupDTO, PermissionDTO} from '../../../../../../api/onyx-server';
-import {RestService} from '../../../../../services/rest-service';
+import {RestService} from '../../../../../services/rest/rest-service';
 import {FormsModule} from '@angular/forms';
 import {IdCardLanyard, LucideAngularModule} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';

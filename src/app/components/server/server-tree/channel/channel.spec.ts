@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ServerTree } from './server-tree';
+import { Channel } from './channel';
 
-describe('ServerTree', () => {
-  let component: ServerTree;
-  let fixture: ComponentFixture<ServerTree>;
+describe('Channel', () => {
+  let component: Channel;
+  let fixture: ComponentFixture<Channel>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ServerTree]
+      imports: [Channel]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ServerTree);
+    fixture = TestBed.createComponent(Channel);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

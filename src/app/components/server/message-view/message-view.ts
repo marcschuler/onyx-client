@@ -10,14 +10,22 @@ import {
   inject
 } from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {CornerDownRightIcon, GhostIcon, LucideAngularModule, SendIcon, XIcon} from 'lucide-angular';
+import {
+  CornerDownRightIcon,
+  FileUpIcon,
+  GhostIcon,
+  ImageUpIcon,
+  LucideAngularModule,
+  SendIcon,
+  XIcon
+} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {deleteInList, getChannelFromId} from '../../../services/Util';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {MessageHandler, WebSocketService} from '../../../services/websocket/web-socket-service';
 import {MessageDTO} from '../../../../api/onyx-server/model/messageDTO';
 import {NOTIFICATION_MESSAGE_NEW, NotificationService} from '../../../services/notification.service';
-import {RestService} from '../../../services/rest-service';
+import {RestService} from '../../../services/rest/rest-service';
 import {Message} from './message/message';
 import {MessageService} from '../../../services/message-service';
 import {
@@ -251,4 +259,5 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
   protected readonly mimeTypeHasImagePreview = mimeTypeHasImagePreview;
   protected readonly GhostIcon = GhostIcon;
+  protected readonly FileUpIcon = FileUpIcon;
 }

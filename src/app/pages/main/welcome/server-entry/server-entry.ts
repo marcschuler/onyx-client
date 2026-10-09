@@ -3,7 +3,7 @@ import {ArrowBigRightDash, LucideAngularModule, ServerIcon, ServerOffIcon} from 
 import {PreviewImage} from "../../../../components/ui/preview-image/preview-image";
 import {Spinner} from "../../../../components/ui/spinner/spinner";
 import {ServerDetails, ServerLoaderService} from '../../../../services/server-loader-service';
-import {RestService} from '../../../../services/rest-service';
+import {RestService} from '../../../../services/rest/rest-service';
 import {ServerDTO} from '../../../../../api/onyx-server';
 
 @Component({

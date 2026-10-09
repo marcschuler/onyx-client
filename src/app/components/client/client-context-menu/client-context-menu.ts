@@ -4,7 +4,7 @@ import {ContextMenuButton} from '../../ui/context/context-menu-button/context-me
 import {Client, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {CircleSlashedIcon, UserIcon, UserXIcon} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
-import {RestService} from '../../../services/rest-service';
+import {RestService} from '../../../services/rest/rest-service';
 import {ProfileImage} from '../profile-image/profile-image';
 import {SlicePipe} from '@angular/common';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';

@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {RestConfiguration} from './websocket/WebSocketServerConnection';
+import {RestConfiguration} from '../websocket/WebSocketServerConnection';
 import {
   ChannelControllerService,
   ChatControllerService,
   Configuration, GroupControllerService, SectionControllerService,
   ServerControllerService, StorageControllerService, UserControllerService
-} from '../../api/onyx-server';
-import {ToastService, ToastType} from './ui/toast-service';
+} from '../../../api/onyx-server';
+import {ToastService, ToastType} from '../ui/toast-service';
 
 @Injectable({
   providedIn: 'root'

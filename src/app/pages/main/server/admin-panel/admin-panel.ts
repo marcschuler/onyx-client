@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import {SplitPanel} from '../../../../components/ui/split-panel/split-panel';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
-import {RestService} from '../../../../services/rest-service';
+import {RestService} from '../../../../services/rest/rest-service';
 import {FormsModule} from '@angular/forms';
 import {ToastService} from '../../../../services/ui/toast-service';
 import ServerAdministrationPanel from './server-administration-panel/server-administration-panel';
@@ -9,7 +9,7 @@ import {ChannelAdministrationPanel} from './channel-administration-panel/channel
 import {
   HexagonIcon,
   IdCardLanyardIcon,
-  ServerCogIcon
+  ServerCogIcon, TicketSlashIcon
 } from 'lucide-angular';
 import {GroupAdministrationPanel} from './group-administration-panel/group-administration-panel';
 import {SplitPanelBar} from '../../../../components/ui/split-panel/split-panel-bar/split-panel-bar';
@@ -20,10 +20,11 @@ import {ChannelEditor} from '../../../../components/channel/channel-editor/chann
 import {SectionEditor} from '../../../../components/section/section-editor/section-editor';
 import {Popup} from '../../../../components/ui/popup/popup';
 import {GroupsAdministrationPanel} from './groups-administration-panel/groups-administration-panel';
+import {InviteAdministration} from './invite-administration/invite-administration';
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [SplitPanel, FormsModule, ServerAdministrationPanel, ChannelAdministrationPanel, GroupAdministrationPanel, SplitPanelBar, SplitPanelButton, SplitPanelSelector, ChannelEditor, SectionEditor, Popup, GroupsAdministrationPanel],
+  imports: [SplitPanel, FormsModule, ServerAdministrationPanel, ChannelAdministrationPanel, GroupAdministrationPanel, SplitPanelBar, SplitPanelButton, SplitPanelSelector, ChannelEditor, SectionEditor, Popup, GroupsAdministrationPanel, InviteAdministration],
   templateUrl: './admin-panel.html',
   standalone: true,
   styleUrl: './admin-panel.css'
@@ -52,4 +53,5 @@ export class AdminPanel implements OnInit {
   protected readonly ServerCogIcon = ServerCogIcon;
   protected readonly HexagonIcon = HexagonIcon;
   protected readonly IdCardLanyardIcon = IdCardLanyardIcon;
+  protected readonly TicketSlashIcon = TicketSlashIcon;
 }

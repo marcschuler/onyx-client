@@ -3,6 +3,22 @@
 
 @tailwind utilities;
 
+@theme{
+  --color-onyx-50: #edf2ff;
+  --color-onyx-100: #dfe8ff;
+  --color-onyx-200: #c5d4ff;
+  --color-onyx-300: #a2b7ff;
+  --color-onyx-400: #7c8efd;
+  --color-onyx-500: #5e69f6;
+  --color-onyx-600: #5352ed;
+  --color-onyx-700: #3632d0;
+  --color-onyx-800: #2d2ca7;
+  --color-onyx-900: #2b2c84;
+  --color-onyx-950: #1a194d;
+
+  --color-text-faded: var(--color-neutral-700)
+}
+
 body {
   @apply bg-neutral-900 text-white;
 }
@@ -16,7 +32,7 @@ label {
 }
 
 input {
-  @apply bg-neutral-900 border border-neutral-700 text-neutral-200 focus:text-neutral-100 text-sm rounded-lg focus:outline-none  focus:border-sky-800 block w-full px-2 py-2
+  @apply bg-neutral-900 border border-neutral-700 text-neutral-200 focus:text-neutral-100 text-sm rounded-lg focus:outline-none  focus:border-onyx-800 block w-full p-2
 }
 
 input::placeholder {
@@ -29,7 +45,7 @@ input::placeholder {
 
 
 textarea {
-  @apply bg-neutral-900 border border-neutral-900 text-neutral-100 text-sm rounded-lg  focus:outline-none focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5
+  @apply bg-neutral-900 border border-neutral-700 text-neutral-200 text-sm rounded-lg  focus:outline-none focus:ring-onyx-500 focus:border-onyx-500 block w-full px-2 py-1
 }
 
 
@@ -57,12 +73,12 @@ textarea {
   @apply bg-emerald-600 hover:bg-emerald-400
 }
 
-.button-onyx{
-  @apply bg-neutral-900 disabled:border-neutral-800 disabled:opacity-70 hover:bg-neutral-800 border-2 border-neutral-900  hover:border-sky-950 rounded
+.button-onyx {
+  @apply bg-neutral-900 disabled:border-neutral-800 disabled:opacity-70 hover:bg-neutral-800 border-2 border-neutral-900  hover:border-onyx-950 rounded
 }
 
-.button-main{
-  @apply bg-sky-600 hover:bg-sky-400
+.button-main {
+  @apply bg-onyx-600 hover:bg-onyx-400
 }
 
 .button-dark {
@@ -73,9 +89,6 @@ textarea {
   @apply bg-neutral-800!
 }
 
-.button-hover-dark {
-  @apply disabled:bg-neutral-900
-}
 
 .button-line {
   @apply border-neutral-600 border-1
@@ -96,6 +109,7 @@ textarea {
 .button-small {
   @apply !p-1
 }
+
 .button-mini {
   @apply !p-0
 }
@@ -103,6 +117,22 @@ textarea {
 
 .button-light {
   @apply bg-neutral-200 text-neutral-800
+}
+
+@utility button-text{
+  @apply hover:text-neutral-200 hover:underline hover:bg-neutral-800 p-1  bg-transparent hover:bg-transparent/* TODO hover:bg-none does not work */
+}
+
+@utility button-text-red{
+  @apply button-text text-red-600 hover:decoration-red-800 hover:text-red-800
+}
+
+@utility button-simpletext-onyx{
+  @apply bg-transparent hover:bg-none hover:text-onyx-400 p-1
+}
+
+.button-circle{
+  @apply rounded-4xl w-8 h-8
 }
 
 
@@ -114,7 +144,7 @@ textarea {
   @apply bg-emerald-400/20 hover:bg-emerald-400/30
 }
 
-.bg-onyx-hover{
+.bg-onyx-hover {
   @apply active:bg-sky-600 hover:bg-sky-600
 }
 
@@ -185,8 +215,8 @@ CUSTOM SELECT COMPONENT
 /**
 TOGGLE ELEMENT
  */
-.toggle-active{
-  @apply bg-sky-800
+.toggle-active {
+  @apply bg-onyx-800
 }
 
 
@@ -197,6 +227,11 @@ GENERAL
   .bg-animate {
     @apply bg-transparent transition-colors duration-500;
   }
+}
+
+/* a container for generic items */
+.container{
+  @apply bg-neutral-800 rounded px-4 py-2! shadow-md
 }
 
 
@@ -232,7 +267,7 @@ UI Stuff
 /**
  HOVER
  */
-.hoverable{
+.hoverable {
   @apply opacity-0 group-hover:opacity-100 transition-opacity
 }
 
@@ -240,3 +275,10 @@ UI Stuff
 .divider {
   @apply bg-neutral-600 w-full h-0.5
 }
+
+
+.list {
+  @apply divide-y divide-neutral-800 *:py-1
+}
+
+

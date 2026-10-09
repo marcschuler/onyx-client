@@ -1,23 +1,22 @@
 import {Component, Input, OnChanges, OnInit, inject} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Spinner} from "../../../../../components/ui/spinner/spinner";
-import {RestService} from '../../../../../services/rest-service';
+import {RestService} from '../../../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
 import {
   FileDTO,
   MarkdownMessageContentDTO,
-  MessageContentDTO, SectionDTO,
-  SectionExtendedDTO,
+  MessageContentDTO,
   ServerDTO
 } from '../../../../../../api/onyx-server';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import {asTypeMarkdown} from '../../../../../components/chat/message-content/message-content';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
-import {GripVertical, LucideAngularModule, TextInitialIcon, XIcon} from 'lucide-angular';
-import {FileUpload, UploadType} from '../../../../../components/ui/file-upload/file-upload';
-import {replaceInList} from '../../../../../util';
+import {GripVertical, ImageOffIcon, LucideAngularModule, TextInitialIcon, XIcon} from 'lucide-angular';
+import {FileUpload} from '../../../../../components/ui/file-upload/file-upload';
 import {deleteInList, reorderListItem} from '../../../../../services/Util';
 import {PreviewImage} from '../../../../../components/ui/preview-image/preview-image';
+import {FileUploadService, UploadType} from '../../../../../services/rest/file-upload-service';
 
 @Component({
   selector: 'app-server-administration-panel',
@@ -29,7 +28,6 @@ import {PreviewImage} from '../../../../../components/ui/preview-image/preview-i
     LucideAngularModule,
     CdkDrag,
     CdkDropList,
-    FileUpload,
     PreviewImage
   ],
   templateUrl: './server-administration-panel.html',
@@ -38,6 +36,7 @@ import {PreviewImage} from '../../../../../components/ui/preview-image/preview-i
 class ServerAdministrationPanel implements OnChanges, OnInit {
   private restService = inject(RestService);
   private toastService = inject(ToastService);
+  private fileUploadService = inject(FileUploadService);
 
 
   @Input() connection!: WebSocketServerConnection;
@@ -132,9 +131,15 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
   }
 
   protected readonly XIcon = XIcon;
-  protected readonly UploadType = UploadType;
 
+  protected readonly ImageOffIcon = ImageOffIcon;
 
+  protected onIconUpload($event: DragEvent) {
+    this.fileUploadService.uploadFileOnDrop(this.connection,$event, UploadType.SERVER_ICON,state => {
+
+    }).subscribe()
+
+  }
 }
 
 export default ServerAdministrationPanel

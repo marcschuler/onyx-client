@@ -10,8 +10,10 @@
                    (onReply)="setReply($event)"></app-message>
     }
     @if (messages.length == 0) {
-      <div class="text-center text-neutral-400">
-        <p><lucide-icon [name]="GhostIcon" class="mx-auto h-32 w-32"></lucide-icon></p>
+      <div class="text-center text-onyx-200">
+        <p>
+          <lucide-icon [name]="GhostIcon" class="mx-auto h-32 w-32"></lucide-icon>
+        </p>
         <h1>nothing here</h1>
       </div>
     }
@@ -33,26 +35,29 @@
   }
 
   <!-- attachments -->
-  <div class="flex pb-1 px-4">
-  <app-file-upload class="w-8 !hover:bg-neutral-800 inline" [connection]="connection"
-                   (uploaded)="onAttachmentUploaded($event)"
-                   [ghost]="false"></app-file-upload>
-  @for (attachment of attachments; track attachment.id) {
-    <app-chip>
-      @if (mimeTypeHasImagePreview(attachment.contentType)) {
-        <app-preview-image [file]="attachment" [connection]="connection"
-                           imageClass="object-contain max-h-4 rounded-xl inline"></app-preview-image>
-      }
-      {{ attachment.filename }}
-      <button class="button-mini bg-transparent" (click)="removeAttachment(attachment)">
-        <lucide-icon [name]="XIcon" class="inline" ></lucide-icon>
-      </button>
-    </app-chip>
-  }
+  <div class="flex pb-1 mx-2">
+    <button class="button-simpletext-onyx">
+      <lucide-icon [name]="FileUpIcon" class="h-4 pt-0.5"></lucide-icon>
+    </button>
+    <button class="button-simpletext-onyx">
+      M↓
+    </button>
+    @for (attachment of attachments; track attachment.id) {
+      <app-chip>
+        @if (mimeTypeHasImagePreview(attachment.contentType)) {
+          <app-preview-image [file]="attachment" [connection]="connection"
+                             imageClass="object-contain max-h-4 rounded-xl inline"></app-preview-image>
+        }
+        {{ attachment.filename }}
+        <button class="button-mini bg-transparent" (click)="removeAttachment(attachment)">
+          <lucide-icon [name]="XIcon" class="inline"></lucide-icon>
+        </button>
+      </app-chip>
+    }
   </div>
 
   <!-- Input row pinned to bottom -->
-  <div class="border border-neutral-600 rounded-xl mx-4 mb-2 min-h-16 max-h-30 bg-neutral-800 items-center">
+  <div class="border border-neutral-600 rounded mx-2 min-h-16 max-h-30 bg-neutral-800 items-center">
     <div class="flex">
       <textarea [(ngModel)]="message" (keydown.enter)="sendMessage()"
                 class="!bg-neutral-800 !border-0"

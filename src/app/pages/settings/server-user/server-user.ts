@@ -1,11 +1,11 @@
 import { Component, Input, inject } from '@angular/core';
-import {FileUpload, UploadType} from "../../../components/ui/file-upload/file-upload";
+import {FileUpload} from "../../../components/ui/file-upload/file-upload";
 import {FormsModule} from "@angular/forms";
 import {LucideAngularModule, XIcon} from "lucide-angular";
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
-import {RestService} from '../../../services/rest-service';
+import {RestService} from '../../../services/rest/rest-service';
 import {FileDTO} from '../../../../api/onyx-server';
 import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
 
@@ -60,5 +60,4 @@ export class ServerUser {
   }
 
   protected readonly XIcon = XIcon;
-  protected readonly UploadType = UploadType;
 }

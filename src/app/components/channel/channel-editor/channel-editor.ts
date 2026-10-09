@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, inject} from '@angular/core';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO} from '../../../../api/onyx-server';
-import {RestService} from '../../../services/rest-service';
+import {RestService} from '../../../services/rest/rest-service';
 import {HexagonIcon, LucideAngularModule, SaveIcon} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {FormsModule} from '@angular/forms';

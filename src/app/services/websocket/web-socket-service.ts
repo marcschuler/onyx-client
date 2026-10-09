@@ -29,7 +29,7 @@ import {
   ServerChangeEvent,
   ServerTreeChangeMessage
 } from '../../../api/onyx-server';
-import {RestService} from '../rest-service';
+import {RestService} from '../rest/rest-service';
 import {clientWithId, getChannelFromId, getSectionFromId, getSectionOfChannel, reorderListItem} from '../Util';
 import {EventHandler} from '../../util';
 

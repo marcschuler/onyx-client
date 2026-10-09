@@ -2,7 +2,7 @@ import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
-import {RestService} from '../../../../../services/rest-service';
+import {RestService} from '../../../../../services/rest/rest-service';
 import {GroupDTO} from '../../../../../../api/onyx-server';
 
 @Component({

@@ -13,7 +13,7 @@ import {ProfileImage} from "../../../../../components/client/profile-image/profi
 import {SelectItem} from "../../../../../components/ui/multi-select/select-item/select-item";
 import {GroupDTO, UserExtendedDTO} from '../../../../../../api/onyx-server';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
-import {RestService} from '../../../../../services/rest-service';
+import {RestService} from '../../../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
 import {replaceInList} from '../../../../../util';
 

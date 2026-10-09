@@ -1,5 +1,5 @@
 import { Component, HostListener, Input, inject } from '@angular/core';
-import {ChannelTree} from '../../../components/server/channel-tree/channel-tree';
+import {ServerTree} from '../../../components/server/server-tree/server-tree';
 import {UserPanel} from '../../../components/server/user-panel/user-panel';
 import {ChannelView} from './channel-view/channel-view';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
@@ -22,7 +22,7 @@ import {ContextMenuService} from '../../../services/ui/context-menu-service';
 @Component({
   selector: 'app-server',
   imports: [
-    ChannelTree,
+    ServerTree,
     UserPanel,
     ChannelView,
     LucideAngularModule,

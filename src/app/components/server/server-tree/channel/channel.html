@@ -1,0 +1,27 @@
+<div
+  class="rounded gap-2 grid grid-cols-[1fr_auto] w-full rounded-l-none
+          D   hover:bg-neutral-900 animate-default group cursor-pointer"
+  [class.p-2]="!interfaceService.settings.compactMode"
+  [ngClass]="{
+          'border-l-onyx-600 border-l-3': connection.me.channel === channel.id,
+          'bg-neutral-900': connection.selectedChannel === channel.id
+  }" (click)="selectChannel(channel)"
+  (contextmenu)="contextMenuService.openChannelContextMenu(channel,connection,$event)">
+  <div class=" w-full   rounded-l-md select-none text-nowrap">
+    <lucide-icon class="inline-flex translate-y-0.5" [name]="HexagonIcon"></lucide-icon>
+    {{ channel.name }}
+
+  </div>
+  @if (connection.me.channel !== channel.id) {
+    <button class="right-0 button-simpletext-onyx
+                    pointer-events-none hoverable
+                    group-hover:pointer-events-auto
+                    transition">
+      <lucide-icon [name]="LogInIcon" (click)="joinChannel(channel)"></lucide-icon>
+    </button>
+  } @else if (connection.me.channel === channel.id) {
+    <button class="right-0 button-simpletext-onyx">
+      <lucide-icon [name]="LogOutIcon" (click)="leaveChannel()"></lucide-icon>
+    </button>
+  }
+</div>

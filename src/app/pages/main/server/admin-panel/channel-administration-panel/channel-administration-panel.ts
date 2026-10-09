@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
-import {RestService} from '../../../../../services/rest-service';
+import {RestService} from '../../../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
 import {SectionDTO} from '../../../../../../api/onyx-server/model/sectionDTO';

@@ -7,6 +7,7 @@ api/channelController.service.ts
 api/chatController.service.ts
 api/groupController.service.ts
 api/infoController.service.ts
+api/inviteController.service.ts
 api/sectionController.service.ts
 api/serverController.service.ts
 api/storageController.service.ts
@@ -44,6 +45,8 @@ model/groupDTO.ts
 model/hashDTO.ts
 model/iceServer.ts
 model/iceServerMessage.ts
+model/integrationRequest.ts
+model/inviteDTO.ts
 model/inviteResponseDto.ts
 model/jwtTokenEvent.ts
 model/kickRequestDTO.ts
@@ -77,6 +80,7 @@ model/serverDTO.ts
 model/serverDTODescriptionInner.ts
 model/serverTreeChangeMessage.ts
 model/signedContent.ts
+model/simpleGroupDTO.ts
 model/sortObject.ts
 model/trackMetadataMessage.ts
 model/userExtendedDTO.ts

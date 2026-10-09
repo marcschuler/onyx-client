@@ -1,17 +1,18 @@
 @if (server) {
   <div class="flex gap-4">
     <div class="w-32">
-      @if (connection.data!.server.icon) {
-        <app-preview-image class="min-w-32 min-h-32 w-32 h-32 rounded-t-xl" [file]="connection.data!.server.icon" [connection]="connection">
-        </app-preview-image>
-      } @else {
-        <div class="w-32 h-32 rounded-t-xl object-cover border-2 border-sky-900">
-          <p class="text-neutral-400 p-4 text-center">No server icon :(</p>
-        </div>
-      }
+      <div class="w-32 h-32 rounded-t-xl object-cover bg-neutral-800">
+        @if (connection.data!.server.icon) {
+          <app-preview-image class="min-w-32 min-h-32 w-32 h-32 rounded-t-xl" [file]="connection.data!.server.icon"
+                             [connection]="connection">
+          </app-preview-image>
+        } @else {
+          <lucide-icon [name]="ImageOffIcon" class="w-32 h-32 text-neutral-500"></lucide-icon>
+        }
+      </div>
       <div class="flex">
-        <app-file-upload class="w-32" [connection]="connection" (uploaded)="onIconChange($event)"
-                         [type]="UploadType.SERVER_ICON"></app-file-upload>
+        <!-- TODO file upload -->
+        <button class="button-simpletext-onyx" (drop)="onIconUpload($event)"></button>
         <button class="py-0.5 button-red" [disabled]="connection.data!.server.icon==undefined" (click)="deleteIcon()">
           <lucide-icon [name]="XIcon"></lucide-icon>
         </button>
@@ -28,32 +29,30 @@
 
 
   <h3 class="pt-8">Description</h3>
-  <div class="px-4 " cdkDropList (cdkDropListDropped)="dropDescription($event)">
+  <div class="list" cdkDropList (cdkDropListDropped)="dropDescription($event)">
     @for (description of server.description; track description.id) {
-      <div class="flex bg-neutral-800 rounded p-2 my-2 gap-2" cdkDrag>
-
-        <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
-        @switch (description.type) {
-          @case ("MARKDOWN") {
-            @let markdown = asTypeMarkdown(description);
-            <textarea class="min-h-32" [(ngModel)]="markdown.text"></textarea> <!-- TODO -->
+      <div class="container !pl-0" cdkDrag>
+        <div class="flex">
+          <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
+          @switch (description.type) {
+            @case ("MARKDOWN") {
+              @let markdown = asTypeMarkdown(description);
+              <textarea class="min-h-32" [(ngModel)]="markdown.text"></textarea> <!-- TODO -->
+            }
+            @default {
+              <p class="text-red-400">Your client does not unterstand this message. Please update your client or check
+                your server logs.</p>
+            }
           }
-          <!-- @case ("FILE") {
-              TODO
-          }-->
-          @default {
-            <p class="text-red-400">Your client does not unterstand this message. Please update your client or check
-              your server logs.</p>
-          }
-        }
+        </div>
         <div>
-          <button class="button-red w-24" (click)="deleteDescription(description)">Delete</button>
+          <button class="button-text-red" (click)="deleteDescription(description)">Delete</button>
         </div>
       </div>
     }
   </div>
   <div class="grid grid-cols-2 gap-4 p-2">
-    <button class="" (click)="addMarkdown()">
+    <button class="button-text" (click)="addMarkdown()">
       <lucide-icon class="pr-1" [name]="TextInitialIcon"></lucide-icon>
       Add Markdown text
     </button>

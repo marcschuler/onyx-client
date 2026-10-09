@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import {WebSocketServerConnection} from '../../../../services/websocket/WebSocketServerConnection';
 import {GroupDTO, UserExtendedDTO} from '../../../../../api/onyx-server';
-import {RestService} from '../../../../services/rest-service';
+import {RestService} from '../../../../services/rest/rest-service';
 import {SplitPanel} from '../../../../components/ui/split-panel/split-panel';
 import {
   LucideAngularModule,
@@ -22,7 +22,6 @@ import {Popup} from '../../../../components/ui/popup/popup';
     SplitPanelBar,
     SplitPanelButton,
     SplitPanelSelector,
-    Popup,
     UserEntry
   ],
   templateUrl: './users-panel.html',

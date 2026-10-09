@@ -1,5 +1,5 @@
 import {Component, inject, Input} from '@angular/core';
-import {RestService} from '../../../services/rest-service';
+import {RestService} from '../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO, SectionDTO} from '../../../../api/onyx-server';

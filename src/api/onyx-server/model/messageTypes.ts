@@ -31,6 +31,7 @@ export const MessageTypes = {
     ClientServerLeaveEvent: 'ClientServerLeaveEvent',
     ErrorMessage: 'ErrorMessage',
     IceServerMessage: 'IceServerMessage',
+    IntegrationRequest: 'IntegrationRequest',
     JwtTokenEvent: 'JwtTokenEvent',
     KickedEvent: 'KickedEvent',
     MessageDeleteEvent: 'MessageDeleteEvent',

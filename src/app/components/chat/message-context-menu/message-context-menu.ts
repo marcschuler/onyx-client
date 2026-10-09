@@ -5,7 +5,7 @@ import {CornerDownRightIcon, XIcon} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {MessageDeleteEvent, MessageDTO} from '../../../../api/onyx-server';
 import {POPUP_CONTEXT} from '../../../services/ui/context-menu-service';
-import {RestService} from '../../../services/rest-service';
+import {RestService} from '../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 

@@ -5,8 +5,8 @@
 
     @if (message.repliesTo) {
       <div class="pl-8 opacity-50">
-      <app-message [message]="message.repliesTo" [connection]="connection"></app-message>
-    </div>
+        <app-message [message]="message.repliesTo" [connection]="connection"></app-message>
+      </div>
     }
 
     <div class="pl-8">
@@ -43,28 +43,29 @@
         <div class="mr-2 w-6"></div>
       }
       <div class="bg-neutral-800 px-4 pb-2.5 pt-1 rounded w-fit relative min-w-48">
-        @if (useHeader) {
-          <p class="text-sky-00 font-bold pb-1">
-            {{ message.user.username }}
-            <span class="text-sm text-right text-neutral-700"
-                  [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</span>
-          </p>
-        } @else {
-          <p class="text-sm text-right text-neutral-700"
-             [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</p>
-        }
+
+        <p class="text-onyx-300 font-bold pb-1"> {{ message.user.username }} </p>
 
         @if (message.repliesTo) {
-          <div class="p-2 max-h-72 overflow-auto flex gap-2">
-            <lucide-icon [name]="CornerDownRightIcon"></lucide-icon>
-            <app-message class="border-l-2 border-l-sky-600 pl-2" [message]="message.repliesTo" [connection]="connection"></app-message>
+          <div class="p-1 max-h-72 overflow-auto flex gap-2">
+            <lucide-icon [name]="CornerDownRightIcon" class="text-text-faded"></lucide-icon>
+            <app-message class="border-l-2 border-l-onyx-600 pl-2" [message]="message.repliesTo"
+                         [connection]="connection"></app-message>
           </div>
         }
 
         @for (content of message.content; track content) {
           <app-message-content [content]="content" [connection]="connection"></app-message-content>
         }
+        @if (useHeader) {
+          <p class="text-sm text-right text-text text-text-faded"
+             [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</p>
+        } @else {
+          <p class="text-sm text-right  text-text-faded"
+             [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</p>
+        }
       </div>
+
 
     </div>
   </div>

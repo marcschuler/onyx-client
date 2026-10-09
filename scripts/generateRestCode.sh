@@ -8,7 +8,7 @@ JAR_FILE="/tmp/openapi-generator-${OPENAPI_VERSION}.jar"
 OPENAPI_URL="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/${OPENAPI_VERSION}/openapi-generator-cli-${OPENAPI_VERSION}.jar"
 
 OUT_DIR="src/api/onyx-server"
-SPEC_URL="http://localhost:8080/openapi"
+SPEC_URL="http://localhost:8081/openapi"
 
 echo "Downloading OpenAPI Generator ${OPENAPI_VERSION}..."
 if [ ! -f "${JAR_FILE}" ]; then
