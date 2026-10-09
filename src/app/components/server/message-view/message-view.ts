@@ -39,6 +39,8 @@ import {Chip} from '../../ui/chip/chip';
 import {PreviewImage} from '../../ui/preview-image/preview-image';
 import {removeItemFromList} from '../../../util';
 import {mimeTypeHasImagePreview} from '../../../mimetype-icons';
+import {ToggleButton} from '../../ui/toggle-button/toggle-button';
+import {Tooltip} from '../../../directives/tooltip';
 
 @Component({
   selector: 'app-message-view',
@@ -49,7 +51,9 @@ import {mimeTypeHasImagePreview} from '../../../mimetype-icons';
     FileUpload,
     MessageContent,
     Chip,
-    PreviewImage
+    PreviewImage,
+    ToggleButton,
+    Tooltip
   ],
   templateUrl: './message-view.html',
   styleUrl: './message-view.css'
@@ -71,10 +75,10 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
   currentPage: number | undefined = undefined;
   attachments: FileDTO[] = [];
 
-  messageAsMarkdown = false;
-  message = "";
+  protected useMarkdown: boolean=false;
+  protected message = "";
 
-  reply: MessageDTO | undefined = undefined;
+  protected reply: MessageDTO | undefined = undefined;
 
   @ViewChild('messageList') private messageListElement!: ElementRef;
 
@@ -197,7 +201,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     if (this.message.length != 0)
       content.push({
         text: message,
-        type: "MARKDOWN",
+        type: this.useMarkdown ? "MARKDOWN" :  "TEXT",
         repliesTo: this.reply ? this.reply.id : undefined
       } as MarkdownMessageContentDTO);
 

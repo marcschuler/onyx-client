@@ -16,6 +16,20 @@
   --color-onyx-900: #2b2c84;
   --color-onyx-950: #1a194d;
 
+  --colorize: 0.03; /* TODO define strength */
+
+  --color-neutral-50: oklch(from #5e69f6 98.5% calc(c * var(--colorize)) h);
+  --color-neutral-100: oklch(from #5e69f6 97% calc(c * var(--colorize)) h);
+  --color-neutral-200: oklch(from #5e69f6 92.2% calc(c * var(--colorize)) h);
+  --color-neutral-300: oklch(from #5e69f6 87% calc(c * var(--colorize)) h);
+  --color-neutral-400: oklch(from #5e69f6 70.8% calc(c * var(--colorize)) h);
+  --color-neutral-500: oklch(from #5e69f6 55.6% calc(c * var(--colorize)) h);
+  --color-neutral-600: oklch(from #5e69f6 43.9% calc(c * var(--colorize)) h);
+  --color-neutral-700: oklch(from #5e69f6 37.1% calc(c * var(--colorize)) h);
+  --color-neutral-800: oklch(from #5e69f6 26.9% calc(c * var(--colorize)) h);
+  --color-neutral-900: oklch(from #5e69f6 20.5% calc(c * var(--colorize)) h);
+  --color-neutral-950: oklch(from #5e69f6 14.5% calc(c * var(--colorize)) h);
+
   --color-text-faded: var(--color-neutral-700)
 }
 
@@ -74,7 +88,7 @@ textarea {
 }
 
 .button-onyx {
-  @apply bg-neutral-900 disabled:border-neutral-800 disabled:opacity-70 hover:bg-neutral-800 border-2 border-neutral-900  hover:border-onyx-950 rounded
+  @apply bg-neutral-900  disabled:opacity-70 hover:bg-neutral-800 border-2 border-neutral-900  rounded
 }
 
 .button-main {
@@ -128,7 +142,7 @@ textarea {
 }
 
 @utility button-simpletext-onyx{
-  @apply bg-transparent hover:bg-none hover:text-onyx-400 p-1
+  @apply bg-transparent hover:bg-none hover:text-onyx-400 aria-checked:text-onyx-400 p-1
 }
 
 .button-circle{

@@ -36,11 +36,11 @@
 
   <!-- attachments -->
   <div class="flex pb-1 mx-2">
-    <button class="button-simpletext-onyx">
-      <lucide-icon [name]="FileUpIcon" class="h-4 pt-0.5"></lucide-icon>
+    <button toggle-button appTooltip="Markdown" class="button-simpletext-onyx" [(active)]="useMarkdown">
+      M↓
     </button>
     <button class="button-simpletext-onyx">
-      M↓
+      <lucide-icon [name]="FileUpIcon" class="h-4 pt-0.5"></lucide-icon>
     </button>
     @for (attachment of attachments; track attachment.id) {
       <app-chip>

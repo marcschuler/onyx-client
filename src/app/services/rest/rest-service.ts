@@ -87,7 +87,7 @@ export class RestService {
 
   public buildErrorMessage(error: HttpErrorResponse): string {
     if (error.status == 0 || error.status == undefined) {
-      return "No Connection to server";
+      return "Server unreachable";
     }
     return error.error.detail || error.error.title || JSON.stringify(error.error);
   }

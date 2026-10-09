@@ -19,7 +19,7 @@ export class PreviewImage {
   @Input() basePath: string | undefined;
   @Input() file!: FileDTO | string;
 
-  @Input() imageClass  ="w-32 h-32 rounded-xl object-cover"
+  @Input() imageClass  ="w-32 h-32 rounded-xl object-cover" //TODO this is terrible - rework!
 
   options!: FilePreviewOption[];
 

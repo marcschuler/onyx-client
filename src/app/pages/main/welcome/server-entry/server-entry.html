@@ -1,4 +1,4 @@
-<button class="button-onyx flex w-full !p-2"
+<button class="button-onyx flex w-full !p-1"
         (click)="connect()" [disabled]="selectedServer">
   <div class="rounded">
     @switch (state) {
@@ -9,39 +9,42 @@
         @if (success && success.icon) {
           @let info = success;
           <app-preview-image [file]="info.icon!" [basePath]="server.url"
-                             imageClass="min-w-16 w-16 h-16 object-cover rounded">
+                             imageClass="min-w-11 w-11 h-11 object-cover rounded">
           </app-preview-image>
         } @else {
-          <lucide-icon [name]="ServerIcon" class="w-16 h-16 rounded-xl"></lucide-icon>
+          <lucide-icon [name]="ServerIcon" class="w-11 h-11 rounded-xl"></lucide-icon>
         }
       }
       @case (ServerInfoState.ERROR) {
-        <lucide-icon [name]="ServerOffIcon" class="w-16 h-16 text-red-600 opacity-50"></lucide-icon>
+        <lucide-icon [name]="ServerOffIcon" class="w-11 h-11 text-red-600 opacity-50"></lucide-icon>
       }
     }
   </div>
 
   <div class="items-center flex-1 flex flex-col">
+    @let subtitle = server.name || server.url;
     @switch (state) {
       @case (ServerInfoState.CONNECTING) {
-        <h3 class="font-bold !p-0"></h3>
-        <p class="text-neutral-400">{{ server.name || server.url }}</p>
+        <h3 class="font-bold !p-0">...</h3>
+        <p class="text-neutral-400 text-xs">{{ subtitle }}</p>
       }
       @case (ServerInfoState.SUCCESS) {
         @if (success) {
           @let info = success;
           <h3 class="font-bold !p-0">{{ info.name }}</h3>
-          <p class="text-neutral-400">{{ server.name || server.url }}</p>
+          <p class="text-neutral-400 text-xs">{{ subtitle }}</p>
         }
       }
       @case (ServerInfoState.ERROR) {
         <h3 class="text-red-400 !p-0">{{ error }}</h3>
-        <p class="w-64 font-bold">{{ server.name || server.url }}</p>
+        <p class="w-64 font-bold text-xs">{{ subtitle }}</p>
       }
     }
   </div>
 
-  @if (selectedServer == server) {
-    <app-spinner></app-spinner>
-  }
+  <div class="min-w-12">
+    @if (selectedServer == server) {
+      <app-spinner></app-spinner>
+    }
+  </div>
 </button>

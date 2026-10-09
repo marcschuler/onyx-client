@@ -15,7 +15,7 @@ import {ServerEntry} from './server-entry/server-entry';
 import {APP_VERSION} from '../../../services/Util';
 
 @Component({
-  selector: 'app-server-selector',
+  selector: 'app-welcome',
   imports: [
     FormsModule,
     LucideAngularModule,
