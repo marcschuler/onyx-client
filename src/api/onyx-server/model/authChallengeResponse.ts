@@ -14,6 +14,7 @@ export interface AuthChallengeResponse {
     publicKey: { [key: string]: object; };
     challenge: SignedContent;
     username: string;
+    serverPassword?: string;
     readonly type: AuthChallengeResponse.TypeEnum;
 }
 export namespace AuthChallengeResponse {
