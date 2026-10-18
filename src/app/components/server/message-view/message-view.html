@@ -45,21 +45,28 @@
       <button toggle-button appTooltip="Markdown" class="button-simpletext-onyx" [(active)]="useMarkdown">
         M↓
       </button>
-      <button appTooltip="Upload File" class="button-simpletext-onyx">
+      <button appTooltip="Upload File" class="button-simpletext-onyx" (click)="openFileUploadDialog()"
+              (drop)="openFileUploadDialog($event)">
         <lucide-icon [name]="FileUpIcon" class="h-4 pt-0.5"></lucide-icon>
       </button>
+      <div class="text-onyx-400">
       @for (attachment of attachments; track attachment.id) {
         <app-chip>
-          @if (mimeTypeHasImagePreview(attachment.contentType)) {
-            <app-preview-image [file]="attachment" [connection]="connection"
+          @if (attachment.file && mimeTypeHasImagePreview(attachment.file.contentType)) {
+            <app-preview-image [file]="attachment.file" [connection]="connection"
                                imageClass="object-contain max-h-4 rounded-xl inline"></app-preview-image>
+          } @else {
+            {{attachment.progressNice}}
           }
-          {{ attachment.filename }}
-          <button class="button-mini bg-transparent" (click)="removeAttachment(attachment)">
-            <lucide-icon [name]="XIcon" class="inline"></lucide-icon>
-          </button>
+          {{ attachment.name }}
+          @if (attachment.done) {
+            <button class="button-mini bg-transparent" (click)="removeAttachment(attachment)">
+              <lucide-icon [name]="XIcon" class="inline"></lucide-icon>
+            </button>
+          }
         </app-chip>
       }
+      </div>
     </div>
 
     <!-- Input row pinned to bottom -->

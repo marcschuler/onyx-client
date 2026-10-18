@@ -40,6 +40,8 @@ import {removeItemFromList} from '../../../util';
 import {mimeTypeHasImagePreview} from '../../../mimetype-icons';
 import {ToggleButton} from '../../ui/toggle-button/toggle-button';
 import {Tooltip} from '../../../directives/tooltip';
+import {FileUploadService, UploadState, UploadType} from '../../../services/rest/file-upload-service';
+import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-message-view',
@@ -51,7 +53,8 @@ import {Tooltip} from '../../../directives/tooltip';
     Chip,
     PreviewImage,
     ToggleButton,
-    Tooltip
+    Tooltip,
+    DecimalPipe
   ],
   templateUrl: './message-view.html',
   styleUrl: './message-view.css'
@@ -62,6 +65,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
   private restService = inject(RestService);
   private messageService = inject(MessageService);
   private notificationService = inject(NotificationService);
+  private fileUploadService = inject(FileUploadService);
 
 
   protected readonly SendIcon = SendIcon;
@@ -72,9 +76,9 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
   messages: MessageDTO[] = [];
   currentPage: number | undefined = undefined;
-  attachments: FileDTO[] = [];
+  attachments: UploadState[] = [];
 
-  protected useMarkdown: boolean=false;
+  protected useMarkdown: boolean = false;
   protected message = "";
 
   protected reply: MessageDTO | undefined = undefined;
@@ -151,6 +155,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     this.moreMessagesObserver?.disconnect()
   }
 
+
   addMessageToList(messages: MessageDTO[]) {
     for (const message of messages) {
       this.messages.push(message);
@@ -192,7 +197,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     this.attachments.forEach(attachment => {
       content.push({
         type: "FILE",
-        file: attachment,
+        file: attachment.file!, //TODO check if upload is finished
       } as FileMessageContentDTO)
     })
 
@@ -200,7 +205,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     if (this.message.length != 0)
       content.push({
         text: message,
-        type: this.useMarkdown ? "MARKDOWN" :  "TEXT",
+        type: this.useMarkdown ? "MARKDOWN" : "TEXT",
         repliesTo: this.reply ? this.reply.id : undefined
       } as MarkdownMessageContentDTO);
 
@@ -215,12 +220,24 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     }, error => this.restService.handleError(error))
   }
 
-  protected onAttachmentUploaded($event: FileDTO) {
-    console.log("message-view: file was uploaded, adding attachment")
-    this.attachments.push($event);
+  protected async openFileUploadDialog($event?: any) {
+    this.fileUploadService.fileFromDropOrDialog($event).then(
+      file => {
+        if (!file)
+          return;
+        this.fileUploadService.uploadFile(this.connection, file, UploadType.DEFAULT).subscribe(state => {
+          const existing = this.attachments.findIndex(a => a.id == state.id);
+          if (existing == -1) {
+            this.attachments.push(state);
+          } else {
+            this.attachments[existing] = state;
+          }
+        }, error => this.restService.handleError(error))
+      }
+    )
   }
 
-  protected removeAttachment(attachment: FileDTO) {
+  protected removeAttachment(attachment: UploadState) {
     removeItemFromList(this.attachments, attachment);
   }
 
@@ -262,5 +279,6 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
   protected readonly mimeTypeHasImagePreview = mimeTypeHasImagePreview;
   protected readonly GhostIcon = GhostIcon;
-  protected readonly FileUpIcon = FileUpIcon;removeOperationIdPrefix=true
+  protected readonly FileUpIcon = FileUpIcon;
+  removeOperationIdPrefix = true
 }

@@ -1,7 +1,8 @@
 @if (server) {
   <div class="flex gap-4">
     <div class="w-32">
-      <div class="w-32 h-32 rounded-t-xl object-cover bg-neutral-800">
+      <div class="relative w-32 h-32 rounded-t-xl object-cover bg-neutral-800 hover:bg-neutral-700" (click)="uploadServerIcon()"
+           (drop)="uploadServerIcon($event)">
         @if (connection.data!.server.icon) {
           <app-preview-image class="min-w-32 min-h-32 w-32 h-32 rounded-t-xl" [file]="connection.data!.server.icon"
                              [connection]="connection">
@@ -9,11 +10,12 @@
         } @else {
           <lucide-icon [name]="ImageOffIcon" class="w-32 h-32 text-neutral-500"></lucide-icon>
         }
+        @if (serverIconUpload) {
+          <p class="absolute w-full p-1 top-0 bg-onyx-800 rounded-t-xl">Uploading... {{serverIconUpload.progressNice}}</p>
+        }
       </div>
       <div class="flex">
-        <!-- TODO file upload -->
-        <button class="button-simpletext-onyx" (drop)="onIconUpload($event)"></button>
-        <button class="py-0.5 button-red" [disabled]="connection.data!.server.icon==undefined" (click)="deleteIcon()">
+        <button class="w-full button-red" [disabled]="connection.data!.server.icon==undefined" (click)="deleteIcon()">
           <lucide-icon [name]="XIcon"></lucide-icon>
         </button>
       </div>

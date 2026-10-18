@@ -16,7 +16,8 @@ import {GripVertical, ImageOffIcon, LucideAngularModule, TextInitialIcon, XIcon}
 import {FileUpload} from '../../../../../components/ui/file-upload/file-upload';
 import {deleteInList, reorderListItem} from '../../../../../services/Util';
 import {PreviewImage} from '../../../../../components/ui/preview-image/preview-image';
-import {FileUploadService, UploadType} from '../../../../../services/rest/file-upload-service';
+import {FileUploadService, UploadState, UploadType} from '../../../../../services/rest/file-upload-service';
+import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-server-administration-panel',
@@ -28,7 +29,8 @@ import {FileUploadService, UploadType} from '../../../../../services/rest/file-u
     LucideAngularModule,
     CdkDrag,
     CdkDropList,
-    PreviewImage
+    PreviewImage,
+    DecimalPipe
   ],
   templateUrl: './server-administration-panel.html',
   styleUrl: './server-administration-panel.css'
@@ -43,6 +45,8 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
 
   //TODO remove and access via connection.data.server? Is this here an advantage?
   server: ServerDTO | undefined;
+
+  serverIconUpload: UploadState | undefined;
 
 
   ngOnChanges() {
@@ -89,6 +93,24 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
     }, error => this.restService.handleError(error));
   }
 
+  protected async uploadServerIcon($event?: any) {
+    if (this.serverIconUpload)
+      return;
+    this.fileUploadService.fileFromDropOrDialog($event).then(
+      file => {
+        if (!file)
+          return;
+        this.fileUploadService.uploadFile(this.connection, file, UploadType.SERVER_ICON).subscribe(state => {
+          if (state.done) {
+            this.serverIconUpload = undefined;
+          } else {
+            this.serverIconUpload = state;
+          }
+        }, error => this.restService.handleError(error))
+      }
+    )
+  }
+
   protected addMarkdown() {
     this.server!.description.push({
       text: "",
@@ -131,15 +153,7 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
   }
 
   protected readonly XIcon = XIcon;
-
   protected readonly ImageOffIcon = ImageOffIcon;
-
-  protected onIconUpload($event: DragEvent) {
-    this.fileUploadService.uploadFileOnDrop(this.connection,$event, UploadType.SERVER_ICON,state => {
-
-    }).subscribe()
-
-  }
 }
 
 export default ServerAdministrationPanel
