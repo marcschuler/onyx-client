@@ -1,13 +1,32 @@
-<!--<ui-split-panel>
-  <ui-split-panel-bar>
-    <ui-split-panel-button [icon]="HexagonIcon" value="General">
-    </ui-split-panel-button>
-  </ui-split-panel-bar>-->
 @if (channel) {
-  <input placeholder="name" [(ngModel)]="channel.name">
+  <div>
+    <input placeholder="name" [(ngModel)]="channel.name">
+
+    <h3 class="pt-4 pb-2">Settings</h3>
+    <div class="settings-grid">
+      <p class="settings-grid-label">Voice</p>
+      <p class="settings-grid-desc">Choose whether members can talk to each other in voice chat in this channel</p>
+      <ui-multi-select class="settings-grid-option" [multi]="false" [(selected)]="channel.voiceMode"
+                       placeholder="Voice type">
+        @for (option of ["NONE", "FULL"]; track option) {
+          <ui-select-item [label]="option" [value]="option"></ui-select-item>
+        }
+      </ui-multi-select>
+      <p class="settings-grid-label">Chat</p>
+      <p class="settings-grid-desc">Choose whether members can send text messages in this channel, and whether messages
+        are only temporary until a user leaves</p>
+      <ui-multi-select class="settings-grid-option" [multi]="false" [(selected)]="channel.chatMode"
+                       placeholder="Chat type">
+        @for (option of ["NONE", "TEMPORARY", "FULL"]; track option) {
+          <ui-select-item [label]="option" [value]="option"></ui-select-item>
+        }
+      </ui-multi-select>
+    </div>
+  </div>
   <div class="text-right pt-4">
     <button class="button-line" (click)="save()">Save</button>
     <button class="button-red" (click)="delete()">Delete</button>
   </div>
+} @else {
+  <app-spinner></app-spinner>
 }
-<!--</ui-split-panel>-->

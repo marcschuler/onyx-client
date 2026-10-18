@@ -51,7 +51,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
         console.log("ignoring reordering")
         return;
       }
-      this.connection.rest.channelController.order1(channel.id, newOrder)
+      this.connection.rest.channelController.order(channel.id, newOrder)
         .subscribe(value => {
         }, error => this.restService.handleError(error))
     } else {
@@ -76,7 +76,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
   }
 
   protected createChannel(section: SectionDTO) {
-    this.connection.rest.channelController.create2({
+    this.connection.rest.channelController.create({
       name: "Channel",
       sectionId: section.id,
       order: section.channels.length,

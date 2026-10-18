@@ -1,5 +1,5 @@
 <div
-  class="rounded gap-2 grid grid-cols-[1fr_auto] w-full rounded-l-none
+  class="rounded gap-2 grid grid-cols-8 w-full rounded-l-none
           D   hover:bg-neutral-900 animate-default group cursor-pointer"
   [class.p-2]="!interfaceService.settings.compactMode"
   [ngClass]="{
@@ -7,21 +7,36 @@
           'bg-neutral-900': connection.selectedChannel === channel.id
   }" (click)="selectChannel(channel)"
   (contextmenu)="contextMenuService.openChannelContextMenu(channel,connection,$event)">
-  <div class=" w-full   rounded-l-md select-none text-nowrap">
+  <div class="col-span-5   rounded-l-md select-none text-nowrap">
     <lucide-icon class="inline-flex translate-y-0.5" [name]="HexagonIcon"></lucide-icon>
     {{ channel.name }}
-
   </div>
-  @if (connection.me.channel !== channel.id) {
-    <button class="right-0 button-simpletext-onyx
+
+  @if (channel.voiceMode !== 'NONE') {
+    <lucide-icon [name]="voiceIcon(channel)" class="col-start-6 col-end-7 text-neutral-800 inline py-1"></lucide-icon>
+  }
+
+  @if (channel.chatMode !== 'NONE') {
+    <lucide-icon [name]="chatIcon(channel)" class="col-start-7 col-end-8 text-neutral-800 inline py-1"></lucide-icon>
+  }
+  <div class="col-start-8 col-end-9">
+
+    @if (connection.me.channel !== channel.id) {
+      @if (channel.voiceMode !== "NONE") {
+        <button class="button-simpletext-onyx
                     pointer-events-none hoverable
                     group-hover:pointer-events-auto
                     transition">
-      <lucide-icon [name]="LogInIcon" (click)="joinChannel(channel)"></lucide-icon>
-    </button>
-  } @else if (connection.me.channel === channel.id) {
-    <button class="right-0 button-simpletext-onyx">
-      <lucide-icon [name]="LogOutIcon" (click)="leaveChannel()"></lucide-icon>
-    </button>
-  }
+          <lucide-icon [name]="LogInIcon" (click)="joinChannel(channel)"></lucide-icon>
+        </button>
+      } @else {
+        <!-- when not allowed, don't show the button -->
+        <span class="px-4"></span>
+      }
+    } @else if (connection.me.channel === channel.id) {
+      <button class="button-simpletext-onyx">
+        <lucide-icon [name]="LogOutIcon" (click)="leaveChannel()"></lucide-icon>
+      </button>
+    }
+  </div>
 </div>

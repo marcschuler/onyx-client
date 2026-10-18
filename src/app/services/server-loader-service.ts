@@ -53,6 +53,7 @@ export interface ServerDetails {
   id: string;
   url: string;
   name?: string;
+  password?: string;
 }
 
 export interface KnownUser{

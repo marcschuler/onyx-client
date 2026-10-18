@@ -18,8 +18,8 @@ export interface PageMessageDTO {
     size?: number;
     content?: Array<MessageDTO>;
     number?: number;
-    sort?: SortObject;
     pageable?: PageableObject;
+    sort?: SortObject;
     first?: boolean;
     last?: boolean;
     numberOfElements?: number;

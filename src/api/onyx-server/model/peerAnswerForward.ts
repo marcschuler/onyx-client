@@ -7,11 +7,12 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { JsonNode } from './jsonNode';
 
 
 export interface PeerAnswerForward { 
     clientFrom: string;
-    answer: any | null;
+    answer: JsonNode;
     readonly type: PeerAnswerForward.TypeEnum;
 }
 export namespace PeerAnswerForward {

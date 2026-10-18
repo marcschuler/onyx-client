@@ -9,6 +9,8 @@
       <app-message [message]="msg" [lastMessage]="$index!=0?messages[$index]:undefined" [connection]="connection"
                    (onReply)="setReply($event)"></app-message>
     }
+
+    <!-- info when chat is empty -->
     @if (messages.length == 0) {
       <div class="text-center text-onyx-200">
         <p>
@@ -20,55 +22,61 @@
 
   </div>
 
-  @if (reply) {
-    <div class="bg-neutral-800 p-1 ">
-      <lucide-icon [name]="CornerDownRightIcon" class="inline h-4"></lucide-icon>
-      Reply to
-      <button class="button-small button-dark" (click)="setReply(undefined)">
-        <lucide-icon [name]="XIcon"></lucide-icon>
-      </button>
-      <div class="max-h-16 overflow-auto pl-2">
-        <app-message-content class="text-neutral-500" [connection]="connection"
-                             [content]="reply.content![0]"></app-message-content>
-      </div>
-    </div>
-  }
-
-  <!-- attachments -->
-  <div class="flex pb-1 mx-2">
-    <button toggle-button appTooltip="Markdown" class="button-simpletext-onyx" [(active)]="useMarkdown">
-      M↓
-    </button>
-    <button class="button-simpletext-onyx">
-      <lucide-icon [name]="FileUpIcon" class="h-4 pt-0.5"></lucide-icon>
-    </button>
-    @for (attachment of attachments; track attachment.id) {
-      <app-chip>
-        @if (mimeTypeHasImagePreview(attachment.contentType)) {
-          <app-preview-image [file]="attachment" [connection]="connection"
-                             imageClass="object-contain max-h-4 rounded-xl inline"></app-preview-image>
-        }
-        {{ attachment.filename }}
-        <button class="button-mini bg-transparent" (click)="removeAttachment(attachment)">
-          <lucide-icon [name]="XIcon" class="inline"></lucide-icon>
-        </button>
-      </app-chip>
+  @if (chatMode !== 'NONE') {
+    @if (chatMode == 'TEMPORARY') {
+      <span class="text-onyx-800 text-xs pl-4 border p-1 rounded text-center bg-onyx-200">new messages are temporary and will be deleted once the view is left</span>
     }
-  </div>
+    @if (reply) {
+      <div class="bg-neutral-800 p-1 ">
+        <lucide-icon [name]="CornerDownRightIcon" class="inline h-4"></lucide-icon>
+        Reply to
+        <button class="button-small button-dark" (click)="setReply(undefined)">
+          <lucide-icon [name]="XIcon"></lucide-icon>
+        </button>
+        <div class="max-h-16 overflow-auto pl-2">
+          <app-message-content class="text-neutral-500" [connection]="connection"
+                               [content]="reply.content![0]"></app-message-content>
+        </div>
+      </div>
+    }
 
-  <!-- Input row pinned to bottom -->
-  <div class="border border-neutral-600 rounded mx-2 min-h-16 max-h-30 bg-neutral-800 items-center">
-    <div class="flex">
+    <!-- attachments -->
+    <div class="flex pb-1 mx-2">
+      <button toggle-button appTooltip="Markdown" class="button-simpletext-onyx" [(active)]="useMarkdown">
+        M↓
+      </button>
+      <button appTooltip="Upload File" class="button-simpletext-onyx">
+        <lucide-icon [name]="FileUpIcon" class="h-4 pt-0.5"></lucide-icon>
+      </button>
+      @for (attachment of attachments; track attachment.id) {
+        <app-chip>
+          @if (mimeTypeHasImagePreview(attachment.contentType)) {
+            <app-preview-image [file]="attachment" [connection]="connection"
+                               imageClass="object-contain max-h-4 rounded-xl inline"></app-preview-image>
+          }
+          {{ attachment.filename }}
+          <button class="button-mini bg-transparent" (click)="removeAttachment(attachment)">
+            <lucide-icon [name]="XIcon" class="inline"></lucide-icon>
+          </button>
+        </app-chip>
+      }
+    </div>
+
+    <!-- Input row pinned to bottom -->
+    <div class="border border-neutral-600 rounded mx-2 min-h-16 max-h-30 bg-neutral-800 items-center">
+      <div class="flex">
       <textarea [(ngModel)]="message" (keydown.enter)="sendMessage()"
                 class="!bg-neutral-800 !border-0"
       ></textarea>
-      <div>
         <button
           (click)="sendMessage()"
-          class="" [disabled]="message.length===0">
+          class="h-fulll" [disabled]="message.length===0">
           <lucide-icon [name]="SendIcon"></lucide-icon>
         </button>
       </div>
     </div>
-  </div>
+  } @else {
+    <h3 class="text-onyx-200 text-center pb-4">Chat is {{ messages.length == 0 ? 'disabled' : 'archived' }} for this
+      channel</h3>
+  }
 </div>

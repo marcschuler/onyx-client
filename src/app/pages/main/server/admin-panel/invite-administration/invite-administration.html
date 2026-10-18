@@ -18,27 +18,40 @@
 
           <p class="">Starts</p>
           <input type="datetime-local" [(ngModel)]="invite.startDate">
-          <button (click)="invite.startDate = undefined">x</button>
+          <button class="button-circle" (click)="invite.startDate = undefined">
+            <lucide-angular [name]="XIcon"></lucide-angular>
+          </button>
 
           <p class="">Ends</p>
           <input type="datetime-local" [(ngModel)]="invite.endDate">
-          <button (click)="invite.endDate = undefined">x</button>
+          <button class="button-circle" (click)="invite.endDate = undefined">
+            <lucide-angular [name]="XIcon"></lucide-angular>
+          </button>
 
           <p>Usages</p>
           <input type="number" [(ngModel)]="invite.maxUsages">
-          <button (click)="invite.maxUsages = undefined">x</button>
+          <button class="button-circle" (click)="invite.maxUsages = undefined">
+            <lucide-angular [name]="XIcon"></lucide-angular>
+          </button>
         </div>
-        @if (invite.maxUsages) {
-          <div class="rounded-xl relative pt-4">
-            <div class="h-2   rounded-xl absolute bg-neutral-700 w-full"></div>
-            <div class="h-2 rounded-xl absolute bg-sky-200"
-                 [style.width.%]="Math.min(invite.usages / invite.maxUsages * 100,100)"></div>
-            <p class="text-center pt-3">{{ invite.usages }} / {{ invite.maxUsages }} invites used</p>
-          </div>
-        }
 
-        <button class="button-text">save</button>
-        <button class="button-text-red">delete</button>
+        <div class="pt-3">
+          @if (invite.maxUsages) {
+            <div class="rounded-xl relative">
+              <div class="h-2   rounded-xl absolute bg-neutral-700 w-full"></div>
+              <div class="h-2 rounded-xl absolute bg-sky-200"
+                   [style.width.%]="Math.min(invite.usages / invite.maxUsages * 100,100)"></div>
+              <p class="text-center pt-3">{{ invite.usages }} / {{ invite.maxUsages }} invites used</p>
+            </div>
+          } @else {
+            <p class="text-center">{{ invite.usages }} invites used</p>
+          }
+        </div>
+
+        <div class="item-row-right">
+          <button class="button-border-onyx">save</button>
+          <button class="button-border-red">delete</button>
+        </div>
       </div>
     }
   </div>

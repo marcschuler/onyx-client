@@ -170,15 +170,15 @@ export class SectionControllerService extends BaseService {
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public edit1(sectionId: string, sectionDTO: SectionDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
-    public edit1(sectionId: string, sectionDTO: SectionDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
-    public edit1(sectionId: string, sectionDTO: SectionDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
-    public edit1(sectionId: string, sectionDTO: SectionDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public edit(sectionId: string, sectionDTO: SectionDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SectionDTO>;
+    public edit(sectionId: string, sectionDTO: SectionDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SectionDTO>>;
+    public edit(sectionId: string, sectionDTO: SectionDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SectionDTO>>;
+    public edit(sectionId: string, sectionDTO: SectionDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (sectionId === null || sectionId === undefined) {
-            throw new Error('Required parameter sectionId was null or undefined when calling edit1.');
+            throw new Error('Required parameter sectionId was null or undefined when calling edit.');
         }
         if (sectionDTO === null || sectionDTO === undefined) {
-            throw new Error('Required parameter sectionDTO was null or undefined when calling edit1.');
+            throw new Error('Required parameter sectionDTO was null or undefined when calling edit.');
         }
 
         let localVarHeaders = this.defaultHeaders;

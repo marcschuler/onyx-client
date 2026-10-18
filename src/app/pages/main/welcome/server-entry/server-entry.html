@@ -31,7 +31,12 @@
       @case (ServerInfoState.SUCCESS) {
         @if (success) {
           @let info = success;
-          <h3 class="font-bold !p-0">{{ info.name }}</h3>
+          <h3 class="font-bold !p-0">
+            {{ info.name }}
+            @if (info.settings.password) {
+              <lucide-icon [name]="LockKeyholeIcon" class="inline w-3"></lucide-icon>
+            }
+          </h3>
           <p class="text-neutral-400 text-xs">{{ subtitle }}</p>
         }
       }

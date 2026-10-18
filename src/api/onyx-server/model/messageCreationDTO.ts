@@ -7,11 +7,11 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ServerDTODescriptionInner } from './serverDTODescriptionInner';
+import { MessageCreationDTOContentInner } from './messageCreationDTOContentInner';
 
 
 export interface MessageCreationDTO { 
-    content: Array<ServerDTODescriptionInner>;
+    content: Array<MessageCreationDTOContentInner>;
     repliesTo?: string;
 }
 

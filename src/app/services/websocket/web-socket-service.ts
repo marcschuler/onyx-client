@@ -8,7 +8,7 @@ import {PeerConnectionService} from '../peer/peer-connection-service';
 import {
   AuthChallengeRequest,
   AuthChallengeResponse,
-  AuthSuccessMessage, ChannelCreateEvent,
+  AuthSuccessMessage, ChannelChangeEvent, ChannelCreateEvent,
   ChannelDTO,
   ChannelMoveEvent,
   ClientChangeEvent,
@@ -30,7 +30,14 @@ import {
   ServerTreeChangeMessage
 } from '../../../api/onyx-server';
 import {RestService} from '../rest/rest-service';
-import {clientWithId, getChannelFromId, getSectionFromId, getSectionOfChannel, reorderListItem} from '../Util';
+import {
+  clientWithId,
+  getChannelFromId,
+  getSectionFromId,
+  getSectionOfChannel,
+  reorderListItem,
+  replaceInList
+} from '../Util';
 import {EventHandler} from '../../util';
 
 @Injectable({
@@ -62,6 +69,7 @@ export class WebSocketService {
     this.addHandler(SectionCreateEvent.TypeEnum.SectionCreateEvent, (e, c) => this.onSectionCreate(e as SectionCreateEvent, c))
     this.addHandler(SectionMoveEvent.TypeEnum.SectionMoveEvent, (e, c) => this.onSectionMove(e as SectionMoveEvent, c));
     this.addHandler(ChannelMoveEvent.TypeEnum.ChannelMoveEvent, (e, c) => this.onChannelMove(e as ChannelMoveEvent, c));
+    this.addHandler(ChannelChangeEvent.TypeEnum.ChannelChangeEvent, (e, c) => this.onChannelChange(e as ChannelChangeEvent, c))
 
     this.addHandler(ClientServerJoinEvent.TypeEnum.ClientServerJoinEvent, (e, c) => this.onClientServerJoin(e as ClientServerJoinEvent, c));
     this.addHandler(ClientServerLeaveEvent.TypeEnum.ClientServerLeaveEvent, (e, c) => this.onClientServerLeave(e as ClientServerLeaveEvent, c))
@@ -81,7 +89,7 @@ export class WebSocketService {
   }
 
 
-  public connect(serverConnection: ServerDetails, identity: Identity, retries = 1): Promise<WebSocketServerConnection> {
+  public connect(serverConnection: ServerDetails, identity: Identity, password: string | undefined, retries = 1): Promise<WebSocketServerConnection> {
     if (retries < 0) {
       console.log("ws: no retries, disconnecting");
       if (this.connection)
@@ -107,12 +115,13 @@ export class WebSocketService {
         clients: [],
         config: {},
         me: undefined as any as Client, // is hacky but the server promises to return a result
+        serverPassword: password,
         rest: this.restService.createRestConfig(serverConnection.url, undefined)
       }
-      setTimeout(()=>{ // websocket gives no timeout on connection so tracing manually
+      setTimeout(() => { // websocket gives no timeout on connection so tracing manually
         if (!connected)
           webSocket.close();
-      },8000);
+      }, 8000);
       webSocket.onopen = () => {
         connected = true;
         console.log("ws: connected to server")
@@ -217,6 +226,7 @@ export class WebSocketService {
       username: connection.identity.username,
       publicKey: await this.cryptoService.exportKey(connection.identity.keyPair.publicKey),
       challenge: signature,
+      serverPassword: connection.serverPassword,
       type: AuthChallengeResponse.TypeEnum.AuthChallengeResponse
     } as AuthChallengeResponse)
   }
@@ -276,7 +286,9 @@ export class WebSocketService {
       sectionId: sectionId,
       name: channel.name,
       order: channel.order,
-      users: []
+      users: [],
+      voiceMode: "FULL",
+      chatMode: "FULL"
     });
   }
 
@@ -297,6 +309,23 @@ export class WebSocketService {
       ? getSectionFromId(event.sectionId, connection.data!.sections) as SectionDTO
       : section;
     reorderListItem(section.channels, channel, event.order, newSection.channels);
+  }
+
+  private onChannelChange(event: ChannelChangeEvent, connection: WebSocketServerConnection) {
+    if (connection.data) {
+      let changed = false;
+      connection.data.sections.forEach(section => {
+        const channel = section.channels.filter(c => c.id == event.channel.id)[0];
+        if (channel) {
+          replaceInList(section.channels, channel, event.channel);
+          changed = true;
+        }
+      })
+      if (!changed)
+        console.error("could not find channel in list", connection.data.sections, event);
+    } else {
+      console.error("could not change channel - channel not available", event);
+    }
   }
 
   private onIceServerData(event: IceServerMessage, connection: WebSocketServerConnection) {

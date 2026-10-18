@@ -16,6 +16,22 @@ export interface ChannelExtendedDTO {
     readonly name: string;
     id: string;
     chatId: string;
+    voiceMode: ChannelExtendedDTO.VoiceModeEnum;
+    chatMode: ChannelExtendedDTO.ChatModeEnum;
     users: Array<UserSimpleDTO>;
 }
+export namespace ChannelExtendedDTO {
+    export const VoiceModeEnum = {
+        None: 'NONE',
+        Full: 'FULL'
+    } as const;
+    export type VoiceModeEnum = typeof VoiceModeEnum[keyof typeof VoiceModeEnum];
+    export const ChatModeEnum = {
+        None: 'NONE',
+        Temporary: 'TEMPORARY',
+        Full: 'FULL'
+    } as const;
+    export type ChatModeEnum = typeof ChatModeEnum[keyof typeof ChatModeEnum];
+}
+
 

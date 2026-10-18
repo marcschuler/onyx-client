@@ -8,7 +8,7 @@ JAR_FILE="/tmp/openapi-generator-${OPENAPI_VERSION}.jar"
 OPENAPI_URL="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/${OPENAPI_VERSION}/openapi-generator-cli-${OPENAPI_VERSION}.jar"
 
 OUT_DIR="src/api/onyx-server"
-SPEC_URL="http://localhost:8081/openapi"
+SPEC_URL="http://localhost:8080/openapi"
 
 echo "Downloading OpenAPI Generator ${OPENAPI_VERSION}..."
 if [ ! -f "${JAR_FILE}" ]; then
@@ -22,7 +22,7 @@ java -jar "${JAR_FILE}" generate \
   -i "${SPEC_URL}" \
   -g typescript-angular \
   --skip-validate-spec \
-  --additional-properties=useFormData=true,supportsES6=true,ngVersion=21 \
+  --additional-properties=useFormData=true,supportsES6=true,ngVersion=21,removeOperationIdPrefix=true \
   -o "${OUT_DIR}"
 
 echo "Post-processing URLs (https -> http)..."

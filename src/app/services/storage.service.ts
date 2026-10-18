@@ -13,7 +13,7 @@ export class StorageService {
       messageView: 30
     },
     sidebarWidth: 200,
-    compactMode: false,
+    compactMode: true,
     legacyChat: false
   };
 

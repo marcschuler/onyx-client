@@ -7,7 +7,7 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ServerDTODescriptionInner } from './serverDTODescriptionInner';
+import { MessageContentDTO } from './messageContentDTO';
 import { UserSimpleDTO } from './userSimpleDTO';
 
 
@@ -15,7 +15,7 @@ export interface MessageDTO {
     id: string;
     timestamp: string;
     user: UserSimpleDTO;
-    content: Array<ServerDTODescriptionInner>;
+    content: Array<MessageContentDTO>;
     repliesTo?: MessageDTO;
     chatId: string;
 }

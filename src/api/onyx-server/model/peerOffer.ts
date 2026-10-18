@@ -7,11 +7,12 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { JsonNode } from './jsonNode';
 
 
 export interface PeerOffer { 
     clientTo: string;
-    offer: any | null;
+    offer: JsonNode;
     readonly type: PeerOffer.TypeEnum;
 }
 export namespace PeerOffer {

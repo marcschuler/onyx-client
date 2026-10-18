@@ -22,7 +22,8 @@
 
   <p class="col-span-2">
     @if (groups) {
-      <ui-multi-select [(selected)]="userGroups" (onAdded)="addGroup($event)" (onRemoved)="removeGroup($event)">
+      <ui-multi-select [(selectedList)]="userGroups" [multi]="true" (onAdded)="addGroup($event)"
+                       (onRemoved)="removeGroup($event)">
         @for (group of groups; track group.id) {
           <ui-select-item [label]="group.name" [value]="group"></ui-select-item>
         }

@@ -4,6 +4,9 @@
       <ui-split-panel-button [icon]="ServerCogIcon" value="Server Administration">
         <ui-split-panel-button [icon]="TicketSlashIcon" value="Invites">
         </ui-split-panel-button>
+        <ui-split-panel-button [icon]="connection.data!.server.settings.password? LockKeyholeIcon: LockIcon"
+                               value="Security">
+        </ui-split-panel-button>
       </ui-split-panel-button>
       <ui-split-panel-button [icon]="HexagonIcon" value="Sections & Channel">
         @for (section of connection.data!.sections; track section.id) {
@@ -26,6 +29,7 @@
                                      splitPanel="Server Administration">
     </app-server-administration-panel>
     <app-invite-administration [connection]="connection" splitPanel="Invites"></app-invite-administration>
+    <app-security-panel [connection]="connection" splitPanel="Security"></app-security-panel>
 
 
     <app-channel-administration-panel [connection]="connection"

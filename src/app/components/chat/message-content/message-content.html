@@ -1,4 +1,8 @@
 @switch (content.type) {
+  @case ("TEXT") {
+    @let text = asTypeText(content);
+    <p [innerHTML]="text.text"></p>
+  }
   @case ("MARKDOWN") {
     @let markdown = asTypeMarkdown(content);
     <p [innerHTML]="markdown.text | markdown" class="break-all"></p>

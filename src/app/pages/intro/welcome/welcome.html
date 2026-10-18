@@ -1,25 +1,33 @@
 <div class="p-4">
-  <h1 class="w-full text-center font-bold text-sky-600">Hello
-    @if (identity) {
-      , {{ identity.username }}
-    }</h1>
-  <p class="text-center py-4">Let's set you up!</p>
+  <div class="container min-w-full pb-8!">
+    <h1 class="text-center font-bold text-sky-600">Hello
+      @if (identity) {
+        , {{ identity.username }}
+      }</h1>
+    <p class="text-center py-4">Let's set you up!</p>
+  </div>
 
-  <div class="relative h-16 px-16">
-    <p class="p-4 inline bg-neutral-800 rounded-full absolute left-0">
+  <div class="text-onyx-800 -translate-y-6 mx-4 pb-8">
+    <p class="p-4 inline bg-neutral-900 border rounded-full absolute left-0"
+       [class.bg-onyx-200]="stage==WelcomeStage.IDENTITY"
+       [class.bg-neutral-900]="stage!==WelcomeStage.IDENTITY">
       <lucide-icon [name]="ShieldUser"></lucide-icon>
     </p>
-    <span class="w-1/2 absolute left-0 h-2 -z-10 top-6" [ngClass]="stage>0?'bg-sky-400':'bg-sky-800'"></span>
-    <p class="p-4 inline bg-neutral-800 rounded-full absolute left-1/2">
+    <span class="w-1/2 absolute left-0 h-2 -z-10 top-6"></span>
+    <p class="p-4 inline bg-neutral-900 border rounded-full absolute left-1/2"
+       [class.bg-onyx-200]="stage==WelcomeStage.SERVER"
+       [class.bg-neutral-900]="stage!==WelcomeStage.SERVER">
       <lucide-icon [name]="Server"></lucide-icon>
     </p>
-    <span class="w-1/2 absolute left-1/2 h-2 -z-10 top-6" [ngClass]="stage>1?'bg-sky-400':'bg-sky-800'"></span>
-    <p class="p-4 inline bg-neutral-800 rounded-full absolute right-0">
+    <span class="w-1/2 absolute left-1/2 h-2 -z-10 top-6"></span>
+    <p class="p-4 inline bg-neutral-900 border rounded-full absolute right-0"
+       [class.bg-onyx-200]="stage==WelcomeStage.FINISHED"
+       [class.bg-neutral-900]="stage!==WelcomeStage.FINISHED">
       <lucide-icon [name]="Check"></lucide-icon>
     </p>
   </div>
 
-  <div class="pt-4 px-4 pb-8 m-2 bg-neutral-800 rounded-xl">
+  <div class="pt-4 px-4 pb-8 m-2 rounded-xl">
     @switch (stage) {
       @case (WelcomeStage.IDENTITY) {
         <h2 class="pb-4 text-center">Create your Identity</h2>
@@ -29,10 +37,7 @@
         <h2 class="pb-4 text-center">Community Server</h2>
         <div class="mx-auto max-w-xl">
           <p>
-            You can start by selecting a few community servers.
-          </p>
-          <p class="pb-4">
-            This step is optional. You can add or remove servers at any time.
+            Start by selecting a few recommended community servers.
           </p>
           @for (server of communityServer; track server) {
             <div class="p-2 rounded grid grid-cols-5 bg-neutral-800 w-full gap-4">
@@ -57,8 +62,8 @@
         </button>
       }
       @case (WelcomeStage.FINISHED) {
-        <h2 class="pb-4 text-center">Done.</h2>
-        <p>
+        <h2 class="pb-4 text-center">Done</h2>
+        <p class="text-center">
           You are ready to go!
         </p>
         <button class="float-right"

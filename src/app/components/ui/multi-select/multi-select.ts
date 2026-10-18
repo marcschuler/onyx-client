@@ -33,10 +33,12 @@ export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
   private cdr = inject(ChangeDetectorRef);
 
 
-  @Input() placeholder = 'Select';
-  @Input() multi = true;
-  @Input() selected: any[] | any = [];
-  @Output() selectedChange = new EventEmitter<any[] | any>();
+  @Input() placeholder = '';
+  @Input() multi = false;
+  @Input() selected: any = null;
+  @Input() selectedList: any[] | undefined = [];
+  @Output() selectedChange = new EventEmitter<any>();
+  @Output() selectedListChange = new EventEmitter<any[]>();
   @Output() onAdded = new EventEmitter<any>();
   @Output() onRemoved = new EventEmitter<any>();
 
@@ -66,8 +68,9 @@ export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
   update() {
     if (!this.entries)
       return;
+    const values = this.getSelectedValues();
     this.entries.forEach(entry => {
-      entry.selected = (this.selected.includes(entry.value));
+      entry.selected = values.includes(entry.value);
     })
 
     this.label = this.entries.filter(entry => entry.selected)
@@ -81,6 +84,12 @@ export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
     }
     //i don't know why but without the explicit call the component only visibly updates for first draw when a user clicks on the ui
     this.cdr.markForCheck();
+  }
+
+  private getSelectedValues(): any[] {
+    if (this.multi)
+      return this.selectedList ?? [];
+    return this.selected == null ? [] : [this.selected];
   }
 
   private bindEntries(): void {
@@ -103,18 +112,36 @@ export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
   }
 
   private onItemClicked(value: string): void {
-    const index = this.selected.indexOf(value);
+    if (this.multi) {
+      const list = [...(this.selectedList ?? [])];
+      const index = list.indexOf(value);
 
-    if (index >= 0) {
-      this.selected.splice(index, 1);
-      console.log("ui: multi-select: disabled option " + value)
-      this.onRemoved.emit(value);
+      if (index >= 0) {
+        list.splice(index, 1);
+        console.log("ui: multi-select: disabled option " + value)
+        this.onRemoved.emit(value);
+      } else {
+        list.push(value);
+        console.log("ui: multi-select: enabled option " + value)
+        this.onAdded.emit(value);
+      }
+      this.selectedList = list;
+      this.selectedListChange.emit(list);
     } else {
-      this.selected.push(value);
-      console.log("ui: multi-select: enabled option " + value)
-      this.onAdded.emit(value);
-    }
-    if (!this.multi) {
+      if (this.selected === value) {
+        console.log("ui: multi-select: disabled option " + value)
+        this.onRemoved.emit(value);
+        this.selected = null;
+      } else {
+        if (this.selected != null) {
+          console.log("ui: multi-select: disabled option " + this.selected)
+          this.onRemoved.emit(this.selected);
+        }
+        console.log("ui: multi-select: enabled option " + value)
+        this.onAdded.emit(value);
+        this.selected = value;
+      }
+      this.selectedChange.emit(this.selected);
       this.showOptions = false;
     }
     this.update();

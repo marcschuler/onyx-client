@@ -8,14 +8,16 @@
  * Do not edit the class manually.
  */
 import { FileDTO } from './fileDTO';
-import { ServerDTODescriptionInner } from './serverDTODescriptionInner';
+import { ServerSettingsDTO } from './serverSettingsDTO';
+import { MessageContentDTO } from './messageContentDTO';
 
 
 export interface ServerDTO { 
     readonly id: string;
     name: string;
     icon?: FileDTO;
-    publicKey: { [key: string]: any; };
-    description: Array<ServerDTODescriptionInner>;
+    settings: ServerSettingsDTO;
+    publicKey: { [key: string]: object; };
+    description: Array<MessageContentDTO>;
 }
 

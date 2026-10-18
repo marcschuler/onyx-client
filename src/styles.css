@@ -16,8 +16,7 @@
   --color-onyx-900: #2b2c84;
   --color-onyx-950: #1a194d;
 
-  --colorize: 0.03; /* TODO define strength */
-
+  --colorize: 0.05; /* TODO define strength */
   --color-neutral-50: oklch(from #5e69f6 98.5% calc(c * var(--colorize)) h);
   --color-neutral-100: oklch(from #5e69f6 97% calc(c * var(--colorize)) h);
   --color-neutral-200: oklch(from #5e69f6 92.2% calc(c * var(--colorize)) h);
@@ -69,7 +68,7 @@ textarea {
 @layer components {
   button, .button {
     @apply text-neutral-200 bg-neutral-800 inline-flex
-    font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center
+    font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-1 text-center
     hover:bg-neutral-600 transition-all duration-200 ease-in-out
     disabled:bg-neutral-800 disabled:text-neutral-400 disabled:cursor-not-allowed;
   }
@@ -133,19 +132,31 @@ textarea {
   @apply bg-neutral-200 text-neutral-800
 }
 
-@utility button-text{
+@utility button-text {
   @apply hover:text-neutral-200 hover:underline hover:bg-neutral-800 p-1  bg-transparent hover:bg-transparent/* TODO hover:bg-none does not work */
 }
 
-@utility button-text-red{
+@utility button-text-red {
   @apply button-text text-red-600 hover:decoration-red-800 hover:text-red-800
 }
 
-@utility button-simpletext-onyx{
+@utility button-simpletext-onyx {
   @apply bg-transparent hover:bg-none hover:text-onyx-400 aria-checked:text-onyx-400 p-1
 }
 
-.button-circle{
+@utility button-border-onyx {
+  @apply bg-transparent hover:bg-neutral-400/10 border border-neutral-700
+}
+
+@utility button-border-onyx {
+  @apply bg-transparent hover:bg-onyx-400/10 border border-onyx-400
+}
+
+@utility button-border-red {
+  @apply bg-transparent hover:bg-red-400/10 border border-red-600
+}
+
+.button-circle {
   @apply rounded-4xl w-8 h-8
 }
 
@@ -244,7 +255,7 @@ GENERAL
 }
 
 /* a container for generic items */
-.container{
+.container {
   @apply bg-neutral-800 rounded px-4 py-2! shadow-md
 }
 
@@ -295,4 +306,7 @@ UI Stuff
   @apply divide-y divide-neutral-800 *:py-1
 }
 
+.item-row-right {
+  @apply flex gap-2   justify-end;
+}
 

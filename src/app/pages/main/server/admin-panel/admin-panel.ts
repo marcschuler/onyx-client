@@ -8,7 +8,7 @@ import ServerAdministrationPanel from './server-administration-panel/server-admi
 import {ChannelAdministrationPanel} from './channel-administration-panel/channel-administration-panel';
 import {
   HexagonIcon,
-  IdCardLanyardIcon,
+  IdCardLanyardIcon, LockIcon, LockKeyholeIcon,
   ServerCogIcon, TicketSlashIcon
 } from 'lucide-angular';
 import {GroupAdministrationPanel} from './group-administration-panel/group-administration-panel';
@@ -21,10 +21,11 @@ import {SectionEditor} from '../../../../components/section/section-editor/secti
 import {Popup} from '../../../../components/ui/popup/popup';
 import {GroupsAdministrationPanel} from './groups-administration-panel/groups-administration-panel';
 import {InviteAdministration} from './invite-administration/invite-administration';
+import {SecurityPanel} from './security-panel/security-panel';
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [SplitPanel, FormsModule, ServerAdministrationPanel, ChannelAdministrationPanel, GroupAdministrationPanel, SplitPanelBar, SplitPanelButton, SplitPanelSelector, ChannelEditor, SectionEditor, Popup, GroupsAdministrationPanel, InviteAdministration],
+  imports: [SplitPanel, FormsModule, ServerAdministrationPanel, ChannelAdministrationPanel, GroupAdministrationPanel, SplitPanelBar, SplitPanelButton, SplitPanelSelector, ChannelEditor, SectionEditor, Popup, GroupsAdministrationPanel, InviteAdministration, SecurityPanel],
   templateUrl: './admin-panel.html',
   standalone: true,
   styleUrl: './admin-panel.css'
@@ -54,4 +55,6 @@ export class AdminPanel implements OnInit {
   protected readonly HexagonIcon = HexagonIcon;
   protected readonly IdCardLanyardIcon = IdCardLanyardIcon;
   protected readonly TicketSlashIcon = TicketSlashIcon;
+  protected readonly LockIcon = LockIcon;
+  protected readonly LockKeyholeIcon = LockKeyholeIcon;
 }

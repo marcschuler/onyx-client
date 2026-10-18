@@ -394,7 +394,7 @@ export class PeerConnectionService {
       return;
     }
     peer.state = PeerConnectionState.Answered;
-    await peer.connection.setRemoteDescription(e.offer);
+    await peer.connection.setRemoteDescription(e.offer as any);
     const answer = await peer.connection.createAnswer();
     await peer.connection.setLocalDescription(answer);
     console.log("peer: negotiate: offer received -> answer sending");
@@ -414,7 +414,7 @@ export class PeerConnectionService {
       return;
     }
     try {
-      await peer.connection.setRemoteDescription(e.answer);
+      await peer.connection.setRemoteDescription(e.answer as any);
       this.sendTranceiverMid(peer);
     } catch (e: any) {
       this.toastService.create({

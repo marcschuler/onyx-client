@@ -32,7 +32,7 @@ export class SectionEditor {
   }
 
   protected save() {
-    this.connection.rest.sectionController.edit1(this.sectionId, this.section!)
+    this.connection.rest.sectionController.edit(this.sectionId, this.section!)
       .subscribe(channel => {
           this.section = channel;
           this.toastService.create({

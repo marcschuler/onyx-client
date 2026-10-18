@@ -1,8 +1,14 @@
-import { Component, Input, inject } from '@angular/core';
-import {HexagonIcon, LogInIcon, LogOutIcon, LucideAngularModule} from "lucide-angular";
+import {Component, Input, inject} from '@angular/core';
+import {
+  HeadphoneOffIcon,
+  HeadphonesIcon,
+  HexagonIcon,
+  LogInIcon,
+  LogOutIcon,
+  LucideAngularModule, MessageSquareIcon, MessageSquareOffIcon, MessageSquareTextIcon
+} from "lucide-angular";
 import {
   ChannelDTO,
-  ClientChannelJoinEvent,
   ClientChannelJoinRequest,
   ClientChannelLeaveRequest
 } from '../../../../../api/onyx-server';
@@ -46,13 +52,38 @@ export class Channel {
     } as ClientChannelLeaveRequest)
   }
 
+  protected voiceIcon(channel: ChannelDTO) {
+    switch (channel.voiceMode) {
+      case ChannelDTO.VoiceModeEnum.Full:
+        return HeadphonesIcon;
+      case ChannelDTO.VoiceModeEnum.None:
+      default:
+        return HeadphoneOffIcon;
+    }
+  }
 
-  protected readonly LogOutIcon = LogOutIcon;
-  protected readonly HexagonIcon = HexagonIcon;
-  protected readonly LogInIcon = LogInIcon;
-
+  protected chatIcon(channel: ChannelDTO) {
+    switch (channel.chatMode) {
+      case ChannelDTO.ChatModeEnum.Full:
+        return MessageSquareTextIcon;
+      case ChannelDTO.ChatModeEnum.Temporary:
+        return MessageSquareIcon;
+      case ChannelDTO.ChatModeEnum.None:
+      default:
+        return MessageSquareOffIcon;
+    }
+  }
 
   protected selectChannel(channel: ChannelDTO) {
     this.connection.selectedChannel = channel.id as ServerObjectId;
   }
+
+  protected readonly LogOutIcon = LogOutIcon;
+  protected readonly HexagonIcon = HexagonIcon;
+  protected readonly LogInIcon = LogInIcon;
+  protected readonly HeadphonesIcon = HeadphonesIcon;
+  protected readonly HeadphoneOffIcon = HeadphoneOffIcon;
+  protected readonly MessageSquareOffIcon = MessageSquareOffIcon;
+  protected readonly MessageSquareIcon = MessageSquareIcon;
+  protected readonly MessageSquareTextIcon = MessageSquareTextIcon;
 }

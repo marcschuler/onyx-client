@@ -26,10 +26,12 @@ export class ServerEditor implements OnInit {
 
   name!: string | undefined;
   url!: string;
+  password: string = "";
 
   ngOnInit(): void {
     this.name = this.serverConnection.name;
     this.url = this.serverConnection.url;
+    this.password = this.serverConnection.password || "";
   }
 
   save() {
@@ -42,6 +44,7 @@ export class ServerEditor implements OnInit {
     }
     this.serverConnection.name = this.name;
     this.serverConnection.url = this.url;
+    this.serverConnection.password = this.password == "" ? undefined : this.password;
 
     this.serverLoaderService.saveServer();
   }

@@ -10,11 +10,12 @@
 import { MarkdownMessageContentDTO } from './markdownMessageContentDTO';
 import { FileDTO } from './fileDTO';
 import { FileMessageContentDTO } from './fileMessageContentDTO';
+import { TextMessageContentDTO } from './textMessageContentDTO';
 
 
 /**
- * @type ServerDTODescriptionInner
+ * @type MessageCreationDTOContentInner
  * @export
  */
-export type ServerDTODescriptionInner = FileMessageContentDTO | MarkdownMessageContentDTO;
+export type MessageCreationDTOContentInner = FileMessageContentDTO | MarkdownMessageContentDTO | TextMessageContentDTO;
 

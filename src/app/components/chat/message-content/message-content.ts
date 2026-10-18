@@ -3,7 +3,12 @@ import {FilePreview} from "../../ui/file-preview/file-preview";
 import {FileSizePipe} from "../../../pipes/file-size-pipe";
 import {MarkdownPipe} from "../../../pipes/markdown-pipe";
 import {StorageFileURLPipe} from "../../../pipes/avatar-pipe";
-import {FileMessageContentDTO, MarkdownMessageContentDTO, MessageContentDTO} from '../../../../api/onyx-server';
+import {
+  FileMessageContentDTO,
+  MarkdownMessageContentDTO,
+  MessageContentDTO,
+  TextMessageContentDTO
+} from '../../../../api/onyx-server';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 
 @Component({
@@ -22,6 +27,7 @@ export class MessageContent {
   @Input() content!: MessageContentDTO;
   @Input() connection!: WebSocketServerConnection;
 
+  readonly asTypeText = asTypeText;
   readonly asTypeMarkdown = asTypeMarkdown;
   readonly asTypeFile = asTypeFile;
 
@@ -33,4 +39,8 @@ export function asTypeMarkdown(messageContainer: MessageContentDTO) {
 
 export function asTypeFile(messageContainer: MessageContentDTO) {
   return messageContainer as FileMessageContentDTO;
+}
+
+export function asTypeText(messageContainer: MessageContentDTO) {
+    return messageContainer as TextMessageContentDTO;
 }

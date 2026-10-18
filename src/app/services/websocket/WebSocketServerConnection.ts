@@ -19,6 +19,7 @@ export interface WebSocketServerConnection {
   clients: Client[]; // a list of all clients on the server
 
   me: Client;
+  serverPassword: string | undefined;
 
   selectedChannel?: ServerObjectId | undefined; //the selected channel in UI if existing
 

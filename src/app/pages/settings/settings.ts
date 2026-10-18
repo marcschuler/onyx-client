@@ -49,6 +49,7 @@ import {ContextMenuService} from '../../services/ui/context-menu-service';
 export class Settings {
   protected serverLoaderService = inject(ServerLoaderService);
 
+  @Input() default?: string;
   @Input() connection?: WebSocketServerConnection;
 
 

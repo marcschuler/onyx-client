@@ -11,7 +11,6 @@ api/inviteController.service.ts
 api/sectionController.service.ts
 api/serverController.service.ts
 api/storageController.service.ts
-api/todoController.service.ts
 api/userController.service.ts
 configuration.ts
 encoder.ts
@@ -48,12 +47,14 @@ model/iceServerMessage.ts
 model/integrationRequest.ts
 model/inviteDTO.ts
 model/inviteResponseDto.ts
+model/jsonNode.ts
 model/jwtTokenEvent.ts
 model/kickRequestDTO.ts
 model/kickedEvent.ts
 model/markdownMessageContentDTO.ts
 model/messageContentDTO.ts
 model/messageCreationDTO.ts
+model/messageCreationDTOContentInner.ts
 model/messageDTO.ts
 model/messageDeleteEvent.ts
 model/messageTypes.ts
@@ -77,11 +78,13 @@ model/sectionExtendedDTO.ts
 model/sectionMoveEvent.ts
 model/serverChangeEvent.ts
 model/serverDTO.ts
-model/serverDTODescriptionInner.ts
+model/serverPasswordRequest.ts
+model/serverSettingsDTO.ts
 model/serverTreeChangeMessage.ts
 model/signedContent.ts
 model/simpleGroupDTO.ts
 model/sortObject.ts
+model/textMessageContentDTO.ts
 model/trackMetadataMessage.ts
 model/userExtendedDTO.ts
 model/userOnlineDTO.ts

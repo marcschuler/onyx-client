@@ -1,5 +1,4 @@
 import { Component, Input, inject } from '@angular/core';
-import {FileUpload} from "../../../components/ui/file-upload/file-upload";
 import {FormsModule} from "@angular/forms";
 import {LucideAngularModule, XIcon} from "lucide-angular";
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
@@ -12,7 +11,6 @@ import {PreviewImage} from '../../../components/ui/preview-image/preview-image';
 @Component({
   selector: 'app-server-user',
   imports: [
-    FileUpload,
     FormsModule,
     LucideAngularModule,
     PreviewImage

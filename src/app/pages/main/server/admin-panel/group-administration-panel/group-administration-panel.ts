@@ -46,7 +46,7 @@ export class GroupAdministrationPanel {
       title: "Delete Group?",
       content: "The group will be deleted and all users removed from the group?",
       buttons: [BUTTON_DELETE.asCallback(() => {
-        this.connection.rest.groupController.delete1(this.group.id).subscribe(value => {
+        this.connection.rest.groupController._delete(this.group.id).subscribe(value => {
           this.toastService.create({
             type: ToastType.Success,
             title: 'Group ' + this.group.name + ' deleted'
@@ -58,7 +58,7 @@ export class GroupAdministrationPanel {
   }
 
   updateGroup() {
-    this.connection.rest.groupController.edit2(this.group.id, this.group).subscribe(value => {
+    this.connection.rest.groupController.edit(this.group.id, this.group).subscribe(value => {
       this.toastService.create({
         type: ToastType.Success,
         title: 'Group ' + value.name + ' updated'

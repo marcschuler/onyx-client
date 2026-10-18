@@ -1,5 +1,5 @@
 import {Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {ArrowBigRightDash, LucideAngularModule, ServerIcon, ServerOffIcon} from "lucide-angular";
+import {ArrowBigRightDash, LockKeyholeIcon, LucideAngularModule, ServerIcon, ServerOffIcon} from "lucide-angular";
 import {PreviewImage} from "../../../../components/ui/preview-image/preview-image";
 import {Spinner} from "../../../../components/ui/spinner/spinner";
 import {ServerDetails, ServerLoaderService} from '../../../../services/server-loader-service';
@@ -23,7 +23,7 @@ export class ServerEntry implements OnInit, OnDestroy {
 
   @Input() server!: ServerDetails;
   @Input() selectedServer: ServerDetails | undefined;
-  @Output() onSelection = new EventEmitter<ServerDetails>();
+  @Output() onSelection = new EventEmitter<ServerJoinDetails>();
 
   state: ServerInfoState = ServerInfoState.CONNECTING;
   success: ServerDTO | undefined;
@@ -43,7 +43,10 @@ export class ServerEntry implements OnInit, OnDestroy {
   protected connect() {
     if (this.selectedServer)
       return;
-    this.onSelection.emit(this.server);
+    this.onSelection.emit({
+      detail: this.server,
+      serverPassword: this.success ? this.success.settings.password : undefined
+    });
   }
 
   updateDetails() {
@@ -66,10 +69,16 @@ export class ServerEntry implements OnInit, OnDestroy {
   protected readonly ServerInfoState = ServerInfoState;
   protected readonly ServerIcon = ServerIcon;
   protected readonly ServerOffIcon = ServerOffIcon;
+  protected readonly LockKeyholeIcon = LockKeyholeIcon;
 }
 
 export enum ServerInfoState {
   CONNECTING,
   SUCCESS,
   ERROR
+}
+
+export interface ServerJoinDetails {
+  detail: ServerDetails;
+  serverPassword: boolean | undefined;
 }

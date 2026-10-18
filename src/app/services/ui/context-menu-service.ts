@@ -54,9 +54,10 @@ export class ContextMenuService {
     })
   }
 
-  public openSettingsMenu(connection: WebSocketServerConnection | undefined) {
+  public openSettingsMenu(connection: WebSocketServerConnection | undefined, defaultValue?: string) {
     this.openPopup(Settings, {
       connection: connection,
+      default: defaultValue
     }, {
       closeButton: true,
       fullHeight: true,
@@ -93,7 +94,7 @@ export class ContextMenuService {
   }
 
   public openPopup<T>(component: Type<T>, inputs?: Partial<T>, popupSettings?: PopupSettings) {
-    if (popupSettings && popupSettings.singleton){
+    if (popupSettings && popupSettings.singleton) {
       //TODO return if already existing
     }
     const menu = this.overlay.create({

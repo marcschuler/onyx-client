@@ -26,7 +26,7 @@ export class GroupsAdministrationPanel {
   protected groupName: string = "";
 
   protected createGroup() {
-    this.connection.rest.groupController.create1({
+    this.connection.rest.groupController.create({
       name: this.groupName,
       label: false,
       defaultForNewUsers: false,

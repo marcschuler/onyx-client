@@ -30,7 +30,8 @@
 
               <p class="settings-grid-label">Permissions</p>
               <p class="settings-grid-desc">Select which kind of permission this group can perform</p>
-              <ui-multi-select class="settings-grid-option" [(selected)]="permission.permissions"
+              <ui-multi-select class="settings-grid-option" [(selectedList)]="permission.permissions"
+                               [multi]="true"
                                placeholder="Select Permissions...">
                 @for (p of permissionsEnumValues; track p) {
                   <ui-select-item [label]="p" [value]="p"></ui-select-item>
@@ -48,7 +49,8 @@
               <p class="settings-grid-label">Limit</p>
               <p class="settings-grid-desc">Limits the permission to only apply for specific sections and channels.</p>
               <div class="settings-grid-option">
-                <ui-multi-select [(selected)]="permission.limitedToSection" placeholder="Select Sections...">
+                <ui-multi-select [(selectedList)]="permission.limitedToSection" [multi]="true"
+                                 placeholder="Select Sections...">
                   @for (section of connection.data!.sections; track section) {
                     <ui-select-item [label]="section.name" [value]="section.id"></ui-select-item>
                   }

@@ -34,12 +34,12 @@ export class Welcome {
   identity: Identity | undefined;
 
   communityServer: { name: string, description: string, url: string }[] = [{
-    name: "karlthebee ONYX Server",
-    description: "Developer Server",
+    name: "karlthebee.de",
+    description: "",
     url: "https://onyx.karlthebee.de"
   }, {
-    name: "Local DEV Server",
-    description: "A local test server",
+    name: "Developement Server",
+    description: "A local server for developers",
     url: "http://localhost:8080"
   }]
 

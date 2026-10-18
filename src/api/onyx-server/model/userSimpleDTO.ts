@@ -12,7 +12,7 @@ import { GroupDTO } from './groupDTO';
 
 export interface UserSimpleDTO { 
     id: string;
-    publicKey: { [key: string]: any; };
+    publicKey: { [key: string]: object; };
     username: string;
     avatarId?: string;
     groups: Array<GroupDTO>;

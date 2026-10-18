@@ -14,7 +14,6 @@ import {
   CornerDownRightIcon,
   FileUpIcon,
   GhostIcon,
-  ImageUpIcon,
   LucideAngularModule,
   SendIcon,
   XIcon
@@ -29,11 +28,11 @@ import {RestService} from '../../../services/rest/rest-service';
 import {Message} from './message/message';
 import {MessageService} from '../../../services/message-service';
 import {
+  ChannelDTO,
   ChatMessageEvent,
   FileDTO, FileMessageContentDTO,
-  MarkdownMessageContentDTO, MessageDeleteEvent, ServerDTODescriptionInner
+  MarkdownMessageContentDTO, MessageCreationDTOContentInner, MessageDeleteEvent
 } from '../../../../api/onyx-server';
-import {FileUpload} from '../../ui/file-upload/file-upload';
 import {MessageContent} from '../../chat/message-content/message-content';
 import {Chip} from '../../ui/chip/chip';
 import {PreviewImage} from '../../ui/preview-image/preview-image';
@@ -48,7 +47,6 @@ import {Tooltip} from '../../../directives/tooltip';
     FormsModule,
     LucideAngularModule,
     Message,
-    FileUpload,
     MessageContent,
     Chip,
     PreviewImage,
@@ -70,6 +68,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
   @Input() channelId!: string;
   @Input() connection!: WebSocketServerConnection;
+  @Input() chatMode!: ChannelDTO.ChatModeEnum | undefined;
 
   messages: MessageDTO[] = [];
   currentPage: number | undefined = undefined;
@@ -188,7 +187,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
       return;
     }
 
-    const content: ServerDTODescriptionInner[] = [];
+    const content: MessageCreationDTOContentInner[] = [];
 
     this.attachments.forEach(attachment => {
       content.push({
@@ -263,5 +262,5 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
   protected readonly mimeTypeHasImagePreview = mimeTypeHasImagePreview;
   protected readonly GhostIcon = GhostIcon;
-  protected readonly FileUpIcon = FileUpIcon;
+  protected readonly FileUpIcon = FileUpIcon;removeOperationIdPrefix=true
 }

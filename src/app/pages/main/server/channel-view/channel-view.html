@@ -58,7 +58,6 @@
   <!-- Messages view -->
   <div
     [ngStyle]="{ height: 'calc(' + (100 - (showTalkView?interfaceService.settings.channelSplitSize.peerView:0)) + 'vh - 4px - '+titleHeight+'px)' }">
-
-    <app-message-view [connection]="connection" [channelId]="channelId"></app-message-view>
+    <app-message-view [connection]="connection" [channelId]="channelId" [chatMode]="details?details.chatMode:undefined"></app-message-view>
   </div>
 </div>
