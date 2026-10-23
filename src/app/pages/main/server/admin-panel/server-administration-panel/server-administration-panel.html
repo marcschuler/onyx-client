@@ -4,7 +4,8 @@
       <div class="relative w-32 h-32 rounded-t-xl object-cover bg-neutral-800 hover:bg-neutral-700" (click)="uploadServerIcon()"
            (drop)="uploadServerIcon($event)">
         @if (connection.data!.server.icon) {
-          <app-preview-image class="min-w-32 min-h-32 w-32 h-32 rounded-t-xl" [file]="connection.data!.server.icon"
+          <app-preview-image class="block min-w-32 min-h-32 w-32 h-32 rounded-t-xl overflow-hidden"
+                             [file]="connection.data!.server.icon"
                              [connection]="connection">
           </app-preview-image>
         } @else {

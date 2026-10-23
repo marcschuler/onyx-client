@@ -16,6 +16,8 @@
   --color-onyx-900: #2b2c84;
   --color-onyx-950: #1a194d;
 
+  --color-error-400: #f00;
+
   --colorize: 0.05; /* TODO define strength */
   --color-neutral-50: oklch(from #5e69f6 98.5% calc(c * var(--colorize)) h);
   --color-neutral-100: oklch(from #5e69f6 97% calc(c * var(--colorize)) h);
@@ -70,7 +72,7 @@ textarea {
     @apply text-neutral-200 bg-neutral-800 inline-flex
     font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-1 text-center
     hover:bg-neutral-600 transition-all duration-200 ease-in-out
-    disabled:bg-neutral-800 disabled:text-neutral-400 disabled:cursor-not-allowed;
+    disabled:bg-neutral-800 disabled:text-neutral-400;
   }
 }
 
@@ -301,7 +303,12 @@ UI Stuff
   @apply bg-neutral-600 w-full h-0.5
 }
 
+.divider-v {
+  @apply bg-neutral-200 w-0.5 h-full my-3
+}
 
+
+/* list element that adds a divide */
 .list {
   @apply divide-y divide-neutral-800 *:py-1
 }

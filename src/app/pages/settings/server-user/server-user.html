@@ -4,7 +4,8 @@
     <div class="relative w-32 h-32 rounded-t-xl object-cover bg-neutral-800 hover:bg-neutral-700" (click)="uploadAvatar()"
          (drop)="uploadAvatar($event)">
       @if (connection.me.details.avatarId) {
-        <app-preview-image class="min-w-32 min-h-32 w-32 h-32 rounded-t-xl" [file]="connection.me.details.avatarId"
+        <app-preview-image class="block min-w-32 min-h-32 w-32 h-32 rounded-t-xl overflow-hidden"
+                           [file]="connection.me.details.avatarId"
                            [connection]="connection">
         </app-preview-image>
       } @else {
@@ -15,7 +16,7 @@
       }
     </div>
     <div class="flex">
-      <button class="w-full button-red" [disabled]="connection.data!.server.icon==undefined" (click)="deleteIcon()">
+      <button class="w-full button-red" [disabled]="connection.me.details.avatarId==undefined" (click)="deleteIcon()">
         <lucide-icon [name]="XIcon"></lucide-icon>
       </button>
     </div>

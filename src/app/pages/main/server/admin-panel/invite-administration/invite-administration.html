@@ -1,59 +1,17 @@
 @if (invites) {
   <div class="list">
     @for (invite of invites; track invite.code) {
-      <div class="container">
-        <h3>
-          <lucide-icon [name]="TicketSlashIcon" class="inline"></lucide-icon>
-          {{ invite.title }}
-        </h3>
-        <p>
-          {{ invite.description }}
-        </p>
-        <div class="grid grid-cols-3">
-          <p>Code</p>
-          <input type="password" [(ngModel)]="invite.code" min="3" max="32">
-          <button class="button-circle">
-            <lucide-icon [name]="EyeIcon"></lucide-icon>
-          </button>
-
-          <p class="">Starts</p>
-          <input type="datetime-local" [(ngModel)]="invite.startDate">
-          <button class="button-circle" (click)="invite.startDate = undefined">
-            <lucide-angular [name]="XIcon"></lucide-angular>
-          </button>
-
-          <p class="">Ends</p>
-          <input type="datetime-local" [(ngModel)]="invite.endDate">
-          <button class="button-circle" (click)="invite.endDate = undefined">
-            <lucide-angular [name]="XIcon"></lucide-angular>
-          </button>
-
-          <p>Usages</p>
-          <input type="number" [(ngModel)]="invite.maxUsages">
-          <button class="button-circle" (click)="invite.maxUsages = undefined">
-            <lucide-angular [name]="XIcon"></lucide-angular>
-          </button>
-        </div>
-
-        <div class="pt-3">
-          @if (invite.maxUsages) {
-            <div class="rounded-xl relative">
-              <div class="h-2   rounded-xl absolute bg-neutral-700 w-full"></div>
-              <div class="h-2 rounded-xl absolute bg-sky-200"
-                   [style.width.%]="Math.min(invite.usages / invite.maxUsages * 100,100)"></div>
-              <p class="text-center pt-3">{{ invite.usages }} / {{ invite.maxUsages }} invites used</p>
-            </div>
-          } @else {
-            <p class="text-center">{{ invite.usages }} invites used</p>
-          }
-        </div>
-
-        <div class="item-row-right">
-          <button class="button-border-onyx">save</button>
-          <button class="button-border-red">delete</button>
-        </div>
-      </div>
+      <app-invite-panel [invite]="invite" [invites]="invites" [connection]="connection"></app-invite-panel>
     }
+    @if (invites.length==0){
+      <h3 class="text-text-faded">No invites there</h3>
+    }
+  </div>
+  <h3 class="pt-4">Create Invite</h3>
+  <div class="flex">
+    <input [(ngModel)]="code" placeholder="code">
+    <input [(ngModel)]="title" placeholder="title">
+    <button class="min-w-8" (click)="create()">+</button>
   </div>
 } @else {
   <app-spinner></app-spinner>

@@ -14,6 +14,7 @@ export class SplitPanelButton {
   @Input() value!: any;
   @Input() name?: string;
   @Input() icon: any;
+  @Input() iconSelected: any | undefined;
 
   @Input() selected = false;
   @Input() childSelected = false;

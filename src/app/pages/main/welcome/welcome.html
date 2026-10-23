@@ -10,33 +10,36 @@
         </div>
       }
       @for (s of serverLoaderService.connections; track s) {
-        <app-server-entry [server]="s" [selectedServer]="selectedServer" (onSelection)="connect($event)"></app-server-entry>
+        <app-server-entry [server]="s" [selectedServer]="selectedServer"
+                          (onSelection)="connect($event)"></app-server-entry>
       }
     </div>
 
-   <div class="shrink-0 pb-2">
-     <!-- identity -->
-     @if (serverLoaderService.connections.length != 0) {
-       <div class="pl-2 py-2 border-b-neutral-600 border-b-1 text-text-faded">
-         Using Identity
-         <select [(ngModel)]="identity">
-           @for (identity of identityService.identities; track identity.id) {
-             <option [value]="identity">{{ identity.username }}</option>
-           }
-         </select>
-       </div>
-     }
+    <div class="shrink-0 pb-2">
+      <!-- identity -->
+      @if (serverLoaderService.connections.length != 0) {
+        <div class="pl-2 py-2 text-text-faded">
+          Using Identity
+          <select [(ngModel)]="identity">
+            @for (identity of identityService.identities; track identity.id) {
+              <option [value]="identity">{{ identity.username }}</option>
+            }
+          </select>
+        </div>
+      }
 
-     <!-- new server -->
-     <h4 class="pt-2">Add a server</h4>
-     <div class="grid grid-cols-4">
-       <input [(ngModel)]="customUrl" class="col-span-3 !bg-neutral-900 !rounded-r-none"
-              placeholder="example.com or http://localhost:8080"/>
-       <button (click)="addAndConnectToCustomUrl()" class="!rounded-l-none button-dark"
-               [disabled]="selectedServer || customUrl.length<7">Connect
-       </button>
-     </div>
-   </div>
+      <!-- new server -->
+      <div class="rounded-xl bg-neutral-800 p-2 m-2">
+        <h4>Connect to</h4>
+        <div class="grid grid-cols-4">
+          <input [(ngModel)]="customUrl" class="col-span-3 !bg-neutral-900 !rounded-r-none"
+                 placeholder="example.com or http://localhost:8080"/>
+          <button (click)="addAndConnectToCustomUrl()" class="!rounded-l-none button-dark"
+                  [disabled]="selectedServer || customUrl.length<7">connect
+          </button>
+        </div>
+      </div>
+    </div>
 
   </div>
 
@@ -49,7 +52,7 @@
   </div>
 
   <p class="absolute right-2 bottom-2 text-text-faded">
-    version {{APP_VERSION}}
+    version {{ APP_VERSION }}
   </p>
 
 </div>

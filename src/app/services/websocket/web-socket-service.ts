@@ -191,12 +191,13 @@ export class WebSocketService {
   }
 
   removeHandler<T extends MessageBody>(handler: MessageHandler<T>) {
-    for (const [key, value] of this.messageHandlers.entries()) {
-      for (const v of value) {
-        if (v === handler) {
+    for (const [key, handlers] of this.messageHandlers.entries()) {
+      const index = handlers.indexOf(handler);
+      if (index !== -1) {
+        handlers.splice(index, 1);
+        if (handlers.length === 0)
           this.messageHandlers.delete(key);
-          break;
-        }
+        break;
       }
     }
   }

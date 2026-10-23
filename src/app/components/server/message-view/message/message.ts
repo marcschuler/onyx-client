@@ -8,26 +8,25 @@ import {UserDatePipe} from '../../../../pipes/user-date-pipe';
 import {StorageService} from '../../../../services/storage.service';
 import {Tooltip} from '../../../../directives/tooltip';
 import {
-  CornerDownRightIcon,
-  LucideAngularModule
+  CornerDownRightIcon, GhostIcon,
+  LucideAngularModule, MessageSquareReply, MessageSquareReplyIcon
 } from 'lucide-angular';
 import {StorageFileURLPipe} from '../../../../pipes/avatar-pipe';
-import {asTypeFile, asTypeMarkdown, MessageContent} from '../../../chat/message-content/message-content';
+import {asTypeFile, asTypeMarkdown, asTypeText, MessageContent} from '../../../chat/message-content/message-content';
 import {ContextMenuService} from '../../../../services/ui/context-menu-service';
 import {MessageContextMenu} from '../../../chat/message-context-menu/message-context-menu';
+import {ProfileImage} from '../../../client/profile-image/profile-image';
 
 @Component({
   selector: 'app-message',
   imports: [
-    NgClass,
-    IdenticonPipe,
-    AsyncPipe,
     MarkdownPipe,
     UserDatePipe,
     Tooltip,
     LucideAngularModule,
     StorageFileURLPipe,
     MessageContent,
+    ProfileImage,
   ],
   templateUrl: './message.html',
   styleUrl: './message.css',
@@ -38,6 +37,8 @@ export class Message {
 
   @Input() message!: MessageDTO;
   @Input() lastMessage: MessageDTO | undefined;
+
+  @Input() replyLayer: number = 0;
 
   @Input() connection!: WebSocketServerConnection;
   @Output() onReply: EventEmitter<MessageDTO> = new EventEmitter<MessageDTO>();
@@ -55,5 +56,11 @@ export class Message {
     })
   }
 
-  protected readonly CornerDownRightIcon = CornerDownRightIcon;
+  protected readonly asTypeText = asTypeText;
+  protected readonly MESSAGE_REPLY_MAXSHOWN = MESSAGE_REPLY_MAXSHOWN;
+  protected readonly MessageSquareReply = MessageSquareReply;
+  protected readonly MessageSquareReplyIcon = MessageSquareReplyIcon;
+  protected readonly GhostIcon = GhostIcon;
 }
+
+const MESSAGE_REPLY_MAXSHOWN = 2;

@@ -81,6 +81,8 @@ export class ServerUser {
   }
 
   protected deleteIcon() {
-    this.connection.rest.userController.avatarDelete(this.connection.me.id);
+    this.connection.rest.userController.avatarDelete(this.connection.me.id)
+      .subscribe(() => {
+      }, error => this.restService.handleError(error));
   }
 }

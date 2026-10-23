@@ -1,10 +1,12 @@
 @if (user.avatarId) {
-  <app-preview-image [file]="user.avatarId" [connection]="connection"
-                     [imageClass]="'rounded inline object-cover w-' + size + ' h-' + size">
+  <app-preview-image class="block w-full h-full"
+                     [file]="user.avatarId"
+                     [connection]="connection"
+                     [sizes]="sizePx + 'px'">
   </app-preview-image>
 } @else {
   <img alt="user avatar"
-       [src]="user.id | identicon: 32 | async"
-       class="rounded inline"
+       [src]="user.id | identicon: sizePx | async"
+       class="w-full h-full object-cover"
   />
 }

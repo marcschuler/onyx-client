@@ -8,8 +8,9 @@
   @if (connection.data) {
     <div class="flex flex-col gap-2 items-center pt-8">
       @if (connection.data.server.icon) {
-        <app-preview-image [file]="connection.data.server.icon"
-                           imageClass="w-48 h-48 object-cover rounded-xl"
+        <app-preview-image class="block w-48 h-48 rounded-xl overflow-hidden"
+                           [file]="connection.data.server.icon"
+                           sizes="192px"
                            [connection]="connection"></app-preview-image>
       }
       <h2>{{ connection.data.server.name }}</h2>

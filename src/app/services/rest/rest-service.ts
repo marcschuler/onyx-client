@@ -1,10 +1,10 @@
-import { Injectable, inject } from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {RestConfiguration} from '../websocket/WebSocketServerConnection';
 import {
   ChannelControllerService,
   ChatControllerService,
-  Configuration, GroupControllerService, SectionControllerService,
+  Configuration, GroupControllerService, InviteControllerService, SectionControllerService,
   ServerControllerService, StorageControllerService, UserControllerService
 } from '../../../api/onyx-server';
 import {ToastService, ToastType} from '../ui/toast-service';
@@ -53,7 +53,8 @@ export class RestService {
       sectionController: new SectionControllerService(this.http, basePath, config),
       userController: new UserControllerService(this.http, basePath, config),
       groupController: new GroupControllerService(this.http, basePath, config),
-      storageController: new StorageControllerService(this.http,basePath, config),
+      storageController: new StorageControllerService(this.http, basePath, config),
+      inviteController: new InviteControllerService(this.http, basePath, config),
     }
   }
 
@@ -62,7 +63,7 @@ export class RestService {
   }
 
   public handleError(error: HttpErrorResponse) {
-    console.error("HTTP server returned an error",JSON.stringify(error))
+    console.error("HTTP server returned an error", JSON.stringify(error))
 
     this.toastService.create({
       title: this.buildErrorTitle(error),

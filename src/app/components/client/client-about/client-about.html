@@ -1,10 +1,26 @@
-<h1>{{ client.username }}</h1>
-<h3>Groups</h3>
-<ul>
-  @for (group of client.details.groups; track group.id) {
-    <li>{{ group.name }}</li>
-  }
-</ul>
+<div class="max-w-64 rounded border">
+  <app-profile-image [connection]="connection" [user]="client.details" [size]="64"></app-profile-image>
+  <h1 class="text-center">{{ client.username }}</h1>
 
-<h3>Identity</h3>
-<p>{{ client.publicKey | json}}</p>
+  <div class="flex justify-center">
+    @for (group of client.details.groups; track group.id) {
+      <app-chip>{{ group.name }}</app-chip>
+    }
+  </div>
+
+  <h3>ID</h3>
+  <app-key-visualizer [keyId]="client.id"></app-key-visualizer>
+  <p class="overflow-ellipsis">Key: {{ client.id | slice: 0:18 }}...</p>
+
+  @if (client.channel) {
+    @let channel = getChannelFromId(client.channel, connection.data!.sections);
+    @if (channel) {
+      <h3 class="pt-4">
+        <lucide-icon [name]="HexagonIcon" class="inline w-4"></lucide-icon>
+        {{ channel.name }}
+      </h3>
+    }
+  }
+
+</div>
+

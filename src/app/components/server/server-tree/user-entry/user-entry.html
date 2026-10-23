@@ -1,23 +1,23 @@
-<div class="hover:bg-neutral-800 rounded animate-default ml-4 flex justify-between"
+<div class="hover:bg-neutral-800 rounded animate-default ml-4 flex items-center"
      [class.p-2]="!interfaceService.settings.compactMode"
      (contextmenu)="contextMenuService.openClientContextMenu(client,connection,$event)">
 
-  <span>
-    <app-profile-image [connection]="connection" [user]="client.details"
-                       [size]="interfaceService.settings.compactMode?2:4"></app-profile-image>
+  <app-profile-image [connection]="connection" [user]="client.details"
+                     [size]="interfaceService.settings.compactMode?
+                       6:10"></app-profile-image>
 
-    <span class="pl-1" [ngClass]="[
-    client.id===connection.identity.id ? 'text-neutral-100' : '']">{{ client.username }}
-    </span>
-</span>
+  <span class="pl-1" [class.text-neutral-100]="client.id===connection.identity.id">
+    {{ client.username }}
+  </span>
 
-  <span class="justify-end text-neutral-700">
+  <span class="ml-auto text-neutral-700">
     @for (group of client.details.groups; track group.id) {
       @if (group.label) {
         <span class="border-neutral-700 border rounded p-0.5 text-xs">
-        {{ group.name }} <!--TODO replace with icon when available -->
+        {{ group.name }} <!--TODO replace with icon once available -->
         </span>
       }
     }
   </span>
+
 </div>

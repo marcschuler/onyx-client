@@ -1,10 +1,10 @@
 <div class="h-screen">
   <div #title>
     <div class="bg-neutral-900 p-2 rounded-br-xl border-b border-neutral-600">
-      <h3 class="font-semibold" [class.skeleton]="!details" [style.padding-left]="titleOffsetLeft?'40px':'0'">
-        @if (details) {
+      <h3 class="font-semibold" [class.skeleton]="!channel" [style.padding-left]="titleOffsetLeft?'40px':'0'">
+        @if (channel) {
           <lucide-icon [name]="HexagonIcon" class="inline pr-1"></lucide-icon>
-          {{ details.name }}
+          {{ channel.name }}
         }
       </h3>
     </div>
@@ -58,6 +58,6 @@
   <!-- Messages view -->
   <div
     [ngStyle]="{ height: 'calc(' + (100 - (showTalkView?interfaceService.settings.channelSplitSize.peerView:0)) + 'vh - 4px - '+titleHeight+'px)' }">
-    <app-message-view [connection]="connection" [channelId]="channelId" [chatMode]="details?details.chatMode:undefined"></app-message-view>
+    <app-message-view [connection]="connection" [channelId]="channelId" [chatMode]="channel?channel.chatMode:undefined"></app-message-view>
   </div>
 </div>

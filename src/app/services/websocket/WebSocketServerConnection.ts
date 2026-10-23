@@ -1,7 +1,7 @@
 import {Identity} from '../identity-service';
 import {
   ChannelControllerService,
-  ChatControllerService, GroupControllerService, SectionControllerService,
+  ChatControllerService, GroupControllerService, InviteControllerService, SectionControllerService,
   ServerControllerService,
   ServerTreeChangeMessage, StorageControllerService, UserControllerService, UserSimpleDTO
 } from '../../../api/onyx-server';
@@ -36,6 +36,7 @@ export interface RestConfiguration {
   userController: UserControllerService;
   groupController: GroupControllerService;
   storageController: StorageControllerService;
+  inviteController: InviteControllerService;
 }
 
 export interface Client {

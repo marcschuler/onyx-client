@@ -1,6 +1,20 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, SimpleChanges, ViewChild, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  ViewChild,
+  inject
+} from '@angular/core';
 
-import {WebSocketService} from '../../../../services/websocket/web-socket-service';
+import {
+  MessageHandler,
+  WebSocketService
+} from '../../../../services/websocket/web-socket-service';
 import {PeerConnectionService} from '../../../../services/peer/peer-connection-service';
 import {PeerView} from '../../../../components/server/peer-view/peer-view';
 import {StorageService} from '../../../../services/storage.service';
@@ -12,6 +26,8 @@ import {NgStyle} from '@angular/common';
 import {TrackType} from '../../../../services/peer/MediaTracker';
 import {MediaService} from '../../../../services/peer/media-service';
 import {HexagonIcon, LucideAngularModule} from 'lucide-angular';
+import {ChannelChangeEvent} from '../../../../../api/onyx-server';
+import {getChannelFromId} from '../../../../services/Util';
 
 @Component({
   selector: 'app-channel-view',
@@ -25,7 +41,7 @@ import {HexagonIcon, LucideAngularModule} from 'lucide-angular';
   templateUrl: './channel-view.html',
   styleUrl: './channel-view.css'
 })
-export class ChannelView implements AfterViewInit, OnChanges {
+export class ChannelView implements AfterViewInit, OnChanges, OnDestroy {
   protected webSocketService = inject(WebSocketService);
   protected peerConnectionService = inject(PeerConnectionService);
   protected mediaService = inject(MediaService);
@@ -41,7 +57,7 @@ export class ChannelView implements AfterViewInit, OnChanges {
   @ViewChild('talkView') talkViewContainer!: ElementRef;
 
 
-  details: ChannelDTO | undefined;
+  channel!: ChannelDTO;
 
   titleHeight = 0; //in px
   gridCols = 2;
@@ -52,27 +68,29 @@ export class ChannelView implements AfterViewInit, OnChanges {
   resizing = false;
 
   ngAfterViewInit(): void {
-    this.updateDetails();
     setInterval(() => {
       this.updateGridSize();
     }, 50)
     setInterval(() => {
       this.updateGridSize(); //TODO this is bad
     }, 1000)
+
+    this.webSocketService.addHandler(ChannelChangeEvent.TypeEnum.ChannelChangeEvent, this.onChannelChange);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['channelId']) {
-      this.details = undefined;
-      this.updateDetails();
+    this.channel = getChannelFromId(this.channelId, this.connection.data!.sections)!;
+  }
+
+  onChannelChange: MessageHandler<ChannelChangeEvent> = (event) => {
+    if (event.channel.id == this.channelId) {
+      console.log("channel-view: active channel did change")
+      this.channel = event.channel;
     }
   }
 
-  updateDetails() {
-    this.connection.rest.channelController.channel(this.channelId)
-      .subscribe(channel => {
-        this.details = channel;
-      })
+  ngOnDestroy(): void {
+    this.webSocketService.removeHandler(this.onChannelChange);
   }
 
   /**

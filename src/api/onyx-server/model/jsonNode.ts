@@ -15,13 +15,14 @@ export interface JsonNode {
     'null'?: boolean;
     object?: boolean;
     'float'?: boolean;
+    number?: boolean;
     container?: boolean;
-    string?: boolean;
-    missingNode?: boolean;
     valueNode?: boolean;
-    pojo?: boolean;
+    missingNode?: boolean;
     nodeType?: JsonNode.NodeTypeEnum;
+    string?: boolean;
     integralNumber?: boolean;
+    pojo?: boolean;
     floatingPointNumber?: boolean;
     'short'?: boolean;
     'int'?: boolean;
@@ -32,7 +33,6 @@ export interface JsonNode {
     textual?: boolean;
     'boolean'?: boolean;
     binary?: boolean;
-    number?: boolean;
     embeddedValue?: boolean;
 }
 export namespace JsonNode {

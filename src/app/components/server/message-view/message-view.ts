@@ -28,6 +28,7 @@ import {RestService} from '../../../services/rest/rest-service';
 import {Message} from './message/message';
 import {MessageService} from '../../../services/message-service';
 import {
+  ChannelChangeEvent,
   ChannelDTO,
   ChatMessageEvent,
   FileDTO, FileMessageContentDTO,
@@ -93,12 +94,23 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
 
   private moreMessagesObserver?: IntersectionObserver;
 
+  ngOnInit(): void {
+    this.webSocketService.addHandler(ChatMessageEvent.TypeEnum.ChatMessageEvent, this.onNewMessage);
+    this.webSocketService.addHandler(MessageDeleteEvent.TypeEnum.MessageDeleteEvent, this.onMessageDelete);
+    this.initMessages();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["channelId"]) {
       this.messages = [];
       this.reply = undefined;
       this.initMessages();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.webSocketService.removeHandler(this.onNewMessage);
+    this.moreMessagesObserver?.disconnect()
   }
 
   observeMessageList(element: ElementRef) {
@@ -144,17 +156,6 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
   }
 
 
-  ngOnInit(): void {
-    this.webSocketService.addHandler(ChatMessageEvent.TypeEnum.ChatMessageEvent, this.onNewMessage);
-    this.webSocketService.addHandler(MessageDeleteEvent.TypeEnum.MessageDeleteEvent, this.onMessageDelete);
-    this.initMessages();
-  }
-
-  ngOnDestroy(): void {
-    this.webSocketService.removeHandler(this.onNewMessage);
-    this.moreMessagesObserver?.disconnect()
-  }
-
 
   addMessageToList(messages: MessageDTO[]) {
     for (const message of messages) {
@@ -183,8 +184,15 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
         title: "Empty message",
         message: "The message cannot be empty",
         type: ToastType.Warning,
-        duration: 3000
       });
+      return;
+    }
+    if (this.attachments.filter(a => !a.done).length > 0) {
+      this.toastService.create({
+        title: "Uploads in progress",
+        message: "There are uploads in progress. You can't send a message with incomplete uploads",
+        type: ToastType.Warning,
+      })
       return;
     }
     const channel = getChannelFromId(this.channelId, this.connection.data!.sections);

@@ -12,6 +12,10 @@
     <div class="pl-8">
       @for (content of message.content; track content) {
         @switch (content.type) {
+          @case ("TEXT") {
+            @let text = asTypeText(content);
+            <p [innerText]="text.text"></p>
+          }
           @case ("MARKDOWN") {
             @let markdown = asTypeMarkdown(content);
             <p [innerHTML]="markdown.text | markdown" class="break-all"></p>
@@ -32,41 +36,40 @@
   </div>
 } @else {
   @let useHeader = lastMessage == undefined || lastMessage.user.id !== message.user.id;
-  <div class="pt-1" (contextmenu)="openMessageContextMenu($event)" [ngClass]="{
-'pt-1': !useHeader,
-'pt-3': useHeader}">
-    <div class="flex">
-      @if (useHeader) {
-        <img class="inline rounded max-w-6 max-h-6 mr-2 mt-1" [src]="message.user.id | identicon:32 | async"
-             alt="Key ID: {{message.user.id}}"/>
-      } @else {
-        <div class="mr-2 w-6"></div>
+  <div class="bg-neutral-400/10 px-2 pb-2.5 pt-1 rounded-xl w-fit relative min-w-64" (contextmenu)="openMessageContextMenu($event)">
+    <div class="flex items-center gap-1 pb-1">
+      <app-profile-image [user]="message.user" [connection]="connection" [size]="5"></app-profile-image>
+      <h6 class="text-onyx-300 font-bold text-sm pb-1">
+        {{ message.user.username }}
+      </h6>
+      @if (message.temporary){
+        <span class="ml-2 text-neutral-400 text-xs rounded border border-onyx-600 bg-onyx-900">
+          <lucide-icon [name]="GhostIcon" class="inline w-3"></lucide-icon> Temporary
+        </span>
       }
-      <div class="bg-neutral-800 px-4 pb-2.5 pt-1 rounded w-fit relative min-w-48">
-
-        <p class="text-onyx-300 font-bold pb-1"> {{ message.user.username }} </p>
-
-        @if (message.repliesTo) {
-          <div class="p-1 max-h-72 overflow-auto flex gap-2">
-            <lucide-icon [name]="CornerDownRightIcon" class="text-text-faded"></lucide-icon>
-            <app-message class="border-l-2 border-l-onyx-600 pl-2" [message]="message.repliesTo"
-                         [connection]="connection"></app-message>
-          </div>
-        }
-
-        @for (content of message.content; track content) {
-          <app-message-content [content]="content" [connection]="connection"></app-message-content>
-        }
-        @if (useHeader) {
-          <p class="text-sm text-right text-text text-text-faded"
-             [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</p>
-        } @else {
-          <p class="text-sm text-right  text-text-faded"
-             [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</p>
-        }
-      </div>
-
-
+      <p class="ml-auto text-xs text-text-faded pl-4"
+         [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</p>
     </div>
+
+
+
+    @if (message.repliesTo) {
+      <div class="max-h-72 overflow-auto border border-onyx-700 rounded-xl">
+        @if (replyLayer > MESSAGE_REPLY_MAXSHOWN){
+          <p class="p-2 bg-error-400/25">
+            <lucide-icon [name]="MessageSquareReplyIcon" class="inline w-4"></lucide-icon>
+            Could not load more replies. Maximum reached.
+          </p>
+        } @else {
+          <app-message [message]="message.repliesTo" [replyLayer]="replyLayer+1"
+                       [connection]="connection"></app-message>
+        }
+
+      </div>
+    }
+
+    @for (content of message.content; track content) {
+      <app-message-content [content]="content" [connection]="connection"></app-message-content>
+    }
   </div>
 }

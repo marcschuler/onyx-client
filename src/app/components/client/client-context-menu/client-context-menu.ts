@@ -51,11 +51,11 @@ export class ClientContextMenu {
   }
 
   protected openAboutPage() {
-    this.contextMenuService.openPopup(ClientAbout,{
-      client: this.client
+    this.contextMenuService.openPopup(ClientAbout, {
+      client: this.client,
+      connection: this.connection
     })
   }
-
 
 
   protected readonly CircleSlashedIcon = CircleSlashedIcon;

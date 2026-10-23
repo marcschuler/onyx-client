@@ -1,5 +1,6 @@
 import {Component, Input, inject} from '@angular/core';
 import {
+  EllipsisIcon,
   LucideAngularModule,
   MicIcon, MicOffIcon,
   ScreenShareIcon, ScreenShareOffIcon,
@@ -12,12 +13,14 @@ import {ConnectionState, WebSocketServerConnection} from '../../../services/webs
 import {TrackType} from '../../../services/peer/MediaTracker';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
 import {MediaService} from '../../../services/peer/media-service';
+import {ProfileImage} from '../../client/profile-image/profile-image';
 
 @Component({
   selector: 'app-user-panel',
   imports: [
     LucideAngularModule,
     NgClass,
+    ProfileImage,
   ],
   templateUrl: './user-panel.html',
   styleUrl: './user-panel.css'
@@ -42,4 +45,5 @@ export class UserPanel {
   protected readonly VideoIcon = VideoIcon;
   protected readonly ScreenShareIcon = ScreenShareIcon;
   protected readonly SettingsIcon = SettingsIcon;
+  protected readonly EllipsisIcon = EllipsisIcon;
 }

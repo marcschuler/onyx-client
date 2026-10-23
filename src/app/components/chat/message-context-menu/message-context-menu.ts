@@ -1,24 +1,43 @@
-import {Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {ContextMenu} from "../../ui/context/context-menu/context-menu";
 import {ContextMenuButton} from "../../ui/context/context-menu-button/context-menu-button";
-import {CornerDownRightIcon, XIcon} from 'lucide-angular';
+import {CornerDownRightIcon, DownloadIcon, XIcon} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {MessageDeleteEvent, MessageDTO} from '../../../../api/onyx-server';
+import {FileDTO, FileMessageContentDTO, MessageDeleteEvent, MessageDTO} from '../../../../api/onyx-server';
 import {POPUP_CONTEXT} from '../../../services/ui/context-menu-service';
 import {RestService} from '../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
+import {SplitPanelDivider} from '../../ui/split-panel/split-panel-divider/split-panel-divider';
+import {FileSizePipe} from '../../../pipes/file-size-pipe';
+import {JsonPipe} from '@angular/common';
+import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
 
 @Component({
   selector: 'app-message-context-menu',
   imports: [
     ContextMenu,
-    ContextMenuButton
+    ContextMenuButton,
+    SplitPanelDivider,
+    FileSizePipe,
+    JsonPipe,
+    StorageFileURLPipe
   ],
   templateUrl: './message-context-menu.html',
   styleUrl: './message-context-menu.css',
 })
-export class MessageContextMenu implements OnInit, OnDestroy {
+export class MessageContextMenu implements OnInit, OnDestroy, OnChanges {
+
 
   private popupContext = inject(POPUP_CONTEXT);
   private restService = inject(RestService);
@@ -31,6 +50,7 @@ export class MessageContextMenu implements OnInit, OnDestroy {
   @Output() onDelete: EventEmitter<MessageDTO> = new EventEmitter<MessageDTO>();
 
   private handler: any;
+  protected attachments: FileDTO[] = [];
 
   ngOnInit(): void {
     this.handler = this.webSocketService.addHandler(MessageDeleteEvent.TypeEnum.MessageDeleteEvent, (event: MessageDeleteEvent) => {
@@ -39,6 +59,13 @@ export class MessageContextMenu implements OnInit, OnDestroy {
         this.popupContext.close();
       }
     })
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.attachments = this.message.content
+      .filter(c => c.type == 'FILE')
+      .map(c => (c as FileMessageContentDTO))
+      .map(c => c.file);
   }
 
   ngOnDestroy(): void {
@@ -66,4 +93,5 @@ export class MessageContextMenu implements OnInit, OnDestroy {
   protected readonly CornerDownRightIcon = CornerDownRightIcon;
   protected readonly XIcon = XIcon;
 
+  protected readonly DownloadIcon = DownloadIcon;
 }

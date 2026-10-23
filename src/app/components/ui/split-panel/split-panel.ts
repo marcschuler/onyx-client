@@ -33,29 +33,36 @@ export class SplitPanel implements AfterContentInit {
   selectedOption: SplitPanelButtonEvent | undefined;
 
   ngAfterContentInit(): void {
-    this.leftBar.onClick.subscribe((value: SplitPanelButtonEvent) => {
-      console.log("ui: split-panel: button clicked")
-      this.selectOption(value);
+    this.leftBar.onClick.subscribe((value) => this.selectOption(value));
+
+    this.contentRefs.changes.subscribe(() => this.applySelection());
+    this.leftBar.buttons.changes.subscribe((list) => {
+      if (!this.selectedOption && list.length) {
+        const button = list.get(0);
+        if (button) this.selectOption({ name: button.name || button.value, value: button.value });
+      }
     });
 
     if (this.default && this.buttonsHaveValue(this.default)) {
-      this.selectOption({
-        value: this.default,
-        name: this.default
-      })
-    }
-
-    const button = this.leftBar.buttons.get(0);
-    if (button) {
-      this.selectOption({
-        name: button.name || button.value,
-        value: button.value
-      })
+      this.selectOption({ value: this.default, name: this.default });
     } else {
-      console.warn("ui:split-panel: No buttons in split panel");
+      const button = this.leftBar.buttons.get(0);
+      if (button) {
+        this.selectOption({ name: button.name || button.value, value: button.value });
+      } else {
+        console.warn('ui:split-panel: No buttons in split panel');
+        this.applySelection();
+      }
     }
   }
 
+  private applySelection() {
+    if (this.selectedOption) {
+      this.setContentSlot(this.selectedOption);
+    } else {
+      this.contentRefs.forEach((child) => (child.element.nativeElement.style.display = 'none'));
+    }
+  }
 
   selectOption(event: SplitPanelButtonEvent) {
     console.log("ui:split-panel: selecting button", event)

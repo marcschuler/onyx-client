@@ -18,5 +18,6 @@ export interface MessageDTO {
     content: Array<MessageContentDTO>;
     repliesTo?: MessageDTO;
     chatId: string;
+    temporary?: boolean;
 }
 

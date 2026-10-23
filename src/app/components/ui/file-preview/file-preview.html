@@ -1,12 +1,13 @@
-<div class="max-w-256 max-h-96 overflow-hidden rounded-xl">
+<div class="max-w-256 max-h-96 overflow-hidden rounded-xl relative group">
   @switch (fileType) {
 
     <!--@case (FileType.PDF) { TODO does not work yet - seems like browser security prevents this
       <iframe [src]="file.id | storageFileURL:connection | sanitizeUrl" sandbox="allow-scripts allow-same-origin" class="max-h-96"></iframe>
     }-->
     @case (FileType.IMAGE) {
-      <app-preview-image [file]="file" [connection]="connection"
-                         imageClass="object-contain min-h-48 max-h-96"></app-preview-image>
+      <app-preview-image class="block w-full h-96"
+                         [file]="file" [connection]="connection"
+                         fit="contain" sizes="(max-width: 1024px) 100vw, 1024px"></app-preview-image>
     }
     @case (FileType.AUDIO) {
       <audio [src]="file.id | storageFileURL:connection:undefined:undefined" controls></audio>
@@ -15,7 +16,7 @@
       <video [src]="file.id | storageFileURL:connection:undefined:undefined" controls></video>
     }
     @default {
-      <lucide-icon [name]="fileMimetypeToIcon(file.contentType)" class="w-[100%] h-8"></lucide-icon>
+      {{ file | json }}
     }
   }
 </div>

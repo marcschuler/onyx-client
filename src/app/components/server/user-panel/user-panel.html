@@ -1,41 +1,39 @@
-<div class="h-full  rounded-t-md" [ngClass]="{
-'bg-onyx-600': webSocketService.connection && webSocketService.connection.state === ConnectionState.CONNECTED,
-'bg-red-600': !webSocketService.connection || webSocketService.connection.state === ConnectionState.ERROR || webSocketService.connection.state === ConnectionState.CLOSED,
-'bg-yellow-600': webSocketService.connection && webSocketService.connection.state === ConnectionState.AUTHENTICATING
-}
-">
+<div class="border rounded-xl  border-onyx-600 p-1">
 
-  <div class="p-2 gap-2 grid grid-cols-[1fr_auto] w-full">
-    <h3 class="p-2">
+  <div class="flex items-center px-2 gap-2">
+    <app-profile-image [user]="connection.me.details" [connection]="connection"></app-profile-image>
+    <h4>
       {{ connection.me.username }}
-    </h3>
-    <button class="!bg-none !bg-transparent !p-0 right-0" (click)="contextMenuService.openSettingsMenu(connection)">
-      <lucide-icon [name]="SettingsIcon"></lucide-icon>
-    </button>
-  </div>
+      <div>
+        <button class="button-small button-dark">
+          <lucide-icon [name]="mediaService.sharedStreams[TrackType.Microphone]?MicIcon:MicOffIcon"
+                       class="w-4"
+                       [ngClass]="[
+    mediaService.sharedStreams[TrackType.Microphone] ? 'text-emerald-600' : 'text-neutral-700'
+  ]"
+                       (click)="mediaService.changeTrack(TrackType.Microphone)"></lucide-icon>
+        </button>
+        <button class="button-small button-dark">
+          <lucide-icon [name]="mediaService.sharedStreams[TrackType.Camera]?VideoIcon:VideoOffIcon"
+                       class="w-4"
+                       [ngClass]="[
+    mediaService.sharedStreams[TrackType.Camera] ? 'text-emerald-600' : 'text-neutral-700'
+  ]"
+                       (click)="mediaService.changeTrack(TrackType.Camera)"></lucide-icon>
+        </button>
+        <button class="button-small button-dark">
+          <lucide-icon [name]="mediaService.sharedStreams[TrackType.Screen]?ScreenShareIcon:ScreenShareOffIcon"
+                       class="w-4"
+                       [ngClass]="[
+    mediaService.sharedStreams[TrackType.Screen] ? 'text-emerald-600' : 'text-neutral-700'
+  ]"
+                       (click)="mediaService.changeTrack(TrackType.Screen)"></lucide-icon>
+        </button>
+      </div>
+    </h4>
 
-
-  <div class="grid grid-cols-3 px-4 pb-1">
-    <button class="!bg-neutral-900 !rounded-r-none">
-      <lucide-icon [name]="mediaService.sharedStreams[TrackType.Microphone]?MicIcon:MicOffIcon"
-                   [ngClass]="[
-    mediaService.sharedStreams[TrackType.Microphone] ? 'text-emerald-600' : 'text-neutral-400'
-  ]"
-                   (click)="mediaService.changeTrack(TrackType.Microphone)"></lucide-icon>
-    </button>
-    <button class="!bg-neutral-900 !rounded-none">
-      <lucide-icon [name]="mediaService.sharedStreams[TrackType.Camera]?VideoIcon:VideoOffIcon"
-                   [ngClass]="[
-    mediaService.sharedStreams[TrackType.Camera] ? 'text-emerald-600' : 'text-neutral-400'
-  ]"
-                   (click)="mediaService.changeTrack(TrackType.Camera)"></lucide-icon>
-    </button>
-    <button class="!bg-neutral-900 !rounded-l-none">
-      <lucide-icon [name]="mediaService.sharedStreams[TrackType.Screen]?ScreenShareIcon:ScreenShareOffIcon"
-                   [ngClass]="[
-    mediaService.sharedStreams[TrackType.Screen] ? 'text-emerald-600' : 'text-neutral-400'
-  ]"
-                   (click)="mediaService.changeTrack(TrackType.Screen)"></lucide-icon>
+    <button class="button-small button-dark ml-auto" (click)="contextMenuService.openSettingsMenu(connection)">
+      <lucide-icon [name]="EllipsisIcon"></lucide-icon>
     </button>
   </div>
 </div>

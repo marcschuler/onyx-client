@@ -1,7 +1,7 @@
 @switch (content.type) {
   @case ("TEXT") {
     @let text = asTypeText(content);
-    <p [innerHTML]="text.text"></p>
+    <p [innerText]="text.text"></p>
   }
   @case ("MARKDOWN") {
     @let markdown = asTypeMarkdown(content);
@@ -11,13 +11,6 @@
     @let file = asTypeFile(content);
     <div class="relative group">
       <app-file-preview [file]="file.file" [connection]="connection"></app-file-preview>
-      <div class="absolute bottom-0 w-full bg-neutral-800/80 hoverable p-1 justify-center">
-        <p> {{ file.file.filename }} </p>
-        <p class="text-xs text-neutral-300">{{ file.file.size | fileSize }}</p>
-        <a class="button button-small w-full" [href]="file.file.id | storageFileURL:connection"
-           target="_blank">Download</a>
-      </div>
-
     </div>
 
   }

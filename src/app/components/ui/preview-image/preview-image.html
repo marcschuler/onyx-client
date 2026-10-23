@@ -1,4 +1,4 @@
-<picture>
+<picture class="block w-full h-full">
   <source
     type="image/jpeg"
     [srcset]="
@@ -6,13 +6,15 @@
       (file | storageFileURL: connection:basePath:'J256') + ' 256w, ' +
       (file | storageFileURL: connection:basePath:'J1024') + ' 1024w'
     "
-    sizes="128px"
+    [sizes]="sizes"
   />
 
   <img
     [src]="file | storageFileURL: connection:basePath:undefined"
     [alt]="fileAlt()"
     loading="lazy"
-    [ngClass]="imageClass"
+    class="w-full h-full"
+    [class.object-cover]="fit === 'cover'"
+    [class.object-contain]="fit === 'contain'"
   />
 </picture>

@@ -1,0 +1,73 @@
+<div class="container my-2">
+  <div class="flex items-center gap-2" (click)="open = !open">
+    <lucide-icon [name]="TicketSlashIcon" class="inline"></lucide-icon>
+    @if (!open) {
+      <h3>{{ invite.title }}</h3>
+      <lucide-icon [name]="ChevronDownIcon" class="ml-auto"></lucide-icon>
+    } @else {
+      <input [(ngModel)]="invite.title" class="!bg-neutral-800">
+      <lucide-icon [name]="ChevronUpIcon" class="ml-auto"></lucide-icon>
+
+    }
+  </div>
+
+
+  @if (!open) {
+    <p>
+      {{ invite.description }}
+    </p>
+    <p>
+      @if (invite.startDate && invite.endDate) {
+        Valid between {{ invite.startDate }} and {{ invite.endDate }}
+      } @else if (invite.startDate) {
+        Valid starting {{ invite.startDate }}
+      } @else if (invite.endDate) {
+        Valid until {{ invite.endDate }}
+      }
+    </p>
+  } @else {
+    <textarea [(ngModel)]="invite.description" placeholder="invite description..."></textarea>
+    <div class="grid grid-cols-3">
+      <p>Code</p>
+      <input type="password" [(ngModel)]="invite.code" min="3" max="32">
+      <button class="button-circle">
+        <lucide-icon [name]="EyeIcon"></lucide-icon>
+      </button>
+
+      <p class="">Starts</p>
+      <input type="datetime-local" [(ngModel)]="invite.startDate">
+      <button class="button-circle" (click)="invite.startDate = undefined">
+        <lucide-angular [name]="XIcon"></lucide-angular>
+      </button>
+
+      <p class="">Ends</p>
+      <input type="datetime-local" [(ngModel)]="invite.endDate">
+      <button class="button-circle" (click)="invite.endDate = undefined">
+        <lucide-angular [name]="XIcon"></lucide-angular>
+      </button>
+
+      <p>Usages</p>
+      <input type="number" [(ngModel)]="invite.maxUsages">
+      <button class="button-circle" (click)="invite.maxUsages = undefined">
+        <lucide-angular [name]="XIcon"></lucide-angular>
+      </button>
+    </div>
+
+    <div class="item-row-right">
+      <button class="button-border-onyx" (click)="save()">save</button>
+      <button class="button-border-red" (click)="delete()">delete</button>
+    </div>
+  }
+  <div class="pt-3">
+    @if (invite.maxUsages) {
+      <div class="rounded-xl relative">
+        <div class="h-2   rounded-xl absolute bg-neutral-700 w-full"></div>
+        <div class="h-2 rounded-xl absolute bg-sky-200"
+             [style.width.%]="Math.min(invite.usages / invite.maxUsages * 100,100)"></div>
+        <p class="text-center pt-3">{{ invite.usages }} / {{ invite.maxUsages }} invites used</p>
+      </div>
+    } @else {
+      <p class="text-center">{{ invite.usages }} invites used</p>
+    }
+  </div>
+</div>
