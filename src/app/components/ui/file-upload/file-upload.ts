@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import {FileUpIcon, ImageUpIcon, LucideAngularModule} from 'lucide-angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {RestService} from '../../../services/rest/rest-service';
@@ -11,7 +10,6 @@ import {Spinner} from '../spinner/spinner';
 @Component({
   selector: 'app-file-upload',
   imports: [
-    LucideAngularModule,
     Spinner
   ],
   templateUrl: './file-upload.html',
@@ -54,8 +52,5 @@ export class FileUpload {
 
     const file = event.dataTransfer.files[0];
   }
-
-  protected readonly FileUpIcon = FileUpIcon;
-  protected readonly ImageUpIcon = ImageUpIcon;
 }
 

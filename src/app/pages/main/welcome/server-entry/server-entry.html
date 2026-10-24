@@ -12,11 +12,11 @@
                              [file]="info.icon!" [basePath]="server.url" sizes="44px">
           </app-preview-image>
         } @else {
-          <lucide-icon [name]="ServerIcon" class="w-11 h-11 rounded-xl"></lucide-icon>
+          <svg lucideServer class="w-11 h-11 rounded-xl"></svg>
         }
       }
       @case (ServerInfoState.ERROR) {
-        <lucide-icon [name]="ServerOffIcon" class="w-11 h-11 text-red-600 opacity-50"></lucide-icon>
+        <svg lucideServerOff class="w-11 h-11 text-red-600 opacity-50"></svg>
       }
     }
   </div>
@@ -34,7 +34,7 @@
           <h3 class="font-bold !p-0">
             {{ info.name }}
             @if (info.settings.password) {
-              <lucide-icon [name]="LockKeyholeIcon" class="inline w-3"></lucide-icon>
+              <svg lucideLockKeyhole class="inline w-3"></svg>
             }
           </h3>
           <p class="text-neutral-400 text-xs">{{ subtitle }}</p>

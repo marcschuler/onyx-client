@@ -35,7 +35,6 @@
     </div>
   </div>
 } @else {
-  @let useHeader = lastMessage == undefined || lastMessage.user.id !== message.user.id;
   <div class="bg-neutral-400/10 px-2 pb-2.5 pt-1 rounded-xl w-fit relative min-w-64" (contextmenu)="openMessageContextMenu($event)">
     <div class="flex items-center gap-1 pb-1">
       <app-profile-image [user]="message.user" [connection]="connection" [size]="5"></app-profile-image>
@@ -44,7 +43,7 @@
       </h6>
       @if (message.temporary){
         <span class="ml-2 text-neutral-400 text-xs rounded border border-onyx-600 bg-onyx-900">
-          <lucide-icon [name]="GhostIcon" class="inline w-3"></lucide-icon> Temporary
+          <svg lucideGhost class="inline w-3"></svg> Temporary
         </span>
       }
       <p class="ml-auto text-xs text-text-faded pl-4"
@@ -57,7 +56,7 @@
       <div class="max-h-72 overflow-auto border border-onyx-700 rounded-xl">
         @if (replyLayer > MESSAGE_REPLY_MAXSHOWN){
           <p class="p-2 bg-error-400/25">
-            <lucide-icon [name]="MessageSquareReplyIcon" class="inline w-4"></lucide-icon>
+            <svg lucideMessageSquareReply class="inline w-4"></svg>
             Could not load more replies. Maximum reached.
           </p>
         } @else {

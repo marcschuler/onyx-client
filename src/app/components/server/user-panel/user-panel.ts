@@ -1,12 +1,14 @@
 import {Component, Input, inject} from '@angular/core';
 import {
-  EllipsisIcon,
-  LucideAngularModule,
-  MicIcon, MicOffIcon,
-  ScreenShareIcon, ScreenShareOffIcon,
-  SettingsIcon,
-  VideoIcon, VideoOffIcon
-} from 'lucide-angular';
+  LucideDynamicIcon,
+  LucideEllipsis,
+  LucideMic,
+  LucideMicOff,
+  LucideScreenShare,
+  LucideScreenShareOff,
+  LucideVideo,
+  LucideVideoOff
+} from '@lucide/angular';
 import {NgClass} from '@angular/common';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {ConnectionState, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
@@ -18,7 +20,8 @@ import {ProfileImage} from '../../client/profile-image/profile-image';
 @Component({
   selector: 'app-user-panel',
   imports: [
-    LucideAngularModule,
+    LucideDynamicIcon,
+    LucideEllipsis,
     NgClass,
     ProfileImage,
   ],
@@ -36,14 +39,12 @@ export class UserPanel {
   }
 
   protected readonly ConnectionState = ConnectionState;
-  protected readonly MicOffIcon = MicOffIcon;
-  protected readonly VideoOffIcon = VideoOffIcon;
-  protected readonly ScreenShareOffIcon = ScreenShareOffIcon;
   protected readonly TrackType = TrackType;
 
-  protected readonly MicIcon = MicIcon;
-  protected readonly VideoIcon = VideoIcon;
-  protected readonly ScreenShareIcon = ScreenShareIcon;
-  protected readonly SettingsIcon = SettingsIcon;
-  protected readonly EllipsisIcon = EllipsisIcon;
+  protected readonly LucideMic = LucideMic;
+  protected readonly LucideMicOff = LucideMicOff;
+  protected readonly LucideVideo = LucideVideo;
+  protected readonly LucideVideoOff = LucideVideoOff;
+  protected readonly LucideScreenShare = LucideScreenShare;
+  protected readonly LucideScreenShareOff = LucideScreenShareOff;
 }

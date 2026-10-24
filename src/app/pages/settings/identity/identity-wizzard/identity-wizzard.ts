@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 import {CryptoService} from '../../../../services/crypto-service';
 import {IdenticonPipe} from '../../../../pipes/identicon-pipe';
 import {KeyIDPipe} from '../../../../pipes/key-id-pipe';
-import {LucideAngularModule, RotateCcw} from 'lucide-angular';
+import {LucideRotateCcw} from '@lucide/angular';
 import {KeyVisualizer} from '../../../../components/ui/key-visualizer/key-visualizer';
 
 
@@ -18,7 +18,7 @@ import {KeyVisualizer} from '../../../../components/ui/key-visualizer/key-visual
     Spinner,
     AsyncPipe,
     KeyIDPipe,
-    LucideAngularModule,
+    LucideRotateCcw,
     KeyVisualizer
   ],
   templateUrl: './identity-wizzard.html',
@@ -56,6 +56,4 @@ export class IdentityWizzard {
         this.createKey();
       })
   }
-
-  protected readonly RotateCcw = RotateCcw;
 }

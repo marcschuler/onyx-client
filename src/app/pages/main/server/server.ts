@@ -3,14 +3,7 @@ import {ServerTree} from '../../../components/server/server-tree/server-tree';
 import {UserPanel} from '../../../components/server/user-panel/user-panel';
 import {ChannelView} from './channel-view/channel-view';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
-import {
-  BookUser,
-  LogOut,
-  LucideAngularModule,
-  PanelLeftClose,
-  PanelLeftOpen,
-  ServerCog,
-} from 'lucide-angular';
+import {LucidePanelLeftClose, LucidePanelLeftOpen} from '@lucide/angular';
 import { NgStyle} from '@angular/common';
 import {StorageService} from '../../../services/storage.service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
@@ -25,7 +18,8 @@ import {ContextMenuService} from '../../../services/ui/context-menu-service';
     ServerTree,
     UserPanel,
     ChannelView,
-    LucideAngularModule,
+    LucidePanelLeftClose,
+    LucidePanelLeftOpen,
     NgStyle,
     ServerOverview,
   ],
@@ -71,10 +65,4 @@ export class Server {
   }
 
 
-
-  protected readonly ServerCog = ServerCog;
-  protected readonly BookUser = BookUser;
-  protected readonly PanelLeftClose = PanelLeftClose;
-  protected readonly PanelLeftOpen = PanelLeftOpen;
-  protected readonly LogOut = LogOut;
 }

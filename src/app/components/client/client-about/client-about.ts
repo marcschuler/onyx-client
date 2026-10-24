@@ -4,7 +4,7 @@ import {KeyVisualizer} from '../../ui/key-visualizer/key-visualizer';
 import {Chip} from '../../ui/chip/chip';
 import {ProfileImage} from '../profile-image/profile-image';
 import {getChannelFromId} from '../../../services/Util';
-import {HexagonIcon, LucideAngularModule} from 'lucide-angular';
+import {LucideHexagon} from '@lucide/angular';
 import {SlicePipe} from '@angular/common';
 
 @Component({
@@ -13,7 +13,7 @@ import {SlicePipe} from '@angular/common';
     KeyVisualizer,
     Chip,
     ProfileImage,
-    LucideAngularModule,
+    LucideHexagon,
     SlicePipe
   ],
   templateUrl: './client-about.html',
@@ -25,5 +25,4 @@ export class ClientAbout {
   @Input() connection!: WebSocketServerConnection;
 
   protected readonly getChannelFromId = getChannelFromId;
-  protected readonly HexagonIcon = HexagonIcon;
 }

@@ -7,10 +7,7 @@ import {MarkdownPipe} from '../../../../pipes/markdown-pipe';
 import {UserDatePipe} from '../../../../pipes/user-date-pipe';
 import {StorageService} from '../../../../services/storage.service';
 import {Tooltip} from '../../../../directives/tooltip';
-import {
-  CornerDownRightIcon, GhostIcon,
-  LucideAngularModule, MessageSquareReply, MessageSquareReplyIcon
-} from 'lucide-angular';
+import {LucideGhost, LucideMessageSquareReply} from '@lucide/angular';
 import {StorageFileURLPipe} from '../../../../pipes/avatar-pipe';
 import {asTypeFile, asTypeMarkdown, asTypeText, MessageContent} from '../../../chat/message-content/message-content';
 import {ContextMenuService} from '../../../../services/ui/context-menu-service';
@@ -23,7 +20,8 @@ import {ProfileImage} from '../../../client/profile-image/profile-image';
     MarkdownPipe,
     UserDatePipe,
     Tooltip,
-    LucideAngularModule,
+    LucideGhost,
+    LucideMessageSquareReply,
     StorageFileURLPipe,
     MessageContent,
     ProfileImage,
@@ -58,9 +56,6 @@ export class Message {
 
   protected readonly asTypeText = asTypeText;
   protected readonly MESSAGE_REPLY_MAXSHOWN = MESSAGE_REPLY_MAXSHOWN;
-  protected readonly MessageSquareReply = MessageSquareReply;
-  protected readonly MessageSquareReplyIcon = MessageSquareReplyIcon;
-  protected readonly GhostIcon = GhostIcon;
 }
 
 const MESSAGE_REPLY_MAXSHOWN = 2;

@@ -8,16 +8,13 @@ import {
   OnInit,
   Output, QueryList, ViewChild
 } from '@angular/core';
-import {LucideAngularModule, LucideIconData} from 'lucide-angular';
 import {SplitPanelBar} from './split-panel-bar/split-panel-bar';
 import {SplitPanelSelector} from '../../../directives/split-panel-selector';
 import {SplitPanelButtonEvent} from './split-panel-button/split-panel-button';
 
 @Component({
   selector: 'ui-split-panel',
-  imports: [
-    LucideAngularModule
-  ],
+  imports: [],
   templateUrl: './split-panel.html',
   styleUrl: './split-panel.css'
 })

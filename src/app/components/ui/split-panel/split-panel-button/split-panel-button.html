@@ -5,7 +5,7 @@
         [class.button-dark-selected]="selected"
         [disabled]="selected">
   @if (icon) {
-    <lucide-icon [name]="icon" class="inline pr-1"></lucide-icon>
+    <svg [lucideIcon]="icon" class="inline pr-1"></svg>
     <span class="pl-2 border-l border-l-neutral-700"></span>
   }
   {{ name || value }}

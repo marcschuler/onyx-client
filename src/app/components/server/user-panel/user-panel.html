@@ -5,35 +5,32 @@
     <h4>
       {{ connection.me.username }}
       <div>
-        <button class="button-small button-dark">
-          <lucide-icon [name]="mediaService.sharedStreams[TrackType.Microphone]?MicIcon:MicOffIcon"
-                       class="w-4"
-                       [ngClass]="[
+        <button class="button-small button-dark" (click)="mediaService.changeTrack(TrackType.Microphone)">
+          <svg [lucideIcon]="mediaService.sharedStreams[TrackType.Microphone]?LucideMic:LucideMicOff"
+               class="w-4"
+               [ngClass]="[
     mediaService.sharedStreams[TrackType.Microphone] ? 'text-emerald-600' : 'text-neutral-700'
-  ]"
-                       (click)="mediaService.changeTrack(TrackType.Microphone)"></lucide-icon>
+  ]"></svg>
         </button>
-        <button class="button-small button-dark">
-          <lucide-icon [name]="mediaService.sharedStreams[TrackType.Camera]?VideoIcon:VideoOffIcon"
-                       class="w-4"
-                       [ngClass]="[
+        <button class="button-small button-dark" (click)="mediaService.changeTrack(TrackType.Camera)">
+          <svg [lucideIcon]="mediaService.sharedStreams[TrackType.Camera]?LucideVideo:LucideVideoOff"
+               class="w-4"
+               [ngClass]="[
     mediaService.sharedStreams[TrackType.Camera] ? 'text-emerald-600' : 'text-neutral-700'
-  ]"
-                       (click)="mediaService.changeTrack(TrackType.Camera)"></lucide-icon>
+  ]"></svg>
         </button>
-        <button class="button-small button-dark">
-          <lucide-icon [name]="mediaService.sharedStreams[TrackType.Screen]?ScreenShareIcon:ScreenShareOffIcon"
-                       class="w-4"
-                       [ngClass]="[
+        <button class="button-small button-dark" (click)="mediaService.changeTrack(TrackType.Screen)">
+          <svg [lucideIcon]="mediaService.sharedStreams[TrackType.Screen]?LucideScreenShare:LucideScreenShareOff"
+               class="w-4"
+               [ngClass]="[
     mediaService.sharedStreams[TrackType.Screen] ? 'text-emerald-600' : 'text-neutral-700'
-  ]"
-                       (click)="mediaService.changeTrack(TrackType.Screen)"></lucide-icon>
+  ]"></svg>
         </button>
       </div>
     </h4>
 
     <button class="button-small button-dark ml-auto" (click)="contextMenuService.openSettingsMenu(connection)">
-      <lucide-icon [name]="EllipsisIcon"></lucide-icon>
+      <svg lucideEllipsis></svg>
     </button>
   </div>
 </div>

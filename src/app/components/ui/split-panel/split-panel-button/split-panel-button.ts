@@ -1,10 +1,10 @@
 import {Component, ContentChildren, EventEmitter, Input, Output, QueryList} from '@angular/core';
-import {LucideAngularModule} from 'lucide-angular';
+import {LucideDynamicIcon, LucideIcon} from '@lucide/angular';
 
 @Component({
   selector: 'ui-split-panel-button',
   imports: [
-    LucideAngularModule
+    LucideDynamicIcon
   ],
   templateUrl: './split-panel-button.html',
   styleUrl: './split-panel-button.css',
@@ -13,8 +13,8 @@ export class SplitPanelButton {
 
   @Input() value!: any;
   @Input() name?: string;
-  @Input() icon: any;
-  @Input() iconSelected: any | undefined;
+  @Input() icon: LucideIcon | undefined;
+  @Input() iconSelected: LucideIcon | undefined;
 
   @Input() selected = false;
   @Input() childSelected = false;

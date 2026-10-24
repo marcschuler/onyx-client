@@ -1,39 +1,40 @@
 import {
-  FileArchiveIcon,
-  FileBracesCornerIcon, FileHeadphoneIcon,
-  FileIcon,
-  FileImageIcon,
-  FileTextIcon,
-  FileVideoCameraIcon,
-  LucideIconData
-} from 'lucide-angular';
+  LucideFile,
+  LucideFileArchive,
+  LucideFileBracesCorner,
+  LucideFileHeadphone,
+  LucideFileImage,
+  LucideFileText,
+  LucideFileVideoCamera,
+  LucideIcon
+} from '@lucide/angular';
 
 
 const TYPES_TEXT = ['application/json',
   'text/javascript',
   'text/plain']
 
-export function fileMimetypeToIcon(mimeType: string): LucideIconData {
+export function fileMimetypeToIcon(mimeType: string): LucideIcon {
 
   switch (mimeTypeToFileType(mimeType)) {
     case FileType.VIDEO:
-      return FileVideoCameraIcon;
+      return LucideFileVideoCamera;
     case FileType.IMAGE:
-      return FileImageIcon;
+      return LucideFileImage;
     case FileType.AUDIO:
-      return FileHeadphoneIcon;
+      return LucideFileHeadphone;
     case FileType.PDF:
-      return FileTextIcon;
+      return LucideFileText;
     case FileType.TEXT:
-      return FileBracesCornerIcon;
+      return LucideFileBracesCorner;
 
   }
 
   if (mimeType == "application/zip")
-    return FileArchiveIcon;
+    return LucideFileArchive;
 
   console.warn("Could not find icon for mimetype " + mimeType + " - defaulting icon")
-  return FileIcon;
+  return LucideFile;
 }
 
 export function mimeTypeToFileType(mimeType: string): FileType | undefined {

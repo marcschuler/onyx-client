@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {ContextMenu} from "../../ui/context/context-menu/context-menu";
 import {ContextMenuButton} from "../../ui/context/context-menu-button/context-menu-button";
-import {CornerDownRightIcon, DownloadIcon, XIcon} from 'lucide-angular';
+import {LucideCornerDownRight, LucideDownload, LucideX} from '@lucide/angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {FileDTO, FileMessageContentDTO, MessageDeleteEvent, MessageDTO} from '../../../../api/onyx-server';
 import {POPUP_CONTEXT} from '../../../services/ui/context-menu-service';
@@ -90,8 +90,7 @@ export class MessageContextMenu implements OnInit, OnDestroy, OnChanges {
   }
 
 
-  protected readonly CornerDownRightIcon = CornerDownRightIcon;
-  protected readonly XIcon = XIcon;
-
-  protected readonly DownloadIcon = DownloadIcon;
+  protected readonly LucideCornerDownRight = LucideCornerDownRight;
+  protected readonly LucideDownload = LucideDownload;
+  protected readonly LucideX = LucideX;
 }

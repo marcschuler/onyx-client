@@ -4,10 +4,6 @@ import {
   ServerLoaderService
 } from '../../../services/server-loader-service';
 import {FormsModule} from '@angular/forms';
-import {
-  LucideAngularModule,
-  SettingsIcon
-} from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {Identity, IdentityService} from '../../../services/identity-service';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
@@ -20,7 +16,6 @@ import {ToastService, ToastType} from '../../../services/ui/toast-service';
   selector: 'app-welcome',
   imports: [
     FormsModule,
-    LucideAngularModule,
     ServerEntry,
   ],
   templateUrl: './welcome.html',

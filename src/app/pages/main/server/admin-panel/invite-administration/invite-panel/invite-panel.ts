@@ -1,6 +1,6 @@
 import {Component, inject, Input} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {ChevronDownIcon, ChevronUpIcon, EyeIcon, LucideAngularModule, TicketSlashIcon, XIcon} from "lucide-angular";
+import {LucideChevronDown, LucideChevronUp, LucideEye, LucideTicketSlash, LucideX} from "@lucide/angular";
 import {InviteDTO} from '../../../../../../../api/onyx-server';
 import {WebSocketServerConnection} from '../../../../../../services/websocket/WebSocketServerConnection';
 import {RestService} from '../../../../../../services/rest/rest-service';
@@ -11,7 +11,11 @@ import {removeItemFromList} from '../../../../../../util';
   selector: 'app-invite-panel',
   imports: [
     FormsModule,
-    LucideAngularModule
+    LucideChevronDown,
+    LucideChevronUp,
+    LucideEye,
+    LucideTicketSlash,
+    LucideX
   ],
   templateUrl: './invite-panel.html',
   styleUrl: './invite-panel.css',
@@ -52,10 +56,5 @@ export class InvitePanel {
   }
 
 
-  protected readonly TicketSlashIcon = TicketSlashIcon;
-  protected readonly XIcon = XIcon;
-  protected readonly EyeIcon = EyeIcon;
   protected readonly Math = Math;
-  protected readonly ChevronDownIcon = ChevronDownIcon;
-  protected readonly ChevronUpIcon = ChevronUpIcon;
 }

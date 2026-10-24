@@ -3,7 +3,6 @@ import {WebSocketServerConnection} from "../../../../../services/websocket/WebSo
 import {GroupDTO, PermissionDTO} from '../../../../../../api/onyx-server';
 import {RestService} from '../../../../../services/rest/rest-service';
 import {FormsModule} from '@angular/forms';
-import {IdCardLanyard, LucideAngularModule} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
 import {Toggle} from '../../../../../components/ui/toggle/toggle';
 import {MultiSelect} from '../../../../../components/ui/multi-select/multi-select';
@@ -16,7 +15,6 @@ import {BUTTON_CANCEL, BUTTON_DELETE} from '../../../../../components/ui/dialog/
   selector: 'app-group-administration-panel',
   imports: [
     FormsModule,
-    LucideAngularModule,
     Toggle,
     MultiSelect,
     SelectItem

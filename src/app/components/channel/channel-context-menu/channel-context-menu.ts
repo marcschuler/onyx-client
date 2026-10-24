@@ -3,7 +3,7 @@ import {ContextMenu} from "../../ui/context/context-menu/context-menu";
 import {ContextMenuButton} from "../../ui/context/context-menu-button/context-menu-button";
 import {ChannelDTO} from '../../../../api/onyx-server';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {ChevronDownIcon, ChevronUpIcon, HexagonIcon, LucideAngularModule} from 'lucide-angular';
+import {LucideHexagon} from '@lucide/angular';
 import {ContextMenuService, POPUP_CONTEXT} from '../../../services/ui/context-menu-service';
 import {ChannelEditor} from '../channel-editor/channel-editor';
 
@@ -12,7 +12,7 @@ import {ChannelEditor} from '../channel-editor/channel-editor';
   imports: [
     ContextMenu,
     ContextMenuButton,
-    LucideAngularModule
+    LucideHexagon
   ],
   templateUrl: './channel-context-menu.html',
   styleUrl: './channel-context-menu.css',
@@ -25,9 +25,6 @@ export class ChannelContextMenu {
   private contextMenuService = inject(ContextMenuService);
   protected popupContext = inject(POPUP_CONTEXT);
 
-  protected readonly ChevronUpIcon = ChevronUpIcon;
-  protected readonly ChevronDownIcon = ChevronDownIcon;
-  protected readonly HexagonIcon = HexagonIcon;
 
   protected edit() {
     this.popupContext.close()

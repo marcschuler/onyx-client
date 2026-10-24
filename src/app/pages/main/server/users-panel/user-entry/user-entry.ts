@@ -1,13 +1,6 @@
 import {Component, inject, Input, OnChanges} from '@angular/core';
 import {DatePipe} from "@angular/common";
-import {
-  CircleSlash,
-  CircleSlashIcon,
-  LucideAngularModule,
-  UserCheck,
-  UserCheckIcon,
-  UserPlusIcon
-} from "lucide-angular";
+import {LucideCircleSlash, LucideUserCheck, LucideUserPlus} from "@lucide/angular";
 import {MultiSelect} from "../../../../../components/ui/multi-select/multi-select";
 import {ProfileImage} from "../../../../../components/client/profile-image/profile-image";
 import {SelectItem} from "../../../../../components/ui/multi-select/select-item/select-item";
@@ -21,7 +14,9 @@ import {replaceInList} from '../../../../../util';
   selector: 'app-user-entry',
   imports: [
     DatePipe,
-    LucideAngularModule,
+    LucideCircleSlash,
+    LucideUserCheck,
+    LucideUserPlus,
     MultiSelect,
     ProfileImage,
     SelectItem
@@ -93,9 +88,5 @@ export class UserEntry implements OnChanges {
 
 
   protected readonly UserExtendedDTO = UserExtendedDTO;
-  protected readonly CircleSlash = CircleSlash;
-  protected readonly UserCheckIcon = UserCheckIcon;
-  protected readonly CircleSlashIcon = CircleSlashIcon;
-  protected readonly UserPlusIcon = UserPlusIcon;
 
 }

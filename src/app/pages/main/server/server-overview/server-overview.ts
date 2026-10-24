@@ -2,7 +2,7 @@ import {Component, inject, Input} from '@angular/core';
 import {WebSocketServerConnection} from "../../../../services/websocket/WebSocketServerConnection";
 import {MessageContent} from '../../../../components/chat/message-content/message-content';
 import {PreviewImage} from '../../../../components/ui/preview-image/preview-image';
-import {BookUserIcon, LogOutIcon, LucideAngularModule, ServerCog, ServerCogIcon} from 'lucide-angular';
+import {LucideLogOut} from '@lucide/angular';
 import {WebSocketService} from '../../../../services/websocket/web-socket-service';
 import {StorageService} from '../../../../services/storage.service';
 import {ContextMenuService} from '../../../../services/ui/context-menu-service';
@@ -14,7 +14,7 @@ import {UsersPanel} from '../users-panel/users-panel';
   imports: [
     MessageContent,
     PreviewImage,
-    LucideAngularModule
+    LucideLogOut
   ],
   templateUrl: './server-overview.html',
   styleUrl: './server-overview.css'
@@ -46,5 +46,4 @@ export class ServerOverview {
       closeButton: true
     })
   }
-  protected readonly LogOutIcon = LogOutIcon;
 }

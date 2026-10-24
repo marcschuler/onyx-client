@@ -9,7 +9,7 @@
                            [connection]="connection">
         </app-preview-image>
       } @else {
-        <lucide-icon [name]="ImageOffIcon" class="w-32 h-32 text-neutral-500"></lucide-icon>
+        <svg lucideImageOff class="w-32 h-32 text-neutral-500"></svg>
       }
       @if (avatarUpload) {
         <p class="absolute w-full p-1 top-0 bg-onyx-800 rounded-t-xl">Uploading... {{avatarUpload.progressNice}}</p>
@@ -17,7 +17,7 @@
     </div>
     <div class="flex">
       <button class="w-full button-red" [disabled]="connection.me.details.avatarId==undefined" (click)="deleteIcon()">
-        <lucide-icon [name]="XIcon"></lucide-icon>
+        <svg lucideX></svg>
       </button>
     </div>
   </div>

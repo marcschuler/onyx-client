@@ -6,12 +6,12 @@ import {
   Output, ViewChild, ViewContainerRef,
 } from '@angular/core';
 import {POPUP_CONTEXT} from '../../../services/ui/context-menu-service';
-import {LucideAngularModule, XIcon} from 'lucide-angular';
+import {LucideX} from '@lucide/angular';
 
 @Component({
   selector: 'app-popup',
   imports: [
-    LucideAngularModule
+    LucideX
   ],
   templateUrl: './popup.html',
   styleUrl: './popup.css'
@@ -55,7 +55,5 @@ export class Popup {
     this.popupContext.close();
     this.close.emit();
   }
-
-  protected readonly XIcon = XIcon;
 }
 

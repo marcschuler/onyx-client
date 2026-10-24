@@ -7,10 +7,13 @@ import {ToastService} from '../../../../services/ui/toast-service';
 import ServerAdministrationPanel from './server-administration-panel/server-administration-panel';
 import {ChannelAdministrationPanel} from './channel-administration-panel/channel-administration-panel';
 import {
-  HexagonIcon,
-  IdCardLanyardIcon, LockIcon, LockKeyholeIcon,
-  ServerCogIcon, TicketSlashIcon
-} from 'lucide-angular';
+  LucideHexagon,
+  LucideIdCardLanyard,
+  LucideLock,
+  LucideLockKeyhole,
+  LucideServerCog,
+  LucideTicketSlash
+} from '@lucide/angular';
 import {GroupAdministrationPanel} from './group-administration-panel/group-administration-panel';
 import {SplitPanelBar} from '../../../../components/ui/split-panel/split-panel-bar/split-panel-bar';
 import {SplitPanelButton} from '../../../../components/ui/split-panel/split-panel-button/split-panel-button';
@@ -51,10 +54,10 @@ export class AdminPanel implements OnInit {
   }
 
 
-  protected readonly ServerCogIcon = ServerCogIcon;
-  protected readonly HexagonIcon = HexagonIcon;
-  protected readonly IdCardLanyardIcon = IdCardLanyardIcon;
-  protected readonly TicketSlashIcon = TicketSlashIcon;
-  protected readonly LockIcon = LockIcon;
-  protected readonly LockKeyholeIcon = LockKeyholeIcon;
+  protected readonly LucideServerCog = LucideServerCog;
+  protected readonly LucideHexagon = LucideHexagon;
+  protected readonly LucideIdCardLanyard = LucideIdCardLanyard;
+  protected readonly LucideTicketSlash = LucideTicketSlash;
+  protected readonly LucideLock = LucideLock;
+  protected readonly LucideLockKeyhole = LucideLockKeyhole;
 }

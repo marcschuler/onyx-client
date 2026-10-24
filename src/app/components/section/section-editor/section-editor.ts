@@ -3,13 +3,11 @@ import {RestService} from '../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO, SectionDTO} from '../../../../api/onyx-server';
-import {LucideAngularModule, SaveIcon} from 'lucide-angular';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-section-editor',
   imports: [
-    LucideAngularModule,
     ReactiveFormsModule,
     FormsModule
   ],
@@ -53,7 +51,6 @@ export class SectionEditor {
       }, error => this.restService.handleError(error));
   }
 
-  protected readonly SaveIcon = SaveIcon;
 
 
 }

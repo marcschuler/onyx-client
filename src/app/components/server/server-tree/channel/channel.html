@@ -1,5 +1,5 @@
 <div
-  class="rounded gap-2 grid grid-cols-8 w-full rounded-l-none
+  class="rounded gap-2 grid grid-cols-8 w-full rounded-l-none items-center
           D   hover:bg-neutral-900 animate-default group cursor-pointer"
   [class.p-2]="!interfaceService.settings.compactMode"
   [ngClass]="{
@@ -8,16 +8,16 @@
   }" (click)="selectChannel(channel)"
   (contextmenu)="contextMenuService.openChannelContextMenu(channel,connection,$event)">
   <div class="col-span-5   rounded-l-md select-none text-nowrap">
-    <lucide-icon class="inline-flex translate-y-0.5" [name]="HexagonIcon"></lucide-icon>
+    <svg lucideHexagon class="inline-flex"></svg>
     {{ channel.name }}
   </div>
 
   @if (channel.voiceMode !== 'NONE') {
-    <lucide-icon [name]="voiceIcon(channel)" class="col-start-6 col-end-7 text-neutral-800 inline py-1"></lucide-icon>
+    <svg [lucideIcon]="voiceIcon(channel)" class="col-start-6 col-end-7 text-neutral-800 inline py-1"></svg>
   }
 
   @if (channel.chatMode !== 'NONE') {
-    <lucide-icon [name]="chatIcon(channel)" class="col-start-7 col-end-8 text-neutral-800 inline py-1"></lucide-icon>
+    <svg [lucideIcon]="chatIcon(channel)" class="col-start-7 col-end-8 text-neutral-800 inline py-1"></svg>
   }
   <div class="col-start-8 col-end-9">
 
@@ -26,16 +26,17 @@
         <button class="button-simpletext-onyx
                     pointer-events-none hoverable
                     group-hover:pointer-events-auto
-                    transition">
-          <lucide-icon [name]="LogInIcon" (click)="joinChannel(channel)"></lucide-icon>
+                    transition"
+                (click)="joinChannel(channel)">
+          <svg lucideLogIn></svg>
         </button>
       } @else {
         <!-- when not allowed, don't show the button -->
         <span class="px-4"></span>
       }
     } @else if (connection.me.channel === channel.id) {
-      <button class="button-simpletext-onyx">
-        <lucide-icon [name]="LogOutIcon" (click)="leaveChannel()"></lucide-icon>
+      <button class="button-simpletext-onyx" (click)="leaveChannel()">
+        <svg lucideLogOut></svg>
       </button>
     }
   </div>

@@ -1,12 +1,12 @@
 import { Component, Input, inject } from '@angular/core';
 import {
-  BugIcon,
-  FingerprintIcon,
-  IdCardLanyardIcon,
-  LucideAngularModule,
-  ScaleIcon, ServerIcon,
-  SettingsIcon
-} from "lucide-angular";
+  LucideBug,
+  LucideFingerprintPattern,
+  LucideIdCardLanyard,
+  LucideScale,
+  LucideServer,
+  LucideSettings
+} from "@lucide/angular";
 import {FormsModule} from '@angular/forms';
 import {Identity} from './identity/identity';
 import {Debug} from './debug/debug';
@@ -27,7 +27,6 @@ import {ContextMenuService} from '../../services/ui/context-menu-service';
 @Component({
   selector: 'app-settings',
   imports: [
-    LucideAngularModule,
     FormsModule,
     Identity,
     Debug,
@@ -53,10 +52,10 @@ export class Settings {
   @Input() connection?: WebSocketServerConnection;
 
 
-  protected readonly SettingsIcon = SettingsIcon;
-  protected readonly FingerprintIcon = FingerprintIcon;
-  protected readonly ScaleIcon = ScaleIcon;
-  protected readonly BugIcon = BugIcon;
-  protected readonly IdCardLanyardIcon = IdCardLanyardIcon;
-  protected readonly ServerIcon = ServerIcon;
+  protected readonly LucideSettings = LucideSettings;
+  protected readonly LucideFingerprintPattern = LucideFingerprintPattern;
+  protected readonly LucideScale = LucideScale;
+  protected readonly LucideBug = LucideBug;
+  protected readonly LucideIdCardLanyard = LucideIdCardLanyard;
+  protected readonly LucideServer = LucideServer;
 }

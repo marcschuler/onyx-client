@@ -9,7 +9,7 @@
                              [connection]="connection">
           </app-preview-image>
         } @else {
-          <lucide-icon [name]="ImageOffIcon" class="w-32 h-32 text-neutral-500"></lucide-icon>
+          <svg lucideImageOff class="w-32 h-32 text-neutral-500"></svg>
         }
         @if (serverIconUpload) {
           <p class="absolute w-full p-1 top-0 bg-onyx-800 rounded-t-xl">Uploading... {{serverIconUpload.progressNice}}</p>
@@ -17,7 +17,7 @@
       </div>
       <div class="flex">
         <button class="w-full button-red" [disabled]="connection.data!.server.icon==undefined" (click)="deleteIcon()">
-          <lucide-icon [name]="XIcon"></lucide-icon>
+          <svg lucideX></svg>
         </button>
       </div>
     </div>
@@ -36,7 +36,7 @@
     @for (description of server.description; track description.id) {
       <div class="container !pl-0" cdkDrag>
         <div class="flex">
-          <lucide-icon cdkDragHandle class="inline" [name]="GripVertical"></lucide-icon>
+          <svg lucideGripVertical cdkDragHandle class="inline"></svg>
           @switch (description.type) {
             @case ("MARKDOWN") {
               @let markdown = asTypeMarkdown(description);
@@ -56,7 +56,7 @@
   </div>
   <div class="grid grid-cols-2 gap-4 p-2">
     <button class="button-text" (click)="addMarkdown()">
-      <lucide-icon class="pr-1" [name]="TextInitialIcon"></lucide-icon>
+      <svg lucideTextInitial class="pr-1"></svg>
       Add Markdown text
     </button>
     <!--<button class="">

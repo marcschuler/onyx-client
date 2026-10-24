@@ -30,36 +30,36 @@ bg-neutral-800 rounded w-full h-full"
         @if (peer) {
           @switch (peer.state) {
             @case (PeerConnectionState.WaitingForOffer) {
-              <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
+              <svg lucideLoader class="inline"></svg>
               Waiting for connection (1/4)
             }
             @case (PeerConnectionState.Offered) {
-              <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
+              <svg lucideLoader class="inline"></svg>
               Waiting for answer (2/4)
             }
             @case (PeerConnectionState.Answered) {
-              <lucide-icon class="inline" [name]="LoaderIcon"></lucide-icon>
+              <svg lucideLoader class="inline"></svg>
               Waiting for {{ peer.client.username }} (3/4)
             }
             @case (PeerConnectionState.Connected) {
-              <!--<lucide-icon class="inline" [name]="SignalIcon"></lucide-icon>-->
+              <!--<svg lucideSignal class="inline"></svg>-->
             }
             @case (PeerConnectionState.Closed) {
-              <lucide-icon class="inline" [name]="PowerOffIcon"></lucide-icon>
+              <svg lucidePowerOff class="inline"></svg>
               Offline
             }
             @case (PeerConnectionState.Error) {
-              <lucide-icon class="inline" [name]="CircleXIcon"></lucide-icon>
+              <svg lucideCircleX class="inline"></svg>
               Error
             }
           }
           <!--
           @switch (peer.securityState) {
             @case (SecurityState.UNTESTED) {
-              <lucide-icon class="inline" [name]="ShieldOff" appTooltip="Not verified"></lucide-icon>
+              <svg lucideShieldOff class="inline" appTooltip="Not verified"></svg>
             }
             @case (SecurityState.INVALID) {
-              <lucide-icon class="inline" [name]="ShieldAlert" appTooltip="Cryptography error. Do not trust Client."></lucide-icon>
+              <svg lucideShieldAlert class="inline" appTooltip="Cryptography error. Do not trust Client."></svg>
             }
             @case (SecurityState.SECURE) {
             }

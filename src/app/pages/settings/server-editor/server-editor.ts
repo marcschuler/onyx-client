@@ -3,15 +3,13 @@ import {FormsModule} from '@angular/forms';
 import {Popup} from '../../../components/ui/popup/popup';
 import {ServerDetails, ServerLoaderService} from '../../../services/server-loader-service';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
-import {LucideAngularModule} from 'lucide-angular';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
 import {BUTTON_CANCEL, BUTTON_DELETE} from '../../../components/ui/dialog/dialog';
 
 @Component({
   selector: 'app-server-editor',
   imports: [
-    FormsModule,
-    LucideAngularModule
+    FormsModule
   ],
   templateUrl: './server-editor.html',
   styleUrl: './server-editor.css',

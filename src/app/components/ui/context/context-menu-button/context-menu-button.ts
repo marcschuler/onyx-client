@@ -1,19 +1,19 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CdkMenuItem} from '@angular/cdk/menu';
-import {LucideAngularModule} from 'lucide-angular';
+import {LucideDynamicIcon, LucideIcon} from '@lucide/angular';
 
 @Component({
   selector: 'app-context-menu-button',
   imports: [
     CdkMenuItem,
-    LucideAngularModule,
+    LucideDynamicIcon,
   ],
   templateUrl: './context-menu-button.html',
   styleUrl: './context-menu-button.css',
 })
 export class ContextMenuButton {
 
-  @Input() icon: any | undefined;
+  @Input() icon: LucideIcon | undefined;
   @Input() subMenu: boolean = false;
 
   @Output() click: EventEmitter<PointerEvent> = new EventEmitter();

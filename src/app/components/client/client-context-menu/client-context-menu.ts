@@ -2,7 +2,7 @@ import {Component, inject, Input} from '@angular/core';
 import {ContextMenu} from '../../ui/context/context-menu/context-menu';
 import {ContextMenuButton} from '../../ui/context/context-menu-button/context-menu-button';
 import {Client, WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {CircleSlashedIcon, UserIcon, UserXIcon} from 'lucide-angular';
+import {LucideCircleSlash2, LucideUser, LucideUserX} from '@lucide/angular';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {RestService} from '../../../services/rest/rest-service';
 import {ProfileImage} from '../profile-image/profile-image';
@@ -58,9 +58,7 @@ export class ClientContextMenu {
   }
 
 
-  protected readonly CircleSlashedIcon = CircleSlashedIcon;
-  protected readonly UserXIcon = UserXIcon;
-  protected readonly UserIcon = UserIcon;
-
-
+  protected readonly LucideCircleSlash2 = LucideCircleSlash2;
+  protected readonly LucideUser = LucideUser;
+  protected readonly LucideUserX = LucideUserX;
 }

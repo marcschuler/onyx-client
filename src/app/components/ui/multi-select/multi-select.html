@@ -4,9 +4,9 @@
        (click)="showOptions=!showOptions">
     <p class="flex-1 truncate" [class.select-placeholder]="placeholderActive">{{ label }}</p>
     @if (showOptions) {
-      <lucide-icon class="w-3" [name]="ChevronUpIcon"></lucide-icon>
+      <svg lucideChevronUp class="w-3"></svg>
     } @else {
-      <lucide-icon class="w-3" [name]="ChevronDownIcon"></lucide-icon>
+      <svg lucideChevronDown class="w-3"></svg>
     }
 
   </div>

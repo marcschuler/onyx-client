@@ -1,13 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {IdentityWizzard} from '../../settings/identity/identity-wizzard/identity-wizzard';
-import {
-  Check,
-  LucideAngularModule,
-  Server,
-  ShieldUser
-} from 'lucide-angular';
+import {LucideCheck, LucideServer, LucideShieldUser} from '@lucide/angular';
 import {Identity, IdentityService} from '../../../services/identity-service';
-import {NgClass} from '@angular/common';
 import {ServerLoaderService} from '../../../services/server-loader-service';
 import {Router} from '@angular/router';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
@@ -17,8 +11,9 @@ import {BUTTON_CANCEL, BUTTON_SKIP} from '../../../components/ui/dialog/dialog';
   selector: 'app-welcome',
   imports: [
     IdentityWizzard,
-    LucideAngularModule,
-    NgClass,
+    LucideCheck,
+    LucideServer,
+    LucideShieldUser,
   ],
   templateUrl: './welcome.html',
   styleUrl: './welcome.css',
@@ -88,12 +83,7 @@ export class Welcome {
     this.router.navigate(["/"]);
   }
 
-  protected readonly ShieldUser = ShieldUser;
-  protected readonly Check = Check;
   protected readonly WelcomeStage = WelcomeStage;
-
-
-  protected readonly Server = Server;
 }
 
 export enum WelcomeStage {

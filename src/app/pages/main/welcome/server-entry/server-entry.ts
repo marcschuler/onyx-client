@@ -1,5 +1,5 @@
 import {Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {ArrowBigRightDash, LockKeyholeIcon, LucideAngularModule, ServerIcon, ServerOffIcon} from "lucide-angular";
+import {LucideLockKeyhole, LucideServer, LucideServerOff} from "@lucide/angular";
 import {PreviewImage} from "../../../../components/ui/preview-image/preview-image";
 import {Spinner} from "../../../../components/ui/spinner/spinner";
 import {ServerDetails, ServerLoaderService} from '../../../../services/server-loader-service';
@@ -9,7 +9,9 @@ import {ServerDTO} from '../../../../../api/onyx-server';
 @Component({
   selector: 'app-server-entry',
   imports: [
-    LucideAngularModule,
+    LucideLockKeyhole,
+    LucideServer,
+    LucideServerOff,
     PreviewImage,
     Spinner
   ],
@@ -67,9 +69,6 @@ export class ServerEntry implements OnInit, OnDestroy {
   }
 
   protected readonly ServerInfoState = ServerInfoState;
-  protected readonly ServerIcon = ServerIcon;
-  protected readonly ServerOffIcon = ServerOffIcon;
-  protected readonly LockKeyholeIcon = LockKeyholeIcon;
 }
 
 export enum ServerInfoState {

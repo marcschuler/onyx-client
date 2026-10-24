@@ -16,7 +16,7 @@
     @if (messages.length == 0) {
       <div class="text-center text-onyx-200">
         <p>
-          <lucide-icon [name]="GhostIcon" class="mx-auto h-32 w-32"></lucide-icon>
+          <svg lucideGhost class="mx-auto h-32 w-32"></svg>
         </p>
         <h1>nothing here</h1>
       </div>
@@ -27,16 +27,16 @@
   @if (chatMode !== 'NONE') {
     @if (chatMode == 'TEMPORARY') {
       <span class="text-onyx-800 pl-4 border p-1 mx-8 rounded text-center bg-onyx-200">
-        <lucide-icon [name]="GhostIcon" class="w-5 inline"></lucide-icon>
+        <svg lucideGhost class="w-5 inline"></svg>
         new messages are temporary and will be deleted once the view is left
       </span>
     }
     @if (reply) {
       <div class="bg-neutral-800 p-1 ">
-        <lucide-icon [name]="CornerDownRightIcon" class="inline h-4"></lucide-icon>
+        <svg lucideCornerDownRight class="inline h-4"></svg>
         Reply to
         <button class="button-small button-dark" (click)="setReply(undefined)">
-          <lucide-icon [name]="XIcon"></lucide-icon>
+          <svg lucideX></svg>
         </button>
         <div class="max-h-16 overflow-auto pl-2">
           <app-message-content class="text-neutral-500" [connection]="connection"
@@ -52,7 +52,7 @@
       </button>
       <button appTooltip="Upload File" class="button-simpletext-onyx" (click)="openFileUploadDialog()"
               (drop)="openFileUploadDialog($event)">
-        <lucide-icon [name]="FileUpIcon" class="h-4 pt-0.5"></lucide-icon>
+        <svg lucideFileUp class="h-4 pt-0.5"></svg>
       </button>
       <div>
         @for (attachment of attachments; track attachment.id) {
@@ -67,7 +67,7 @@
             {{ attachment.name }}
             @if (attachment.done) {
               <button class="button-mini bg-transparent" (click)="removeAttachment(attachment)">
-                <lucide-icon [name]="XIcon" class="inline"></lucide-icon>
+                <svg lucideX class="inline"></svg>
               </button>
             }
           </app-chip>
@@ -84,7 +84,7 @@
         <button
           (click)="sendMessage()"
           class="h-fulll" [disabled]="message.length===0">
-          <lucide-icon [name]="SendIcon"></lucide-icon>
+          <svg lucideSend></svg>
         </button>
       </div>
     </div>

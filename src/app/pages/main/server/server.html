@@ -23,9 +23,9 @@
         [ngStyle]="{ width: (minimized? interfaceService.settings.sidebarWidth:0) + 'px' }">
     <button class="absolute top-64 hoverable button-small" (click)="minimized=!minimized"> <!-- TODO center vertically not with top-64 -->
       @if (minimized) {
-        <lucide-icon [name]="PanelLeftOpen" class="w-4"></lucide-icon>
+        <svg lucidePanelLeftOpen class="w-4"></svg>
       } @else {
-        <lucide-icon [name]="PanelLeftClose" class="w-4"></lucide-icon>
+        <svg lucidePanelLeftClose class="w-4"></svg>
       }
     </button>
   </span>

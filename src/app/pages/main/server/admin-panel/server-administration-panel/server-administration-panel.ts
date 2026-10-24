@@ -12,12 +12,10 @@ import {
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import {asTypeMarkdown} from '../../../../../components/chat/message-content/message-content';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
-import {GripVertical, ImageOffIcon, LucideAngularModule, TextInitialIcon, XIcon} from 'lucide-angular';
-import {FileUpload} from '../../../../../components/ui/file-upload/file-upload';
+import {LucideGripVertical, LucideImageOff, LucideTextInitial, LucideX} from '@lucide/angular';
 import {deleteInList, reorderListItem} from '../../../../../services/Util';
 import {PreviewImage} from '../../../../../components/ui/preview-image/preview-image';
 import {FileUploadService, UploadState, UploadType} from '../../../../../services/rest/file-upload-service';
-import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-server-administration-panel',
@@ -26,11 +24,13 @@ import {DecimalPipe} from '@angular/common';
     Spinner,
     FormsModule,
     CdkDragHandle,
-    LucideAngularModule,
+    LucideGripVertical,
+    LucideImageOff,
+    LucideTextInitial,
+    LucideX,
     CdkDrag,
     CdkDropList,
-    PreviewImage,
-    DecimalPipe
+    PreviewImage
   ],
   templateUrl: './server-administration-panel.html',
   styleUrl: './server-administration-panel.css'
@@ -127,8 +127,6 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
 
 
   protected readonly asTypeMarkdown = asTypeMarkdown;
-  protected readonly GripVertical = GripVertical;
-  protected readonly TextInitialIcon = TextInitialIcon;
 
   protected onIconChange(file: FileDTO) {
     this.toastService.create({
@@ -152,8 +150,6 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
 
   }
 
-  protected readonly XIcon = XIcon;
-  protected readonly ImageOffIcon = ImageOffIcon;
 }
 
 export default ServerAdministrationPanel

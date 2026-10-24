@@ -10,14 +10,7 @@ import {
   inject
 } from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {
-  CornerDownRightIcon,
-  FileUpIcon,
-  GhostIcon,
-  LucideAngularModule,
-  SendIcon,
-  XIcon
-} from 'lucide-angular';
+import {LucideCornerDownRight, LucideFileUp, LucideGhost, LucideSend, LucideX} from '@lucide/angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {deleteInList, getChannelFromId} from '../../../services/Util';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
@@ -28,10 +21,9 @@ import {RestService} from '../../../services/rest/rest-service';
 import {Message} from './message/message';
 import {MessageService} from '../../../services/message-service';
 import {
-  ChannelChangeEvent,
   ChannelDTO,
   ChatMessageEvent,
-  FileDTO, FileMessageContentDTO,
+  FileMessageContentDTO,
   MarkdownMessageContentDTO, MessageCreationDTOContentInner, MessageDeleteEvent
 } from '../../../../api/onyx-server';
 import {MessageContent} from '../../chat/message-content/message-content';
@@ -42,20 +34,22 @@ import {mimeTypeHasImagePreview} from '../../../mimetype-icons';
 import {ToggleButton} from '../../ui/toggle-button/toggle-button';
 import {Tooltip} from '../../../directives/tooltip';
 import {FileUploadService, UploadState, UploadType} from '../../../services/rest/file-upload-service';
-import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-message-view',
   imports: [
     FormsModule,
-    LucideAngularModule,
+    LucideCornerDownRight,
+    LucideFileUp,
+    LucideGhost,
+    LucideSend,
+    LucideX,
     Message,
     MessageContent,
     Chip,
     PreviewImage,
     ToggleButton,
     Tooltip,
-    DecimalPipe
   ],
   templateUrl: './message-view.html',
   styleUrl: './message-view.css'
@@ -68,8 +62,6 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
   private notificationService = inject(NotificationService);
   private fileUploadService = inject(FileUploadService);
 
-
-  protected readonly SendIcon = SendIcon;
 
   @Input() channelId!: string;
   @Input() connection!: WebSocketServerConnection;
@@ -281,12 +273,6 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     console.log("ui:message-view: replying to ", $event)
   }
 
-  protected readonly CornerDownRightIcon = CornerDownRightIcon;
-  protected readonly XIcon = XIcon;
-
-
   protected readonly mimeTypeHasImagePreview = mimeTypeHasImagePreview;
-  protected readonly GhostIcon = GhostIcon;
-  protected readonly FileUpIcon = FileUpIcon;
   removeOperationIdPrefix = true
 }

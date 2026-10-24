@@ -1,28 +1,28 @@
 <ui-split-panel class="min-h-[90%]" [default]="default">
   <ui-split-panel-bar>
-    <ui-split-panel-button value="General" [icon]="SettingsIcon">
+    <ui-split-panel-button value="General" [icon]="LucideSettings">
     </ui-split-panel-button>
-    <ui-split-panel-button value="Identities" [icon]="FingerprintIcon">
+    <ui-split-panel-button value="Identities" [icon]="LucideFingerprintPattern">
     </ui-split-panel-button>
     @if (connection) {
       <ui-split-panel-button value="Your Account" [name]="'Account on \'' + connection.data!.server.name + '\''"
-                             [icon]="IdCardLanyardIcon">
+                             [icon]="LucideIdCardLanyard">
       </ui-split-panel-button>
     }
     <ui-split-panel-divider></ui-split-panel-divider>
 
     @for (connection of serverLoaderService.connections; track connection) {
       <ui-split-panel-button [value]="'server-connection-' + connection.id"
-                             [name]="(connection.name || connection.url)" [icon]="ServerIcon">
+                             [name]="(connection.name || connection.url)" [icon]="LucideServer">
       </ui-split-panel-button>
     }
     @if (serverLoaderService.connections.length > 0) {
       <ui-split-panel-divider></ui-split-panel-divider>
     }
 
-    <ui-split-panel-button value="License" name="Contributors & Licences" [icon]="ScaleIcon">
+    <ui-split-panel-button value="License" name="Contributors & Licences" [icon]="LucideScale">
     </ui-split-panel-button>
-    <ui-split-panel-button value="Debug" [icon]="BugIcon">
+    <ui-split-panel-button value="Debug" [icon]="LucideBug">
     </ui-split-panel-button>
   </ui-split-panel-bar>
 

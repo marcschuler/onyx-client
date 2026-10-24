@@ -1,12 +1,16 @@
 import {Component, Input, inject} from '@angular/core';
 import {
-  HeadphoneOffIcon,
-  HeadphonesIcon,
-  HexagonIcon,
-  LogInIcon,
-  LogOutIcon,
-  LucideAngularModule, MessageSquareIcon, MessageSquareOffIcon, MessageSquareTextIcon
-} from "lucide-angular";
+  LucideDynamicIcon,
+  LucideHeadphoneOff,
+  LucideHeadphones,
+  LucideHexagon,
+  LucideIcon,
+  LucideLogIn,
+  LucideLogOut,
+  LucideMessageSquare,
+  LucideMessageSquareOff,
+  LucideMessageSquareText
+} from "@lucide/angular";
 import {
   ChannelDTO,
   ClientChannelJoinRequest,
@@ -21,7 +25,10 @@ import {NgClass} from '@angular/common';
 @Component({
   selector: 'app-channel',
   imports: [
-    LucideAngularModule,
+    LucideDynamicIcon,
+    LucideHexagon,
+    LucideLogIn,
+    LucideLogOut,
     NgClass
   ],
   templateUrl: './channel.html',
@@ -52,38 +59,29 @@ export class Channel {
     } as ClientChannelLeaveRequest)
   }
 
-  protected voiceIcon(channel: ChannelDTO) {
+  protected voiceIcon(channel: ChannelDTO): LucideIcon {
     switch (channel.voiceMode) {
       case ChannelDTO.VoiceModeEnum.Full:
-        return HeadphonesIcon;
+        return LucideHeadphones;
       case ChannelDTO.VoiceModeEnum.None:
       default:
-        return HeadphoneOffIcon;
+        return LucideHeadphoneOff;
     }
   }
 
-  protected chatIcon(channel: ChannelDTO) {
+  protected chatIcon(channel: ChannelDTO): LucideIcon {
     switch (channel.chatMode) {
       case ChannelDTO.ChatModeEnum.Full:
-        return MessageSquareTextIcon;
+        return LucideMessageSquareText;
       case ChannelDTO.ChatModeEnum.Temporary:
-        return MessageSquareIcon;
+        return LucideMessageSquare;
       case ChannelDTO.ChatModeEnum.None:
       default:
-        return MessageSquareOffIcon;
+        return LucideMessageSquareOff;
     }
   }
 
   protected selectChannel(channel: ChannelDTO) {
     this.connection.selectedChannel = channel.id as ServerObjectId;
   }
-
-  protected readonly LogOutIcon = LogOutIcon;
-  protected readonly HexagonIcon = HexagonIcon;
-  protected readonly LogInIcon = LogInIcon;
-  protected readonly HeadphonesIcon = HeadphonesIcon;
-  protected readonly HeadphoneOffIcon = HeadphoneOffIcon;
-  protected readonly MessageSquareOffIcon = MessageSquareOffIcon;
-  protected readonly MessageSquareIcon = MessageSquareIcon;
-  protected readonly MessageSquareTextIcon = MessageSquareTextIcon;
 }

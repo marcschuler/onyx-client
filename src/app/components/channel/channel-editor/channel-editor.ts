@@ -2,7 +2,6 @@ import {Component, Input, OnInit, inject} from '@angular/core';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ChannelDTO} from '../../../../api/onyx-server';
 import {RestService} from '../../../services/rest/rest-service';
-import { LucideAngularModule, SaveIcon} from 'lucide-angular';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {FormsModule} from '@angular/forms';
 import {Spinner} from '../../ui/spinner/spinner';
@@ -12,7 +11,6 @@ import {SelectItem} from '../../ui/multi-select/select-item/select-item';
 @Component({
   selector: 'app-channel-editor',
   imports: [
-    LucideAngularModule,
     FormsModule,
     Spinner,
     MultiSelect,
@@ -36,7 +34,6 @@ export class ChannelEditor implements OnInit {
       .subscribe(channel => this.channel = channel, error => this.restService.handleError(error));
   }
 
-  protected readonly SaveIcon = SaveIcon;
 
   protected save() {
     this.connection.rest.channelController.edit(this.channelId, this.channel!)

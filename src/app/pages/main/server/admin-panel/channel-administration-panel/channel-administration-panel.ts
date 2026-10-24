@@ -4,7 +4,7 @@ import {RestService} from '../../../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
 import {SectionDTO} from '../../../../../../api/onyx-server/model/sectionDTO';
-import { GripVertical, LucideAngularModule} from 'lucide-angular';
+import { LucideGripVertical} from '@lucide/angular';
 import { SectionExtendedDTO, ServerTreeChangeMessage} from '../../../../../../api/onyx-server';
 
 @Component({
@@ -12,7 +12,7 @@ import { SectionExtendedDTO, ServerTreeChangeMessage} from '../../../../../../ap
   imports: [
     CdkDropList,
     CdkDrag,
-    LucideAngularModule,
+    LucideGripVertical,
     CdkDragHandle,
   ],
   templateUrl: './channel-administration-panel.html',
@@ -99,7 +99,6 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
     }, error => this.restService.handleError(error))
   }
 
-  protected readonly GripVertical = GripVertical;
 
 
 }

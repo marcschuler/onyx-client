@@ -15,14 +15,15 @@ import {
   inject, ChangeDetectorRef
 } from '@angular/core';
 import {CdkListboxModule} from '@angular/cdk/listbox';
-import {ChevronDownIcon, ChevronUpIcon, LucideAngularModule} from 'lucide-angular';
+import {LucideChevronDown, LucideChevronUp} from '@lucide/angular';
 import {SelectItem} from './select-item/select-item';
 
 @Component({
   selector: 'ui-multi-select',
   imports: [
     CdkListboxModule,
-    LucideAngularModule,
+    LucideChevronDown,
+    LucideChevronUp,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './multi-select.html',
@@ -146,9 +147,5 @@ export class MultiSelect implements AfterViewInit, OnChanges, AfterContentInit {
     }
     this.update();
   }
-
-
-  protected readonly ChevronDownIcon = ChevronDownIcon;
-  protected readonly ChevronUpIcon = ChevronUpIcon;
 
 }

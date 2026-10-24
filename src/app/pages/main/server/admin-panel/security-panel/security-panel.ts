@@ -1,6 +1,5 @@
 import {Component, inject, Input} from '@angular/core';
 import {WebSocketServerConnection} from "../../../../../services/websocket/WebSocketServerConnection";
-import {LucideAngularModule, XIcon} from 'lucide-angular';
 import {FormsModule} from '@angular/forms';
 import {RestService} from '../../../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
@@ -8,7 +7,6 @@ import {ToastService, ToastType} from '../../../../../services/ui/toast-service'
 @Component({
   selector: 'app-security-panel',
   imports: [
-    LucideAngularModule,
     FormsModule
   ],
   templateUrl: './security-panel.html',
@@ -20,7 +18,6 @@ export class SecurityPanel {
   protected restService = inject(RestService);
   protected toastService = inject(ToastService);
 
-  protected readonly XIcon = XIcon;
   protected password: string = "";
 
   savePassword() {

@@ -3,10 +3,7 @@ import {WebSocketServerConnection} from '../../../../services/websocket/WebSocke
 import {GroupDTO, UserExtendedDTO} from '../../../../../api/onyx-server';
 import {RestService} from '../../../../services/rest/rest-service';
 import {SplitPanel} from '../../../../components/ui/split-panel/split-panel';
-import {
-  LucideAngularModule,
-  UsersIcon
-} from 'lucide-angular';
+import {LucideUsers} from '@lucide/angular';
 import {ToastService, ToastType} from '../../../../services/ui/toast-service';
 import {SplitPanelBar} from '../../../../components/ui/split-panel/split-panel-bar/split-panel-bar';
 import {SplitPanelButton} from '../../../../components/ui/split-panel/split-panel-button/split-panel-button';
@@ -17,7 +14,6 @@ import {Popup} from '../../../../components/ui/popup/popup';
 @Component({
   selector: 'app-users-panel',
   imports: [
-    LucideAngularModule,
     SplitPanel,
     SplitPanelBar,
     SplitPanelButton,
@@ -93,5 +89,5 @@ export class UsersPanel implements OnInit {
 
 
 
-  protected readonly UsersIcon = UsersIcon;
+  protected readonly LucideUsers = LucideUsers;
 }

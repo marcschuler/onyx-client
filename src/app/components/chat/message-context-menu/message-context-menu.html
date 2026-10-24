@@ -1,6 +1,6 @@
 <app-context-menu>
-  <app-context-menu-button [icon]="CornerDownRightIcon" (click)="reply()">Reply</app-context-menu-button>
-  <app-context-menu-button [icon]="XIcon" (click)="delete()">Delete</app-context-menu-button>
+  <app-context-menu-button [icon]="LucideCornerDownRight" (click)="reply()">Reply</app-context-menu-button>
+  <app-context-menu-button [icon]="LucideX" (click)="delete()">Delete</app-context-menu-button>
 
   @if (attachments.length > 0) {
     <ui-split-panel-divider></ui-split-panel-divider>
@@ -8,7 +8,7 @@
       @if (!file) {
         error:  {{ file | json }}
       } @else {
-        <app-context-menu-button [icon]="DownloadIcon">
+        <app-context-menu-button [icon]="LucideDownload">
           <a [href]="file.id | storageFileURL:connection"
              target="_blank">
             {{ file.filename }} ({{ file.size | fileSize }})

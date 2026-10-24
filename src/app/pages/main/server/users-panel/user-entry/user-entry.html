@@ -7,13 +7,13 @@
   <p class="col-span-1">
     @switch (user.state) {
       @case (UserExtendedDTO.StateEnum.Active) {
-        <lucide-icon [name]="UserCheckIcon" class="inline  h-4"></lucide-icon> Active
+        <svg lucideUserCheck class="inline  h-4"></svg> Active
       }
       @case (UserExtendedDTO.StateEnum.Banned) {
-        <lucide-icon [name]="CircleSlashIcon" class="inline h-4"></lucide-icon> Banned
+        <svg lucideCircleSlash class="inline h-4"></svg> Banned
       }
       @case (UserExtendedDTO.StateEnum.PendingAccess) {
-        <lucide-icon [name]="UserPlusIcon" class="inline h-4"></lucide-icon> Pending Access
+        <svg lucideUserPlus class="inline h-4"></svg> Pending Access
       }
     }
   </p>
@@ -33,12 +33,12 @@
   <p class="col-span-1">
     @if (user.state === UserExtendedDTO.StateEnum.Banned) {
       <button class="!p-1" (click)="unban(user)">
-        <lucide-icon [name]="CircleSlash" class="w-3 inline mr-1"></lucide-icon>
+        <svg lucideCircleSlash class="w-3 inline mr-1"></svg>
         Unban
       </button>
     } @else {
       <button class="!p-1 button-red" (click)="ban(user)">
-        <lucide-icon [name]="CircleSlash" class="w-3 inline mr-1"></lucide-icon>
+        <svg lucideCircleSlash class="w-3 inline mr-1"></svg>
         Ban
       </button>
     }

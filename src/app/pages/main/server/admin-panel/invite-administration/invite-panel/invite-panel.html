@@ -1,12 +1,12 @@
 <div class="container my-2">
   <div class="flex items-center gap-2" (click)="open = !open">
-    <lucide-icon [name]="TicketSlashIcon" class="inline"></lucide-icon>
+    <svg lucideTicketSlash class="inline"></svg>
     @if (!open) {
       <h3>{{ invite.title }}</h3>
-      <lucide-icon [name]="ChevronDownIcon" class="ml-auto"></lucide-icon>
+      <svg lucideChevronDown class="ml-auto"></svg>
     } @else {
       <input [(ngModel)]="invite.title" class="!bg-neutral-800">
-      <lucide-icon [name]="ChevronUpIcon" class="ml-auto"></lucide-icon>
+      <svg lucideChevronUp class="ml-auto"></svg>
 
     }
   </div>
@@ -31,25 +31,25 @@
       <p>Code</p>
       <input type="password" [(ngModel)]="invite.code" min="3" max="32">
       <button class="button-circle">
-        <lucide-icon [name]="EyeIcon"></lucide-icon>
+        <svg lucideEye></svg>
       </button>
 
       <p class="">Starts</p>
       <input type="datetime-local" [(ngModel)]="invite.startDate">
       <button class="button-circle" (click)="invite.startDate = undefined">
-        <lucide-angular [name]="XIcon"></lucide-angular>
+        <svg lucideX></svg>
       </button>
 
       <p class="">Ends</p>
       <input type="datetime-local" [(ngModel)]="invite.endDate">
       <button class="button-circle" (click)="invite.endDate = undefined">
-        <lucide-angular [name]="XIcon"></lucide-angular>
+        <svg lucideX></svg>
       </button>
 
       <p>Usages</p>
       <input type="number" [(ngModel)]="invite.maxUsages">
       <button class="button-circle" (click)="invite.maxUsages = undefined">
-        <lucide-angular [name]="XIcon"></lucide-angular>
+        <svg lucideX></svg>
       </button>
     </div>
 

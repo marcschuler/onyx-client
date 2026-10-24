@@ -1,7 +1,4 @@
 import { Component, Input, inject } from '@angular/core';
-import {
-  LucideAngularModule,
-} from 'lucide-angular';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {Spinner} from '../../ui/spinner/spinner';
 import { WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
@@ -12,7 +9,6 @@ import {Channel} from './channel/channel';
 @Component({
   selector: 'app-server-tree',
   imports: [
-    LucideAngularModule,
     Spinner,
     UserEntry,
     Channel,

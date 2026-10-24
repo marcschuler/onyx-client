@@ -25,7 +25,7 @@ import {ChannelDTO} from '../../../../../api/onyx-server/model/channelDTO';
 import {NgStyle} from '@angular/common';
 import {TrackType} from '../../../../services/peer/MediaTracker';
 import {MediaService} from '../../../../services/peer/media-service';
-import {HexagonIcon, LucideAngularModule} from 'lucide-angular';
+import {LucideHexagon} from '@lucide/angular';
 import {ChannelChangeEvent} from '../../../../../api/onyx-server';
 import {getChannelFromId} from '../../../../services/Util';
 
@@ -36,7 +36,7 @@ import {getChannelFromId} from '../../../../services/Util';
     FormsModule,
     MessageView,
     NgStyle,
-    LucideAngularModule,
+    LucideHexagon,
   ],
   templateUrl: './channel-view.html',
   styleUrl: './channel-view.css'
@@ -182,5 +182,4 @@ export class ChannelView implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   protected readonly TrackType = TrackType;
-  protected readonly HexagonIcon = HexagonIcon;
 }

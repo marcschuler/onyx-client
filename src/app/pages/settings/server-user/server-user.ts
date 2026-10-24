@@ -1,6 +1,6 @@
 import {Component, Input, inject} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {ImageOffIcon, LucideAngularModule, XIcon} from "lucide-angular";
+import {LucideImageOff, LucideX} from "@lucide/angular";
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
@@ -13,7 +13,8 @@ import {FileUploadService, UploadState, UploadType} from '../../../services/rest
   selector: 'app-server-user',
   imports: [
     FormsModule,
-    LucideAngularModule,
+    LucideImageOff,
+    LucideX,
     PreviewImage
   ],
   templateUrl: './server-user.html',
@@ -58,9 +59,6 @@ export class ServerUser {
         this.inviteCode = "";
       }, error => this.restService.handleError(error))
   }
-
-  protected readonly XIcon = XIcon;
-  protected readonly ImageOffIcon = ImageOffIcon;
 
   protected async uploadAvatar($event?: any) {
     if (this.avatarUpload)

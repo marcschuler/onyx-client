@@ -11,19 +11,19 @@
     <p class="p-4 inline bg-neutral-900 border rounded-full absolute left-0"
        [class.bg-onyx-200]="stage==WelcomeStage.IDENTITY"
        [class.bg-neutral-900]="stage!==WelcomeStage.IDENTITY">
-      <lucide-icon [name]="ShieldUser"></lucide-icon>
+      <svg lucideShieldUser></svg>
     </p>
     <span class="w-1/2 absolute left-0 h-2 -z-10 top-6"></span>
     <p class="p-4 inline bg-neutral-900 border rounded-full absolute left-1/2"
        [class.bg-onyx-200]="stage==WelcomeStage.SERVER"
        [class.bg-neutral-900]="stage!==WelcomeStage.SERVER">
-      <lucide-icon [name]="Server"></lucide-icon>
+      <svg lucideServer></svg>
     </p>
     <span class="w-1/2 absolute left-1/2 h-2 -z-10 top-6"></span>
     <p class="p-4 inline bg-neutral-900 border rounded-full absolute right-0"
        [class.bg-onyx-200]="stage==WelcomeStage.FINISHED"
        [class.bg-neutral-900]="stage!==WelcomeStage.FINISHED">
-      <lucide-icon [name]="Check"></lucide-icon>
+      <svg lucideCheck></svg>
     </p>
   </div>
 

@@ -1,24 +1,24 @@
 <app-popup [closeButton]="true" [fullHeight]="true">
   <ui-split-panel>
     <ui-split-panel-bar>
-      <ui-split-panel-button [icon]="ServerCogIcon" value="Server Administration">
-        <ui-split-panel-button [icon]="TicketSlashIcon" value="Invites">
+      <ui-split-panel-button [icon]="LucideServerCog" value="Server Administration">
+        <ui-split-panel-button [icon]="LucideTicketSlash" value="Invites">
         </ui-split-panel-button>
-        <ui-split-panel-button [icon]="connection.data!.server.settings.password? LockKeyholeIcon: LockIcon"
+        <ui-split-panel-button [icon]="connection.data!.server.settings.password? LucideLockKeyhole: LucideLock"
                                value="Security">
         </ui-split-panel-button>
       </ui-split-panel-button>
-      <ui-split-panel-button [icon]="HexagonIcon" value="Sections & Channel">
+      <ui-split-panel-button [icon]="LucideHexagon" value="Sections & Channel">
         @for (section of connection.data!.sections; track section.id) {
           <ui-split-panel-button [value]="section.id" [name]="section.name">
           </ui-split-panel-button>
           @for (channel of section.channels; track channel.id) {
-            <ui-split-panel-button [icon]="HexagonIcon" [value]="channel.id" [name]="channel.name">
+            <ui-split-panel-button [icon]="LucideHexagon" [value]="channel.id" [name]="channel.name">
             </ui-split-panel-button>
           }
         }
       </ui-split-panel-button>
-      <ui-split-panel-button [icon]="IdCardLanyardIcon" value="Groups">
+      <ui-split-panel-button [icon]="LucideIdCardLanyard" value="Groups">
         @for (group of groups; track group.id) {
           <ui-split-panel-button [value]="group" [name]="group.name"></ui-split-panel-button>
         }

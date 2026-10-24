@@ -1,8 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {FilePreview} from "../../ui/file-preview/file-preview";
-import {FileSizePipe} from "../../../pipes/file-size-pipe";
 import {MarkdownPipe} from "../../../pipes/markdown-pipe";
-import {StorageFileURLPipe} from "../../../pipes/avatar-pipe";
 import {
   FileMessageContentDTO,
   MarkdownMessageContentDTO,
@@ -15,9 +13,7 @@ import {WebSocketServerConnection} from '../../../services/websocket/WebSocketSe
   selector: 'app-message-content',
     imports: [
         FilePreview,
-        FileSizePipe,
         MarkdownPipe,
-        StorageFileURLPipe
     ],
   templateUrl: './message-content.html',
   styleUrl: './message-content.css',

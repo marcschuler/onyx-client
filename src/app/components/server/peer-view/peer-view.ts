@@ -1,11 +1,6 @@
 import {Component, inject, Input} from '@angular/core';
 import {PeerConnection, PeerConnectionState} from '../../../services/peer/PeerConnection';
-import {
-  CircleXIcon,
-  LoaderIcon,
-  LucideAngularModule,
-  PowerOffIcon
-} from 'lucide-angular';
+import {LucideCircleX, LucideLoader, LucidePowerOff} from '@lucide/angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
 import {TrackMetadataMessage} from '../../../../api/onyx-server';
@@ -14,7 +9,9 @@ import {DebugService} from '../../../services/debug-service';
 @Component({
   selector: 'app-peer-view',
   imports: [
-    LucideAngularModule,
+    LucideCircleX,
+    LucideLoader,
+    LucidePowerOff,
   ],
   templateUrl: './peer-view.html',
   styleUrl: './peer-view.css'
@@ -30,9 +27,6 @@ export class PeerView {
   protected debugService = inject(DebugService);
 
   protected readonly PeerConnectionState = PeerConnectionState;
-  protected readonly LoaderIcon = LoaderIcon;
-  protected readonly PowerOffIcon = PowerOffIcon;
-  protected readonly CircleXIcon = CircleXIcon;
 
   protected openClientContextMenu($event: PointerEvent) {
     if (this.peer)
