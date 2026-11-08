@@ -1,0 +1,25 @@
+<p class="subtitle">
+  You can enter your <b>SteamID64</b> to let others see which games you play.
+  <br>
+  This feature only works if the server has configured a Steam API key and your Steam profile is set to public.
+  <!-- TODO link to documentation -->
+</p>
+<div class="container">
+  <p>Steam</p>
+  <input placeholder="steamID64" type="text" inputmode="numeric"
+         [(ngModel)]="steamId64" (ngModelChange)="onSteamId64Change($event)">
+  <button class="button-main" [disabled]="steamId64Invalid" (click)="save()">
+    save
+  </button>
+  <button class="button-red"
+          (click)="deleteSteamId()"
+          title="Delete Steam ID">
+    <svg lucideTrash2 class="w-4 h-4"></svg>
+  </button>
+  @if (steamId64Invalid) {
+    <p class="text-red-400 text-sm pt-1">Please enter a valid SteamID64.</p>
+  }
+</div>
+
+<p class="subtitle pt-2">
+</p>

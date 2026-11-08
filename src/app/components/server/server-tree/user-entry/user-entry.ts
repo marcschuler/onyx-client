@@ -3,11 +3,13 @@ import {Client, WebSocketServerConnection} from '../../../../services/websocket/
 import {StorageService} from '../../../../services/storage.service';
 import {ContextMenuService} from '../../../../services/ui/context-menu-service';
 import {ProfileImage} from '../../../client/profile-image/profile-image';
+import {LucideGamepadDirectional} from '@lucide/angular';
 
 @Component({
   selector: 'app-user-entry',
   imports: [
-    ProfileImage
+    ProfileImage,
+    LucideGamepadDirectional
   ],
   templateUrl: './user-entry.html',
   styleUrl: './user-entry.css',

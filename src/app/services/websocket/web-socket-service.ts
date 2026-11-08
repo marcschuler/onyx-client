@@ -380,7 +380,7 @@ export class WebSocketService {
   }
 
   private onGameIntegrationUpdate(event: GameIntegrationUpdate, connection: WebSocketServerConnection) {
-    //TODO
+    connection.client(event.clientId)!.game = event.game;
   }
 
   private onKickMessage(event: KickedEvent, connection: WebSocketServerConnection) {

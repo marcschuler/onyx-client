@@ -1,7 +1,7 @@
 import {Identity} from '../identity-service';
 import {
   ChannelControllerService, ChannelDTO, ChannelExtendedDTO,
-  ChatControllerService, GroupControllerService, InviteControllerService, SectionControllerService, SectionDTO,
+  ChatControllerService, Game, GroupControllerService, InviteControllerService, SectionControllerService, SectionDTO,
   SectionExtendedDTO, ServerControllerService, ServerDTO,
   ServerTreeChangeMessage, StorageControllerService, UserControllerService, UserSimpleDTO
 } from '../../../api/onyx-server';
@@ -186,6 +186,7 @@ export interface Client {
   id: KeyId;
   channel: ServerObjectId | undefined;
   details: UserSimpleDTO; // username, publicKey, avatar, groups
+  game?: Game;
 }
 
 export interface ServerConfig {

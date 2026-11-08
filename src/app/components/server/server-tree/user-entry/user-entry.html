@@ -10,6 +10,13 @@
     {{ client.details.username }}
   </span>
 
+  @if (client.game) {
+    <span class="chip-main ml-auto">
+      <svg lucideGamepadDirectional class="inline h-3 w-3"></svg>
+      {{ client.game.name }}
+  </span>
+  }
+
   <span class="ml-auto text-neutral-700">
     @for (group of client.details.groups; track group.id) {
       @if (group.label) {

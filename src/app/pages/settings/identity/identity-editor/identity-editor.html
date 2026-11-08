@@ -1,0 +1,47 @@
+<div class="group container">
+  <img alt="identity avatar" class="profile-big"
+       [src]="identity.id | identicon: 96 | async">
+
+  <div class="flex-1 min-w-0">
+    <div class="flex items-center gap-2">
+      <input class="flex-1 min-w-0  px-1! -mx-1 text-base! font-semibold text-neutral-100"
+             [id]="'identity-username-' + identity.id" aria-label="Username"
+             placeholder="At least three characters"
+             [(ngModel)]="username" (keydown.enter)="save()" (keydown.escape)="reset()">
+      @if (isDefault) {
+        <span class="chip-main">
+          Default
+        </span>
+      }
+    </div>
+
+    @if (!valid) {
+      <p class="text-red-400 text-xs mt-1">The username needs at least three characters</p>
+    }
+
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
+      <span class="detail" [title]="identity.id">
+        <svg lucideKeyRound></svg>
+        <span class="font-mono">{{ identity.id | slice: 0:12 }}</span>
+      </span>
+      <span class="detail">
+        <svg lucideCalendar></svg>
+        Created {{ identity.created | date: 'mediumDate' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-2 shrink-0">
+    @if (changed) {
+      <button class="button-dark w-auto!" (click)="reset()">Cancel</button>
+      <button class="button-main w-auto!" [disabled]="!valid || saving" (click)="save()">Save</button>
+    }
+    <button class="w-auto! p-2! bg-transparent! text-neutral-500 hover:text-red-400 hover:bg-red-900/30!
+                   disabled:opacity-30 disabled:hover:text-neutral-500 disabled:hover:bg-transparent!"
+            [disabled]="!deletable" (click)="delete.emit(identity)"
+            [title]="deletable ? 'Delete identity' : 'You need at least one identity'"
+            aria-label="Delete identity">
+      <svg lucideTrash2 class="w-4 h-4"></svg>
+    </button>
+  </div>
+</div>
