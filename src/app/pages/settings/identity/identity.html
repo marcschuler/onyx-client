@@ -1,19 +1,19 @@
-<div class="justify-center rounded-xl py-2 gap-4 flex flex-col">
-  @for (identity of identityService.identities; track identity) {
-    <div>
-      <input class="settings-grid-option" disabled [ngModel]="identity.username">
-      <p class="text-neutral-500">ID: {{ identity.id }}</p>
-      <p class="text-neutral-500">Created: {{ identity.created | date: 'medium' }}</p>
-    </div>
-    <div class="flex">
-      <button class="button-dark" disabled>Save</button>
-      <button class="button-red rounded-none" [disabled]="identityService.identities.length<2"
-              (click)="openIdentityDeleteDialog(identity)">Delete
-      </button>
-    </div>
-    <ui-split-panel-divider></ui-split-panel-divider>
+<div class="container-list">
+  <div>
+    <p class="subtitle">
+      Your identities are stored on this device only. Servers recognize you by its key.</p>
+  </div>
+
+  @for (identity of identityService.identities; track identity.id; let first = $first) {
+    <app-identity-editor [identity]="identity" [isDefault]="first"
+                         [deletable]="identityService.identities.length > 1"
+                         (delete)="openIdentityDeleteDialog($event)"></app-identity-editor>
   }
-  <div class="p-4"></div>
-  <h2>Create a new Identity</h2>
-  <app-identity-wizzard></app-identity-wizzard>
+
+
+  <div class="container">
+    <p>Create new identity</p>
+    <input id="username" class="w-full" placeholder="At least three characters" [(ngModel)]="username">
+    <button class="button-main">create</button>
+  </div>
 </div>

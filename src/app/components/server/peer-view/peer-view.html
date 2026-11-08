@@ -1,4 +1,4 @@
-<div class="border-2 relative items-center border-neutral-800 hover:border-neutral-200
+<div #container class="group border-2 relative items-center border-neutral-800 hover:border-neutral-200
 bg-neutral-800 rounded w-full h-full"
      [class.border-sky-400]="peer && peer.streams.talking"
      (contextmenu)="openClientContextMenu($event)">
@@ -13,7 +13,47 @@ bg-neutral-800 rounded w-full h-full"
           ID: {{stream.id}}
         </p>
       }
-      <video controls autoplay class="object-contain  w-full h-full" [srcObject]="stream"></video>
+      <!-- our own stream (no peer) is always muted, otherwise we would hear our own microphone -->
+      @if (hasVideo()) {
+        <video autoplay playsinline class="object-contain w-full h-full" [srcObject]="stream"
+               [volume]="volume" [muted]="!peer || muted"></video>
+      } @else {
+        <!-- audio only: play the audio invisibly and show the avatar instead of a black video -->
+        <audio autoplay [srcObject]="stream" [volume]="volume" [muted]="!peer || muted"></audio>
+        <div class="w-full h-full flex items-center justify-center">
+          <!-- the size is set by the tile (half its height), size=32 only sets the image resolution -->
+          <app-profile-image class="h-1/2! w-auto! max-h-32!" [user]="user" [connection]="connection" [size]="32"></app-profile-image>
+        </div>
+      }
+
+      <!-- custom controls, visible on hover (or keyboard focus) -->
+      <div class="absolute bottom-2 left-2 right-2 flex items-center gap-2 p-2 rounded
+                  bg-neutral-800/70 text-neutral-200
+                  opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+        @if (peer && hasAudio()) {
+          <button type="button" (click)="toggleMute()" [attr.aria-label]="muted || volume === 0 ? 'Unmute' : 'Mute'">
+            @if (muted || volume === 0) {
+              <svg lucideVolumeX class="w-5 h-5"></svg>
+            } @else {
+              <svg lucideVolume2 class="w-5 h-5"></svg>
+            }
+          </button>
+          <input type="range" min="0" max="1" step="0.01" aria-label="Volume"
+                 class="w-32 accent-sky-400"
+                 [value]="muted ? 0 : volume"
+                 (input)="setVolume($any($event.target).valueAsNumber)">
+        }
+        @if (hasVideo()) {
+          <button type="button" class="ml-auto" (click)="toggleFullscreen(container)"
+                  [attr.aria-label]="fullscreen ? 'Exit fullscreen' : 'Fullscreen'">
+            @if (fullscreen) {
+              <svg lucideMinimize class="w-5 h-5"></svg>
+            } @else {
+              <svg lucideMaximize class="w-5 h-5"></svg>
+            }
+          </button>
+        }
+      </div>
     } @else {
     }
   </div>
@@ -22,7 +62,7 @@ bg-neutral-800 rounded w-full h-full"
 
       <span>
         @if (peer) {
-          {{ peer.client.username }}
+          {{ peer.client.details.username }}
         } @else {
           {{ connection.identity.username }}
         }
@@ -39,7 +79,7 @@ bg-neutral-800 rounded w-full h-full"
             }
             @case (PeerConnectionState.Answered) {
               <svg lucideLoader class="inline"></svg>
-              Waiting for {{ peer.client.username }} (3/4)
+              Waiting for {{ peer.client.details.username }} (3/4)
             }
             @case (PeerConnectionState.Connected) {
               <!--<svg lucideSignal class="inline"></svg>-->

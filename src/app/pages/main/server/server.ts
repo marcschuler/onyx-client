@@ -52,7 +52,7 @@ export class Server {
     if (!this.resizing) return;
     const newWidth = event.clientX;
     if (newWidth >= this.minWidth && newWidth <= this.maxWidth) {
-      this.interfaceService.settings.sidebarWidth = newWidth;
+      this.interfaceService.interface.state.sidebarWidth = newWidth;
     }
   }
 
@@ -60,7 +60,7 @@ export class Server {
   stopResizing() {
     if (this.resizing) {
       this.resizing = false;
-      this.interfaceService.saveSettings();
+      this.interfaceService.interface.save();
     }
   }
 

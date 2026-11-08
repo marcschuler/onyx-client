@@ -10,6 +10,10 @@ export interface PeerConnection {
   client: Client;
   streams: PeerStreams;
   dataStream: DataStream;
+
+  makingOffer: boolean; // true while we create and send an offer (used to detect offer collisions)
+  answering: boolean; // true while we create and send an answer - no new offer may start meanwhile
+  negotiationPending: boolean; // a negotiation was skipped because another one was in progress
 }
 
 export interface PeerStreams{

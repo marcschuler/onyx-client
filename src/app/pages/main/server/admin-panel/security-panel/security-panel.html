@@ -4,7 +4,7 @@
   <p class="settings-grid-desc">
     Enter a password if the server should require one to join
     <br>
-    @if (connection.data && connection.data.server.settings.password){
+    @if (connection.server.info.settings.password){
       Currently the server is password protected.
     } @else {
       Currently the server has no password.

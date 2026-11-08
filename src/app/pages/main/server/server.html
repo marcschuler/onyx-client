@@ -1,7 +1,7 @@
 <div class="min-h-screen flex">
   @if (!minimized) {
     <aside class="block min-h-screen mx-h-screen shrink-0 bg-neutral-950"
-           [ngStyle]="{ width: interfaceService.settings.sidebarWidth + 'px' }">
+           [ngStyle]="{ width: interfaceService.interface.state.sidebarWidth + 'px' }">
       <div class="flex flex-col h-screen overflow-hidden">
         <div class="flex-1 flex overflow-hidden min-h-0">
           <app-server-tree class="flex-1 p-2 overflow-y-auto" [connection]="connection"></app-server-tree>
@@ -20,7 +20,7 @@
   }
 
   <span class="group relative p-1 max-w-8"
-        [ngStyle]="{ width: (minimized? interfaceService.settings.sidebarWidth:0) + 'px' }">
+        [ngStyle]="{ width: (minimized? interfaceService.interface.state.sidebarWidth:0) + 'px' }">
     <button class="absolute top-64 hoverable button-small" (click)="minimized=!minimized"> <!-- TODO center vertically not with top-64 -->
       @if (minimized) {
         <svg lucidePanelLeftOpen class="w-4"></svg>

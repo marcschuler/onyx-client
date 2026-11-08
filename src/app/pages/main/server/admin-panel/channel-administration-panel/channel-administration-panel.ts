@@ -1,11 +1,9 @@
 import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
-import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
+import {Section, WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import {RestService} from '../../../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
-import {SectionDTO} from '../../../../../../api/onyx-server/model/sectionDTO';
 import { LucideGripVertical} from '@lucide/angular';
-import { SectionExtendedDTO, ServerTreeChangeMessage} from '../../../../../../api/onyx-server';
 
 @Component({
   selector: 'app-channel-administration-panel',
@@ -24,7 +22,6 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
 
 
   @Input() connection!: WebSocketServerConnection;
-  @Input() serverTree!: ServerTreeChangeMessage;
 
   dropListSections: string[] = [];
 
@@ -38,11 +35,11 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
   }
 
   update() {
-    this.dropListSections = this.connection.data!.sections.map(s => 'droplist-section-' + s.id);
+    this.dropListSections = this.connection.server.sections.map(s => 'droplist-section-' + s.id);
   }
 
-  protected dropChannel(event: CdkDragDrop<SectionExtendedDTO, any>) {
-    const channel = (event.previousContainer.data as SectionDTO).channels[event.previousIndex];
+  protected dropChannel(event: CdkDragDrop<Section, any>) {
+    const channel = event.previousContainer.data.channels[event.previousIndex];
     const newOrder = event.currentIndex;
     console.log("moved channel " + channel.name + " (" + channel.id + ") to order " + newOrder + " (from " + event.previousIndex + ")")
 
@@ -62,8 +59,8 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
     }
   }
 
-  protected dropSection(event: CdkDragDrop<SectionDTO, any>) {
-    const section = this.connection.data!.sections[event.previousIndex];
+  protected dropSection(event: CdkDragDrop<Section, any>) {
+    const section = this.connection.server.sections[event.previousIndex];
     const newOrder = event.currentIndex;
     console.log("moved section " + section.name + " (" + section.id + ") from " + event.previousIndex + " -> " + event.currentIndex);
     if (event.currentIndex == event.previousIndex) {
@@ -75,7 +72,7 @@ export class ChannelAdministrationPanel implements OnInit, OnChanges {
       }, error => this.restService.handleError(error));
   }
 
-  protected createChannel(section: SectionDTO) {
+  protected createChannel(section: Section) {
     this.connection.rest.channelController.create({
       name: "Channel",
       sectionId: section.id,

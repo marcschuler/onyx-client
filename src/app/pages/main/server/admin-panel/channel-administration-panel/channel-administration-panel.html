@@ -1,32 +1,30 @@
-@if (connection.data) {
-  <div cdkDropList (cdkDropListDropped)="dropSection($event)">
-    @for (section of connection.data.sections; track section) {
-      <div class="p-2 rounded m-1 border border-neutral-800" cdkDrag>
-        <h3 class="p-2 relative">
-          <svg lucideGripVertical cdkDragHandle class="inline"></svg>
-          {{ section.name }}
-        </h3>
-        <div cdkDropList [id]="'droplist-section-' + section.id" [cdkDropListData]="section"
-             [cdkDropListConnectedTo]="dropListSections"
-             class="min-h-8 " (cdkDropListDropped)="dropChannel($event)">
-          @for (channel of section.channels; track channel) {
-            <div class="p-2 ml-4 m-1  rounded relative bg-neutral-800" cdkDrag>
-              <svg lucideGripVertical cdkDragHandle class="inline"></svg>
-              {{ channel.name }}
-            </div>
-          }
-        </div>
-        <div class="px-4">
-          <button class="button-ghost min-w-full  !p-1 inline-block !bg-neutral-800" (click)="createChannel(section)">
-            + Channel
-          </button>
-        </div>
+<div cdkDropList (cdkDropListDropped)="dropSection($event)">
+  @for (section of connection.server.sections; track section) {
+    <div class="p-2 rounded m-1 border border-neutral-800" cdkDrag>
+      <h3 class="p-2 relative">
+        <svg lucideGripVertical cdkDragHandle class="inline"></svg>
+        {{ section.name }}
+      </h3>
+      <div cdkDropList [id]="'droplist-section-' + section.id" [cdkDropListData]="section"
+           [cdkDropListConnectedTo]="dropListSections"
+           class="min-h-8 " (cdkDropListDropped)="dropChannel($event)">
+        @for (channel of section.channels; track channel) {
+          <div class="p-2 ml-4 m-1  rounded relative bg-neutral-800" cdkDrag>
+            <svg lucideGripVertical cdkDragHandle class="inline"></svg>
+            {{ channel.name }}
+          </div>
+        }
       </div>
-    }
-  </div>
-  <div class="px-4">
-    <button class="button-ghost min-w-full !p-1 inline-block" (click)="createSection()">
-      + Section
-    </button>
-  </div>
-}
+      <div class="px-4">
+        <button class="button-ghost min-w-full  !p-1 inline-block !bg-neutral-800" (click)="createChannel(section)">
+          + Channel
+        </button>
+      </div>
+    </div>
+  }
+</div>
+<div class="px-4">
+  <button class="button-ghost min-w-full !p-1 inline-block" (click)="createSection()">
+    + Section
+  </button>
+</div>

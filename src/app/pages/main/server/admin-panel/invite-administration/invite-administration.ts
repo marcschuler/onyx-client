@@ -30,14 +30,14 @@ export class InviteAdministration implements OnInit {
 
 
   ngOnInit(): void {
-    this.inviteControllerService.all(this.connection.data!.server.id).subscribe(invites => {
+    this.inviteControllerService.all(this.connection.server.info.id).subscribe(invites => {
       this.invites = invites;
     }, error => this.restService.handleError(error));
   }
 
 
   protected create() {
-    this.connection.rest.inviteController.create(this.connection.data!.server.id, {
+    this.connection.rest.inviteController.create(this.connection.server.info.id, {
       code: this.code,
       title: this.title,
       usages: 0

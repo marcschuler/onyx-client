@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {booleanAttribute, Component, EventEmitter, Input, Output} from '@angular/core';
 import {CdkMenuItem} from '@angular/cdk/menu';
 import {LucideDynamicIcon, LucideIcon} from '@lucide/angular';
 
@@ -14,7 +14,7 @@ import {LucideDynamicIcon, LucideIcon} from '@lucide/angular';
 export class ContextMenuButton {
 
   @Input() icon: LucideIcon | undefined;
-  @Input() subMenu: boolean = false;
+  @Input({transform: booleanAttribute}) danger = false; // red, for destructive actions (kick, ban)
 
   @Output() click: EventEmitter<PointerEvent> = new EventEmitter();
   @Input() disabled!: boolean;

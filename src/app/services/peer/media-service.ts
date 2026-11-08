@@ -79,6 +79,11 @@ export class MediaService {
         track.onended = () => {
           console.log("peer: track: Track has ended");
           this.onLocalTrackRemove(track, stream);
+          // ended externally (e.g. "stop sharing" in the OS/portal indicator): reset UI state
+          // once every track of this stream is gone
+          if (this.sharedStreams[type] === stream && stream.getTracks().every(t => t.readyState === 'ended')) {
+            this.sharedStreams[type] = undefined;
+          }
         };
       })
     } catch (e: any) {

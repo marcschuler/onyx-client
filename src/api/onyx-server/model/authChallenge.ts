@@ -7,10 +7,10 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Challenge } from './challenge';
 
 
 export interface AuthChallenge { 
-    challenge: string;
-    validUntil: string;
+    challenge: Challenge;
 }
 

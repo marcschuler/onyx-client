@@ -105,6 +105,17 @@ export class IdentityService {
     return identity;
   }
 
+  /**
+   * Changes the username of an identity and saves it.
+   * Servers get the new name on the next connect (it's sent while authenticating).
+   */
+  async rename(identity: Identity, username: string) {
+    if (!this.identities.includes(identity))
+      throw new Error("Identity is not in known list");
+    identity.username = username;
+    await this.saveIdentities();
+  }
+
   delete(identity: Identity) {
     const index = this.identities.indexOf(identity);
     if (index !== -1) {

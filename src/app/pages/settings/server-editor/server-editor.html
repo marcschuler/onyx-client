@@ -1,17 +1,22 @@
-<div class="pt-4">
-  <label>Name</label>
-  <input [(ngModel)]="name" placeholder="A custom server name">
-  <label>URL</label>
-  <input [(ngModel)]="url">
-  <label>Server password</label>
-  <input [(ngModel)]="password" placeholder="Server password. Empty if none exists">
-</div>
+<h3>Server Details</h3>
+<div class="container">
+  <div>
+    <label>Name</label>
+    <input [(ngModel)]="name" placeholder="A custom server name" class="w-32">
+  </div>
+  <div>
+    <label>Server password</label>
+    <input [(ngModel)]="password" placeholder="Server password. Empty if none exists">
+  </div>
+  <div>
+    <label>URL</label>
+    <input [(ngModel)]="url" class="min-w-64">
+  </div>
 
-<div class="flex justify-end pt-4">
-  <button (click)="save()">
+  <button (click)="save()" class="button-main">
     Save
   </button>
-  <button class="button-dark button-red" (click)="openDeletePopup()">
-    Delete Server
+  <button class="button-red" (click)="openDeletePopup()">
+    <svg lucideTrash2 class="w-4 h-4"></svg>
   </button>
 </div>

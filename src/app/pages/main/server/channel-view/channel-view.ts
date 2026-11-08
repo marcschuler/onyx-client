@@ -8,7 +8,8 @@ import {
   OnDestroy,
   SimpleChanges,
   ViewChild,
-  inject
+  inject,
+  signal
 } from '@angular/core';
 
 import {
@@ -26,8 +27,19 @@ import {NgStyle} from '@angular/common';
 import {TrackType} from '../../../../services/peer/MediaTracker';
 import {MediaService} from '../../../../services/peer/media-service';
 import {LucideHexagon} from '@lucide/angular';
-import {ChannelChangeEvent} from '../../../../../api/onyx-server';
-import {getChannelFromId} from '../../../../services/Util';
+import {ChannelChangeEvent, TrackMetadataMessage} from '../../../../../api/onyx-server';
+import {bestGridLayout, MIN_TILE_WIDTH} from '../../../../services/Util';
+import {PeerConnection} from '../../../../services/peer/PeerConnection';
+
+/**
+ * A single stream shown in the talk view
+ */
+interface Tile {
+  stream: MediaStream;
+  type: TrackMetadataMessage.LabelEnum;
+  peer?: PeerConnection; // undefined for our own streams
+  hasVideo: boolean;
+}
 
 @Component({
   selector: 'app-channel-view',
@@ -52,34 +64,30 @@ export class ChannelView implements AfterViewInit, OnChanges, OnDestroy {
   @Input() channelId!: ServerObjectId;
   @Input() titleOffsetLeft!: boolean;
 
-  @ViewChild('title') titleContainer!: ElementRef;
-  @ViewChild('peerGrid') peerGridContainer!: ElementRef;
   @ViewChild('talkView') talkViewContainer!: ElementRef;
 
+  // the grid is inside an @if, so (re)observe it whenever it appears
+  @ViewChild('peerGrid') set peerGridContainer(element: ElementRef<HTMLElement> | undefined) {
+    this.resizeObserver.disconnect();
+    if (element)
+      this.resizeObserver.observe(element.nativeElement);
+  }
 
   channel!: ChannelDTO;
 
-  titleHeight = 0; //in px
-  gridCols = 2;
-  gridRows = 2;
-  gridColHeight = 128;
-  gridColWidth = 128;
-
   resizing = false;
 
-  ngAfterViewInit(): void {
-    setInterval(() => {
-      this.updateGridSize();
-    }, 50)
-    setInterval(() => {
-      this.updateGridSize(); //TODO this is bad
-    }, 1000)
+  // size of the grid container. A signal, so the view updates although ResizeObserver runs outside of zone.js
+  private gridSize = signal({width: 0, height: 0});
+  private resizeObserver = new ResizeObserver(([entry]) =>
+    this.gridSize.set({width: entry.contentRect.width, height: entry.contentRect.height}));
 
+  ngAfterViewInit(): void {
     this.webSocketService.addHandler(ChannelChangeEvent.TypeEnum.ChannelChangeEvent, this.onChannelChange);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.channel = getChannelFromId(this.channelId, this.connection.data!.sections)!;
+    this.channel = this.connection.channel(this.channelId)!;
   }
 
   onChannelChange: MessageHandler<ChannelChangeEvent> = (event) => {
@@ -90,7 +98,44 @@ export class ChannelView implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.resizeObserver.disconnect();
     this.webSocketService.removeHandler(this.onChannelChange);
+  }
+
+  /**
+   * All streams to show: our own first, then the ones of our peers
+   */
+  protected get tiles(): Tile[] {
+    const tiles: Tile[] = [];
+    const add = (stream: MediaStream | undefined, type: TrackMetadataMessage.LabelEnum, peer?: PeerConnection) => {
+      if (stream && stream.getTracks().length > 0)
+        tiles.push({stream, type, peer, hasVideo: stream.getVideoTracks().length > 0});
+    };
+    const local = this.mediaService.localStream;
+    add(local.cameraMic, 'CAMERAMIC');
+    add(local.screen, 'SCREEN');
+    for (const peer of this.peerConnectionService.peers) {
+      add(peer.streams.screen, 'SCREEN', peer);
+      add(peer.streams.cameraMic, 'CAMERAMIC', peer);
+    }
+    return tiles;
+  }
+
+  /**
+   * Without any video stream, every tile is shown in the grid (audioTiles is empty).
+   * With video, audio-only tiles get a small row on top and only video tiles are in the grid.
+   */
+  protected get talkTiles(): { audioTiles: Tile[], gridTiles: Tile[] } {
+    const tiles = this.tiles;
+    const videoTiles = tiles.filter(t => t.hasVideo);
+    if (videoTiles.length === 0)
+      return {audioTiles: [], gridTiles: tiles};
+    return {audioTiles: tiles.filter(t => !t.hasVideo), gridTiles: videoTiles};
+  }
+
+  protected layout(count: number) {
+    const {width, height} = this.gridSize();
+    return bestGridLayout(count, width, height, 16 / 9, 8, MIN_TILE_WIDTH);
   }
 
   /**
@@ -115,70 +160,15 @@ export class ChannelView implements AfterViewInit, OnChanges, OnDestroy {
     if (newHeightVh < 10) newHeightVh = 10;
     if (newHeightVh > 90) newHeightVh = 90;
 
-
-    this.interfaceService.settings.channelSplitSize.peerView = newHeightVh;
-    this.updateGridSize();
+    this.interfaceService.interface.state.channelSplitSize.peerView = newHeightVh;
   }
 
   @HostListener('document:mouseup')
   stopResizing() {
     if (this.resizing) {
       this.resizing = false;
-      this.interfaceService.saveSettings();
+      this.interfaceService.interface.save();
     }
-  }
-
-
-  @HostListener('window:resize')
-  onResize() {
-    this.updateGridSize();
-  }
-
-
-  updateGridSize() {
-    const titleHeight =
-      this.titleContainer.nativeElement.getBoundingClientRect().height;
-    this.titleHeight = titleHeight;
-
-    if (!this.peerGridContainer)
-      return;
-    const containerWidth = this.peerGridContainer.nativeElement.clientWidth;
-    const talkViewHeight =
-      this.talkViewContainer.nativeElement.getBoundingClientRect().height;
-
-    const containerHeight = talkViewHeight;
-
-
-    const ratio = containerWidth / containerHeight;
-    const peers = this.peerConnectionService.peers.length + 1;
-
-    let cols = 0;
-    let rows = 0;
-
-    //feel like i'm bruteforcing something very simple
-    while (true) {
-      if (cols == rows) {
-        cols++
-      } else {
-        rows++;
-      }
-      if (cols * rows >= peers)
-        break;
-    }
-
-    let colHeight = containerHeight / rows;
-    let colWidth = colHeight / 9 * 16;
-
-    if (colWidth * cols > containerWidth) {
-      colWidth = containerWidth / cols;
-      colHeight = colWidth / 16 * 9;
-    }
-
-    this.gridCols = cols;
-    this.gridRows = rows;
-    this.gridColHeight = colHeight;
-    this.gridColWidth = colHeight / 9 * 16;
-    //console.log("using " + cols + "x" + rows + " for height " + colHeight + "/" + containerHeight)
   }
 
   protected readonly TrackType = TrackType;

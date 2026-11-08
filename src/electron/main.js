@@ -1,7 +1,26 @@
-const {app, BrowserWindow, shell, ipcMain, Menu} = require('electron');
+const {app, BrowserWindow, shell, ipcMain, Menu, session, desktopCapturer} = require('electron');
 const path = require('path');
 
 let mainWindow;
+
+// Only these schemes may be handed to the OS. Links come from untrusted chat content,
+// so e.g. file://, smb:// or custom protocol handlers must never be opened.
+const EXTERNAL_URL_PROTOCOLS = new Set(['http:', 'https:', 'mailto:']);
+
+function openExternalSafe(url) {
+  let protocol;
+  try {
+    protocol = new URL(url).protocol;
+  } catch {
+    console.warn("blocked opening invalid url", url);
+    return;
+  }
+  if (!EXTERNAL_URL_PROTOCOLS.has(protocol)) {
+    console.warn("blocked opening url with disallowed protocol " + protocol, url);
+    return;
+  }
+  shell.openExternal(url);
+}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -62,22 +81,39 @@ function createWindow() {
 
   // Intercept opening links in the electron window and open in an external browser
   mainWindow.webContents.setWindowOpenHandler(({url}) => {
-    shell.openExternal(url);
+    openExternalSafe(url);
     return {action: 'deny'}; // prevent Electron from opening a new window
   });
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (url !== mainWindow.webContents.getURL()) {
       event.preventDefault();
-      shell.openExternal(url);
+      openExternalSafe(url);
+    }
+  });
+
+  // Electron rejects navigator.mediaDevices.getDisplayMedia() unless a handler is registered.
+  // On Wayland, desktopCapturer.getSources() opens the xdg-desktop-portal picker (PipeWire)
+  // and returns only the source the user picked. On X11/Windows/macOS it lists every source
+  // without a picker, so the first (primary) screen is used.
+  session.defaultSession.setDisplayMediaRequestHandler(async (_request, callback) => {
+    try {
+      const sources = await desktopCapturer.getSources({types: ['screen', 'window']});
+      if (sources.length === 0) {
+        callback({}); // picker cancelled -> NotAllowedError in the renderer
+        return;
+      }
+      callback({video: sources[0]});
+    } catch (e) {
+      console.error("display media request failed", e);
+      callback({});
     }
   });
 
   mainWindow.loadURL(startUrl);
 }
 
-// Fix for Linux Wayland Issues
+// Linux Wayland: capture screens through PipeWire (default in recent Electron, kept as a safety net)
 app.commandLine.appendSwitch('enable-features', 'WebRTCPipeWireCapturer');
-app.commandLine.appendSwitch('enable-webrtc-pipewire-capturer');
 
 app.whenReady().then(createWindow);
 

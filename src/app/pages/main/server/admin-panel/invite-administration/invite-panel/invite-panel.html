@@ -1,73 +1,89 @@
-<div class="container my-2">
-  <div class="flex items-center gap-2" (click)="open = !open">
+<div class="container flex-wrap">
+  <div class="flex items-center gap-2 w-64">
     <svg lucideTicketSlash class="inline"></svg>
     @if (!open) {
       <h3>{{ invite.title }}</h3>
-      <svg lucideChevronDown class="ml-auto"></svg>
     } @else {
       <input [(ngModel)]="invite.title" class="!bg-neutral-800">
-      <svg lucideChevronUp class="ml-auto"></svg>
-
     }
   </div>
 
+  <p class="w-48">
+    @if (invite.startDate) {
+      <span class="detail">
+          <svg lucideCalendarClock></svg>
+          <span>{{ invite.startDate | date:'medium' }}</span>
+     </span>
+    }
+    @if (invite.endDate) {
+      <span class="detail">
+          <svg lucideCalendarChevronsRight></svg>
+          <span>{{ invite.endDate | date:'medium' }}</span>
+      </span>
+    }
+  </p>
 
-  @if (!open) {
-    <p>
-      {{ invite.description }}
-    </p>
-    <p>
-      @if (invite.startDate && invite.endDate) {
-        Valid between {{ invite.startDate }} and {{ invite.endDate }}
-      } @else if (invite.startDate) {
-        Valid starting {{ invite.startDate }}
-      } @else if (invite.endDate) {
-        Valid until {{ invite.endDate }}
-      }
-    </p>
-  } @else {
-    <textarea [(ngModel)]="invite.description" placeholder="invite description..."></textarea>
-    <div class="grid grid-cols-3">
-      <p>Code</p>
-      <input type="password" [(ngModel)]="invite.code" min="3" max="32">
-      <button class="button-circle">
-        <svg lucideEye></svg>
-      </button>
 
-      <p class="">Starts</p>
-      <input type="datetime-local" [(ngModel)]="invite.startDate">
-      <button class="button-circle" (click)="invite.startDate = undefined">
-        <svg lucideX></svg>
-      </button>
-
-      <p class="">Ends</p>
-      <input type="datetime-local" [(ngModel)]="invite.endDate">
-      <button class="button-circle" (click)="invite.endDate = undefined">
-        <svg lucideX></svg>
-      </button>
-
-      <p>Usages</p>
-      <input type="number" [(ngModel)]="invite.maxUsages">
-      <button class="button-circle" (click)="invite.maxUsages = undefined">
-        <svg lucideX></svg>
-      </button>
-    </div>
-
-    <div class="item-row-right">
-      <button class="button-border-onyx" (click)="save()">save</button>
-      <button class="button-border-red" (click)="delete()">delete</button>
-    </div>
-  }
-  <div class="pt-3">
+  <div class="w-32 flex-1">
     @if (invite.maxUsages) {
       <div class="rounded-xl relative">
         <div class="h-2   rounded-xl absolute bg-neutral-700 w-full"></div>
         <div class="h-2 rounded-xl absolute bg-sky-200"
              [style.width.%]="Math.min(invite.usages / invite.maxUsages * 100,100)"></div>
-        <p class="text-center pt-3">{{ invite.usages }} / {{ invite.maxUsages }} invites used</p>
+        <p class="text-center pt-3 subtitle">{{ invite.usages }} / {{ invite.maxUsages }} used</p>
       </div>
     } @else {
-      <p class="text-center">{{ invite.usages }} invites used</p>
+      <p class="subtitle">{{ invite.usages }} used</p>
     }
   </div>
+  <button (click)="open = !open">
+    @if (open) {
+      <svg lucideChevronUp class="ml-auto"></svg>
+    } @else {
+      <svg lucideChevronDown class="ml-auto"></svg>
+    }
+  </button>
+
+
+
+  @if (open) {
+    <div class="basis-full">
+      <textarea [(ngModel)]="invite.description" placeholder="description..."></textarea>
+      <div class="grid grid-cols-3">
+        <p>Code</p>
+        <input [type]="showCode?'':'password'" [(ngModel)]="invite.code" min="3" max="32">
+        <button class="button-circle" (click)="showCode=!showCode">
+          <svg lucideEye></svg>
+        </button>
+
+        <p class="">Starts</p>
+        <input type="datetime-local" [(ngModel)]="invite.startDate">
+        <button class="button-circle" (click)="invite.startDate = undefined">
+          <svg lucideX></svg>
+        </button>
+
+        <p class="">Ends</p>
+        <input type="datetime-local" [(ngModel)]="invite.endDate">
+        <button class="button-circle" (click)="invite.endDate = undefined">
+          <svg lucideX></svg>
+        </button>
+
+        <p>Max Usages</p>
+        <input type="number" [(ngModel)]="invite.maxUsages">
+        <button class="button-circle" (click)="invite.maxUsages = undefined">
+          <svg lucideX></svg>
+        </button>
+
+        <p>Groups</p>
+        <ui-multi-select [(selectedList)]="invite.groups">
+        </ui-multi-select>
+      </div>
+
+      <div class="item-row-right">
+        <button class="button-border-onyx" (click)="save()">save</button>
+        <button class="button-border-red" (click)="delete()">delete</button>
+      </div>
+    </div>
+  }
+
 </div>

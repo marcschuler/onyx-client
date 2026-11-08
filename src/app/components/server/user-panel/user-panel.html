@@ -3,7 +3,7 @@
   <div class="flex items-center px-2 gap-2">
     <app-profile-image [user]="connection.me.details" [connection]="connection"></app-profile-image>
     <h4>
-      {{ connection.me.username }}
+      {{ connection.me.details.username }}
       <div>
         <button class="button-small button-dark" (click)="mediaService.changeTrack(TrackType.Microphone)">
           <svg [lucideIcon]="mediaService.sharedStreams[TrackType.Microphone]?LucideMic:LucideMicOff"

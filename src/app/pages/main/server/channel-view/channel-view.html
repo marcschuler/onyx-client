@@ -1,5 +1,5 @@
-<div class="h-screen">
-  <div #title>
+<div class="h-screen flex flex-col">
+  <div>
     <div class="bg-neutral-900 p-2 rounded-br-xl border-b border-neutral-600">
       <h3 class="font-semibold" [class.skeleton]="!channel" [style.padding-left]="titleOffsetLeft?'40px':'0'">
         @if (channel) {
@@ -11,53 +11,43 @@
   </div>
   @let showTalkView = peerConnectionService.peers.length > 0 || (mediaService.sharedStreams[TrackType.Microphone] !== undefined || mediaService.sharedStreams[TrackType.Camera] !== undefined || mediaService.sharedStreams[TrackType.Screen] !== undefined);
   @if (showTalkView) {
-    <!-- Talk View -->
-    <div #talkView
-         [ngStyle]="{ maxHeight: interfaceService.settings.channelSplitSize.peerView + 'vh',minHeight: interfaceService.settings.channelSplitSize.peerView + 'vh' }">
-      <div #peerGrid class="flex flex-wrap items-stretch h-full items-center justify-center">
-        @if (mediaService.localStream.cameraMic) {
-          <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
-                         [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
-                         class="p-1"
-                         [stream]="mediaService.localStream.cameraMic" [streamType]="'CAMERAMIC'"
-                         [connection]="connection"></app-peer-view>
-        }
-        @if (mediaService.localStream.screen) {
-          <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
-                         [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
-                         class="p-1"
-                         [stream]="mediaService.localStream.screen" [streamType]="'SCREEN'"
-                         [connection]="connection"></app-peer-view>
-        }
+    @let talk = talkTiles;
+    @let audioTiles = talk.audioTiles;
+    @let gridTiles = talk.gridTiles;
+    @let grid = layout(gridTiles.length);
 
-        @for (peer of peerConnectionService.peers; track peer) {
-          @if (peer.streams.screen) {
-            <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
-                           [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
-                           class="p-1"
-                           [connection]="connection" [peer]="peer" [stream]="peer.streams.screen"
-                           [streamType]="'SCREEN'"></app-peer-view>
+    <!-- Talk View -->
+    <div #talkView class="flex flex-col gap-2 p-1 shrink-0"
+         [ngStyle]="{ maxHeight: interfaceService.interface.state.channelSplitSize.peerView + 'vh',minHeight: interfaceService.interface.state.channelSplitSize.peerView + 'vh' }">
+      @if (audioTiles.length > 0) {
+        <div class="flex gap-2 shrink-0 overflow-x-auto justify-center-safe">
+          @for (tile of audioTiles; track tile.stream.id) {
+            <app-peer-view class="block shrink-0 w-[200px] h-[112px]"
+                           [stream]="tile.stream" [streamType]="tile.type" [peer]="tile.peer"
+                           [connection]="connection"></app-peer-view>
           }
-          @if (peer.streams.cameraMic) {
-            <app-peer-view [style.min-height]="gridColHeight + 'px'" [style.min-width]="gridColWidth + 'px'"
-                           [style.max-height]="gridColHeight + 'px'" [style.max-width]="gridColWidth + 'px'"
-                           class="p-1"
-                           [connection]="connection" [peer]="peer" [stream]="peer.streams.cameraMic"
-                           [streamType]="'CAMERAMIC'"></app-peer-view>
-          }
+        </div>
+      }
+      <div #peerGrid class="flex-1 min-h-0 flex flex-wrap justify-center gap-2"
+           [class.content-center]="!grid.scroll" [class.content-start]="grid.scroll"
+           [class.overflow-y-auto]="grid.scroll">
+        @for (tile of gridTiles; track tile.stream.id) {
+          <app-peer-view class="block"
+                         [style.width.px]="grid.tileWidth" [style.height.px]="grid.tileHeight"
+                         [stream]="tile.stream" [streamType]="tile.type" [peer]="tile.peer"
+                         [connection]="connection"></app-peer-view>
         }
       </div>
     </div>
 
     <div
-      class="h-1 min-w-full cursor-row-resize bg-neutral-700 hover:bg-neutral-600"
+      class="h-1 min-w-full shrink-0 cursor-row-resize bg-neutral-700 hover:bg-neutral-600"
       (mousedown)="startResizing($event)"
     ></div>
   }
 
   <!-- Messages view -->
-  <div
-    [ngStyle]="{ height: 'calc(' + (100 - (showTalkView?interfaceService.settings.channelSplitSize.peerView:0)) + 'vh - 4px - '+titleHeight+'px)' }">
+  <div class="flex-1 min-h-0">
     <app-message-view [connection]="connection" [channelId]="channelId" [chatMode]="channel?channel.chatMode:undefined"></app-message-view>
   </div>
 </div>

@@ -2,10 +2,10 @@ import {ComponentRef, inject, Injectable, InjectionToken, Injector, runInInjecti
 
 import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
-import {Client, WebSocketServerConnection} from '../websocket/WebSocketServerConnection';
+import {WebSocketServerConnection} from '../websocket/WebSocketServerConnection';
 import {ClientContextMenu} from '../../components/client/client-context-menu/client-context-menu';
 import {MENU_STACK, MenuStack} from '@angular/cdk/menu';
-import {ChannelDTO} from '../../../api/onyx-server';
+import {ChannelDTO, UserSimpleDTO} from '../../../api/onyx-server';
 import {ChannelContextMenu} from '../../components/channel/channel-context-menu/channel-context-menu';
 import {Settings} from '../../pages/settings/settings';
 import {BiMap} from 'mnemonist';
@@ -47,9 +47,9 @@ export class ContextMenuService {
     })
   }
 
-  public openClientContextMenu(client: Client, connection: WebSocketServerConnection, event: MouseEvent) {
+  public openClientContextMenu(user: UserSimpleDTO, connection: WebSocketServerConnection, event: MouseEvent) {
     this.openContextMenu(ClientContextMenu, event, {
-      client: client,
+      user: user,
       connection: connection,
     })
   }

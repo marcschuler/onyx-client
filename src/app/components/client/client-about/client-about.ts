@@ -3,7 +3,7 @@ import {Client, WebSocketServerConnection} from '../../../services/websocket/Web
 import {KeyVisualizer} from '../../ui/key-visualizer/key-visualizer';
 import {Chip} from '../../ui/chip/chip';
 import {ProfileImage} from '../profile-image/profile-image';
-import {getChannelFromId} from '../../../services/Util';
+import {UserSimpleDTO} from '../../../../api/onyx-server';
 import {LucideHexagon} from '@lucide/angular';
 import {SlicePipe} from '@angular/common';
 
@@ -21,8 +21,11 @@ import {SlicePipe} from '@angular/common';
 })
 export class ClientAbout {
 
-  @Input() client!: Client;
+  @Input() user!: UserSimpleDTO;
   @Input() connection!: WebSocketServerConnection;
 
-  protected readonly getChannelFromId = getChannelFromId;
+  /** the online client of this user, undefined if the user is offline */
+  protected get client(): Client | undefined {
+    return this.connection.client(this.user.id);
+  }
 }

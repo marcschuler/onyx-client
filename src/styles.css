@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+@import "./style.ui.css";
 
 @tailwind utilities;
 
@@ -31,7 +32,7 @@
   --color-neutral-900: oklch(from #5e69f6 20.5% calc(c * var(--colorize)) h);
   --color-neutral-950: oklch(from #5e69f6 14.5% calc(c * var(--colorize)) h);
 
-  --color-text-faded: var(--color-neutral-700)
+  --color-text-faded: var(--color-neutral-600)
 }
 
 body {
@@ -61,6 +62,10 @@ input::placeholder {
 
 textarea {
   @apply bg-neutral-900 border border-neutral-700 text-neutral-200 text-sm rounded-lg  focus:outline-none focus:ring-onyx-500 focus:border-onyx-500 block w-full px-2 py-1
+}
+
+ul{
+  @apply list-decimal
 }
 
 
@@ -110,7 +115,8 @@ textarea {
 }
 
 .button-red {
-  @apply hover:bg-red-800 border-red-600 border-1 bg-red-800/10 disabled:bg-red-800/10 disabled:border-neutral-800/10
+  @apply hover:text-red-400 hover:bg-red-900/30! bg-neutral-900
+  disabled:opacity-30 disabled:hover:text-neutral-500 disabled:hover:bg-transparent!
 }
 
 .button-ghost {
@@ -180,11 +186,11 @@ a {
 }
 
 h1 {
-  @apply text-3xl
+  @apply text-3xl font-semibold
 }
 
 h2 {
-  @apply text-2xl
+  @apply text-2xl font-semibold
 }
 
 h3 {
@@ -254,11 +260,6 @@ GENERAL
   .bg-animate {
     @apply bg-transparent transition-colors duration-500;
   }
-}
-
-/* a container for generic items */
-.container {
-  @apply bg-neutral-800 rounded px-4 py-2! shadow-md
 }
 
 

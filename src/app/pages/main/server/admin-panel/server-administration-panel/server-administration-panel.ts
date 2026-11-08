@@ -12,7 +12,15 @@ import {
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import {asTypeMarkdown} from '../../../../../components/chat/message-content/message-content';
 import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList} from '@angular/cdk/drag-drop';
-import {LucideGripVertical, LucideImageOff, LucideTextInitial, LucideX} from '@lucide/angular';
+import {
+  LucideChevronDown,
+  LucideChevronUp,
+  LucideGripVertical,
+  LucideImageOff,
+  LucideTextInitial,
+  LucideTrash,
+  LucideX
+} from '@lucide/angular';
 import {deleteInList, reorderListItem} from '../../../../../services/Util';
 import {PreviewImage} from '../../../../../components/ui/preview-image/preview-image';
 import {FileUploadService, UploadState, UploadType} from '../../../../../services/rest/file-upload-service';
@@ -30,7 +38,10 @@ import {FileUploadService, UploadState, UploadType} from '../../../../../service
     LucideX,
     CdkDrag,
     CdkDropList,
-    PreviewImage
+    PreviewImage,
+    LucideTrash,
+    LucideChevronUp,
+    LucideChevronDown
   ],
   templateUrl: './server-administration-panel.html',
   styleUrl: './server-administration-panel.css'
@@ -43,7 +54,7 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
 
   @Input() connection!: WebSocketServerConnection;
 
-  //TODO remove and access via connection.data.server? Is this here an advantage?
+  //TODO remove and access via connection.server.info? Is this here an advantage?
   server: ServerDTO | undefined;
 
   serverIconUpload: UploadState | undefined;
@@ -58,15 +69,7 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
   }
 
   update() {
-    const data = this.connection.data;
-    if (this.connection.data == undefined) {
-      console.warn("Got no server tree?");
-      console.warn(this.connection);
-      console.warn(this.connection.data)
-      console.warn(data);
-      return;
-    }
-    this.connection.rest.serverController.get(this.connection.data.server.id)
+    this.connection.rest.serverController.get(this.connection.server.info.id)
       .subscribe(server => {
         this.server = server;
         console.log("got server " + JSON.stringify(server))
@@ -150,6 +153,15 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
 
   }
 
+  protected moveDescriptionUp(description: MessageContentDTO) {
+    const index = this.server!.description.indexOf(description);
+    this.server!.description[index] = this.server!.description[index + 1];
+    this.server!.description[index + 1] = description;
+  }
+
+  protected moveDescriptionDown(description: MessageContentDTO) {
+    
+  }
 }
 
 export default ServerAdministrationPanel

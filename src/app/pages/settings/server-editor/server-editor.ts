@@ -5,11 +5,13 @@ import {ServerDetails, ServerLoaderService} from '../../../services/server-loade
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
 import {BUTTON_CANCEL, BUTTON_DELETE} from '../../../components/ui/dialog/dialog';
+import {LucideTrash} from '@lucide/angular';
 
 @Component({
   selector: 'app-server-editor',
   imports: [
-    FormsModule
+    FormsModule,
+    LucideTrash
   ],
   templateUrl: './server-editor.html',
   styleUrl: './server-editor.css',
@@ -44,7 +46,7 @@ export class ServerEditor implements OnInit {
     this.serverConnection.url = this.url;
     this.serverConnection.password = this.password == "" ? undefined : this.password;
 
-    this.serverLoaderService.saveServer();
+    this.serverLoaderService.connections.save();
   }
 
   protected openDeletePopup() {
@@ -54,7 +56,7 @@ export class ServerEditor implements OnInit {
         BUTTON_CANCEL,
         BUTTON_DELETE.asCallback(() => {
           console.log("Deleting server", this.serverConnection);
-          this.serverLoaderService.removeServer(this.serverConnection);
+          this.serverLoaderService.connections.remove(this.serverConnection);
         })
       ],
       content: 'The server does not delete your personal data like profile image or messages.'

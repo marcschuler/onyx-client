@@ -51,7 +51,7 @@
               <div class="settings-grid-option">
                 <ui-multi-select [(selectedList)]="permission.limitedToSection" [multi]="true"
                                  placeholder="Select Sections...">
-                  @for (section of connection.data!.sections; track section) {
+                  @for (section of connection.server.sections; track section) {
                     <ui-select-item [label]="section.name" [value]="section.id"></ui-select-item>
                   }
                 </ui-multi-select>

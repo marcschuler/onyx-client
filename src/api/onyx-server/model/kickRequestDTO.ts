@@ -18,6 +18,7 @@ export namespace KickRequestDTO {
         AlreadyConnected: 'ALREADY_CONNECTED',
         UnauthorizedRequest: 'UNAUTHORIZED_REQUEST',
         InternalError: 'INTERNAL_ERROR',
+        ServerShutdown: 'SERVER_SHUTDOWN',
         Banned: 'BANNED',
         Other: 'OTHER'
     } as const;

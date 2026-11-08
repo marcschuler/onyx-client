@@ -60,7 +60,7 @@ export class FileUploadService {
         break;
       case UploadType.SERVER_ICON:
         console.log("Uploading server icon");
-        observable = connection.rest.serverController.iconUpload(connection.data!.server.id, file, 'events', true);
+        observable = connection.rest.serverController.iconUpload(connection.server.info.id, file, 'events', true);
         break;
       case UploadType.DEFAULT:
         console.log("Uploading file");

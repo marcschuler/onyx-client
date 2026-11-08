@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, throwError} from 'rxjs';
 import {ServerDTO} from '../../api/onyx-server';
+import {ListStore} from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,33 +10,7 @@ import {ServerDTO} from '../../api/onyx-server';
 export class ServerLoaderService {
   private httpClient = inject(HttpClient);
 
-
-  public connections: ServerDetails[] = [];
-
-  constructor() {
-    this.loadServer();
-  }
-
-  private loadServer() {
-    const storedConnections = localStorage.getItem("serverConnections");
-    if (storedConnections)
-      this.connections = (JSON.parse(storedConnections) as ServerDetails[]);
-  }
-
-  public addServer(server: ServerDetails) {
-    this.connections.push(server);
-    this.saveServer()
-  }
-
-  removeServer(s: ServerDetails) {
-    const index = this.connections.indexOf(s);
-    this.connections.splice(index,1);
-    this.saveServer();
-  }
-
-  public saveServer() {
-    localStorage.setItem("serverConnections", JSON.stringify(this.connections));
-  }
+  public connections = new ListStore<ServerDetails>('serverConnections');
 
   public serverDetails(connection: ServerDetails): Promise<ServerDTO[]> {
     // @ts-expect-error somehow expects "undefined"
@@ -54,9 +29,4 @@ export interface ServerDetails {
   url: string;
   name?: string;
   password?: string;
-}
-
-export interface KnownUser{
-  friend: boolean;
-  customName: string;
 }

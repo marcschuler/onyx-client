@@ -16,7 +16,6 @@ import {
   NotificationService
 } from '../notification.service';
 import {MediaService} from './media-service';
-import {removeItemFromList} from '../../util';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +28,7 @@ export class PeerConnectionService {
 
 
   peers: PeerConnection[] = [];
-
-
+  
   private webSocketService!: WebSocketService;
 
   constructor() {
@@ -55,13 +53,21 @@ export class PeerConnectionService {
     if (!this.webSocketService.connection //no connection (anymore)
       || this.webSocketService.connection.state !== ConnectionState.CONNECTED) { //not in connected state
       console.log("peer: removing all connections because we are not connected to any server")
-      this.peers.forEach(p => this.disconnect(p))
+      this.disconnectAll();
       return;
     }
 
-    const clientsInChannel = new Set(this.webSocketService.connection.clients
-      .filter(c => c.channel == this.webSocketService.connection?.me.channel) //only in same channel
-      .filter(c => c.id !== this.webSocketService.connection?.identity.id) //remove me
+    const connection = this.webSocketService.connection;
+    const myChannel = connection.me?.channel;
+    if (myChannel === undefined) {
+      if (this.peers.length > 0)
+        console.log("peer: removing all connections because we are not in a channel")
+      this.disconnectAll();
+      return;
+    }
+
+    const clientsInChannel = new Set((connection.channel(myChannel)?.clients ?? [])
+      .filter(c => c.id !== connection.identity.id) //remove me
     );
     const clientsConnected = new Set(this.peers.map(peer => peer.client));
 
@@ -69,7 +75,7 @@ export class PeerConnectionService {
     const clientsConnectedThatAreNotInChannel = [...clientsConnected].filter(item => !clientsInChannel.has(item));
 
     if (clientsConnectedThatAreNotInChannel.length > 0) {
-      console.log("peer: disconnecting from " + JSON.stringify(clientsConnectedThatAreNotInChannel.map(c => c.username)))
+      console.log("peer: disconnecting from " + JSON.stringify(clientsConnectedThatAreNotInChannel.map(c => c.details.username)))
       clientsConnectedThatAreNotInChannel.forEach(client => {
         this.peers.filter(p => p.client === client)
           .forEach(p => this.disconnect(p))
@@ -77,7 +83,7 @@ export class PeerConnectionService {
     }
 
     if (clientsInChannelThatShouldConnect.length > 0) {
-      console.log("peer: connecting to " + JSON.stringify(clientsInChannelThatShouldConnect.map(c => c.username)))
+      console.log("peer: connecting to " + JSON.stringify(clientsInChannelThatShouldConnect.map(c => c.details.username)))
       clientsInChannelThatShouldConnect.forEach(client => this.connectToPeer(client));
     }
   }
@@ -88,7 +94,7 @@ export class PeerConnectionService {
    * @param client the client to connect to
    */
   public async connectToPeer(client: Client): Promise<PeerConnection> {
-    console.log("peer: connecting to " + client.username)
+    console.log("peer: connecting to " + client.details.username)
     const iceServers = this.webSocketService.connection?.config.iceServers;
     const config: RTCConfiguration = {
       //  iceCandidatePoolSize: 15,
@@ -110,7 +116,10 @@ export class PeerConnectionService {
       },
       dataStream: {
         messageQueue: []
-      }
+      },
+      makingOffer: false,
+      answering: false,
+      negotiationPending: false
     }
     this.peers.push(peer);
 
@@ -119,9 +128,10 @@ export class PeerConnectionService {
       this.initDataChannel(peer, peer.dataStream.channel!);
     }
 
-    pc.onnegotiationneeded = async () => {
+    // the only place offers are created: new data channel, added/removed tracks and restartIce() all end up here
+    pc.onnegotiationneeded = () => {
       console.log("peer: connection needs renegotiating");
-      await this.negotiateConnection(peer, true);
+      this.negotiate(peer);
     }
     pc.onicecandidate = (event) => {
       if (event.candidate) {
@@ -131,8 +141,8 @@ export class PeerConnectionService {
     pc.oniceconnectionstatechange = (event) => {
       console.log("peer: ice: connection state has changed to " + pc.iceConnectionState)
       if (pc.iceConnectionState === 'failed') {
-        console.log("peer: ice: state is 'failed', renegotiating")
-        this.negotiateConnection(peer, false);
+        console.log("peer: ice: state is 'failed', restarting ice")
+        pc.restartIce();
       }
     }
 
@@ -142,7 +152,7 @@ export class PeerConnectionService {
     }
 
     pc.onsignalingstatechange = () => {
-      console.log("peer: state: " + client.username + " changed to " + pc.signalingState);
+      console.log("peer: state: " + client.details.username + " changed to " + pc.signalingState);
       switch (pc.signalingState) {
         case "closed":
           peer.state = PeerConnectionState.Closed;
@@ -172,11 +182,20 @@ export class PeerConnectionService {
         console.warn("peer: Expected 1 stream, got " + event.streams.length + ". using the first one")
       this.onPeerTrackAdded(peer, event.track);
     }
-    console.log("peer: setup clear, waiting for ice config");
+    // no explicit negotiation here: as the nice peer the data channel triggers onnegotiationneeded,
+    // otherwise we wait for the offer of the other peer
+    console.log("peer: setup clear, " + (this.shouldConnectAsNicePeer(peer) ? "offering" : "waiting for offer"));
 
-    this.negotiateConnection(peer, false);
     this.notificationService.notify(NOTIFICATION_USER_JOINED_CHANNEL);
     return peer;
+  }
+
+  /**
+   * Disconnect from all peers.
+   * Iterates over a copy because disconnect() removes the peer from this.peers
+   */
+  private disconnectAll() {
+    [...this.peers].forEach(p => this.disconnect(p));
   }
 
   /**
@@ -184,7 +203,7 @@ export class PeerConnectionService {
    * @param peer the peer to disconnect to
    */
   public disconnect(peer: PeerConnection) {
-    console.log("peer: disconnecting peer " + peer.client.username)
+    console.log("peer: disconnecting peer " + peer.client.details.username)
     this.peers.splice(this.peers.indexOf(peer), 1);
     const state = peer.connection.connectionState;
     if (state == "closed" || state == "disconnected" || state == "failed")
@@ -212,7 +231,7 @@ export class PeerConnectionService {
   }
 
   private onPeerTrackRemoved(peer: PeerConnection, track: MediaStreamTrack) {
-    console.log("peer: track: removing track " + track.label + " from peer " + peer.client.username)
+    console.log("peer: track: removing track " + track.label + " from peer " + peer.client.details.username)
     this.mediaService.removeTrackFromPeerStream(peer.streams, track);
   }
 
@@ -259,8 +278,8 @@ export class PeerConnectionService {
       })
 
     if (addedTrack > 0) {
-      console.log("peer: track: adding " + addedTrack + " track(s) to peer " + peer.client.username)
-      this.negotiateConnection(peer, true);
+      // addTrack triggers onnegotiationneeded
+      console.log("peer: track: added " + addedTrack + " track(s) to peer " + peer.client.details.username)
     }
   }
 
@@ -274,9 +293,8 @@ export class PeerConnectionService {
   public addTrackToPeers(track: MediaStreamTrack, stream: MediaStream, label: TrackMetadataMessage.LabelEnum) {
     this.peers.forEach(peer => {
       try {
-        console.log("peer: user " + peer.client.username + " gets new track", track)
-        peer.connection.addTrack(track, stream);
-        this.negotiateConnection(peer, true);
+        console.log("peer: user " + peer.client.details.username + " gets new track", track)
+        peer.connection.addTrack(track, stream); // triggers onnegotiationneeded
       } catch (e) {
         console.log("peer: could not add track to peer", e)
       }
@@ -290,13 +308,12 @@ export class PeerConnectionService {
    */
   removeTrackFromPeers(track: MediaStreamTrack) {
     this.peers.forEach(peer => {
-      console.log("peer: (" + peer.client.username + ") removing from track")
+      console.log("peer: (" + peer.client.details.username + ") removing from track")
       const sender = peer.connection.getSenders().filter(s => s.track && s.track.id == track.id);
       if (sender.length !== 1) {
         console.warn("peer: update: found " + sender.length + " sender matching track, using first", peer.connection.getSenders())
       }
-      peer.connection.removeTrack(sender[0]);
-      this.negotiateConnection(peer, true);
+      peer.connection.removeTrack(sender[0]); // triggers onnegotiationneeded
     });
   }
 
@@ -344,7 +361,7 @@ export class PeerConnectionService {
           if (stat.type === 'inbound-rtp' && stat.kind === 'audio') {
             const level = (stat as unknown as RTCInboundRtpStreamStats).audioLevel;
             peer.streams.talking = level !== undefined && level >= AUDIO_SPEAKING_LEVEL;
-            console.log("peer: audio: level for peer " + peer.client.username + " is " + level);
+            console.log("peer: audio: level for peer " + peer.client.details.username + " is " + level);
           }
         })
 
@@ -357,35 +374,53 @@ export class PeerConnectionService {
       Peer Offers + Answers messages
    */
   /**
-   * Negotiate a direct connection to a peer through our server
-   * Should be called:
-   * (1) on start of the connection
-   * (2) when a new track is added from us (like a new screen share)
-   * Every time the tracks change, the connection has to be rebuild from scratch
-   * @param peer the peer to negotiate to
-   * @param force true if we should force it, e.g. on a new source. false for fresh connections
+   * Sends an offer to the peer. Only called from onnegotiationneeded, so the browser decides
+   * when negotiation is needed (new data channel, added/removed track, restartIce()).
+   * Waits for ICE gathering, so the sent description contains our ICE candidates (no trickle ICE).
+   * @param peer the peer to negotiate with
    */
-  public async negotiateConnection(peer: PeerConnection, force: boolean) {
-    if (!force && !this.shouldConnectAsNicePeer(peer)) {
-      console.log("peer: negotiate: waiting for " + peer.client.id + " to connect (wait mode)")
+  private async negotiate(peer: PeerConnection) {
+    const pc = peer.connection;
+    // while answering, the signaling state is already 'stable' but the answer is not sent yet (ice gathering).
+    // Starting an offer then would replace the local description before the answer goes out.
+    if (peer.makingOffer || peer.answering || pc.signalingState !== 'stable') {
+      console.log("peer: negotiate: negotiation already in progress (" + pc.signalingState
+        + (peer.answering ? ", answering" : "") + "), postponing");
+      peer.negotiationPending = true; // picked up after the answer is sent / the answer is received
       return;
     }
-    const pc = peer.connection;
-    if (peer.state == PeerConnectionState.Connected)
-      console.log("peer: negotiate: restarting connection...");
-
-    console.log("peer: negotiate: offer sending");
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(offer);
-    this.webSocketService.send(this.webSocketService.connection!,
-      {
+    try {
+      peer.makingOffer = true;
+      peer.negotiationPending = false; // this offer covers all changes made so far
+      await pc.setLocalDescription(); // implicit createOffer()
+      await waitForIceGathering(pc);
+      // a remote offer may have caused a rollback while we were gathering
+      // (cast: TS narrowed signalingState to 'stable' above and doesn't know it changes across awaits)
+      const signalingState = pc.signalingState as RTCSignalingState;
+      if (signalingState !== 'have-local-offer' || pc.localDescription?.type !== 'offer') {
+        console.log("peer: negotiate: offer superseded during ice gathering, not sending");
+        return;
+      }
+      console.log("peer: negotiate: offer sending");
+      this.webSocketService.send(this.webSocketService.connection!, {
         clientTo: peer.client.id,
         type: PeerOffer.TypeEnum.PeerOffer,
-        offer: offer
-      } as PeerOffer)
-    peer.state = PeerConnectionState.Offered;
+        offer: pc.localDescription.toJSON(),
+      } as PeerOffer);
+      peer.state = PeerConnectionState.Offered;
+    } catch (e) {
+      console.error("peer: negotiate: could not create offer", e);
+      peer.state = PeerConnectionState.Error;
+    } finally {
+      peer.makingOffer = false;
+    }
   }
 
+  /**
+   * Answers an offer of a peer.
+   * On an offer collision ("perfect negotiation") the polite peer (the one that does not initiate
+   * the connection) rolls back its own offer, the impolite peer ignores the incoming offer.
+   */
   private async onPeerOfferForward(e: PeerOfferForward, c: WebSocketServerConnection) {
     console.log("peer: negotiate: peer wants to connect")
     const peer = this.peers.find(p => p.client.id == e.clientFrom);
@@ -393,17 +428,48 @@ export class PeerConnectionService {
       console.warn("peer: negotiate: could not find client " + e.clientFrom + ". This is either bad concurrency or we don't know the client. known clients are " + JSON.stringify(c.clients))
       return;
     }
-    peer.state = PeerConnectionState.Answered;
-    await peer.connection.setRemoteDescription(e.offer as any);
-    const answer = await peer.connection.createAnswer();
-    await peer.connection.setLocalDescription(answer);
-    console.log("peer: negotiate: offer received -> answer sending");
-    this.webSocketService.send(c, {
-      answer: answer,
-      type: PeerAnswer.TypeEnum.PeerAnswer,
-      clientTo: peer.client.id
-    } as PeerAnswer)
-    this.sendTranceiverMid(peer);
+    const pc = peer.connection;
+    const polite = !this.shouldConnectAsNicePeer(peer);
+    const collision = peer.makingOffer || peer.answering || pc.signalingState !== 'stable';
+    if (collision && !polite) {
+      console.log("peer: negotiate: ignoring colliding offer (we are impolite)");
+      return;
+    }
+    try {
+      peer.answering = true;
+      peer.state = PeerConnectionState.Answered;
+      await pc.setRemoteDescription(e.offer as RTCSessionDescriptionInit); // rolls back our own offer if needed
+      await pc.setLocalDescription(); // implicit createAnswer()
+      await waitForIceGathering(pc);
+      const answer = pc.localDescription;
+      if (answer?.type !== 'answer') {
+        console.error("peer: negotiate: local description is no answer (" + answer?.type + "), not sending");
+        return;
+      }
+      console.log("peer: negotiate: offer received -> answer sending");
+      this.webSocketService.send(c, {
+        answer: answer.toJSON(),
+        type: PeerAnswer.TypeEnum.PeerAnswer,
+        clientTo: peer.client.id
+      } as PeerAnswer)
+      this.sendTranceiverMid(peer);
+    } catch (err) {
+      console.error("peer: negotiate: could not answer offer", err);
+      peer.state = PeerConnectionState.Error;
+    } finally {
+      peer.answering = false;
+    }
+    this.runPendingNegotiation(peer);
+  }
+
+  /**
+   * Runs a negotiation that was postponed because another one was in progress
+   */
+  private runPendingNegotiation(peer: PeerConnection) {
+    if (peer.negotiationPending && peer.connection.signalingState === 'stable') {
+      console.log("peer: negotiate: running postponed negotiation");
+      this.negotiate(peer);
+    }
   }
 
   private async onPeerAnswerForward(e: PeerAnswerForward, c: WebSocketServerConnection) {
@@ -413,12 +479,21 @@ export class PeerConnectionService {
       console.warn("peer: negotiate: could not find client " + e.clientFrom + ". This is either bad concurrency or we don't know the client")
       return;
     }
+    if (peer.connection.signalingState !== 'have-local-offer') {
+      // e.g. an answer to an offer we rolled back because of an offer collision
+      console.log("peer: negotiate: ignoring answer in state " + peer.connection.signalingState);
+      return;
+    }
+    if ((e.answer as RTCSessionDescriptionInit)?.type !== 'answer') {
+      console.error("peer: negotiate: received answer message without an answer description, ignoring", e.answer);
+      return;
+    }
     try {
       await peer.connection.setRemoteDescription(e.answer as any);
       this.sendTranceiverMid(peer);
     } catch (e: any) {
       this.toastService.create({
-        title: "No connection to " + peer.client.username,
+        title: "No connection to " + peer.client.details.username,
         message: "Could not receive data stream from client: " + JSON.stringify(e),
         type: ToastType.Error
       })
@@ -429,6 +504,7 @@ export class PeerConnectionService {
     }
     peer.state = PeerConnectionState.Connected;
     console.log("peer: negotiate: offer send -> answer received -> connected");
+    this.runPendingNegotiation(peer);
   }
 
   /*
@@ -454,11 +530,9 @@ export class PeerConnectionService {
       }
     }
     channel.onopen = () => {
-      console.log("peer: data: channel is open. " + peer.dataStream.messageQueue.length + " messages in queue.")
-      peer.dataStream.messageQueue.forEach((message) => {
-        this.sendToPeer(peer, message);
-        removeItemFromList(peer.dataStream.messageQueue, message);
-      })
+      const queued = peer.dataStream.messageQueue.splice(0); // take all, then send
+      console.log("peer: data: channel is open. " + queued.length + " messages in queue.")
+      queued.forEach(message => this.sendToPeer(peer, message));
     }
     channel.onerror = (e) => {
       console.warn("peer: data: channel closed", e)
@@ -509,4 +583,29 @@ export class PeerConnectionService {
 }
 
 export const DATACHANNEL = "data-control";
+const ICE_GATHERING_TIMEOUT_MS = 3000;
+
+/**
+ * Resolves when ICE gathering is complete, or after a timeout (slow/unreachable TURN servers).
+ * Needed because we don't trickle ICE candidates: they have to be part of the sent description.
+ */
+function waitForIceGathering(pc: RTCPeerConnection, timeoutMs = ICE_GATHERING_TIMEOUT_MS): Promise<void> {
+  if (pc.iceGatheringState === 'complete')
+    return Promise.resolve();
+  return new Promise(resolve => {
+    const done = () => {
+      clearTimeout(timer);
+      pc.removeEventListener('icegatheringstatechange', onChange);
+      resolve();
+    };
+    const onChange = () => {
+      if (pc.iceGatheringState === 'complete') done();
+    };
+    const timer = setTimeout(() => {
+      console.warn("peer: ice: gathering not complete after " + timeoutMs + "ms, sending candidates gathered so far");
+      done();
+    }, timeoutMs);
+    pc.addEventListener('icegatheringstatechange', onChange);
+  });
+}
 const AUDIO_SPEAKING_LEVEL = .025;

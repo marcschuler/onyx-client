@@ -74,7 +74,7 @@ export class Welcome {
 
   protected finish() {
     this.selectedCommunityServer.forEach(server => {
-      this.serverLoaderService.addServer({
+      this.serverLoaderService.connections.add({
         id: crypto.randomUUID(),
         name: server.name,
         url: server.url

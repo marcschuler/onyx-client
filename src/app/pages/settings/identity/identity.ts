@@ -1,21 +1,21 @@
 import {Component, inject} from '@angular/core';
-import {DatePipe} from "@angular/common";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IdentityService} from '../../../services/identity-service';
 import {IdentityWizzard} from './identity-wizzard/identity-wizzard';
+import {IdentityEditor} from './identity-editor/identity-editor';
 import {SplitPanelDivider} from '../../../components/ui/split-panel/split-panel-divider/split-panel-divider';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
 import {BUTTON_CANCEL, BUTTON_DELETE} from '../../../components/ui/dialog/dialog';
 import {Identity as Ident} from '../../../services/identity-service'
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-identity',
   imports: [
-    DatePipe,
+    IdentityWizzard,
+    IdentityEditor,
+    SplitPanelDivider,
     ReactiveFormsModule,
     FormsModule,
-    IdentityWizzard,
-    SplitPanelDivider
   ],
   templateUrl: './identity.html',
   styleUrl: './identity.css'
@@ -23,6 +23,7 @@ import {Identity as Ident} from '../../../services/identity-service'
 export class Identity {
   protected identityService = inject(IdentityService);
   private contextMenuService = inject(ContextMenuService);
+  protected username: string = "";
 
   protected openIdentityDeleteDialog(identity: Ident) {
     this.contextMenuService.openDialog({

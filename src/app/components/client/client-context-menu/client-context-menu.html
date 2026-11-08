@@ -1,13 +1,68 @@
 <app-context-menu>
-  <div class="bg-neutral-900">
-    <app-profile-image [connection]="connection" [user]="client.details" [size]="48"></app-profile-image>
-    <p class="px-2 py-1">{{ client.username }}</p>
-    <p class="text-neutral-400 text-sm">ID: {{ client.id | slice: 0:18 }}...</p>
+  <div class="w-64">
+    <div class="flex flex-col items-center px-3 pt-3 pb-3">
+      <app-profile-image [connection]="connection"
+                         [user]="user" [size]="16"></app-profile-image>
+      <p class="mt-2 font-semibold text-neutral-100 flex items-center gap-1">
+        {{ user.username }}
+        @if (isSelf) {
+          <span class="text-xs text-neutral-400 font-normal">(you)</span>
+        }
+      </p>
+      @if (labelGroups.length > 0) {
+        <div class="flex flex-wrap justify-center gap-1 mt-1">
+          @for (group of labelGroups; track group.id) {
+            <span
+              class="text-xs px-1.5 py-0.5 rounded border border-neutral-600 text-neutral-300">{{ group.name }}</span>
+          }
+        </div>
+      }
+
+      <div class="w-full mt-3 space-y-1 text-sm text-neutral-400">
+        @if (!client) {
+          <p class="flex items-center gap-2 min-h-7">
+            <svg lucideCircle class="w-4 h-4 shrink-0"></svg>
+            Offline
+          </p>
+        }
+        @let channel = clientChannel;
+        @if (channel) {
+          <div class="flex items-center gap-2 min-h-7">
+            <svg lucideHexagon class="w-4 h-4 shrink-0"></svg>
+            <span class="truncate">{{ channel.name }}</span>
+            @if (isSelf) {
+              <!-- nothing to join -->
+            } @else if (connection.me.channel === channel.id) {
+              <span class="ml-auto shrink-0 text-xs text-neutral-500">your channel</span>
+            } @else if (canJoin(channel)) {
+              <button type="button"
+                      class="ml-auto w-auto! shrink-0 flex items-center gap-1 px-2! py-0.5! text-xs button-main"
+                      (click)="joinChannel(channel)">
+                <svg lucideLogIn class="w-3.5 h-3.5"></svg>
+                Join
+              </button>
+            }
+          </div>
+        }
+        <button type="button" class="w-full! flex items-center gap-2 p-0! bg-transparent! hover:text-neutral-200">
+          <svg lucideKeyRound class="w-4 h-4 shrink-0"></svg>
+          <span class="font-mono truncate">{{ user.id | slice: 0:12 }}</span>
+        </button>
+      </div>
+    </div>
   </div>
-    <app-context-menu-button [icon]="LucideCircleSlash2" [disabled]="!client.channel" (click)="kickClientFromChannel()">Kick (channel)
+
+
+  @if (!isSelf) {
+    <div class="border-t border-neutral-700 my-1"></div>
+    <app-context-menu-button danger [icon]="LucideCircleSlash2" [disabled]="!client?.channel"
+                             (click)="kickClientFromChannel()">Kick from channel
     </app-context-menu-button>
-  <app-context-menu-button [icon]="LucideCircleSlash2" (click)="kickClientFromServer()">Kick (server)
-  </app-context-menu-button>
-  <app-context-menu-button [icon]="LucideUserX">Ban</app-context-menu-button> <!-- TODO -->
-  <app-context-menu-button [icon]="LucideUser" (click)="openAboutPage()">Information</app-context-menu-button> <!-- TOOD -->
+    <app-context-menu-button danger [icon]="LucideCircleSlash2" [disabled]="!client"
+                             (click)="kickClientFromServer()">Kick from server
+    </app-context-menu-button>
+    <app-context-menu-button danger [icon]="LucideUserX" [disabled]="true">
+      Ban <span class="ml-auto text-xs text-neutral-500">soon</span>
+    </app-context-menu-button>
+  }
 </app-context-menu>

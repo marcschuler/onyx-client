@@ -12,7 +12,7 @@ import {
 import {FormsModule} from "@angular/forms";
 import {LucideCornerDownRight, LucideFileUp, LucideGhost, LucideSend, LucideX} from '@lucide/angular';
 import {WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
-import {deleteInList, getChannelFromId} from '../../../services/Util';
+import {deleteInList} from '../../../services/Util';
 import {ToastService, ToastType} from '../../../services/ui/toast-service';
 import {MessageHandler, WebSocketService} from '../../../services/websocket/web-socket-service';
 import {MessageDTO} from '../../../../api/onyx-server/model/messageDTO';
@@ -120,7 +120,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
   }
 
   initMessages() {
-    const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
+    const channel = this.connection.channel(this.channelId);
     this.messages = [];
     this.currentPage = undefined;
     this.connection.rest.chatController.messagesLatest(channel!.chatId, 50).subscribe(messages => {
@@ -136,7 +136,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
       return;
     }
     console.log("message-view: current page is " + this.currentPage + ". Loading page " + (this.currentPage - 1));
-    const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
+    const channel = this.connection.channel(this.channelId);
     this.connection.rest.chatController.messages(channel!.chatId, {
       page: this.currentPage - 1,
       size: 50
@@ -187,7 +187,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
       })
       return;
     }
-    const channel = getChannelFromId(this.channelId, this.connection.data!.sections);
+    const channel = this.connection.channel(this.channelId);
     if (!channel) {
       return;
     }
@@ -247,7 +247,7 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
       console.log("message-view: Ignoring message, no channel selected");
       return;
     }
-    const currentChatId = getChannelFromId(this.connection.selectedChannel, connection.data!.sections)?.chatId;
+    const currentChatId = connection.channel(this.connection.selectedChannel)?.chatId;
     if (currentChatId != event.chatId) {
       console.log("message-view: Ignoring message, other chat selected (" + currentChatId + "!=" + event.chatId + ")");
       return;

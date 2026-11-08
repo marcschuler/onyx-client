@@ -4,12 +4,12 @@
       <ui-split-panel-button [icon]="LucideServerCog" value="Server Administration">
         <ui-split-panel-button [icon]="LucideTicketSlash" value="Invites">
         </ui-split-panel-button>
-        <ui-split-panel-button [icon]="connection.data!.server.settings.password? LucideLockKeyhole: LucideLock"
+        <ui-split-panel-button [icon]="connection.server.info.settings.password? LucideLockKeyhole: LucideLock"
                                value="Security">
         </ui-split-panel-button>
       </ui-split-panel-button>
       <ui-split-panel-button [icon]="LucideHexagon" value="Sections & Channel">
-        @for (section of connection.data!.sections; track section.id) {
+        @for (section of connection.server.sections; track section.id) {
           <ui-split-panel-button [value]="section.id" [name]="section.name">
           </ui-split-panel-button>
           @for (channel of section.channels; track channel.id) {
@@ -34,7 +34,7 @@
 
     <app-channel-administration-panel [connection]="connection"
                                       splitPanel="Sections & Channel"></app-channel-administration-panel>
-    @for (section of connection.data!.sections; track section.id) {
+    @for (section of connection.server.sections; track section.id) {
       <app-section-editor [connection]="connection" [sectionId]="section.id"
                           [splitPanel]="section.id"></app-section-editor>
       @for (channel of section.channels; track channel.id) {

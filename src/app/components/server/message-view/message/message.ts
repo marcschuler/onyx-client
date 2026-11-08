@@ -54,8 +54,14 @@ export class Message {
     })
   }
 
+  protected openClientContextMenu($event: PointerEvent) {
+    this.contextMenuService.openClientContextMenu(this.message.user, this.connection, $event);
+  }
+
   protected readonly asTypeText = asTypeText;
   protected readonly MESSAGE_REPLY_MAXSHOWN = MESSAGE_REPLY_MAXSHOWN;
+
+
 }
 
 const MESSAGE_REPLY_MAXSHOWN = 2;

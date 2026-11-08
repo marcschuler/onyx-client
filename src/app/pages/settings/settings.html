@@ -4,19 +4,22 @@
     </ui-split-panel-button>
     <ui-split-panel-button value="Identities" [icon]="LucideFingerprintPattern">
     </ui-split-panel-button>
+    <ui-split-panel-button value="Game Integration" [icon]="LucideGamepadDirectional">
+
+    </ui-split-panel-button>
     @if (connection) {
-      <ui-split-panel-button value="Your Account" [name]="'Account on \'' + connection.data!.server.name + '\''"
+      <ui-split-panel-button value="Your Account" [name]="'Account on \'' + connection.server.info.name + '\''"
                              [icon]="LucideIdCardLanyard">
       </ui-split-panel-button>
     }
     <ui-split-panel-divider></ui-split-panel-divider>
 
-    @for (connection of serverLoaderService.connections; track connection) {
+    @for (connection of serverLoaderService.connections.state; track connection) {
       <ui-split-panel-button [value]="'server-connection-' + connection.id"
                              [name]="(connection.name || connection.url)" [icon]="LucideServer">
       </ui-split-panel-button>
     }
-    @if (serverLoaderService.connections.length > 0) {
+    @if (serverLoaderService.connections.state.length > 0) {
       <ui-split-panel-divider></ui-split-panel-divider>
     }
 
@@ -28,13 +31,14 @@
 
   <app-general splitPanel="General"></app-general>
   <app-identity splitPanel="Identities"></app-identity>
+  <app-game-integration splitPanel="Game Integration"></app-game-integration>
 
   @if (connection) {
     <app-server-user splitPanel="Your Account"
                      [connection]="connection"></app-server-user>
   }
 
-  @for (connection of serverLoaderService.connections; track connection) {
+  @for (connection of serverLoaderService.connections.state; track connection) {
     <app-server-editor [splitPanel]="'server-connection-' + connection.id"
                        [serverConnection]="connection"></app-server-editor>
   }

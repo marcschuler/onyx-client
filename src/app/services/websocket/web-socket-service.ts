@@ -1,11 +1,20 @@
 import {Injectable, inject} from '@angular/core';
-import {Client, ConnectionState, KeyId, ServerObjectId, WebSocketServerConnection} from './WebSocketServerConnection';
+import {
+  Client,
+  ConnectionState,
+  KeyId,
+  mapToChannel,
+  mapToSection,
+  ServerObjectId,
+  WebSocketServerConnection
+} from './WebSocketServerConnection';
 import {Identity} from '../identity-service';
 import {ServerDetails} from '../server-loader-service';
 import {CryptoService} from '../crypto-service';
 import {ToastService, ToastType} from '../ui/toast-service';
 import {PeerConnectionService} from '../peer/peer-connection-service';
 import {
+  AuthChallengeProof,
   AuthChallengeRequest,
   AuthChallengeResponse,
   AuthSuccessMessage, ChannelChangeEvent, ChannelCreateEvent,
@@ -16,7 +25,7 @@ import {
   ClientChannelLeaveEvent,
   ClientKickEvent,
   ClientServerJoinEvent,
-  ClientServerLeaveEvent,
+  ClientServerLeaveEvent, GameIntegrationRequest, GameIntegrationUpdate,
   IceServerMessage,
   JwtTokenEvent,
   KickedEvent,
@@ -30,15 +39,9 @@ import {
   ServerTreeChangeMessage
 } from '../../../api/onyx-server';
 import {RestService} from '../rest/rest-service';
-import {
-  clientWithId,
-  getChannelFromId,
-  getSectionFromId,
-  getSectionOfChannel,
-  reorderListItem,
-  replaceInList
-} from '../Util';
+import {reorderListItem, replaceInList} from '../Util';
 import {EventHandler} from '../../util';
+import {StorageService} from '../storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +51,7 @@ export class WebSocketService {
   private toastService = inject(ToastService);
   private restService = inject(RestService);
   private peerConnectionService = inject(PeerConnectionService);
+  private storageService = inject(StorageService);
 
 
   LOG_MESSAGES = false;
@@ -58,6 +62,9 @@ export class WebSocketService {
   private messageHandlers = new Map<MessageTypes, MessageHandler<any>[]>();
 
   public onServerClose: EventHandler<void> = new EventHandler();
+
+  // sockets closed on purpose by the user (closeConnection) - their close is not reported as an error
+  private intentionallyClosed = new WeakSet<WebSocket>();
 
   constructor() {
     this.addHandler(AuthChallengeRequest.TypeEnum.AuthChallengeRequest, (e, c) => this.onAuthChallengeRequest(e as AuthChallengeRequest, c));
@@ -78,11 +85,13 @@ export class WebSocketService {
     this.addHandler(ClientChannelLeaveEvent.TypeEnum.ClientChannelLeaveEvent, (e, c) => this.onClientChannelLeaveEvent(e as ClientChannelLeaveEvent, c));
 
     this.addHandler(ClientChangeEvent.TypeEnum.ClientChangeEvent, (e, c) => this.onClientChange(e as ClientChangeEvent, c));
-    this.addHandler(KickedEvent.TypeEnum.KickedEvent, (e) => this.onKickMessage(e as KickedEvent));
+    this.addHandler(KickedEvent.TypeEnum.KickedEvent, (e, c) => this.onKickMessage(e as KickedEvent, c));
     this.addHandler(ClientKickEvent.TypeEnum.ClientKickEvent, (e, c) => this.onClientKickedMessage(e as ClientKickEvent, c));
 
     this.addHandler(IceServerMessage.TypeEnum.IceServerMessage, (e, c) => this.onIceServerData(e as IceServerMessage, c));
     this.addHandler(JwtTokenEvent.TypeEnum.JwtTokenEvent, (e, c) => this.onJwtToken(e as JwtTokenEvent, c));
+
+    this.addHandler(GameIntegrationUpdate.TypeEnum.GameIntegrationUpdate,(e,c)=>this.onGameIntegrationUpdate(e as GameIntegrationUpdate,c))
 
     // error
     this.addHandler(NoPermissionMessage.TypeEnum.NoPermissionMessage, (e) => this.onErrorNoPermission(e as NoPermissionMessage));
@@ -107,22 +116,20 @@ export class WebSocketService {
       var connected = false;
       const webSocket = new WebSocket(url);
 
-      const connection: WebSocketServerConnection = {
-        serverConnections: serverConnection,
-        state: ConnectionState.CONNECTING,
-        serverConnection: webSocket,
-        identity: identity,
-        clients: [],
-        config: {},
-        me: undefined as any as Client, // is hacky but the server promises to return a result
-        serverPassword: password,
-        rest: this.restService.createRestConfig(serverConnection.url, undefined)
-      }
-      setTimeout(() => { // websocket gives no timeout on connection so tracing manually
+      const connection = new WebSocketServerConnection(
+        serverConnection,
+        identity,
+        webSocket,
+        password,
+        this.restService.createRestConfig(serverConnection.url, undefined)
+      );
+      const connectTimeout = setTimeout(() => { // websocket gives no timeout on connection so tracing manually
         if (!connected)
           webSocket.close();
       }, 8000);
+      let connectionError: string | undefined;
       webSocket.onopen = () => {
+        clearTimeout(connectTimeout);
         connected = true;
         console.log("ws: connected to server")
         retries = 4;
@@ -136,43 +143,48 @@ export class WebSocketService {
           .catch(e => console.error(e));
       };
 
-      const onServerClose = (error: string) => {
+      // onerror is always followed by onclose, so all teardown happens exactly once in here
+      webSocket.onclose = () => {
+        console.log('ws: Disconnected');
+        clearTimeout(connectTimeout);
+        connection.state = ConnectionState.CLOSED;
+        const error = connectionError ?? "Server closed connection";
+
+        // only clear our state if this socket is still the active one (and not e.g. an old one closing late)
+        if (this.connection === connection)
+          this.connection = undefined;
         this.peerConnectionService.updatePeerConnections();
-        // setTimeout(() => {
-        const reason = "Reason: " + error;
-        console.warn("ws: server closed connection:" + reason)
-        this.toastService.create({
-          title: "Server closed connection",
-          message: reason,
-          type: ToastType.Error,
-        })
+
+        if (this.intentionallyClosed.has(webSocket)) {
+          console.log("ws: connection closed by user");
+        } else {
+          const reason = "Reason: " + error;
+          console.warn("ws: server closed connection:" + reason)
+          this.toastService.create({
+            title: "Server closed connection",
+            message: reason,
+            type: ToastType.Error,
+          })
+        }
         reject(error);
-        this.connection = undefined;
         this.onServerClose.emit();
         //TODO recopnnecting does not work, every onServerClose doubles the connections
         // this.connect(serverConnection, identity, retries - 1);
-        // }, 4000);
-      }
-
-      webSocket.onclose = () => {
-        console.log('ws: Disconnected');
-        connection.state = ConnectionState.CLOSED;
-        onServerClose("Server closed connection");
-
       };
       webSocket.onerror = (error) => {
         console.error('ws: Error on connection', error);
-        //TODO is connection closed? What is the state?
         connection.state = ConnectionState.ERROR;
-        onServerClose("Connection error " + error.type);
+        connectionError = "Connection error " + error.type;
       };
     });
   }
 
   closeConnection(connection: WebSocketServerConnection) {
     console.log("ws: closing connection")
+    this.intentionallyClosed.add(connection.serverConnection);
     connection.serverConnection.close(); //TODO return a code or something?
-    this.connection = undefined;
+    if (this.connection === connection)
+      this.connection = undefined;
   }
 
   public send(connection: WebSocketServerConnection, event: MessageBody) {
@@ -220,8 +232,15 @@ export class WebSocketService {
 
   private async onAuthChallengeRequest(event: AuthChallengeRequest, connection: WebSocketServerConnection) {
     connection.state = ConnectionState.AUTHENTICATING;
-    const challenge = event.challenge
-    const signature = await this.cryptoService.sign(challenge, connection.identity)
+    // Bind the signature to the origin we connected to, so a malicious server can't relay
+    // another server's challenge to us. The origin must come from our own saved server entry,
+    // never from anything the server sent. The challenge is copied exactly as received.
+    const proof: AuthChallengeProof = {
+      type: "onyx-auth",
+      challenge: event.challenge.challenge,
+      origin: toOrigin(connection.serverConnections.url)
+    }
+    const signature = await this.cryptoService.sign(proof, connection.identity)
 
     this.send(connection, {
       username: connection.identity.username,
@@ -239,94 +258,79 @@ export class WebSocketService {
     connection.me = {
       id: event.me.id as KeyId,
       channel: undefined,
-      username: event.me.username,
-      publicKey: event.me.publicKey,
       details: event.me
     }
-    this.addClient(connection, connection.me);
-    console.log("ws: onAuthSuccess: we are " + connection.me.id + " / " + connection.me.username)
+    connection.addClient(connection.me);
+    console.log("ws: onAuthSuccess: we are " + connection.me.id + " / " + connection.me.details.username)
 
     event.clients.forEach((clientOnline) => {
       const client = clientOnline.user;
       console.log("ws: onAuthSuccess: client already online: " + client.id + " / " + client.username)
-      this.addClient(connection, {
+      connection.addClient({
         id: client.id as KeyId,
         channel: clientOnline.channelId as (ServerObjectId | undefined),
-        username: client.username,
-        publicKey: client.publicKey,
         details: client
       })
     })
 
     connection.rest = this.restService.updateRestConfig(connection.rest, event.jwt);
-  }
 
-  private addClient(connection: WebSocketServerConnection, client: Client) {
-    if (clientWithId(connection.clients, client.id)) {
-      console.error("client with id " + client.id + " already exists");
-      return;
+    if (this.storageService.gameIntegration.state.steamId64) {
+      this.send(connection, {
+        steamId64: this.storageService.gameIntegration.state.steamId64,
+        type: "GameIntegrationRequest"
+      } as GameIntegrationRequest)
     }
-    connection.clients.push(client);
+
   }
 
   private async onServerTreeChangeEvent(event: ServerTreeChangeMessage, connection: WebSocketServerConnection) {
-    connection.data = event;
+    connection.initServerTree(event);
   }
 
   private onServerChange(event: ServerChangeEvent, connection: WebSocketServerConnection) {
-    connection.data!.server = event.server;
+    connection.server.info = event.server;
     console.log("server details changed", event.server)
   }
 
   private onChannelCreate(event: ChannelCreateEvent, connection: WebSocketServerConnection) {
-    const channel = event.channel;
-    const sectionId = event.sectionId;
-    getSectionFromId(sectionId, connection.data!.sections)?.channels.push({
-      id: channel.id,
-      chatId: channel.chatId,
-      sectionId: sectionId,
-      name: channel.name,
-      order: channel.order,
-      users: [],
-      voiceMode: "FULL",
-      chatMode: "FULL"
-    });
+    connection.section(event.sectionId)?.channels.push(
+      mapToChannel({...event.channel, sectionId: event.sectionId}, []) // a new channel has no clients yet
+    );
   }
 
   private onSectionCreate(event: SectionCreateEvent, connection: WebSocketServerConnection) {
-    const section = event.section;
-    connection.data!.sections.splice(event.order, 0, section);
+    connection.sections.splice(event.order, 0, mapToSection(event.section, [])); // a new section has no clients yet
   }
 
   private onSectionMove(event: SectionMoveEvent, connection: WebSocketServerConnection) {
-    const section = getSectionFromId(event.sectionId, connection.data!.sections) as SectionExtendedDTO;
-    reorderListItem(connection.data!.sections, section, event.order);
+    const section = connection.section(event.sectionId);
+    if (!section) {
+      console.error("ws: onSectionMove: unknown section " + event.sectionId);
+      return;
+    }
+    reorderListItem(connection.sections, section, event.order);
   }
 
   private onChannelMove(event: ChannelMoveEvent, connection: WebSocketServerConnection) {
-    const channel = getChannelFromId(event.channelId, connection.data!.sections) as ChannelDTO;
-    const section = getSectionOfChannel(channel, connection.data!.sections) as SectionDTO;
-    const newSection = event.sectionId
-      ? getSectionFromId(event.sectionId, connection.data!.sections) as SectionDTO
-      : section;
+    const channel = connection.channel(event.channelId);
+    const section = connection.sectionOfChannel(event.channelId);
+    const newSection = event.sectionId ? connection.section(event.sectionId) : section;
+    if (!channel || !section || !newSection) {
+      console.error("ws: onChannelMove: unknown channel or section", event);
+      return;
+    }
     reorderListItem(section.channels, channel, event.order, newSection.channels);
   }
 
   private onChannelChange(event: ChannelChangeEvent, connection: WebSocketServerConnection) {
-    if (connection.data) {
-      let changed = false;
-      connection.data.sections.forEach(section => {
-        const channel = section.channels.filter(c => c.id == event.channel.id)[0];
-        if (channel) {
-          replaceInList(section.channels, channel, event.channel);
-          changed = true;
-        }
-      })
-      if (!changed)
-        console.error("could not find channel in list", connection.data.sections, event);
-    } else {
-      console.error("could not change channel - channel not available", event);
+    const channel = connection.channel(event.channel.id);
+    const section = connection.sectionOfChannel(event.channel.id);
+    if (!channel || !section) {
+      console.error("ws: onChannelChange: could not find channel in list", connection.sections, event);
+      return;
     }
+    replaceInList(section.channels, channel, {...channel, ...event.channel});
   }
 
   private onIceServerData(event: IceServerMessage, connection: WebSocketServerConnection) {
@@ -335,9 +339,13 @@ export class WebSocketService {
   }
 
   private onClientChannelJoinEvent(event: ClientChannelJoinEvent, connection: WebSocketServerConnection) {
-    const client = clientWithId(connection.clients, event.userId);
-    console.log("ws: onClientChannelJoin: Client " + client.username + " changed channel to " + event.channelId)
-    client.channel = event.channelId as ServerObjectId;
+    const client = connection.client(event.userId);
+    if (!client) {
+      console.error("ws: onClientChannelJoin: unknown client " + event.userId);
+      return;
+    }
+    console.log("ws: onClientChannelJoin: Client " + client.details.username + " changed channel to " + event.channelId)
+    connection.moveClient(client, event.channelId as ServerObjectId);
     if (client == connection.me) {
       console.log("ws: onClientChannelJoin: Our channel changed to " + client.channel)
     }
@@ -346,9 +354,13 @@ export class WebSocketService {
 
 
   private onClientChannelLeaveEvent(event: ClientChannelLeaveEvent, connection: WebSocketServerConnection) {
-    const client = clientWithId(connection.clients, event.userId);
-    console.log("ws: onClientChannelLeave: Client " + client.username + " left the channel")
-    client.channel = undefined;
+    const client = connection.client(event.userId);
+    if (!client) {
+      console.error("ws: onClientChannelLeave: unknown client " + event.userId);
+      return;
+    }
+    console.log("ws: onClientChannelLeave: Client " + client.details.username + " left the channel")
+    connection.moveClient(client, undefined);
 
     if (client == connection.me) {
       console.log("ws: onClientChannelLeave: Left our channel")
@@ -359,18 +371,26 @@ export class WebSocketService {
 
   private onClientChange(event: ClientChangeEvent, connection: WebSocketServerConnection) {
     console.log("ws: onClientChange: Details for client changed", event.user)
-    const client = clientWithId(connection.clients, event.user.id);
+    const client = connection.client(event.user.id);
+    if (!client) {
+      console.error("ws: onClientChange: unknown client " + event.user.id);
+      return;
+    }
     client.details = event.user;
   }
 
-  private onKickMessage(event: KickedEvent) {
+  private onGameIntegrationUpdate(event: GameIntegrationUpdate, connection: WebSocketServerConnection) {
+    //TODO
+  }
+
+  private onKickMessage(event: KickedEvent, connection: WebSocketServerConnection) {
     let message;
     switch (event.reason) {
       case "ALREADY_CONNECTED":
         message = "You are already connected with this identity";
         break;
       case "UNAUTHORIZED_REQUEST":
-        message = "You made an unauthoirzed request";
+          message = "You made an unauthorized request";
         break;
       case "INTERNAL_ERROR":
         message = "Internal server error";
@@ -407,25 +427,21 @@ export class WebSocketService {
 
 
   private onClientServerJoin(event: ClientServerJoinEvent, connection: WebSocketServerConnection) {
-    const client = {
+    const client: Client = {
       id: event.user.id as KeyId,
-      username: event.user.username,
-      publicKey: event.user.publicKey,
       channel: undefined,
       details: event.user
     };
-    this.addClient(connection, client)
+    connection.addClient(client)
     console.log("Client " + client.id + " joined the server")
   }
 
   private onClientServerLeave(event: ClientServerLeaveEvent, connection: WebSocketServerConnection) {
-    const index = connection.clients.findIndex(client => client.id == event.userId);
-    if (index == -1) {
+    if (!connection.removeClient(event.userId)) {
       console.error("WS: ClientLeaveEvent: Client " + event.userId + " disconnected but could not find client");
       return;
     }
     console.log("Client " + event.userId + " has left the server");
-    connection.clients.splice(index, 1);
   }
 
   private onErrorNoPermission(event: NoPermissionMessage) {
@@ -436,11 +452,22 @@ export class WebSocketService {
       type: ToastType.Warning
     });
   }
-
 }
 
 export type MessageHandler<T extends MessageBody> = (event: T, connection: WebSocketServerConnection) => void | any;
 
 export interface MessageBody {
   type: MessageTypes
+}
+
+/**
+ * Reduces a saved server URL to scheme://host[:port] for the auth proof.
+ * The server ignores paths and treats ws/wss like http/https, so this is just for tidiness.
+ */
+function toOrigin(url: string): string {
+  try {
+    return new URL(url).origin;
+  } catch {
+    return url;
+  }
 }

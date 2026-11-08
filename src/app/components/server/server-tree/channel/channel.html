@@ -1,7 +1,7 @@
 <div
   class="rounded gap-2 grid grid-cols-8 w-full rounded-l-none items-center
           D   hover:bg-neutral-900 animate-default group cursor-pointer"
-  [class.p-2]="!interfaceService.settings.compactMode"
+  [class.p-2]="!interfaceService.interface.state.compactMode"
   [ngClass]="{
           'border-l-onyx-600 border-l-3': connection.me.channel === channel.id,
           'bg-neutral-900': connection.selectedChannel === channel.id

@@ -1,5 +1,5 @@
-@if (interfaceService.settings.legacyChat) {
-  <div class="font-mono pb-4" (contextmenu)="openMessageContextMenu($event)">
+@if (interfaceService.interface.state.legacyChat) {
+  <div class="font-mono pb-4">
     <span class="text-neutral-600" [appTooltip]="message.timestamp">{{ message.timestamp | userDate }}</span>
     <span class="text-emerald-600 pl-2">{{ message.user.username }}</span>
 
@@ -35,13 +35,13 @@
     </div>
   </div>
 } @else {
-  <div class="bg-neutral-400/10 px-2 pb-2.5 pt-1 rounded-xl w-fit relative min-w-64" (contextmenu)="openMessageContextMenu($event)">
-    <div class="flex items-center gap-1 pb-1">
+  <div class="bg-neutral-400/10 px-2 pb-2.5 pt-1 rounded-xl w-fit relative min-w-64">
+    <div class="flex items-center gap-1 pb-1" (contextmenu)="openClientContextMenu($event)">
       <app-profile-image [user]="message.user" [connection]="connection" [size]="5"></app-profile-image>
       <h6 class="text-onyx-300 font-bold text-sm pb-1">
         {{ message.user.username }}
       </h6>
-      @if (message.temporary){
+      @if (message.temporary) {
         <span class="ml-2 text-neutral-400 text-xs rounded border border-onyx-600 bg-onyx-900">
           <svg lucideGhost class="inline w-3"></svg> Temporary
         </span>
@@ -54,7 +54,7 @@
 
     @if (message.repliesTo) {
       <div class="max-h-72 overflow-auto border border-onyx-700 rounded-xl">
-        @if (replyLayer > MESSAGE_REPLY_MAXSHOWN){
+        @if (replyLayer > MESSAGE_REPLY_MAXSHOWN) {
           <p class="p-2 bg-error-400/25">
             <svg lucideMessageSquareReply class="inline w-4"></svg>
             Could not load more replies. Maximum reached.
@@ -67,8 +67,10 @@
       </div>
     }
 
-    @for (content of message.content; track content) {
-      <app-message-content [content]="content" [connection]="connection"></app-message-content>
-    }
+    <div (contextmenu)="openMessageContextMenu($event)">
+      @for (content of message.content; track content) {
+        <app-message-content [content]="content" [connection]="connection"></app-message-content>
+      }
+    </div>
   </div>
 }

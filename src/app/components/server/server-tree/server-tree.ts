@@ -1,6 +1,5 @@
 import { Component, Input, inject } from '@angular/core';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
-import {Spinner} from '../../ui/spinner/spinner';
 import { WebSocketServerConnection} from '../../../services/websocket/WebSocketServerConnection';
 import {StorageService} from '../../../services/storage.service';
 import {UserEntry} from './user-entry/user-entry';
@@ -9,7 +8,6 @@ import {Channel} from './channel/channel';
 @Component({
   selector: 'app-server-tree',
   imports: [
-    Spinner,
     UserEntry,
     Channel,
   ],

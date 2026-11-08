@@ -1,7 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 import {
   LucideBug,
-  LucideFingerprintPattern,
+  LucideFingerprintPattern, LucideGamepadDirectional,
   LucideIdCardLanyard,
   LucideScale,
   LucideServer,
@@ -23,6 +23,7 @@ import {ServerLoaderService} from '../../services/server-loader-service';
 import {ServerEditor} from './server-editor/server-editor';
 import {Popup} from '../../components/ui/popup/popup';
 import {ContextMenuService} from '../../services/ui/context-menu-service';
+import {GameIntegration} from './game-integration/game-integration';
 
 @Component({
   selector: 'app-settings',
@@ -40,7 +41,8 @@ import {ContextMenuService} from '../../services/ui/context-menu-service';
     SplitPanel,
     ServerUser,
     SplitPanelDivider,
-    ServerEditor
+    ServerEditor,
+    GameIntegration
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css'
@@ -58,4 +60,5 @@ export class Settings {
   protected readonly LucideBug = LucideBug;
   protected readonly LucideIdCardLanyard = LucideIdCardLanyard;
   protected readonly LucideServer = LucideServer;
+  protected readonly LucideGamepadDirectional = LucideGamepadDirectional;
 }

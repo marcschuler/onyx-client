@@ -1,40 +1,43 @@
 @if (server) {
-  <div class="flex gap-4">
-    <div class="w-32">
-      <div class="relative w-32 h-32 rounded-t-xl object-cover bg-neutral-800 hover:bg-neutral-700" (click)="uploadServerIcon()"
-           (drop)="uploadServerIcon($event)">
-        @if (connection.data!.server.icon) {
-          <app-preview-image class="block min-w-32 min-h-32 w-32 h-32 rounded-t-xl overflow-hidden"
-                             [file]="connection.data!.server.icon"
-                             [connection]="connection">
-          </app-preview-image>
-        } @else {
-          <svg lucideImageOff class="w-32 h-32 text-neutral-500"></svg>
-        }
-        @if (serverIconUpload) {
-          <p class="absolute w-full p-1 top-0 bg-onyx-800 rounded-t-xl">Uploading... {{serverIconUpload.progressNice}}</p>
-        }
-      </div>
-      <div class="flex">
-        <button class="w-full button-red" [disabled]="connection.data!.server.icon==undefined" (click)="deleteIcon()">
-          <svg lucideX></svg>
-        </button>
-      </div>
-    </div>
+  <div class="relative mx-auto mb-4 w-24 h-24">
+    <button class="relative w-24! h-24! p-0! rounded-full! overflow-hidden items-center justify-center"
+            title="Upload server icon"
+            (click)="uploadServerIcon()"
+            (drop)="uploadServerIcon($event)">
+      @if (connection.server.info.icon) {
+        <app-preview-image class="block w-full h-full"
+                           [file]="connection.server.info.icon"
+                           [connection]="connection">
+        </app-preview-image>
+      } @else {
+        <svg lucideImageOff class="w-10 h-10 text-neutral-500"></svg>
+      }
+      @if (serverIconUpload) {
+        <span class="absolute inset-0 flex items-center justify-center bg-black/60 text-xs">
+          {{ serverIconUpload.progressNice }}
+        </span>
+      }
+    </button>
+    @if (connection.server.info.icon) {
+      <button class="button-red absolute! bottom-0 right-0 w-auto! p-1.5! rounded-full!"
+              title="Delete server icon"
+              (click)="deleteIcon()">
+        <svg lucideTrash2 class="w-4 h-4"></svg>
+      </button>
+    }
+  </div>
 
-    <div class="max-w-128">
-      <h3>Name</h3>
-      <div class="flex w-full">
-        <input [(ngModel)]="server.name">
-      </div>
-    </div>
+
+  <div class="">
+    <label>Name</label>
+    <input [(ngModel)]="server.name">
   </div>
 
 
   <h3 class="pt-8">Description</h3>
-  <div class="list" cdkDropList (cdkDropListDropped)="dropDescription($event)">
+  <div class="container-list" cdkDropList (cdkDropListDropped)="dropDescription($event)">
     @for (description of server.description; track description.id) {
-      <div class="container !pl-0" cdkDrag>
+      <div class="w-full" cdkDrag>
         <div class="flex">
           <svg lucideGripVertical cdkDragHandle class="inline"></svg>
           @switch (description.type) {
@@ -47,24 +50,33 @@
                 your server logs.</p>
             }
           }
-        </div>
-        <div>
-          <button class="button-text-red" (click)="deleteDescription(description)">Delete</button>
+          <div>
+            <button class="button-dark" (click)="moveDescriptionUp(description)" [disabled]="$first">
+              <svg lucideChevronUp class="w-4 h-4"></svg>
+            </button>
+            <button class="button-dark" (click)="moveDescriptionDown(description)" [disabled]="$last">
+              <svg lucideChevronDown class="w-4 h-4"></svg>
+            </button>
+            <button class="button-text-red" (click)="deleteDescription(description)">
+              <svg lucideTrash2 class="w-4 h-4"></svg>
+            </button>
+          </div>
         </div>
       </div>
     }
+    <div class="grid grid-cols-2 gap-4 p-2">
+      <button class="button-text" (click)="addMarkdown()">
+        <svg lucideTextInitial class="pr-1"></svg>
+        Add Markdown text
+      </button>
+      <!--<button class="">
+        +
+        <app-file-upload></app-file-upload>
+      </button>-->
+    </div>
   </div>
-  <div class="grid grid-cols-2 gap-4 p-2">
-    <button class="button-text" (click)="addMarkdown()">
-      <svg lucideTextInitial class="pr-1"></svg>
-      Add Markdown text
-    </button>
-    <!--<button class="">
-      +
-      <app-file-upload></app-file-upload>
-    </button>-->
-  </div>
-  <button (click)="saveServerInfo()">Save</button>
+
+  <button (click)="saveServerInfo()" class="button-main">Save</button>
 } @else {
   <app-spinner></app-spinner>
 }

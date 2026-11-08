@@ -22,7 +22,7 @@ export class SecurityPanel {
 
   savePassword() {
     const password = this.password == "" ? undefined : this.password;
-    this.connection.rest.serverController.setPassword(this.connection.data!.server.id, {
+    this.connection.rest.serverController.setPassword(this.connection.server.info.id, {
       password: password
     }).subscribe(() => {
       this.toastService.create({

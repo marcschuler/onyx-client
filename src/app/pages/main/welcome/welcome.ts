@@ -64,7 +64,7 @@ export class Welcome {
       id: crypto.randomUUID(),
       url: this.customUrl
     };
-    this.serverLoaderService.addServer(server)
+    this.serverLoaderService.connections.add(server)
     this.customUrl = "";
 
   }

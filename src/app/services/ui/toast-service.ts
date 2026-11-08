@@ -1,24 +1,21 @@
-import {Injectable} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastService {
 
-  toasts: ToastMessage[] = [];
+  readonly toasts = signal<ToastMessage[]>([]);
 
   create(toast: ToastMessage) {
-    this.toasts.push(toast);
+    this.toasts.update(toasts => [...toasts, toast]);
     setTimeout(() => {
       this.dismiss(toast)
     }, toast.duration || 5000)
   }
 
   dismiss(toast: ToastMessage) {
-    this.toasts.splice(
-      this.toasts.indexOf(toast),
-      1
-    )
+    this.toasts.update(toasts => toasts.filter(current => current !== toast));
   }
 }
 

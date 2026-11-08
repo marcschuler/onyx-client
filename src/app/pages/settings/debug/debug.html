@@ -1,33 +1,39 @@
 <h3>Onyx Client</h3>
-<p>
-  Version: {{ APP_VERSION }}
-</p>
-<p>
+<code>
+  Version: {{ APP_VERSION }}<br>
   Plattform: {{ isElectron() ? 'Electron' : 'Web' }}
-</p>
-<h3>Identities</h3>
-<p class="pb-8">
-  @for (identity of identityService.identities; track identity) {
-    <p>{{ identity.id }},{{ identity.username }},{{ identity.created }},{{ identity.keyPair.publicKey|json }}</p>
-  }
-</p>
 
-<h3>Connection</h3>
-<p class="pb-8">
+  <br><br>
+  Identities
+  @for (identity of identityService.identities; track identity) {
+    <br>
+    <code>{{ identity.id }},{{ identity.username }},{{ identity.created }},{{ identity.keyPair.publicKey|json }}</code>
+
+  }
+
   @if (webSocketService.connection) {
-    <h4>State</h4>
+
+    <br><br>
+    State<br>
     {{ webSocketService.connection.state }}
-    <h4>Server Tree</h4>
-    {{ webSocketService.connection.data | json }}
-    <h4>Channel: Current / Selected</h4>
+
+    <br><br>
+    Server Tree<br>
+    {{ webSocketService.connection.server | json }}
+
+    <br><br>
+    Channel: Current / Selected<br>
     {{ webSocketService.connection.me.channel  | json }}
     {{ webSocketService.connection.selectedChannel  | json }}
-    <h4>Server Config</h4>
+
+    <br><br>
+    Server Config<br>
     {{ webSocketService.connection.config | json }}
 
-    <h4>Peers</h4>
+    <br><br>
+    Peers<br>
     {{ peerConnectionService.peers | json }}
   } @else {
     (no connection)
   }
-</p>
+</code>
