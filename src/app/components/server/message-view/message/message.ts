@@ -13,6 +13,9 @@ import {asTypeFile, asTypeMarkdown, asTypeText, MessageContent} from '../../../c
 import {ContextMenuService} from '../../../../services/ui/context-menu-service';
 import {MessageContextMenu} from '../../../chat/message-context-menu/message-context-menu';
 import {ProfileImage} from '../../../client/profile-image/profile-image';
+import {ReactionGroup, ReactionGroupingPipe} from '../../../../pipes/reaction-grouping-pipe';
+import {ToggleButton} from '../../../ui/toggle-button/toggle-button';
+import {RestService} from '../../../../services/rest/rest-service';
 
 @Component({
   selector: 'app-message',
@@ -25,6 +28,8 @@ import {ProfileImage} from '../../../client/profile-image/profile-image';
     StorageFileURLPipe,
     MessageContent,
     ProfileImage,
+    ReactionGroupingPipe,
+    ToggleButton,
   ],
   templateUrl: './message.html',
   styleUrl: './message.css',
@@ -32,6 +37,7 @@ import {ProfileImage} from '../../../client/profile-image/profile-image';
 export class Message {
   protected interfaceService = inject(StorageService);
   protected contextMenuService = inject(ContextMenuService);
+  private restService = inject(RestService);
 
   @Input() message!: MessageDTO;
   @Input() lastMessage: MessageDTO | undefined;
@@ -62,6 +68,24 @@ export class Message {
   protected readonly MESSAGE_REPLY_MAXSHOWN = MESSAGE_REPLY_MAXSHOWN;
 
 
+  protected reactionTitle(reactions: ReactionGroup) {
+    return reactions.emoji + " from " + reactions.reactions.map(reaction => reaction.user.username)
+      .join(", ");
+  }
+
+  protected isEmojiActive(reactions: ReactionGroup) {
+    return reactions.reactions.find(reaction => reaction.user.id == this.connection.me.id)
+      != undefined;
+
+  }
+
+  protected react(emoji: string, active: boolean) {
+    const request = active ? this.connection.rest.chatController.removeReaction(this.message.chatId, this.message.id, emoji)
+      : this.connection.rest.chatController.addReaction(this.message.chatId, this.message.id, emoji)
+
+    request.subscribe(() => {
+    }, error => this.restService.handleError(error));
+  }
 }
 
 const MESSAGE_REPLY_MAXSHOWN = 2;

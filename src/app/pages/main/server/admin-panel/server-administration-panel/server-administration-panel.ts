@@ -24,6 +24,8 @@ import {
 import {deleteInList, reorderListItem} from '../../../../../services/Util';
 import {PreviewImage} from '../../../../../components/ui/preview-image/preview-image';
 import {FileUploadService, UploadState, UploadType} from '../../../../../services/rest/file-upload-service';
+import {EmojiPicker} from '../../../../../components/ui/emoji-picker/emoji-picker';
+import {SplitPanelDivider} from '../../../../../components/ui/split-panel/split-panel-divider/split-panel-divider';
 
 @Component({
   selector: 'app-server-administration-panel',
@@ -41,7 +43,9 @@ import {FileUploadService, UploadState, UploadType} from '../../../../../service
     PreviewImage,
     LucideTrash,
     LucideChevronUp,
-    LucideChevronDown
+    LucideChevronDown,
+    EmojiPicker,
+    SplitPanelDivider
   ],
   templateUrl: './server-administration-panel.html',
   styleUrl: './server-administration-panel.css'
@@ -85,6 +89,9 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
     }
     this.connection.rest.serverController.edit(this.server.id, {
       name: this.server.name,
+      settings: {
+        reactionEmojis: this.server.settings.reactionEmojis,
+      },
       description: this.server.description
     } as ServerDTO).subscribe(server => {
       this.server = server;
@@ -160,7 +167,7 @@ class ServerAdministrationPanel implements OnChanges, OnInit {
   }
 
   protected moveDescriptionDown(description: MessageContentDTO) {
-    
+
   }
 }
 

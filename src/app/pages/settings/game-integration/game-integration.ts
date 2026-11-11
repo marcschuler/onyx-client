@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {StorageService} from '../../../services/storage.service';
-import {LucideSave, LucideTrash} from '@lucide/angular';
+import {LucideTrash} from '@lucide/angular';
 import {FormsModule} from '@angular/forms';
 import {WebSocketService} from '../../../services/websocket/web-socket-service';
 import {GameIntegrationRequest} from '../../../../api/onyx-server';
@@ -8,7 +8,6 @@ import {GameIntegrationRequest} from '../../../../api/onyx-server';
 @Component({
   selector: 'app-game-integration',
   imports: [
-    LucideSave,
     FormsModule,
     LucideTrash
   ],

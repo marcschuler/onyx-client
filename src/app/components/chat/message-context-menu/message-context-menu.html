@@ -15,7 +15,18 @@
           </a>
         </app-context-menu-button>
       }
-
     }
+  }
+
+  @let reactions = connection.server.info.settings.reactionEmojis!;
+  @if (reactions.length){
+    <div class="grid grid-cols-6">
+      @for (emoji of reactions; track emoji){
+        @let active = isEmojiActive(emoji);
+        <button class="text-xs" toggle-button [active]="active" (activeChange)="react(emoji,active)">
+          {{emoji}}
+        </button>
+      }
+    </div>
   }
 </app-context-menu>

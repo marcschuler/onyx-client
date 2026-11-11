@@ -20,8 +20,8 @@ export interface PageMessageDTO {
     number?: number;
     first?: boolean;
     last?: boolean;
-    sort?: SortObject;
     pageable?: PageableObject;
+    sort?: SortObject;
     numberOfElements?: number;
     empty?: boolean;
 }

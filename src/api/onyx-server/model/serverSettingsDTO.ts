@@ -12,5 +12,6 @@
 export interface ServerSettingsDTO { 
     newUsersNeedInvite: boolean;
     password: boolean;
+    reactionEmojis?: Array<string>;
 }
 

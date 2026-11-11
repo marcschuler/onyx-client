@@ -1,0 +1,245 @@
+/*
+ * PROPOSAL: shared classes for common UI elements.
+ *
+ * These are component styles of <app-ui-proposal>, so they only apply on /test/ui and the rest of
+ * the app is not affected. To adopt a class, move it into src/style.ui.css (inside @layer components)
+ * and replace the old markup, see "Migration map" at the end of /test/ui.
+ *
+ * Everything is in @layer components, so Tailwind utilities still override it (e.g. class="card items-end").
+ * The only exceptions are at the bottom of the file.
+ */
+@reference "../../../../../styles.css";
+
+@layer components {
+
+  /* ---------- card & layout ---------- */
+
+  /* a box for one "thing" (identity, server, invite, ...). Same look as .container, without the name clash */
+  .card {
+    @apply flex items-center gap-4 rounded-xl border border-neutral-800 p-4;
+  }
+
+  /* filled variant for boxes on a darker background (connect box, permission blocks) */
+  .card-filled {
+    @apply border-transparent bg-neutral-800;
+  }
+
+  /* the growing middle part of a card row */
+  .card-body {
+    @apply flex-1 min-w-0;
+  }
+
+  .card-title {
+    @apply flex items-center gap-2 min-w-0 font-semibold text-neutral-100;
+  }
+
+  /* wraps .detail elements (.detail already exists in style.ui.css) */
+  .detail-row {
+    @apply mt-1 flex flex-wrap items-center gap-x-4 gap-y-1;
+  }
+
+  /* vertical list of cards or sections. Replaces .container-list */
+  .stack {
+    @apply flex flex-col gap-3;
+  }
+
+  /* right aligned group of buttons: card trailer, form footer, dialog footer */
+  .actions {
+    @apply flex shrink-0 items-center justify-end gap-2;
+  }
+
+
+  /* ---------- buttons ---------- */
+
+  /* proposed change of the global base in styles.css: center the content, space and size icons,
+     and drop "w-full sm:w-auto" (the reason for all the w-auto! in the templates) */
+  button, .button {
+    @apply items-center justify-center gap-1.5 w-auto;
+  }
+
+  button > svg, .button > svg {
+    @apply size-4 shrink-0;
+  }
+
+  .button-primary {
+    @apply bg-onyx-600 text-white enabled:hover:bg-onyx-500
+           disabled:bg-onyx-600 disabled:text-white disabled:opacity-50;
+  }
+
+  .button-outline {
+    @apply border border-neutral-700 bg-transparent enabled:hover:bg-neutral-800
+           disabled:bg-transparent disabled:opacity-50;
+  }
+
+  /* aria-pressed: toggle buttons (markdown), aria-current: selected navigation entry */
+  .button-quiet {
+    @apply bg-transparent text-neutral-400 enabled:hover:bg-neutral-800 enabled:hover:text-neutral-100
+           disabled:bg-transparent disabled:opacity-50
+           aria-pressed:text-onyx-400 aria-[current=true]:bg-neutral-800 aria-[current=true]:text-neutral-100;
+    --button-active-bg: transparent;
+  }
+
+  .button-danger {
+    @apply bg-transparent text-neutral-400 enabled:hover:bg-red-900/30 enabled:hover:text-red-400
+           disabled:bg-transparent disabled:opacity-50;
+  }
+
+  .button-dashed {
+    @apply border-2 border-dashed border-neutral-700 bg-transparent text-neutral-400
+           enabled:hover:border-neutral-500 enabled:hover:bg-transparent enabled:hover:text-neutral-200
+           disabled:bg-transparent disabled:opacity-50;
+  }
+
+  /* square icon-only button, combines with every variant */
+  .button-icon {
+    @apply p-1.5;
+  }
+
+
+  /* ---------- form fields ---------- */
+
+  /* label + control + hint or error. The label keeps its global margin */
+  .field {
+    @apply flex min-w-0 flex-col;
+  }
+
+  .field-hint {
+    @apply mt-1 text-xs text-neutral-500;
+  }
+
+  .field-error {
+    @apply mt-1 text-xs text-red-400;
+  }
+
+  /* inputs and buttons joined into one control (the corner rules are at the bottom of the file) */
+  .input-group {
+    @apply flex items-stretch;
+  }
+
+
+  /* ---------- settings rows ---------- */
+
+  /* text on the left, control in a fixed column on the right. Replaces .settings-grid */
+  .setting {
+    @apply grid grid-cols-[minmax(0,1fr)_14rem] items-center gap-x-8 py-3;
+  }
+
+  .setting + .setting {
+    @apply border-t border-neutral-800;
+  }
+
+  .setting-label {
+    @apply text-sm font-medium text-neutral-200;
+  }
+
+  .setting-desc {
+    @apply text-sm text-neutral-400;
+  }
+
+
+  /* ---------- badges ---------- */
+
+  .badge {
+    @apply inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full border border-neutral-700
+           px-2 py-0.5 text-xs text-neutral-300;
+  }
+
+  .badge > svg {
+    @apply size-3;
+  }
+
+  .badge-onyx {
+    @apply border-onyx-600/40 bg-onyx-600/20 text-onyx-300;
+  }
+
+  .badge-success {
+    @apply border-emerald-500/40 bg-emerald-500/15 text-emerald-300;
+  }
+
+  .badge-warning {
+    @apply border-amber-500/40 bg-amber-500/15 text-amber-300;
+  }
+
+  .badge-danger {
+    @apply border-red-500/40 bg-red-500/15 text-red-300;
+  }
+
+
+  /* ---------- text ---------- */
+
+  /* small heading for groups inside lists (server tree sections, "Idle") */
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-wider text-neutral-500;
+  }
+
+  /* secondary text: descriptions, hints.
+     In styles.css this is better a theme token (@theme { --color-muted: var(--color-neutral-400) }),
+     which makes text-muted a real utility (and border-muted, ...) */
+  .text-muted {
+    @apply text-neutral-400;
+  }
+
+  /* tertiary text: timestamps, meta data */
+  .text-subtle {
+    @apply text-neutral-500;
+  }
+
+
+  /* ---------- empty states & alerts ---------- */
+
+  .empty-state {
+    @apply flex flex-col items-center gap-1 px-4 py-8 text-center text-sm text-neutral-500;
+  }
+
+  .empty-state > svg {
+    @apply mb-2 size-10 text-neutral-600;
+  }
+
+  .empty-state-title {
+    @apply text-base font-semibold text-neutral-300;
+  }
+
+  .alert {
+    @apply flex items-start gap-2 rounded-lg border px-3 py-2 text-sm;
+  }
+
+  .alert > svg {
+    @apply mt-0.5 size-4 shrink-0;
+  }
+
+  .alert-info {
+    @apply border-onyx-600/40 bg-onyx-600/15 text-onyx-200;
+  }
+
+  .alert-success {
+    @apply border-emerald-500/40 bg-emerald-500/10 text-emerald-200;
+  }
+
+  .alert-warning {
+    @apply border-amber-500/40 bg-amber-500/10 text-amber-200;
+  }
+
+  .alert-danger {
+    @apply border-red-500/40 bg-red-500/10 text-red-200;
+  }
+}
+
+
+/*
+ * ---------- needs "Fix first: F1" ----------
+ * These rules have to beat unlayered element rules from styles.css (input { rounded-lg }, h3 { text-xl }).
+ * An unlayered rule always wins over a layered one, so for now they are unlayered as well.
+ * After F1 (element rules in @layer base) they move into the @layer components block above.
+ */
+.input-group > *:not(:first-child) {
+  @apply rounded-l-none;
+}
+
+.input-group > *:not(:last-child) {
+  @apply rounded-r-none;
+}
+
+/* heading of a block inside a page or panel. Replaces h3.pt-8, h3.pt-4.pb-2, h2.pb-2, ... */
+.section-title {
+  @apply mt-8 mb-2 text-lg font-semibold text-neutral-100 first:mt-0;
+}

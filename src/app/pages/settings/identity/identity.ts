@@ -11,9 +11,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 @Component({
   selector: 'app-identity',
   imports: [
-    IdentityWizzard,
     IdentityEditor,
-    SplitPanelDivider,
     ReactiveFormsModule,
     FormsModule,
   ],

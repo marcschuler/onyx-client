@@ -22,6 +22,7 @@ import {SplitPanelDivider} from '../../ui/split-panel/split-panel-divider/split-
 import {FileSizePipe} from '../../../pipes/file-size-pipe';
 import {JsonPipe} from '@angular/common';
 import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
+import {ToggleButton} from '../../ui/toggle-button/toggle-button';
 
 @Component({
   selector: 'app-message-context-menu',
@@ -31,7 +32,8 @@ import {StorageFileURLPipe} from '../../../pipes/avatar-pipe';
     SplitPanelDivider,
     FileSizePipe,
     JsonPipe,
-    StorageFileURLPipe
+    StorageFileURLPipe,
+    ToggleButton
   ],
   templateUrl: './message-context-menu.html',
   styleUrl: './message-context-menu.css',
@@ -89,8 +91,32 @@ export class MessageContextMenu implements OnInit, OnDestroy, OnChanges {
       }, error => this.restService.handleError(error))
   }
 
+  protected isEmojiActive(emoji: string) {
+    return this.message.reactions.filter(reaction => reaction.emoji == emoji)
+      .find(reaction => reaction.user.id == this.connection.me.id)
+      != undefined;
+  }
+
 
   protected readonly LucideCornerDownRight = LucideCornerDownRight;
   protected readonly LucideDownload = LucideDownload;
   protected readonly LucideX = LucideX;
+
+  protected react(emoji: string, active: boolean) {
+    if (!active) {
+      this.connection.rest.chatController.addReaction(this.message.chatId, this.message.id, emoji)
+        .subscribe(value => {
+          console.log("reacted with " + emoji + " to message " + this.message.id);
+          this.popupContext.close();
+        }, error => this.restService.handleError(error));
+    }else {
+      this.connection.rest.chatController.removeReaction(this.message.chatId, this.message.id, emoji)
+        .subscribe(value => {
+          console.log("removed reaction " + emoji + " to message " + this.message.id);
+          this.popupContext.close();
+        }, error => this.restService.handleError(error));
+    }
+  }
+
+
 }

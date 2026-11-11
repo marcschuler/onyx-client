@@ -1,75 +1,149 @@
-<div class="p-4">
-  <div class="container min-w-full pb-8!">
-    <h1 class="text-center font-bold text-sky-600">Hello
-      @if (identity) {
-        , {{ identity.username }}
-      }</h1>
-    <p class="text-center py-4">Let's set you up!</p>
-  </div>
+<div class="relative flex min-h-screen flex-col items-center px-6 pt-14 pb-16">
 
-  <div class="text-onyx-800 -translate-y-6 mx-4 pb-8">
-    <p class="p-4 inline bg-neutral-900 border rounded-full absolute left-0"
-       [class.bg-onyx-200]="stage==WelcomeStage.IDENTITY"
-       [class.bg-neutral-900]="stage!==WelcomeStage.IDENTITY">
-      <svg lucideShieldUser></svg>
-    </p>
-    <span class="w-1/2 absolute left-0 h-2 -z-10 top-6"></span>
-    <p class="p-4 inline bg-neutral-900 border rounded-full absolute left-1/2"
-       [class.bg-onyx-200]="stage==WelcomeStage.SERVER"
-       [class.bg-neutral-900]="stage!==WelcomeStage.SERVER">
-      <svg lucideServer></svg>
-    </p>
-    <span class="w-1/2 absolute left-1/2 h-2 -z-10 top-6"></span>
-    <p class="p-4 inline bg-neutral-900 border rounded-full absolute right-0"
-       [class.bg-onyx-200]="stage==WelcomeStage.FINISHED"
-       [class.bg-neutral-900]="stage!==WelcomeStage.FINISHED">
-      <svg lucideCheck></svg>
+  <!-- brand -->
+  <div class="flex flex-col items-center text-center">
+    <img src="/assets/logo/logo.png" alt="onyx logo" class="w-16 drop-shadow-[0_0_24px_var(--color-onyx-700)]">
+    <p class="mt-3 pl-[0.6em] text-xs font-light uppercase tracking-[0.6em] text-onyx-200">onyx</p>
+    <h1 class="mt-6">Welcome to onyx</h1>
+    <p class="subtitle mt-2 max-w-md">
+      Voice and chat on servers you choose, without an account or e-mail. Setting up takes about a minute.
     </p>
   </div>
 
-  <div class="pt-4 px-4 pb-8 m-2 rounded-xl">
+  <!-- steps -->
+  <ol class="mt-10 flex w-full max-w-xl items-center gap-3" aria-label="Setup steps">
+    @for (step of steps; track step; let i = $index, last = $last) {
+      <li class="flex items-center gap-2" [class.flex-1]="!last" [attr.aria-current]="i === stage ? 'step' : null">
+        <span class="flex size-7 shrink-0 items-center justify-center rounded-full border text-xs font-semibold
+                     transition-colors"
+              [class.border-onyx-500]="stage >= i"
+              [class.bg-onyx-600]="stage > i"
+              [class.text-white]="stage > i"
+              [class.text-onyx-200]="stage === i"
+              [class.border-neutral-700]="i > stage"
+              [class.text-neutral-500]="i > stage">
+          @if (stage > i) {
+            <svg lucideCheck class="w-4 h-4"></svg>
+          } @else {
+            {{ i + 1 }}
+          }
+        </span>
+        <span class="text-sm" [class.text-neutral-100]="stage === i" [class.text-neutral-500]="stage !== i">
+          {{ step }}
+        </span>
+        @if (!last) {
+          <span class="h-px flex-1 transition-colors" [class.bg-onyx-600]="stage > i"
+                [class.bg-neutral-800]="stage <= i"></span>
+        }
+      </li>
+    }
+  </ol>
+
+  <!-- current step -->
+  <div class="mt-8 w-full max-w-xl">
     @switch (stage) {
       @case (WelcomeStage.IDENTITY) {
-        <h2 class="pb-4 text-center">Create your Identity</h2>
-        <app-identity-wizzard (identityCreated)="onIdentity($event)" [showDots]="false"></app-identity-wizzard>
-      }
-      @case (WelcomeStage.SERVER) {
-        <h2 class="pb-4 text-center">Community Server</h2>
-        <div class="mx-auto max-w-xl">
-          <p>
-            Start by selecting a few recommended community servers.
-          </p>
-          @for (server of communityServer; track server) {
-            <div class="p-2 rounded grid grid-cols-5 bg-neutral-800 w-full gap-4">
-              <input type="checkbox" class="flex max-w-8" (change)="onServerSelect($event,server)">
+        <div class="container flex-col items-stretch gap-5 bg-neutral-900/80 shadow-xl shadow-black/30">
+          <div>
+            <h3 class="font-semibold">Create your identity</h3>
+            <p class="subtitle mt-1">
+              Your identity is a key pair that stays on this device. Servers recognize you by it,
+              so there is no account and no password.
+            </p>
+          </div>
 
-              <label class="flex col-span-2">
-                <h4>{{ server.name }}</h4>
-                <p class="text-neutral-400">{{ server.description }}</p>
-              </label>
+          <div>
+            <label for="welcome-username">Username</label>
+            <input id="welcome-username" placeholder="At least three characters" autocomplete="off"
+                   [(ngModel)]="username" (keydown.enter)="createIdentity()">
+          </div>
 
-              <p class="text-neutral-400 col-span-2">{{ server.url }}</p>
-            </div>
-          }
+          <div class="flex justify-end">
+            <button class="button-main items-center gap-1.5 disabled:opacity-50"
+                    [disabled]="!usernameValid || creating" (click)="createIdentity()">
+              Create identity
+              <svg lucideArrowRight class="w-4 h-4"></svg>
+            </button>
+          </div>
         </div>
-        <button class="float-right"
-                (click)="stage = WelcomeStage.FINISHED">
-          @if (selectedCommunityServer.length == 0) {
-            Skip
-          } @else {
-            Next
-          }
-        </button>
       }
+
+      @case (WelcomeStage.SERVER) {
+        <div class="container flex-col items-stretch gap-4 bg-neutral-900/80 shadow-xl shadow-black/30">
+          <div>
+            <h3 class="font-semibold">Join a community</h3>
+            <p class="subtitle mt-1">Pick a few servers to start with. You can add any server later with its address.</p>
+          </div>
+
+          <div class="container-list py-0">
+            @for (server of communityServers; track server.url) {
+              <div class="container cursor-pointer transition-colors hover:bg-neutral-800/60"
+                   role="checkbox" tabindex="0" [attr.aria-checked]="selected.has(server)"
+                   [class.border-onyx-600]="selected.has(server)" [class.bg-onyx-950]="selected.has(server)"
+                   (click)="toggle(server)" (keydown.enter)="toggle(server)"
+                   (keydown.space)="toggle(server); $event.preventDefault()">
+                <div class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-neutral-800">
+                  <svg lucideServer class="w-6 h-6 text-onyx-300"></svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <p class="font-semibold text-neutral-100">{{ server.name }}</p>
+                  @if (server.description) {
+                    <p class="subtitle">{{ server.description }}</p>
+                  }
+                  <div class="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <span class="detail">
+                      <svg lucideGlobe></svg>
+                      {{ server.url }}
+                    </span>
+                  </div>
+                </div>
+                <span class="flex size-6 shrink-0 items-center justify-center rounded-full border transition-colors"
+                      [class.border-onyx-500]="selected.has(server)" [class.bg-onyx-600]="selected.has(server)"
+                      [class.border-neutral-600]="!selected.has(server)">
+                  @if (selected.has(server)) {
+                    <svg lucideCheck class="w-4 h-4"></svg>
+                  }
+                </span>
+              </div>
+            }
+          </div>
+
+          <div class="flex items-center justify-end gap-2">
+            <button class="button-dark" (click)="skipServers()">Skip</button>
+            <button class="button-main items-center gap-1.5 disabled:opacity-50" [disabled]="selected.size === 0"
+                    (click)="stage = WelcomeStage.FINISHED">
+              Join {{ selected.size }} {{ selected.size === 1 ? 'server' : 'servers' }}
+              <svg lucideArrowRight class="w-4 h-4"></svg>
+            </button>
+          </div>
+        </div>
+      }
+
       @case (WelcomeStage.FINISHED) {
-        <h2 class="pb-4 text-center">Done</h2>
-        <p class="text-center">
-          You are ready to go!
-        </p>
-        <button class="float-right"
-                (click)="finish()"> Next
-        </button>
+        <div class="container flex-col gap-4 py-10 text-center bg-neutral-900/80 shadow-xl shadow-black/30">
+          <span class="flex size-14 items-center justify-center rounded-full border border-onyx-600/40
+                       bg-onyx-600/20 text-onyx-300">
+            <svg lucideCheck class="w-7 h-7"></svg>
+          </span>
+          <div class="flex flex-col items-center">
+            <h3 class="font-semibold">You're all set, {{ identity?.username }}</h3>
+            <p class="subtitle mt-1 max-w-sm">
+              @if (selected.size > 0) {
+                {{ selected.size }} {{ selected.size === 1 ? 'server' : 'servers' }} will show up in your server list.
+              } @else {
+                You can add a server by its address on the start page.
+              }
+              Your identity is saved on this device.
+            </p>
+          </div>
+          <button class="button-main items-center gap-1.5" (click)="finish()">
+            Open onyx
+            <svg lucideArrowRight class="w-4 h-4"></svg>
+          </button>
+        </div>
       }
     }
   </div>
+
+  <p class="absolute right-4 bottom-3 text-xs text-text-faded">version {{ APP_VERSION }}</p>
 </div>

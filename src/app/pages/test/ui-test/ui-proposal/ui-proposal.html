@@ -1,0 +1,451 @@
+<header class="flex flex-col gap-2 pt-16 pb-2">
+  <h1>Proposal</h1>
+  <p class="demo-intro">
+    The classes below are defined in <code>ui-proposal/ui-proposal.css</code> and only exist on this page.
+    Each block rebuilds elements from the first half with them.
+  </p>
+</header>
+
+
+<!-- ============================================================ -->
+<section id="proposal-foundation" class="demo-section">
+  <h2>Fix first</h2>
+  <p class="demo-intro">
+    Two problems in today's CSS that every new class would run into. Both are fixes in <code>styles.css</code>
+    and <code>style.ui.css</code>, not new classes.
+  </p>
+
+  <div class="demo">
+    <span class="demo-label">F1 · global rules win over Tailwind utilities</span>
+    <p class="text-sm text-muted">
+      The element rules (<code>h1</code> – <code>h4</code>, <code>label</code>, <code>input</code>, <code>textarea</code>,
+      <code>select</code>, <code>a</code>) and most <code>.button-*</code> classes are not in a cascade layer.
+      Unlayered CSS always beats Tailwind's <code>@layer utilities</code>, so a utility on these elements does
+      nothing unless it gets a <code>!</code>.
+    </p>
+    <div class="grid grid-cols-[auto_1fr_1fr] items-center gap-x-6 gap-y-4">
+      <span class="section-label">markup</span>
+      <span class="section-label">today</span>
+      <span class="section-label">same with !</span>
+
+      <code class="text-xs">h1.font-light</code>
+      <h1 class="font-light">onyx</h1>
+      <h1 class="font-light!">onyx</h1>
+
+      <code class="text-xs">h2.text-xl</code>
+      <h2 class="text-xl">Delete identity?</h2>
+      <h2 class="text-xl!">Delete identity?</h2>
+
+      <code class="text-xs">label.flex.flex-col</code>
+      <label class="flex flex-col"><span>Name</span><span class="text-subtle">second line</span></label>
+      <label class="flex! flex-col"><span>Name</span><span class="text-subtle">second line</span></label>
+
+      <code class="text-xs">input.w-32.rounded-none</code>
+      <input class="w-32 rounded-none" aria-label="w-32 today" value="w-32">
+      <input class="w-32! rounded-none!" aria-label="w-32 with !" value="w-32">
+    </div>
+    <p class="text-sm text-muted">
+      Fix: put the element rules into <code>@layer base</code> and the classes into <code>@layer components</code>.
+      These spots rely on an ignored utility today and will look different afterwards: the "onyx" logo text on the
+      welcome page (<code>h1.font-light</code>), the intro title (<code>h1.font-bold</code>), the dialog title
+      (<code>h2.text-xl</code>), the community server rows (<code>label.flex</code>), the server name input and the
+      volume slider (<code>input.w-32</code>). The open state of the multi-select and the selected select item are
+      state classes that win today and would lose against the utility next to them.
+    </p>
+    <pre class="overflow-x-auto rounded-lg bg-neutral-950 p-3 text-xs text-neutral-300">{{ layerSnippet }}</pre>
+  </div>
+
+  <div class="demo">
+    <span class="demo-label">F2 · .container is also a Tailwind utility</span>
+    <div #containerProbe class="container">
+      <span class="text-sm">.container</span>
+    </div>
+    <p class="text-sm text-muted">
+      Tailwind v4 ships a <code>container</code> utility: <code>width: 100%</code> plus a <code>max-width</code> per
+      breakpoint. The templates use the class name, so Tailwind generates it and it merges into the box from
+      <code>style.ui.css</code>. At this window width ({{ windowWidth() }}px) the box above gets
+      <code>max-width: {{ containerMaxWidth() }}</code>. The intro page already works around it with
+      <code>min-w-full</code>. Fix: rename it to <code>.card</code> (next section).
+    </p>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="proposal-card" class="demo-section">
+  <h2>Card &amp; layout</h2>
+  <p class="demo-intro">
+    <code>.card</code> is today's <code>.container</code> under a name that doesn't clash, plus parts for the recurring
+    "avatar · text · actions" row. <code>.stack</code> lists cards, <code>.actions</code> groups buttons.
+  </p>
+
+  <div class="stack">
+    <!-- identity editor -->
+    <div class="card">
+      <img alt="identity avatar" class="profile-big" [src]="aliceKey | identicon: 96 | async">
+      <div class="card-body">
+        <div class="card-title">
+          Alice
+          <span class="badge badge-onyx">Default</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail">
+            <svg lucideKeyRound></svg>
+            <span class="font-mono">MCowBQYDK2Vw</span>
+          </span>
+          <span class="detail">
+            <svg lucideCalendar></svg>
+            Created Nov 4, 2026
+          </span>
+        </div>
+      </div>
+      <div class="actions">
+        <button>Cancel</button>
+        <button class="button-primary">Save</button>
+        <button class="button-danger button-icon" aria-label="Delete identity">
+          <svg lucideTrash2></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- server editor -->
+    <div class="card items-end flex-wrap">
+      <div class="field w-40">
+        <label for="proposal-server-name">Name</label>
+        <input id="proposal-server-name" placeholder="Custom name">
+      </div>
+      <div class="field flex-1">
+        <label for="proposal-server-password">Server password</label>
+        <input id="proposal-server-password" type="password" placeholder="Empty if none">
+      </div>
+      <div class="field flex-1 min-w-64">
+        <label for="proposal-server-url">URL</label>
+        <input id="proposal-server-url" value="https://onyx.example.com">
+      </div>
+      <div class="actions">
+        <button class="button-primary">Save</button>
+        <button class="button-danger button-icon" aria-label="Delete server">
+          <svg lucideTrash2></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- welcome: connect box -->
+    <div class="card card-filled flex-col items-stretch gap-2">
+      <p class="card-title">Connect to</p>
+      <div class="input-group">
+        <input aria-label="Server address" placeholder="example.com or http://localhost:8080">
+        <button class="button-primary">connect</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-grid">
+    <div class="demo">
+      <span class="demo-label">today: text-right pt-4 (channel, section and group editor)</span>
+      <div class="text-right pt-4">
+        <button class="button-line">Save</button>
+        <button class="button-red">Delete</button>
+      </div>
+      <p class="text-sm text-muted">Angular drops the whitespace between the two buttons, so they touch.</p>
+    </div>
+    <div class="demo">
+      <span class="demo-label">proposed: .actions</span>
+      <div class="actions">
+        <button class="button-outline">Save</button>
+        <button class="button-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="proposal-buttons" class="demo-section">
+  <h2>Buttons</h2>
+  <p class="demo-intro">
+    The base rule centers the content, spaces and sizes icons and keeps the natural width, so icons need no classes
+    and <code>w-auto!</code> goes away. Five names describe the role instead of the color, <code>.button-icon</code>
+    makes any of them square.
+  </p>
+  <div class="demo-grid">
+    @for (variant of buttonVariants; track variant.label) {
+      <div class="demo">
+        <span class="demo-label">{{ variant.label }}</span>
+        <div class="flex flex-wrap items-center gap-2">
+          <button [class]="variant.cls">Button</button>
+          <button [class]="variant.cls" disabled>Disabled</button>
+          <button [class]="variant.cls">
+            <svg lucideSave></svg>
+            Save
+          </button>
+          <button [class]="variant.cls + ' button-icon'" aria-label="Settings">
+            <svg lucideSettings></svg>
+          </button>
+        </div>
+        <p class="text-sm text-muted">{{ variant.usage }}</p>
+      </div>
+    }
+
+    <div class="demo">
+      <span class="demo-label">.button-quiet states: aria-pressed · aria-current</span>
+      <div class="flex items-center gap-1">
+        <button toggle-button class="button-quiet" [(active)]="useMarkdown">M↓</button>
+        <button class="button-quiet button-icon" aria-label="Add">
+          <svg lucidePlus></svg>
+        </button>
+      </div>
+      <div class="flex w-56 flex-col gap-0.5">
+        @for (entry of navEntries; track entry) {
+          <button class="button-quiet justify-start" [attr.aria-current]="entry === selectedNavEntry"
+                  (click)="selectedNavEntry = entry">
+            <svg lucideHexagon></svg>
+            {{ entry }}
+          </button>
+        }
+      </div>
+      <p class="text-sm text-muted">Markdown toggle in the chat toolbar, split panel navigation.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="proposal-form" class="demo-section">
+  <h2>Form fields</h2>
+  <div class="demo-grid">
+    <div class="demo">
+      <span class="demo-label">.field · .field-hint · .field-error</span>
+      <div class="field">
+        <label for="proposal-username">Username</label>
+        <input id="proposal-username" placeholder="At least three characters" [(ngModel)]="username">
+        @if (username.trim().length >= 3) {
+          <p class="field-hint">Servers see this name next to your key.</p>
+        } @else {
+          <p class="field-error">The username needs at least three characters</p>
+        }
+      </div>
+      <div class="field">
+        <label for="proposal-steam">SteamID64</label>
+        <input id="proposal-steam" inputmode="numeric" placeholder="76561198000000000">
+        <p class="field-hint">Only works if your Steam profile is public.</p>
+      </div>
+    </div>
+
+    <div class="demo">
+      <span class="demo-label">.input-group</span>
+      <div class="input-group">
+        <input aria-label="Invite code" placeholder="Enter your invite code...">
+        <button>Send</button>
+      </div>
+      <div class="input-group">
+        <input aria-label="Group name" placeholder="Group name">
+        <button class="button-primary">Create</button>
+      </div>
+      <div class="input-group">
+        <input aria-label="Invite code" placeholder="code">
+        <input aria-label="Invite title" placeholder="title">
+        <button class="button-icon" aria-label="Create invite">
+          <svg lucidePlus></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="proposal-settings" class="demo-section">
+  <h2>Settings rows</h2>
+  <p class="demo-intro">
+    Replaces <code>.settings-grid</code>. The row defines the columns, so a control can't land in the wrong one
+    (like the priority input in the first half).
+  </p>
+  <div>
+    <div class="setting">
+      <div>
+        <p class="setting-label">Compact Mode</p>
+        <p class="setting-desc">Shows less padding around larger elements like the channel list.</p>
+      </div>
+      <app-toggle [(value)]="compactMode"></app-toggle>
+    </div>
+    <div class="setting">
+      <div>
+        <p class="setting-label">Voice</p>
+        <p class="setting-desc">Choose whether members can talk to each other in voice chat in this channel</p>
+      </div>
+      <ui-multi-select [multi]="false" [(selected)]="voiceMode" placeholder="Voice type">
+        @for (option of ['NONE', 'FULL']; track option) {
+          <ui-select-item [label]="option" [value]="option"></ui-select-item>
+        }
+      </ui-multi-select>
+    </div>
+    <div class="setting">
+      <p class="setting-label">Name</p>
+      <input aria-label="Group name" value="Moderators">
+    </div>
+    <div class="setting">
+      <div>
+        <p class="setting-label">Priority</p>
+        <p class="setting-desc">If a user has multiple groups, this is the priority permissions are checked</p>
+      </div>
+      <input type="number" aria-label="Priority" min="0" max="9999" value="10">
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="proposal-badges" class="demo-section">
+  <h2>Badges</h2>
+  <p class="demo-intro">
+    One pill for labels and states. Replaces <code>.chip-main</code> and the hand-made group and "Temporary" labels;
+    the state colors match the user states of the users panel.
+  </p>
+  <div class="demo">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="badge">Admin</span>
+      <span class="badge">Moderator</span>
+      <span class="badge badge-onyx">Default</span>
+      <span class="badge badge-onyx"><svg lucideGamepadDirectional></svg>Factorio</span>
+      <span class="badge badge-onyx"><svg lucideGhost></svg>Temporary</span>
+      <span class="badge badge-success"><svg lucideUserCheck></svg>Active</span>
+      <span class="badge badge-warning"><svg lucideUserPlus></svg>Pending access</span>
+      <span class="badge badge-danger"><svg lucideCircleSlash></svg>Banned</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="proposal-text" class="demo-section">
+  <h2>Text</h2>
+  <div class="demo-grid">
+    <div class="demo">
+      <span class="demo-label">.section-title</span>
+      <div>
+        <h3 class="section-title">Server Details</h3>
+        <p class="text-sm text-muted">Name, password and URL of the server.</p>
+        <h3 class="section-title">Invite Codes</h3>
+        <p class="text-sm text-muted">Codes that let new users join.</p>
+      </div>
+    </div>
+    <div class="demo">
+      <span class="demo-label">.section-label</span>
+      <div class="flex flex-col gap-1">
+        <p class="section-label">General</p>
+        <p class="text-sm">Lobby</p>
+        <p class="text-sm">Gaming</p>
+        <p class="section-label pt-3">Idle</p>
+        <p class="text-sm">Dave</p>
+      </div>
+    </div>
+    <div class="demo">
+      <span class="demo-label">.text-muted · .text-subtle</span>
+      <p>Primary text</p>
+      <p class="text-muted">Muted: descriptions and hints (neutral-400)</p>
+      <p class="text-subtle">Subtle: timestamps and meta data (neutral-500)</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="proposal-feedback" class="demo-section">
+  <h2>Empty states &amp; alerts</h2>
+  <div class="demo-grid">
+    <div class="demo">
+      <span class="demo-label">.empty-state · welcome</span>
+      <div class="empty-state">
+        <svg lucideServer></svg>
+        <p class="empty-state-title">No server yet</p>
+        <p>Add one with its address below.</p>
+      </div>
+    </div>
+    <div class="demo">
+      <span class="demo-label">.empty-state · chat</span>
+      <div class="empty-state">
+        <svg lucideGhost></svg>
+        <p class="empty-state-title">Nothing here</p>
+        <p>Messages in this channel show up here.</p>
+      </div>
+    </div>
+    <div class="demo">
+      <span class="demo-label">.empty-state · invites</span>
+      <div class="empty-state">
+        <svg lucideTicketSlash></svg>
+        <p class="empty-state-title">No invites</p>
+        <p>Create one below.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="alert alert-info">
+      <svg lucideGhost></svg>
+      <span>New messages are temporary and will be deleted once the view is left.</span>
+    </div>
+    <div class="alert alert-success">
+      <svg lucideCircleCheck></svg>
+      <span>Identity renamed. Servers you are connected to will see the new name after reconnecting.</span>
+    </div>
+    <div class="alert alert-warning">
+      <svg lucideTriangleAlert></svg>
+      <span>The server requires a password.</span>
+    </div>
+    <div class="alert alert-danger">
+      <svg lucideMessageSquareReply></svg>
+      <span>Could not load more replies. Maximum reached.</span>
+    </div>
+  </div>
+  <p class="demo-intro">Toasts could use the same <code>.alert-*</code> classes instead of their own color map.</p>
+</section>
+
+
+<!-- ============================================================ -->
+<section id="proposal-migration" class="demo-section">
+  <h2>Migration map</h2>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left text-sm">
+      <thead class="text-neutral-400">
+        <tr class="border-b border-neutral-800">
+          <th class="py-2 pr-4 font-medium">Today</th>
+          <th class="py-2 pr-4 font-medium">Proposed</th>
+          <th class="py-2 font-medium">Where</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (entry of migration; track entry.to) {
+          <tr class="border-b border-neutral-800 align-top">
+            <td class="py-2 pr-4"><code class="text-xs">{{ entry.from }}</code></td>
+            <td class="py-2 pr-4"><code class="text-xs text-onyx-300">{{ entry.to }}</code></td>
+            <td class="py-2 text-muted">{{ entry.where }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="demo-grid">
+    <div class="demo">
+      <span class="demo-label">unused global classes</span>
+      <div class="flex flex-wrap gap-1.5">
+        @for (cls of unusedClasses; track cls) {
+          <code class="badge">{{ cls }}</code>
+        }
+      </div>
+    </div>
+    <div class="demo">
+      <span class="demo-label">broken references</span>
+      <div class="stack gap-2">
+        @for (entry of brokenClasses; track entry.cls) {
+          <div>
+            <code class="text-xs text-amber-300">{{ entry.cls }}</code>
+            <span class="text-xs text-subtle"> · {{ entry.file }}</span>
+            <p class="text-sm text-muted">{{ entry.note }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

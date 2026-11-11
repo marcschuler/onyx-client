@@ -1,44 +1,73 @@
 import {Component, inject} from '@angular/core';
-import {IdentityWizzard} from '../../settings/identity/identity-wizzard/identity-wizzard';
-import {LucideCheck, LucideServer, LucideShieldUser} from '@lucide/angular';
-import {Identity, IdentityService} from '../../../services/identity-service';
-import {ServerLoaderService} from '../../../services/server-loader-service';
+import {AsyncPipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
+import {
+  LucideArrowRight,
+  LucideCheck,
+  LucideGlobe,
+  LucideKeyRound,
+  LucideServer,
+} from '@lucide/angular';
+import {GenerateKeyPairResult} from 'jose';
+import {Identity, IdentityService} from '../../../services/identity-service';
+import {CryptoService} from '../../../services/crypto-service';
+import {ServerLoaderService} from '../../../services/server-loader-service';
 import {ContextMenuService} from '../../../services/ui/context-menu-service';
+import {ToastService, ToastType} from '../../../services/ui/toast-service';
+import {KeyId} from '../../../services/websocket/WebSocketServerConnection';
 import {BUTTON_CANCEL, BUTTON_SKIP} from '../../../components/ui/dialog/dialog';
+import {IdenticonPipe} from '../../../pipes/identicon-pipe';
+import {APP_VERSION} from '../../../services/Util';
 
+/**
+ * First-run setup: create an identity, pick community servers, done.
+ */
 @Component({
   selector: 'app-welcome',
   imports: [
-    IdentityWizzard,
+    AsyncPipe,
+    FormsModule,
+    IdenticonPipe,
+    LucideArrowRight,
     LucideCheck,
+    LucideGlobe,
+    LucideKeyRound,
     LucideServer,
-    LucideShieldUser,
   ],
   templateUrl: './welcome.html',
   styleUrl: './welcome.css',
 })
 export class Welcome {
   protected identityService = inject(IdentityService);
+  private cryptoService = inject(CryptoService);
   private router = inject(Router);
   private serverLoaderService = inject(ServerLoaderService);
   private contextMenuService = inject(ContextMenuService);
+  private toastService = inject(ToastService);
 
+  protected readonly steps = ['Identity', 'Servers', 'Done'];
+  protected stage: WelcomeStage = WelcomeStage.IDENTITY;
 
-  stage: WelcomeStage = WelcomeStage.IDENTITY;
-  identity: Identity | undefined;
+  protected username = "";
+  protected creating = false;
+  protected identity: Identity | undefined;
 
-  communityServer: { name: string, description: string, url: string }[] = [{
+  // generated up front, so the avatar preview already shows the identicon of the new identity
+  private keyPair: GenerateKeyPairResult | undefined;
+  protected keyId: KeyId | undefined;
+
+  protected readonly communityServers: CommunityServer[] = [{
     name: "karlthebee.de",
     description: "",
     url: "https://onyx.karlthebee.de"
   }, {
-    name: "Developement Server",
+    name: "Developer Server",
     description: "A local server for developers",
     url: "http://localhost:8080"
-  }]
+  }];
 
-  selectedCommunityServer: { name: string, description: string, url: string }[] = [];
+  protected selected = new Set<CommunityServer>();
 
   constructor() {
     const identityService = this.identityService;
@@ -53,27 +82,51 @@ export class Welcome {
         ]
       })
     }
+
+    this.createKey();
   }
 
-  protected onServerSelect(event: Event, server: { name: string; description: string; url: string }) {
-    const checked = (event.target as HTMLInputElement).checked;
-    if (checked) {
-      this.selectedCommunityServer.push(server);
-      console.log("welcome: adding server " + server.name)
-    } else {
-      const index = this.selectedCommunityServer.indexOf(server);
-      this.selectedCommunityServer.splice(index, 1);
-      console.log("welcome: removing server " + server.name)
+  protected get usernameValid() {
+    return this.username.trim().length >= 3;
+  }
+
+  private async createKey() {
+    this.keyPair = await this.identityService.generateKey();
+    this.keyId = await this.cryptoService.generateKeyId(this.keyPair.publicKey);
+  }
+
+  protected async createIdentity() {
+    if (!this.usernameValid || this.creating)
+      return;
+    this.creating = true;
+    try {
+      this.identity = await this.identityService.create(this.username.trim(), this.keyPair);
+      this.stage = WelcomeStage.SERVER;
+    } catch (e) {
+      console.error("welcome: could not create identity", e);
+      this.toastService.create({type: ToastType.Error, title: "Could not create identity"});
+    } finally {
+      this.creating = false;
     }
   }
 
-  protected onIdentity(identity: Identity) {
-    this.stage = WelcomeStage.SERVER;
-    this.identity = identity;
+  protected toggle(server: CommunityServer) {
+    if (this.selected.has(server)) {
+      this.selected.delete(server);
+      console.log("welcome: removing server " + server.name)
+    } else {
+      this.selected.add(server);
+      console.log("welcome: adding server " + server.name)
+    }
+  }
+
+  protected skipServers() {
+    this.selected.clear();
+    this.stage = WelcomeStage.FINISHED;
   }
 
   protected finish() {
-    this.selectedCommunityServer.forEach(server => {
+    this.selected.forEach(server => {
       this.serverLoaderService.connections.add({
         id: crypto.randomUUID(),
         name: server.name,
@@ -84,6 +137,13 @@ export class Welcome {
   }
 
   protected readonly WelcomeStage = WelcomeStage;
+  protected readonly APP_VERSION = APP_VERSION;
+}
+
+interface CommunityServer {
+  name: string;
+  description: string;
+  url: string;
 }
 
 export enum WelcomeStage {

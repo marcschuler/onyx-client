@@ -16,11 +16,11 @@ export interface JsonNode {
     object?: boolean;
     'float'?: boolean;
     container?: boolean;
+    valueNode?: boolean;
+    missingNode?: boolean;
     nodeType?: JsonNode.NodeTypeEnum;
     string?: boolean;
     integralNumber?: boolean;
-    valueNode?: boolean;
-    missingNode?: boolean;
     pojo?: boolean;
     floatingPointNumber?: boolean;
     'short'?: boolean;

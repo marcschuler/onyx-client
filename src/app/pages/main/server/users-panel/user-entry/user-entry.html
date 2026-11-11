@@ -5,16 +5,12 @@
     <br>
   </p>
   <p class="col-span-1">
-    @switch (user.state) {
-      @case (UserExtendedDTO.StateEnum.Active) {
-        <svg lucideUserCheck class="inline  h-4"></svg> Active
-      }
-      @case (UserExtendedDTO.StateEnum.Banned) {
-        <svg lucideCircleSlash class="inline h-4"></svg> Banned
-      }
-      @case (UserExtendedDTO.StateEnum.PendingAccess) {
-        <svg lucideUserPlus class="inline h-4"></svg> Pending Access
-      }
+    @if (user.ban) {
+      <svg lucideCircleSlash class="inline h-4"></svg> Banned
+    } @else if (user.pendingAccess) {
+      <svg lucideUserPlus class="inline h-4"></svg> Pending Access
+    } @else {
+      <svg lucideUserCheck class="inline  h-4"></svg> Active
     }
   </p>
   <p class="col-span-2">{{ user.knownSince | date: 'medium' }}</p>
@@ -31,7 +27,7 @@
     }
   </p>
   <p class="col-span-1">
-    @if (user.state === UserExtendedDTO.StateEnum.Banned) {
+    @if (user.ban) {
       <button class="!p-1" (click)="unban(user)">
         <svg lucideCircleSlash class="w-3 inline mr-1"></svg>
         Unban

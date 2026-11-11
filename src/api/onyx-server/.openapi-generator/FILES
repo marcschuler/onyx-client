@@ -62,6 +62,9 @@ model/messageCreationDTO.ts
 model/messageCreationDTOContentInner.ts
 model/messageDTO.ts
 model/messageDeleteEvent.ts
+model/messageReactionAddEvent.ts
+model/messageReactionDTO.ts
+model/messageReactionRemoveEvent.ts
 model/messageTypes.ts
 model/models.ts
 model/noPermissionMessage.ts
@@ -91,6 +94,7 @@ model/simpleGroupDTO.ts
 model/sortObject.ts
 model/textMessageContentDTO.ts
 model/trackMetadataMessage.ts
+model/userBanDTO.ts
 model/userExtendedDTO.ts
 model/userOnlineDTO.ts
 model/userSimpleDTO.ts

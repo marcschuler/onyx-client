@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { GroupDTO } from './groupDTO';
+import { UserBanDTO } from './userBanDTO';
 
 
 export interface UserExtendedDTO { 
@@ -16,17 +17,9 @@ export interface UserExtendedDTO {
     username: string;
     avatarId?: string;
     groups: Array<GroupDTO>;
-    state: UserExtendedDTO.StateEnum;
+    pendingAccess?: boolean;
+    ban?: UserBanDTO;
     knownSince: string;
     lastSeen?: string;
 }
-export namespace UserExtendedDTO {
-    export const StateEnum = {
-        PendingAccess: 'PENDING_ACCESS',
-        Active: 'ACTIVE',
-        Banned: 'BANNED'
-    } as const;
-    export type StateEnum = typeof StateEnum[keyof typeof StateEnum];
-}
-
 

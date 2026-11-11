@@ -7,15 +7,17 @@
  * http://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MessageReactionDTO } from './messageReactionDTO';
 
 
-export interface IntegrationRequest { 
-    steamId?: string;
-    readonly type: IntegrationRequest.TypeEnum;
+export interface MessageReactionAddEvent { 
+    chatId: string;
+    reaction: MessageReactionDTO;
+    readonly type: MessageReactionAddEvent.TypeEnum;
 }
-export namespace IntegrationRequest {
+export namespace MessageReactionAddEvent {
     export const TypeEnum = {
-        IntegrationRequest: 'IntegrationRequest'
+        MessageReactionAddEvent: 'MessageReactionAddEvent'
     } as const;
     export type TypeEnum = typeof TypeEnum[keyof typeof TypeEnum];
 }

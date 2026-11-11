@@ -36,6 +36,8 @@ export const MessageTypes = {
     JwtTokenEvent: 'JwtTokenEvent',
     KickedEvent: 'KickedEvent',
     MessageDeleteEvent: 'MessageDeleteEvent',
+    MessageReactionAddEvent: 'MessageReactionAddEvent',
+    MessageReactionRemoveEvent: 'MessageReactionRemoveEvent',
     NoPermissionMessage: 'NoPermissionMessage',
     PeerAnswer: 'PeerAnswer',
     PeerAnswerForward: 'PeerAnswerForward',

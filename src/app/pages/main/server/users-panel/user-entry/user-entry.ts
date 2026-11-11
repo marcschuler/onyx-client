@@ -4,11 +4,12 @@ import {LucideCircleSlash, LucideUserCheck, LucideUserPlus} from "@lucide/angula
 import {MultiSelect} from "../../../../../components/ui/multi-select/multi-select";
 import {ProfileImage} from "../../../../../components/client/profile-image/profile-image";
 import {SelectItem} from "../../../../../components/ui/multi-select/select-item/select-item";
-import {GroupDTO, UserExtendedDTO} from '../../../../../../api/onyx-server';
+import {GroupDTO} from '../../../../../../api/onyx-server';
 import {WebSocketServerConnection} from '../../../../../services/websocket/WebSocketServerConnection';
 import {RestService} from '../../../../../services/rest/rest-service';
 import {ToastService, ToastType} from '../../../../../services/ui/toast-service';
 import {replaceInList} from '../../../../../util';
+import {UserExtendedDTO} from '../../../../../../api/onyx-server';
 
 @Component({
   selector: 'app-user-entry',
@@ -85,8 +86,4 @@ export class UserEntry implements OnChanges {
 
       },error=>this.restService.handleError(error))
   }
-
-
-  protected readonly UserExtendedDTO = UserExtendedDTO;
-
 }

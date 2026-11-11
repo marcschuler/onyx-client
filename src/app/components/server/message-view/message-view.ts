@@ -24,7 +24,8 @@ import {
   ChannelDTO,
   ChatMessageEvent,
   FileMessageContentDTO,
-  MarkdownMessageContentDTO, MessageCreationDTOContentInner, MessageDeleteEvent
+  MarkdownMessageContentDTO, MessageCreationDTOContentInner, MessageDeleteEvent, MessageReactionAddEvent,
+  MessageReactionRemoveEvent
 } from '../../../../api/onyx-server';
 import {MessageContent} from '../../chat/message-content/message-content';
 import {Chip} from '../../ui/chip/chip';
@@ -89,6 +90,8 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.webSocketService.addHandler(ChatMessageEvent.TypeEnum.ChatMessageEvent, this.onNewMessage);
     this.webSocketService.addHandler(MessageDeleteEvent.TypeEnum.MessageDeleteEvent, this.onMessageDelete);
+    this.webSocketService.addHandler(MessageReactionAddEvent.TypeEnum.MessageReactionAddEvent, this.onMessageReactionAdd);
+    this.webSocketService.addHandler(MessageReactionRemoveEvent.TypeEnum.MessageReactionRemoveEvent, this.onMessageReactionRemove);
     this.initMessages();
   }
 
@@ -146,7 +149,6 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
       console.log("message-view: Got newest " + messages.content?.length + " messages from " + messages.totalElements + " in chat")
     }, error => this.restService.handleError(error));
   }
-
 
 
   addMessageToList(messages: MessageDTO[]) {
@@ -267,6 +269,21 @@ export class MessageView implements OnInit, OnDestroy, OnChanges, OnDestroy {
     }
   }
 
+  onMessageReactionAdd: MessageHandler<MessageReactionAddEvent> = (event: MessageReactionAddEvent, connection: WebSocketServerConnection) => {
+    const message = this.messages.find(message => event.reaction.messageId == message.id);
+    if (message){
+      message.reactions = [...message.reactions, event.reaction];
+    }
+  }
+
+
+  onMessageReactionRemove: MessageHandler<MessageReactionRemoveEvent> = (event: MessageReactionRemoveEvent, connection: WebSocketServerConnection) => {
+    const message = this.messages.find(message => event.messageId == message.id);
+    if (message){
+      message.reactions = message.reactions.filter(reaction => reaction.id != event.reactionId);
+    }
+
+  }
 
   protected setReply($event: MessageDTO | undefined) {
     this.reply = $event;

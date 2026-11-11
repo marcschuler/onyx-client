@@ -194,8 +194,6 @@ export class WebSocketService {
   }
 
   public addHandler<T extends MessageBody>(t: MessageTypes, handler: MessageHandler<T>) {
-    if (this.messageHandlers.get(t))
-      console.warn("Message handler for " + t + " already exists, overwrite...")
     const values = this.messageHandlers.get(t) || [];
     values.push(handler);
     this.messageHandlers.set(t, values);

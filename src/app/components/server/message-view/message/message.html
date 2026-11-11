@@ -72,5 +72,20 @@
         <app-message-content [content]="content" [connection]="connection"></app-message-content>
       }
     </div>
+
   </div>
+
+  @if (message.reactions) {
+    <div class="px-4">
+      @for (reaction of message.reactions | reactionGrouping; track reaction) {
+        @let active = isEmojiActive(reaction);
+        <button class="rounded-t-none" toggle-button [active]="active" (activeChange)="react(reaction.emoji,active)" [title]="reactionTitle(reaction)">
+          {{ reaction.emoji }}
+          @if (reaction.reactions.length > 1){
+            × {{reaction.reactions.length}}
+          }
+        </button>
+      }
+    </div>
+  }
 }

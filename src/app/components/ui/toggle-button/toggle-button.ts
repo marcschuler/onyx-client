@@ -5,7 +5,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   template: '<ng-content />',
   host: {
     type: 'button',
-    '[attr.aria-checked]': 'active',
+    '[attr.aria-pressed]': 'active',
     '(click)': 'toggle()',
   },
 })

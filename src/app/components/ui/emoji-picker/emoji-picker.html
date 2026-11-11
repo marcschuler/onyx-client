@@ -1,0 +1,62 @@
+<div class="flex flex-col w-96 h-96 rounded-xl overflow-hidden container">
+  <div>
+    <input
+      type="search"
+      placeholder="Search emoji…"
+      [value]="search()"
+      (input)="onSearch($event)"
+    />
+  </div>
+
+  @if (!search()) {
+    <nav class="flex">
+      @for (category of categories(); track category.key) {
+        <button
+          class="flex-1 py-1"
+          [class.active]="activeCategory() === category.key"
+          [title]="category.label"
+          (click)="scrollToCategory(category.key)"
+        >
+          {{ category.icon }}
+        </button>
+      }
+    </nav>
+  }
+
+  <div #scrollContainer class="relative flex-1 overflow-y-auto px-2" (scroll)="onScroll()">
+    @if (loading()) {
+      <p class="p-4 text-center text-neutral-400">Loading…</p>
+    } @else {
+      @for (category of visibleCategories(); track category.key) {
+        <section [attr.data-category]="category.key">
+          <h3 class="sticky top-0 z-10 py-1 text-xs font-semibold uppercase bg-neutral-900">
+            {{ category.label }}
+          </h3>
+          <div class="grid grid-cols-12">
+            @for (emoji of category.emojis; track emoji.hexcode) {
+              <button
+                type="button"
+                class="emoji aspect-square rounded cursor-pointer hover:bg-neutral-700"
+                [title]="emoji.label"
+                (click)="select(emoji)"
+                (mouseenter)="hovered.set(emoji)"
+                (mouseleave)="hovered.set(null)"
+              >
+                {{ emoji.unicode }}
+              </button>
+            }
+          </div>
+        </section>
+      } @empty {
+        <p class="p-4 text-center text-neutral-400">No emoji found</p>
+      }
+    }
+  </div>
+
+  <div class="h-9 px-2 flex items-center gap-2 border-t border-neutral-700 text-sm text-neutral-300">
+    @if (hovered(); as emoji) {
+      <span class="text-xl">{{ emoji.unicode }}</span>
+      <span class="truncate">{{ emoji.label }}</span>
+    }
+  </div>
+</div>

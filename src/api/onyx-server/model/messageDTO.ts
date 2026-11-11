@@ -9,6 +9,7 @@
  */
 import { MessageContentDTO } from './messageContentDTO';
 import { UserSimpleDTO } from './userSimpleDTO';
+import { MessageReactionDTO } from './messageReactionDTO';
 
 
 export interface MessageDTO { 
@@ -19,5 +20,6 @@ export interface MessageDTO {
     repliesTo?: MessageDTO;
     chatId: string;
     temporary?: boolean;
+    reactions: Array<MessageReactionDTO>;
 }
 
